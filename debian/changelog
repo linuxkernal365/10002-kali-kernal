@@ -1,3 +1,26 @@
+linux (3.7.2-1~experimental.1) UNRELEASED; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.7.2
+
+  [ Ben Hutchings ]
+  * [ia64] nouveau: Disable another bit of ACPI support (fixes FTBFS)
+  * [armhf/omap] Make OMAP_DMA built-in (fixes FTBFS)
+  * ath6kl: Do not use virt_addr_valid() (fixes FTBFS on mips,mipsel)
+  * [armel/iop32x,armel/ixp4xx,armel/orion5x] Make IPV6 a module again due
+    to kernel size limit (fixes FTBFS)
+  * ALSA: usb-audio: Avoid autopm calls after disconnection; Fix missing
+    autopm for MIDI input (Closes: #664068)
+  * [!x86] Disable ZRAM, ZSMALLOC as modules (Reopens: #676779), as they
+    really aren't portable yet.
+  * udeb: Remove ipv6-modules on all architectures/flavours where it's
+    now built-in (fixes FTBFS)
+
+  [ Ian Campbell ]
+  * [x86/xen] Update microcode driver to use new API.
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sun, 06 Jan 2013 04:39:12 +0000
+
 linux (3.7.1-1~experimental.2) experimental; urgency=low
 
   [ Ben Hutchings ]

@@ -1,5 +1,5 @@
 2fcac88117a02f1a6d7d7cdfd50403fc  debian/bin/gencontrol.py
-a97530e5f7ce2464cce4b77373e5396e  debian/changelog
+ea41ef245bd00d618793be562520d108  debian/changelog
 d253b8a3cc1ffc2054b1d485facc490a  debian/templates/control.headers.arch.in
 d60e1ee86882c530ea74bfbb684a506e  debian/templates/control.headers.featureset.in
 3a8040742dfc77adae08116a336e98c3  debian/templates/control.headers.in
