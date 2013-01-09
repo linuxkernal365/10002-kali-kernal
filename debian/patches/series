@@ -69,3 +69,5 @@ debian/udl-disable-autoload.patch
 debian/ast-disable-autoload.patch
 debian/mgag200-disable-autoload.patch
 clean-modules-without-link-vmlinux.sh.patch
+
+features/all/kali-wifi-injection.patch

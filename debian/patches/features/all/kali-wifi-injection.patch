@@ -1,0 +1,71 @@
+--- a/drivers/net/wireless/zd1211rw/zd_mac.c
++++ b/drivers/net/wireless/zd1211rw/zd_mac.c
+@@ -243,14 +243,19 @@ void zd_mac_clear(struct zd_mac *mac)
+ static int set_rx_filter(struct zd_mac *mac)
+ {
+ 	unsigned long flags;
+-	u32 filter = STA_RX_FILTER;
++	struct zd_ioreq32 ioreqs[] = {
++		{CR_RX_FILTER, STA_RX_FILTER},
++		{ CR_SNIFFER_ON, 0U },
++	};
+ 
+ 	spin_lock_irqsave(&mac->lock, flags);
+-	if (mac->pass_ctrl)
+-		filter |= RX_FILTER_CTRL;
++	if (mac->pass_ctrl) {
++		ioreqs[0].value |= 0xFFFFFFFF;
++		ioreqs[1].value = 0x1;
++	}
+ 	spin_unlock_irqrestore(&mac->lock, flags);
+ 
+-	return zd_iowrite32(&mac->chip, CR_RX_FILTER, filter);
++	return zd_iowrite32a(&mac->chip, ioreqs, ARRAY_SIZE(ioreqs));
+ }
+ 
+ static int set_mac_and_bssid(struct zd_mac *mac)
+@@ -1059,7 +1064,8 @@ int zd_mac_rx(struct ieee80211_hw *hw, c
+ 	/* Caller has to ensure that length >= sizeof(struct rx_status). */
+ 	status = (struct rx_status *)
+ 		(buffer + (length - sizeof(struct rx_status)));
+-	if (status->frame_status & ZD_RX_ERROR) {
++	if ((status->frame_status & ZD_RX_ERROR) || 
++		(status->frame_status & ~0x21)) {
+ 		if (mac->pass_failed_fcs &&
+ 				(status->frame_status & ZD_RX_CRC32_ERROR)) {
+ 			stats.flag |= RX_FLAG_FAILED_FCS_CRC;
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -686,7 +686,8 @@ ieee80211_tx_h_rate_ctrl(struct ieee8021
+ 	} else if (tx->sta)
+ 		tx->sta->last_tx_rate = txrc.reported_rate;
+ 
+-	if (unlikely(!info->control.rates[0].count))
++	if (unlikely(!info->control.rates[0].count) ||
++	    info->flags & IEEE80211_TX_CTL_NO_ACK)
+ 		info->control.rates[0].count = 1;
+ 
+ 	if (WARN_ON_ONCE((info->control.rates[0].count > 1) &&
+@@ -792,11 +793,19 @@ ieee80211_tx_h_sequence(struct ieee80211
+ 
+ 	/*
+ 	 * Packet injection may want to control the sequence
+-	 * number, if we have no matching interface then we
+-	 * neither assign one ourselves nor ask the driver to.
++	 * number, so if an injected packet is found, skip
++	 * renumbering it. Also make the packet NO_ACK to avoid
++	 * excessive retries (ACKing and retrying should be
++	 * handled by the injecting application).
++	 * FIXME This may break hostapd and some other injectors.
++	 * This should be done using a radiotap flag.
+ 	 */
+-	if (unlikely(info->control.vif->type == NL80211_IFTYPE_MONITOR))
++	if (unlikely((info->flags & IEEE80211_TX_CTL_INJECTED) &&
++	   !(tx->sdata->u.mntr_flags & MONITOR_FLAG_COOK_FRAMES))) {
++		if (!ieee80211_has_morefrags(hdr->frame_control))
++			info->flags |= IEEE80211_TX_CTL_NO_ACK;
+ 		return TX_CONTINUE;
++	}
+ 
+ 	if (unlikely(ieee80211_is_ctl(hdr->frame_control)))
+ 		return TX_CONTINUE;

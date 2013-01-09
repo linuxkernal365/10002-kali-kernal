@@ -1,3 +1,10 @@
+linux (3.7.1-1~experimental.2+kali1) kali; urgency=low
+
+  * Fork for Kali with added patches:
+    debian/patches/features/all/kali-wifi-injection.patch
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Tue, 08 Jan 2013 17:11:40 +0100
+
 linux (3.7.1-1~experimental.2) experimental; urgency=low
 
   [ Ben Hutchings ]
