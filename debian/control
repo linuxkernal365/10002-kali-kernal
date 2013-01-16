@@ -1448,17 +1448,6 @@ Description: Loopback filesystem support
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-kirkwood
 
-Package: ipv6-modules-3.7-trunk-kirkwood-di
-Architecture: armel
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-kirkwood-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-kirkwood
-
 Package: btrfs-modules-3.7-trunk-kirkwood-di
 Architecture: armel
 Section: debian-installer
@@ -2282,17 +2271,6 @@ Description: Loopback filesystem support
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-versatile
 
-Package: ipv6-modules-3.7-trunk-versatile-di
-Architecture: armel
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-versatile-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-versatile
-
 Package: btrfs-modules-3.7-trunk-versatile-di
 Architecture: armel
 Section: debian-installer
@@ -2757,17 +2735,6 @@ Description: Loopback filesystem support
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-mx5
 
-Package: ipv6-modules-3.7-trunk-mx5-di
-Architecture: armhf
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-mx5-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-mx5
-
 Package: btrfs-modules-3.7-trunk-mx5-di
 Architecture: armhf
 Section: debian-installer
@@ -3204,17 +3171,6 @@ Description: Loopback filesystem support
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-parisc
 
-Package: ipv6-modules-3.7-trunk-parisc-di
-Architecture: hppa
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-parisc-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-parisc
-
 Package: btrfs-modules-3.7-trunk-parisc-di
 Architecture: hppa
 Section: debian-installer
@@ -3456,17 +3412,6 @@ Provides: loop-modules
 Depends: kernel-image-3.7-trunk-parisc64-di
 Description: Loopback filesystem support
  This package contains loopback filesystem support for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-parisc64
-
-Package: ipv6-modules-3.7-trunk-parisc64-di
-Architecture: hppa
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-parisc64-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-parisc64
 
@@ -5930,17 +5875,6 @@ Description: SCSI drivers
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-amiga
 
-Package: ipv6-modules-3.7-trunk-amiga-di
-Architecture: m68k
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-amiga-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-amiga
-
 Package: btrfs-modules-3.7-trunk-amiga-di
 Architecture: m68k
 Section: debian-installer
@@ -6131,17 +6065,6 @@ Description: SCSI drivers
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-atari
 
-Package: ipv6-modules-3.7-trunk-atari-di
-Architecture: m68k
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-atari-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-atari
-
 Package: btrfs-modules-3.7-trunk-atari-di
 Architecture: m68k
 Section: debian-installer
@@ -6329,17 +6252,6 @@ Provides: scsi-modules
 Depends: kernel-image-3.7-trunk-mac-di, cdrom-core-modules-3.7-trunk-mac-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-mac
-
-Package: ipv6-modules-3.7-trunk-mac-di
-Architecture: m68k
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-mac-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-mac
 
@@ -6713,17 +6625,6 @@ Description: Loopback filesystem support
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-sb1-bcm91250a
 
-Package: ipv6-modules-3.7-trunk-sb1-bcm91250a-di
-Architecture: mips mipsel
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-sb1-bcm91250a-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-sb1-bcm91250a
-
 Package: btrfs-modules-3.7-trunk-sb1-bcm91250a-di
 Architecture: mips mipsel
 Section: debian-installer
@@ -6991,17 +6892,6 @@ Description: Loopback filesystem support
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-r4k-ip22
 
-Package: ipv6-modules-3.7-trunk-r4k-ip22-di
-Architecture: mips
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-r4k-ip22-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-r4k-ip22
-
 Package: btrfs-modules-3.7-trunk-r4k-ip22-di
 Architecture: mips
 Section: debian-installer
@@ -7189,17 +7079,6 @@ Provides: loop-modules
 Depends: kernel-image-3.7-trunk-r5k-ip32-di
 Description: Loopback filesystem support
  This package contains loopback filesystem support for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-r5k-ip32
-
-Package: ipv6-modules-3.7-trunk-r5k-ip32-di
-Architecture: mips
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-r5k-ip32-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-r5k-ip32
 
@@ -7400,17 +7279,6 @@ Provides: loop-modules
 Depends: kernel-image-3.7-trunk-4kc-malta-di
 Description: Loopback filesystem support
  This package contains loopback filesystem support for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-4kc-malta
-
-Package: ipv6-modules-3.7-trunk-4kc-malta-di
-Architecture: mips mipsel
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-4kc-malta-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-4kc-malta
 
@@ -7853,17 +7721,6 @@ Description: Loopback filesystem support
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-r5k-cobalt
 
-Package: ipv6-modules-3.7-trunk-r5k-cobalt-di
-Architecture: mipsel
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-r5k-cobalt-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-r5k-cobalt
-
 Package: btrfs-modules-3.7-trunk-r5k-cobalt-di
 Architecture: mipsel
 Section: debian-installer
@@ -8084,17 +7941,6 @@ Provides: loop-modules
 Depends: kernel-image-3.7-trunk-loongson-2f-di
 Description: Loopback filesystem support
  This package contains loopback filesystem support for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-loongson-2f
-
-Package: ipv6-modules-3.7-trunk-loongson-2f-di
-Architecture: mipsel
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-loongson-2f-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-loongson-2f
 
@@ -10002,17 +9848,6 @@ Description: Loopback filesystem support
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-sh7751r
 
-Package: ipv6-modules-3.7-trunk-sh7751r-di
-Architecture: sh4
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-sh7751r-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-sh7751r
-
 Package: btrfs-modules-3.7-trunk-sh7751r-di
 Architecture: sh4
 Section: debian-installer
@@ -10419,17 +10254,6 @@ Provides: loop-modules
 Depends: kernel-image-3.7-trunk-sh7785lcr-di
 Description: Loopback filesystem support
  This package contains loopback filesystem support for the kernel.
-XC-Package-Type: udeb
-XB-Kernel-Version: 3.7-trunk-sh7785lcr
-
-Package: ipv6-modules-3.7-trunk-sh7785lcr-di
-Architecture: sh4
-Section: debian-installer
-Priority: extra
-Provides: ipv6-modules
-Depends: kernel-image-3.7-trunk-sh7785lcr-di
-Description: IPv6 driver
- This package contains the IPv6 driver for the kernel.
 XC-Package-Type: udeb
 XB-Kernel-Version: 3.7-trunk-sh7785lcr
 
