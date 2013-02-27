@@ -1,3 +1,11 @@
+linux-kali (3.7.1-1~experimental.2+kali3) kali; urgency=low
+
+  * Fix out-of-bounds access to sock_diag_handlers[] which can lead
+    to privilege escalation. New patch:
+    bugfix/all/sock_diag-Fix-out-of-bounds-access-to-sock_diag_hand.patch
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Wed, 27 Feb 2013 17:44:08 +0100
+
 linux-kali (3.7.1-1~experimental.2+kali2) kali; urgency=low
 
   * Rename source package to linux-kali to avoid collision with the official

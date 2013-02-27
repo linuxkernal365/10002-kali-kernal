@@ -70,4 +70,5 @@ debian/ast-disable-autoload.patch
 debian/mgag200-disable-autoload.patch
 clean-modules-without-link-vmlinux.sh.patch
 
+bugfix/all/sock_diag-Fix-out-of-bounds-access-to-sock_diag_hand.patch
 features/all/kali-wifi-injection.patch
