@@ -1,3 +1,11 @@
+linux-kali (3.7.2-0+kali4) kali; urgency=low
+
+  * Fix out-of-bounds access to sock_diag_handlers[] which can lead
+    to privilege escalation. New patch:
+    bugfix/all/sock_diag-Fix-out-of-bounds-access-to-sock_diag_hand.patch
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Wed, 27 Feb 2013 17:44:08 +0100
+
 linux-kali (3.7.2-0+kali3) kali; urgency=low
 
   * Really set DEBIAN_KERNEL_JOBS to 4 to speed up the builds.
