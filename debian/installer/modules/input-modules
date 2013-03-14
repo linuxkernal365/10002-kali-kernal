@@ -1,5 +1,6 @@
 hid
 usbhid
+hid-generic ?
 hid-apple ?
 hid-belkin ?
 hid-microsoft ?
