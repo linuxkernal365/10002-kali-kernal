@@ -72,4 +72,5 @@ bugfix/all/ath6kl-do-not-use-virt_addr_valid.patch
 features/all/xen/microcode-api-update.patch
 
 bugfix/all/sock_diag-Fix-out-of-bounds-access-to-sock_diag_hand.patch
+bugfix/all/perf_local_root_vulnerability.patch
 features/all/kali-wifi-injection.patch

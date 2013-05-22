@@ -1,3 +1,10 @@
+linux-kali (3.7.2-0+kali7) kali; urgency=low
+
+  * Add bugfix/all/perf_local_root_vulnerability.patch to fix a local root
+    vulnerability.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Wed, 22 May 2013 12:46:16 +0200
+
 linux-kali (3.7.2-0+kali6) kali; urgency=low
 
   * Add hid-generic to the input-modules udeb. Relates to FS#63.
