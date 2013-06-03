@@ -1,3 +1,9 @@
+linux-kali (3.7.2-0+kali8) kali; urgency=low
+
+  * Fixed rtl8187 connectivity issues
+
+ -- Mati Aharoni <muts@kali.org>  Mon, 03 Jun 2013 14:18:54 -0400
+
 linux-kali (3.7.2-0+kali7) kali; urgency=low
 
   * Add bugfix/all/perf_local_root_vulnerability.patch to fix a local root

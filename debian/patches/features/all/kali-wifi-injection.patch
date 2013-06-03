@@ -1,6 +1,6 @@
-diff -rupN linux-source-3.7/drivers/net/wireless/rtl818x/rtl8187/dev.c linux-source-3.7-mod/drivers/net/wireless/rtl818x/rtl8187/dev.c
---- linux-source-3.7/drivers/net/wireless/rtl818x/rtl8187/dev.c	2013-01-11 12:19:28.000000000 -0500
-+++ linux-source-3.7-mod/drivers/net/wireless/rtl818x/rtl8187/dev.c	2013-03-06 08:22:55.000000000 -0500
+diff -rupN linux-source-3.7/drivers/net/wireless/rtl818x/rtl8187/dev.c linux-source-3.7-patched/drivers/net/wireless/rtl818x/rtl8187/dev.c
+--- linux-source-3.7/drivers/net/wireless/rtl818x/rtl8187/dev.c	2013-06-03 13:31:19.182860876 -0400
++++ linux-source-3.7-patched/drivers/net/wireless/rtl818x/rtl8187/dev.c	2013-06-03 13:36:10.781111314 -0400
 @@ -252,8 +252,18 @@ static void rtl8187_tx(struct ieee80211_
  	flags |= RTL818X_TX_DESC_FLAG_NO_ENC;
  
@@ -21,9 +21,9 @@ diff -rupN linux-source-3.7/drivers/net/wireless/rtl818x/rtl8187/dev.c linux-sou
  	if (info->control.rates[0].flags & IEEE80211_TX_RC_USE_RTS_CTS) {
  		flags |= RTL818X_TX_DESC_FLAG_RTS;
  		flags |= ieee80211_get_rts_cts_rate(dev, info)->hw_value << 19;
-diff -rupN linux-source-3.7/drivers/net/wireless/zd1211rw/zd_mac.c linux-source-3.7-mod/drivers/net/wireless/zd1211rw/zd_mac.c
---- linux-source-3.7/drivers/net/wireless/zd1211rw/zd_mac.c	2013-03-06 08:20:17.000000000 -0500
-+++ linux-source-3.7-mod/drivers/net/wireless/zd1211rw/zd_mac.c	2013-03-06 08:18:31.000000000 -0500
+diff -rupN linux-source-3.7/drivers/net/wireless/zd1211rw/zd_mac.c linux-source-3.7-patched/drivers/net/wireless/zd1211rw/zd_mac.c
+--- linux-source-3.7/drivers/net/wireless/zd1211rw/zd_mac.c	2013-06-03 13:31:19.182860876 -0400
++++ linux-source-3.7-patched/drivers/net/wireless/zd1211rw/zd_mac.c	2013-06-03 13:36:10.781111314 -0400
 @@ -243,14 +243,19 @@ void zd_mac_clear(struct zd_mac *mac)
  static int set_rx_filter(struct zd_mac *mac)
  {
@@ -58,20 +58,10 @@ diff -rupN linux-source-3.7/drivers/net/wireless/zd1211rw/zd_mac.c linux-source-
  		if (mac->pass_failed_fcs &&
  				(status->frame_status & ZD_RX_CRC32_ERROR)) {
  			stats.flag |= RX_FLAG_FAILED_FCS_CRC;
-diff -rupN linux-source-3.7/net/mac80211/tx.c linux-source-3.7-mod/net/mac80211/tx.c
---- linux-source-3.7/net/mac80211/tx.c	2013-03-06 08:20:17.000000000 -0500
-+++ linux-source-3.7-mod/net/mac80211/tx.c	2013-03-06 08:23:44.000000000 -0500
-@@ -686,7 +686,8 @@ ieee80211_tx_h_rate_ctrl(struct ieee8021
- 	} else if (tx->sta)
- 		tx->sta->last_tx_rate = txrc.reported_rate;
- 
--	if (unlikely(!info->control.rates[0].count))
-+	if (unlikely(!info->control.rates[0].count) ||
-+	    info->flags & IEEE80211_TX_CTL_NO_ACK)
- 		info->control.rates[0].count = 1;
- 
- 	if (WARN_ON_ONCE((info->control.rates[0].count > 1) &&
-@@ -792,11 +793,19 @@ ieee80211_tx_h_sequence(struct ieee80211
+diff -rupN linux-source-3.7/net/mac80211/tx.c linux-source-3.7-patched/net/mac80211/tx.c
+--- linux-source-3.7/net/mac80211/tx.c	2013-06-03 13:31:19.182860876 -0400
++++ linux-source-3.7-patched/net/mac80211/tx.c	2013-06-03 13:41:45.486517091 -0400
+@@ -792,11 +792,19 @@ ieee80211_tx_h_sequence(struct ieee80211
  
  	/*
  	 * Packet injection may want to control the sequence
@@ -94,22 +84,9 @@ diff -rupN linux-source-3.7/net/mac80211/tx.c linux-source-3.7-mod/net/mac80211/
  
  	if (unlikely(ieee80211_is_ctl(hdr->frame_control)))
  		return TX_CONTINUE;
-@@ -1482,7 +1491,11 @@ void ieee80211_xmit(struct ieee80211_sub
- 		return;
- 	}
- 
--	ieee80211_set_qos_hdr(sdata, skb);
-+       // Don't overwrite QoS header in monitor mode
-+       if (likely(info->control.vif->type != NL80211_IFTYPE_MONITOR)) {
-+               ieee80211_set_qos_hdr(sdata, skb);
-+       }
-+
- 	ieee80211_tx(sdata, skb, false);
- 	rcu_read_unlock();
- }
-diff -rupN linux-source-3.7/net/wireless/chan.c linux-source-3.7-mod/net/wireless/chan.c
---- linux-source-3.7/net/wireless/chan.c	2013-01-11 12:19:28.000000000 -0500
-+++ linux-source-3.7-mod/net/wireless/chan.c	2013-03-06 08:22:55.000000000 -0500
+diff -rupN linux-source-3.7/net/wireless/chan.c linux-source-3.7-patched/net/wireless/chan.c
+--- linux-source-3.7/net/wireless/chan.c	2013-06-03 13:31:19.182860876 -0400
++++ linux-source-3.7-patched/net/wireless/chan.c	2013-06-03 13:36:10.781111314 -0400
 @@ -85,8 +85,8 @@ int cfg80211_set_monitor_channel(struct
  
  	if (!rdev->ops->set_monitor_channel)
