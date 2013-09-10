@@ -21,7 +21,6 @@
 
 */
 
-#define __NO_VERSION__
 #include <linux/module.h>
 
 #include <linux/errno.h>
@@ -43,7 +42,6 @@ MODULE_LICENSE("GPL");
 
 struct comedi_device *comedi_open(const char *filename)
 {
-	struct comedi_device_file_info *dev_file_info;
 	struct comedi_device *dev;
 	unsigned int minor;
 
@@ -55,12 +53,9 @@ struct comedi_device *comedi_open(const char *filename)
 	if (minor >= COMEDI_NUM_BOARD_MINORS)
 		return NULL;
 
-	dev_file_info = comedi_get_device_file_info(minor);
-	if (dev_file_info == NULL)
-		return NULL;
-	dev = dev_file_info->device;
+	dev = comedi_dev_from_minor(minor);
 
-	if (dev == NULL || !dev->attached)
+	if (!dev || !dev->attached)
 		return NULL;
 
 	if (!try_module_get(dev->driver->module))
@@ -68,7 +63,7 @@ struct comedi_device *comedi_open(const char *filename)
 
 	return dev;
 }
-EXPORT_SYMBOL(comedi_open);
+EXPORT_SYMBOL_GPL(comedi_open);
 
 int comedi_close(struct comedi_device *d)
 {
@@ -78,7 +73,7 @@ int comedi_close(struct comedi_device *d)
 
 	return 0;
 }
-EXPORT_SYMBOL(comedi_close);
+EXPORT_SYMBOL_GPL(comedi_close);
 
 static int comedi_do_insn(struct comedi_device *dev,
 			  struct comedi_insn *insn,
@@ -95,7 +90,8 @@ static int comedi_do_insn(struct comedi_device *dev,
 	s = &dev->subdevices[insn->subdev];
 
 	if (s->type == COMEDI_SUBD_UNUSED) {
-		printk(KERN_ERR "%d not useable subdevice\n", insn->subdev);
+		dev_err(dev->class_dev,
+			"%d not useable subdevice\n", insn->subdev);
 		ret = -EIO;
 		goto error;
 	}
@@ -104,7 +100,7 @@ static int comedi_do_insn(struct comedi_device *dev,
 
 	ret = comedi_check_chanlist(s, 1, &insn->chanspec);
 	if (ret < 0) {
-		printk(KERN_ERR "bad chanspec\n");
+		dev_err(dev->class_dev, "bad chanspec\n");
 		ret = -EINVAL;
 		goto error;
 	}
@@ -147,7 +143,7 @@ int comedi_dio_config(struct comedi_device *dev, unsigned int subdev,
 
 	return comedi_do_insn(dev, &insn, &io);
 }
-EXPORT_SYMBOL(comedi_dio_config);
+EXPORT_SYMBOL_GPL(comedi_dio_config);
 
 int comedi_dio_bitfield(struct comedi_device *dev, unsigned int subdev,
 			unsigned int mask, unsigned int *bits)
@@ -170,7 +166,7 @@ int comedi_dio_bitfield(struct comedi_device *dev, unsigned int subdev,
 
 	return ret;
 }
-EXPORT_SYMBOL(comedi_dio_bitfield);
+EXPORT_SYMBOL_GPL(comedi_dio_bitfield);
 
 int comedi_find_subdevice_by_type(struct comedi_device *dev, int type,
 				  unsigned int subd)
@@ -187,7 +183,7 @@ int comedi_find_subdevice_by_type(struct comedi_device *dev, int type,
 	}
 	return -1;
 }
-EXPORT_SYMBOL(comedi_find_subdevice_by_type);
+EXPORT_SYMBOL_GPL(comedi_find_subdevice_by_type);
 
 int comedi_get_n_channels(struct comedi_device *dev, unsigned int subdevice)
 {
@@ -195,4 +191,4 @@ int comedi_get_n_channels(struct comedi_device *dev, unsigned int subdevice)
 
 	return s->n_chan;
 }
-EXPORT_SYMBOL(comedi_get_n_channels);
+EXPORT_SYMBOL_GPL(comedi_get_n_channels);

@@ -26,6 +26,7 @@
 #define WACOM_PKGLEN_BBPEN	10
 #define WACOM_PKGLEN_WIRELESS	32
 #define WACOM_PKGLEN_MTOUCH	62
+#define WACOM_PKGLEN_MTTPC	40
 
 /* wacom data size per MT contact */
 #define WACOM_BYTES_PER_MT_PACKET	11
@@ -77,9 +78,11 @@ enum {
 	INTUOS5L,
 	WACOM_21UX2,
 	WACOM_22HD,
+	DTK,
 	WACOM_24HD,
 	CINTIQ,
 	WACOM_BEE,
+	WACOM_13HD,
 	WACOM_MO,
 	WIRELESS,
 	BAMBOO_PT,
@@ -88,6 +91,7 @@ enum {
 	TABLETPCE,
 	TABLETPC2FG,
 	MTSCREEN,
+	MTTPC,
 	MAX_TYPE
 };
 
@@ -133,7 +137,6 @@ struct wacom_wac {
 	int pid;
 	int battery_capacity;
 	int num_contacts_left;
-	int *slots;
 };
 
 #endif

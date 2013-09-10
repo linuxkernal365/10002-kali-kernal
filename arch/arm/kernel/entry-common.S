@@ -35,12 +35,11 @@ ret_fast_syscall:
 	ldr	r1, [tsk, #TI_FLAGS]
 	tst	r1, #_TIF_WORK_MASK
 	bne	fast_work_pending
-#if defined(CONFIG_IRQSOFF_TRACER)
 	asm_trace_hardirqs_on
-#endif
 
 	/* perform architecture specific actions before user return */
 	arch_ret_to_user r1, lr
+	ct_user_enter
 
 	restore_user_regs fast = 1, offset = S_OFF
  UNWIND(.fnend		)
@@ -71,11 +70,11 @@ ENTRY(ret_to_user_from_irq)
 	tst	r1, #_TIF_WORK_MASK
 	bne	work_pending
 no_work_pending:
-#if defined(CONFIG_IRQSOFF_TRACER)
 	asm_trace_hardirqs_on
-#endif
+
 	/* perform architecture specific actions before user return */
 	arch_ret_to_user r1, lr
+	ct_user_enter save = 0
 
 	restore_user_regs fast = 0, offset = 0
 ENDPROC(ret_to_user_from_irq)
@@ -276,7 +275,13 @@ ENDPROC(ftrace_graph_caller_old)
  */
 
 .macro mcount_enter
+/*
+ * This pad compensates for the push {lr} at the call site.  Note that we are
+ * unable to unwind through a function which does not otherwise save its lr.
+ */
+ UNWIND(.pad	#4)
 	stmdb	sp!, {r0-r3, lr}
+ UNWIND(.save	{r0-r3, lr})
 .endm
 
 .macro mcount_get_lr reg
@@ -289,6 +294,7 @@ ENDPROC(ftrace_graph_caller_old)
 .endm
 
 ENTRY(__gnu_mcount_nc)
+UNWIND(.fnstart)
 #ifdef CONFIG_DYNAMIC_FTRACE
 	mov	ip, lr
 	ldmia	sp!, {lr}
@@ -296,17 +302,22 @@ ENTRY(__gnu_mcount_nc)
 #else
 	__mcount
 #endif
+UNWIND(.fnend)
 ENDPROC(__gnu_mcount_nc)
 
 #ifdef CONFIG_DYNAMIC_FTRACE
 ENTRY(ftrace_caller)
+UNWIND(.fnstart)
 	__ftrace_caller
+UNWIND(.fnend)
 ENDPROC(ftrace_caller)
 #endif
 
 #ifdef CONFIG_FUNCTION_GRAPH_TRACER
 ENTRY(ftrace_graph_caller)
+UNWIND(.fnstart)
 	__ftrace_graph_caller
+UNWIND(.fnend)
 ENDPROC(ftrace_graph_caller)
 #endif
 
@@ -394,6 +405,7 @@ ENTRY(vector_swi)
 	mcr	p15, 0, ip, c1, c0		@ update control register
 #endif
 	enable_irq
+	ct_user_exit
 
 	get_thread_info tsk
 	adr	tbl, sys_call_table		@ load syscall table pointer
@@ -416,16 +428,6 @@ ENTRY(vector_swi)
 local_restart:
 	ldr	r10, [tsk, #TI_FLAGS]		@ check for syscall tracing
 	stmdb	sp!, {r4, r5}			@ push fifth and sixth args
-
-#ifdef CONFIG_SECCOMP
-	tst	r10, #_TIF_SECCOMP
-	beq	1f
-	mov	r0, scno
-	bl	__secure_computing	
-	add	r0, sp, #S_R0 + S_OFF		@ pointer to regs
-	ldmia	r0, {r0 - r3}			@ have to reload r0 - r3
-1:
-#endif
 
 	tst	r10, #_TIF_SYSCALL_WORK		@ are we tracing syscalls?
 	bne	__sys_trace
@@ -458,11 +460,13 @@ __sys_trace:
 	ldmccia	r1, {r0 - r6}			@ have to reload r0 - r6
 	stmccia	sp, {r4, r5}			@ and update the stack args
 	ldrcc	pc, [tbl, scno, lsl #2]		@ call sys_* routine
-	b	2b
+	cmp	scno, #-1			@ skip the syscall?
+	bne	2b
+	add	sp, sp, #S_OFF			@ restore stack
+	b	ret_slow_syscall
 
 __sys_trace_return:
 	str	r0, [sp, #S_R0 + S_OFF]!	@ save returned r0
-	mov	r1, scno
 	mov	r0, sp
 	bl	syscall_trace_exit
 	b	ret_slow_syscall
@@ -510,22 +514,6 @@ sys_syscall:
 		b	sys_ni_syscall
 ENDPROC(sys_syscall)
 
-sys_fork_wrapper:
-		add	r0, sp, #S_OFF
-		b	sys_fork
-ENDPROC(sys_fork_wrapper)
-
-sys_vfork_wrapper:
-		add	r0, sp, #S_OFF
-		b	sys_vfork
-ENDPROC(sys_vfork_wrapper)
-
-sys_clone_wrapper:
-		add	ip, sp, #S_OFF
-		str	ip, [sp, #4]
-		b	sys_clone
-ENDPROC(sys_clone_wrapper)
-
 sys_sigreturn_wrapper:
 		add	r0, sp, #S_OFF
 		mov	why, #0		@ prevent syscall restart handling
@@ -537,11 +525,6 @@ sys_rt_sigreturn_wrapper:
 		mov	why, #0		@ prevent syscall restart handling
 		b	sys_rt_sigreturn
 ENDPROC(sys_rt_sigreturn_wrapper)
-
-sys_sigaltstack_wrapper:
-		ldr	r2, [sp, #S_OFF + S_SP]
-		b	do_sigaltstack
-ENDPROC(sys_sigaltstack_wrapper)
 
 sys_statfs64_wrapper:
 		teq	r1, #88

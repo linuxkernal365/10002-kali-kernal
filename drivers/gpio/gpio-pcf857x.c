@@ -45,6 +45,7 @@ static const struct i2c_device_id pcf857x_id[] = {
 	{ "pca9675", 16 },
 	{ "max7328", 8 },
 	{ "max7329", 8 },
+	{ "tca9554", 8 },
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, pcf857x_id);
@@ -223,11 +224,11 @@ static void pcf857x_irq_domain_cleanup(struct pcf857x *gpio)
 
 static int pcf857x_irq_domain_init(struct pcf857x *gpio,
 				   struct pcf857x_platform_data *pdata,
-				   struct device *dev)
+				   struct i2c_client *client)
 {
 	int status;
 
-	gpio->irq_domain = irq_domain_add_linear(dev->of_node,
+	gpio->irq_domain = irq_domain_add_linear(client->dev.of_node,
 						 gpio->chip.ngpio,
 						 &pcf857x_irq_domain_ops,
 						 NULL);
@@ -235,15 +236,15 @@ static int pcf857x_irq_domain_init(struct pcf857x *gpio,
 		goto fail;
 
 	/* enable real irq */
-	status = request_irq(pdata->irq, pcf857x_irq_demux, 0,
-			     dev_name(dev), gpio);
+	status = request_irq(client->irq, pcf857x_irq_demux, 0,
+			     dev_name(&client->dev), gpio);
 	if (status)
 		goto fail;
 
 	/* enable gpio_to_irq() */
 	INIT_WORK(&gpio->work, pcf857x_irq_demux_work);
 	gpio->chip.to_irq	= pcf857x_to_irq;
-	gpio->irq		= pdata->irq;
+	gpio->irq		= client->irq;
 
 	return 0;
 
@@ -267,7 +268,7 @@ static int pcf857x_probe(struct i2c_client *client,
 	}
 
 	/* Allocate, initialize, and register this gpio_chip. */
-	gpio = kzalloc(sizeof *gpio, GFP_KERNEL);
+	gpio = devm_kzalloc(&client->dev, sizeof(*gpio), GFP_KERNEL);
 	if (!gpio)
 		return -ENOMEM;
 
@@ -285,8 +286,8 @@ static int pcf857x_probe(struct i2c_client *client,
 	gpio->chip.ngpio		= id->driver_data;
 
 	/* enable gpio_to_irq() if platform has settings */
-	if (pdata && pdata->irq) {
-		status = pcf857x_irq_domain_init(gpio, pdata, &client->dev);
+	if (pdata && client->irq) {
+		status = pcf857x_irq_domain_init(gpio, pdata, client);
 		if (status < 0) {
 			dev_err(&client->dev, "irq_domain init failed\n");
 			goto fail;
@@ -368,15 +369,6 @@ static int pcf857x_probe(struct i2c_client *client,
 	if (status < 0)
 		goto fail;
 
-	/* NOTE: these chips can issue "some pin-changed" IRQs, which we
-	 * don't yet even try to use.  Among other issues, the relevant
-	 * genirq state isn't available to modular drivers; and most irq
-	 * methods can't be called from sleeping contexts.
-	 */
-
-	dev_info(&client->dev, "%s\n",
-			client->irq ? " (irq ignored)" : "");
-
 	/* Let platform code set up the GPIOs and their users.
 	 * Now is the first time anyone could use them.
 	 */
@@ -388,16 +380,17 @@ static int pcf857x_probe(struct i2c_client *client,
 			dev_warn(&client->dev, "setup --> %d\n", status);
 	}
 
+	dev_info(&client->dev, "probed\n");
+
 	return 0;
 
 fail:
 	dev_dbg(&client->dev, "probe error %d for '%s'\n",
 			status, client->name);
 
-	if (pdata && pdata->irq)
+	if (pdata && client->irq)
 		pcf857x_irq_domain_cleanup(gpio);
 
-	kfree(gpio);
 	return status;
 }
 
@@ -418,13 +411,11 @@ static int pcf857x_remove(struct i2c_client *client)
 		}
 	}
 
-	if (pdata && pdata->irq)
+	if (pdata && client->irq)
 		pcf857x_irq_domain_cleanup(gpio);
 
 	status = gpiochip_remove(&gpio->chip);
-	if (status == 0)
-		kfree(gpio);
-	else
+	if (status)
 		dev_err(&client->dev, "%s --> %d\n", "remove", status);
 	return status;
 }

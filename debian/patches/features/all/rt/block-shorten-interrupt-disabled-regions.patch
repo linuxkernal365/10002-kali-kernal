@@ -1,6 +1,7 @@
 Subject: block: Shorten interrupt disabled regions
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 22 Jun 2011 19:47:02 +0200
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
 
 Moving the blk_sched_flush_plug() call out of the interrupt/preempt
 disabled region in the scheduler allows us to replace
@@ -43,41 +44,21 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Link: http://lkml.kernel.org/r/20110622174919.025446432@linutronix.de
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- block/blk-core.c |   20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ block/blk-core.c |   12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-Index: linux-stable/block/blk-core.c
-===================================================================
---- linux-stable.orig/block/blk-core.c
-+++ linux-stable/block/blk-core.c
-@@ -304,7 +304,11 @@ void __blk_run_queue(struct request_queu
- {
- 	if (unlikely(blk_queue_stopped(q)))
- 		return;
--
-+	/*
-+	 * q->request_fn() can drop q->queue_lock and reenable
-+	 * interrupts, but must return with q->queue_lock held and
-+	 * interrupts disabled.
-+	 */
- 	q->request_fn(q);
- }
- EXPORT_SYMBOL(__blk_run_queue);
-@@ -2902,11 +2906,11 @@ static void queue_unplugged(struct reque
- 	 * this lock).
- 	 */
- 	if (from_schedule) {
--		spin_unlock(q->queue_lock);
-+		spin_unlock_irq(q->queue_lock);
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -2907,7 +2907,7 @@ static void queue_unplugged(struct reque
  		blk_run_queue_async(q);
- 	} else {
+ 	else
  		__blk_run_queue(q);
--		spin_unlock(q->queue_lock);
-+		spin_unlock_irq(q->queue_lock);
- 	}
- 
+-	spin_unlock(q->queue_lock);
++	spin_unlock_irq(q->queue_lock);
  }
-@@ -2956,7 +2960,6 @@ EXPORT_SYMBOL(blk_check_plugged);
+ 
+ static void flush_plug_callbacks(struct blk_plug *plug, bool from_schedule)
+@@ -2955,7 +2955,6 @@ EXPORT_SYMBOL(blk_check_plugged);
  void blk_flush_plug_list(struct blk_plug *plug, bool from_schedule)
  {
  	struct request_queue *q;
@@ -85,7 +66,7 @@ Index: linux-stable/block/blk-core.c
  	struct request *rq;
  	LIST_HEAD(list);
  	unsigned int depth;
-@@ -2977,11 +2980,6 @@ void blk_flush_plug_list(struct blk_plug
+@@ -2973,11 +2972,6 @@ void blk_flush_plug_list(struct blk_plug
  	q = NULL;
  	depth = 0;
  
@@ -97,7 +78,7 @@ Index: linux-stable/block/blk-core.c
  	while (!list_empty(&list)) {
  		rq = list_entry_rq(list.next);
  		list_del_init(&rq->queuelist);
-@@ -2994,7 +2992,7 @@ void blk_flush_plug_list(struct blk_plug
+@@ -2990,7 +2984,7 @@ void blk_flush_plug_list(struct blk_plug
  				queue_unplugged(q, depth, from_schedule);
  			q = rq->q;
  			depth = 0;
@@ -106,7 +87,7 @@ Index: linux-stable/block/blk-core.c
  		}
  
  		/*
-@@ -3021,8 +3019,6 @@ void blk_flush_plug_list(struct blk_plug
+@@ -3017,8 +3011,6 @@ void blk_flush_plug_list(struct blk_plug
  	 */
  	if (q)
  		queue_unplugged(q, depth, from_schedule);

@@ -139,7 +139,11 @@ static void sctp_seq_dump_local_addrs(struct seq_file *seq, struct sctp_ep_commo
 	    primary = &peer->saddr;
 	}
 
-	list_for_each_entry(laddr, &epb->bind_addr.address_list, list) {
+	rcu_read_lock();
+	list_for_each_entry_rcu(laddr, &epb->bind_addr.address_list, list) {
+		if (!laddr->valid)
+			continue;
+
 		addr = &laddr->a;
 		af = sctp_get_af_specific(addr->sa.sa_family);
 		if (primary && af->cmp_addr(addr, primary)) {
@@ -147,6 +151,7 @@ static void sctp_seq_dump_local_addrs(struct seq_file *seq, struct sctp_ep_commo
 		}
 		af->seq_dump_addr(seq, addr);
 	}
+	rcu_read_unlock();
 }
 
 /* Dump remote addresses of an association. */
@@ -157,15 +162,20 @@ static void sctp_seq_dump_remote_addrs(struct seq_file *seq, struct sctp_associa
 	struct sctp_af *af;
 
 	primary = &assoc->peer.primary_addr;
-	list_for_each_entry(transport, &assoc->peer.transport_addr_list,
+	rcu_read_lock();
+	list_for_each_entry_rcu(transport, &assoc->peer.transport_addr_list,
 			transports) {
 		addr = &transport->ipaddr;
+		if (transport->dead)
+			continue;
+
 		af = sctp_get_af_specific(addr->sa.sa_family);
 		if (af->cmp_addr(addr, primary)) {
 			seq_printf(seq, "*");
 		}
 		af->seq_dump_addr(seq, addr);
 	}
+	rcu_read_unlock();
 }
 
 static void * sctp_eps_seq_start(struct seq_file *seq, loff_t *pos)
@@ -203,7 +213,6 @@ static int sctp_eps_seq_show(struct seq_file *seq, void *v)
 	struct sctp_ep_common *epb;
 	struct sctp_endpoint *ep;
 	struct sock *sk;
-	struct hlist_node *node;
 	int    hash = *(loff_t *)v;
 
 	if (hash >= sctp_ep_hashsize)
@@ -212,7 +221,7 @@ static int sctp_eps_seq_show(struct seq_file *seq, void *v)
 	head = &sctp_ep_hashtable[hash];
 	sctp_local_bh_disable();
 	read_lock(&head->lock);
-	sctp_for_each_hentry(epb, node, &head->chain) {
+	sctp_for_each_hentry(epb, &head->chain) {
 		ep = sctp_ep(epb);
 		sk = epb->sk;
 		if (!net_eq(sock_net(sk), seq_file_net(seq)))
@@ -286,7 +295,8 @@ static void * sctp_assocs_seq_start(struct seq_file *seq, loff_t *pos)
 		seq_printf(seq, " ASSOC     SOCK   STY SST ST HBKT "
 				"ASSOC-ID TX_QUEUE RX_QUEUE UID INODE LPORT "
 				"RPORT LADDRS <-> RADDRS "
-				"HBINT INS OUTS MAXRT T1X T2X RTXC\n");
+				"HBINT INS OUTS MAXRT T1X T2X RTXC "
+				"wmema wmemq sndbuf rcvbuf\n");
 
 	return (void *)pos;
 }
@@ -311,7 +321,6 @@ static int sctp_assocs_seq_show(struct seq_file *seq, void *v)
 	struct sctp_ep_common *epb;
 	struct sctp_association *assoc;
 	struct sock *sk;
-	struct hlist_node *node;
 	int    hash = *(loff_t *)v;
 
 	if (hash >= sctp_assoc_hashsize)
@@ -320,7 +329,7 @@ static int sctp_assocs_seq_show(struct seq_file *seq, void *v)
 	head = &sctp_assoc_hashtable[hash];
 	sctp_local_bh_disable();
 	read_lock(&head->lock);
-	sctp_for_each_hentry(epb, node, &head->chain) {
+	sctp_for_each_hentry(epb, &head->chain) {
 		assoc = sctp_assoc(epb);
 		sk = epb->sk;
 		if (!net_eq(sock_net(sk), seq_file_net(seq)))
@@ -341,11 +350,16 @@ static int sctp_assocs_seq_show(struct seq_file *seq, void *v)
 		sctp_seq_dump_local_addrs(seq, epb);
 		seq_printf(seq, "<-> ");
 		sctp_seq_dump_remote_addrs(seq, assoc);
-		seq_printf(seq, "\t%8lu %5d %5d %4d %4d %4d %8d ",
+		seq_printf(seq, "\t%8lu %5d %5d %4d %4d %4d %8d "
+			   "%8d %8d %8d %8d",
 			assoc->hbinterval, assoc->c.sinit_max_instreams,
 			assoc->c.sinit_num_ostreams, assoc->max_retrans,
 			assoc->init_retries, assoc->shutdown_retries,
-			assoc->rtx_data_chunks);
+			assoc->rtx_data_chunks,
+			atomic_read(&sk->sk_wmem_alloc),
+			sk->sk_wmem_queued,
+			sk->sk_sndbuf,
+			sk->sk_rcvbuf);
 		seq_printf(seq, "\n");
 	}
 	read_unlock(&head->lock);
@@ -426,7 +440,6 @@ static int sctp_remaddr_seq_show(struct seq_file *seq, void *v)
 	struct sctp_hashbucket *head;
 	struct sctp_ep_common *epb;
 	struct sctp_association *assoc;
-	struct hlist_node *node;
 	struct sctp_transport *tsp;
 	int    hash = *(loff_t *)v;
 
@@ -436,12 +449,16 @@ static int sctp_remaddr_seq_show(struct seq_file *seq, void *v)
 	head = &sctp_assoc_hashtable[hash];
 	sctp_local_bh_disable();
 	read_lock(&head->lock);
-	sctp_for_each_hentry(epb, node, &head->chain) {
+	rcu_read_lock();
+	sctp_for_each_hentry(epb, &head->chain) {
 		if (!net_eq(sock_net(epb->sk), seq_file_net(seq)))
 			continue;
 		assoc = sctp_assoc(epb);
-		list_for_each_entry(tsp, &assoc->peer.transport_addr_list,
+		list_for_each_entry_rcu(tsp, &assoc->peer.transport_addr_list,
 					transports) {
+			if (tsp->dead)
+				continue;
+
 			/*
 			 * The remote address (ADDR)
 			 */
@@ -487,6 +504,7 @@ static int sctp_remaddr_seq_show(struct seq_file *seq, void *v)
 		}
 	}
 
+	rcu_read_unlock();
 	read_unlock(&head->lock);
 	sctp_local_bh_enable();
 

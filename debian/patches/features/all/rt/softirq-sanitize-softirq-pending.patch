@@ -1,20 +1,19 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri, 3 Jul 2009 13:16:38 -0500
 Subject: softirq: Sanitize softirq pending for NOHZ/RT
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 ---
  include/linux/interrupt.h |    2 +
- kernel/softirq.c          |   61 ++++++++++++++++++++++++++++++++++++++++++++++
- kernel/time/tick-sched.c  |    8 ------
- 3 files changed, 64 insertions(+), 7 deletions(-)
+ kernel/softirq.c          |   63 ++++++++++++++++++++++++++++++++++++++++++++++
+ kernel/time/tick-sched.c  |    9 ------
+ 3 files changed, 66 insertions(+), 8 deletions(-)
 
-Index: linux-stable/include/linux/interrupt.h
-===================================================================
---- linux-stable.orig/include/linux/interrupt.h
-+++ linux-stable/include/linux/interrupt.h
-@@ -458,6 +458,8 @@ extern void __raise_softirq_irqoff(unsig
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -456,6 +456,8 @@ extern void __raise_softirq_irqoff(unsig
  extern void raise_softirq_irqoff(unsigned int nr);
  extern void raise_softirq(unsigned int nr);
  
@@ -23,15 +22,13 @@ Index: linux-stable/include/linux/interrupt.h
  /* This is the worklist that queues up per-cpu softirq work.
   *
   * send_remote_sendirq() adds work to these lists, and
-Index: linux-stable/kernel/softirq.c
-===================================================================
---- linux-stable.orig/kernel/softirq.c
-+++ linux-stable/kernel/softirq.c
-@@ -61,6 +61,67 @@ char *softirq_to_name[NR_SOFTIRQS] = {
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -62,6 +62,69 @@ char *softirq_to_name[NR_SOFTIRQS] = {
  	"TASKLET", "SCHED", "HRTIMER", "RCU"
  };
  
-+#ifdef CONFIG_NO_HZ
++#ifdef CONFIG_NO_HZ_COMMON
 +# ifdef CONFIG_PREEMPT_RT_FULL
 +/*
 + * On preempt-rt a softirq might be blocked on a lock. There might be
@@ -46,11 +43,12 @@ Index: linux-stable/kernel/softirq.c
 +void softirq_check_pending_idle(void)
 +{
 +	static int rate_limit;
-+	u32 warnpending = 0, pending = local_softirq_pending();
++	u32 warnpending = 0, pending;
 +
 +	if (rate_limit >= 10)
 +		return;
 +
++	pending = local_softirq_pending() & SOFTIRQ_STOP_IDLE_MASK;
 +	if (pending) {
 +		struct task_struct *tsk;
 +
@@ -83,7 +81,8 @@ Index: linux-stable/kernel/softirq.c
 +{
 +	static int rate_limit;
 +
-+	if (rate_limit < 10) {
++	if (rate_limit < 10 &&
++			(local_softirq_pending() & SOFTIRQ_STOP_IDLE_MASK)) {
 +		printk(KERN_ERR "NOHZ: local_softirq_pending %02x\n",
 +		       local_softirq_pending());
 +		rate_limit++;
@@ -95,19 +94,18 @@ Index: linux-stable/kernel/softirq.c
  /*
   * we cannot loop indefinitely here to avoid userspace starvation,
   * but we also don't want to introduce a worst case 1/HZ latency
-Index: linux-stable/kernel/time/tick-sched.c
-===================================================================
---- linux-stable.orig/kernel/time/tick-sched.c
-+++ linux-stable/kernel/time/tick-sched.c
-@@ -438,13 +438,7 @@ static bool can_stop_idle_tick(int cpu, 
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -731,14 +731,7 @@ static bool can_stop_idle_tick(int cpu,
  		return false;
  
  	if (unlikely(local_softirq_pending() && cpu_online(cpu))) {
 -		static int ratelimit;
 -
--		if (ratelimit < 10) {
--			printk(KERN_ERR "NOHZ: local_softirq_pending %02x\n",
--			       (unsigned int) local_softirq_pending());
+-		if (ratelimit < 10 &&
+-		    (local_softirq_pending() & SOFTIRQ_STOP_IDLE_MASK)) {
+-			pr_warn("NOHZ: local_softirq_pending %02x\n",
+-				(unsigned int) local_softirq_pending());
 -			ratelimit++;
 -		}
 +		softirq_check_pending_idle();

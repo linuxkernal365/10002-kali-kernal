@@ -56,7 +56,7 @@ static int timbradio_vidioc_g_tuner(struct file *file, void *priv,
 }
 
 static int timbradio_vidioc_s_tuner(struct file *file, void *priv,
-	struct v4l2_tuner *v)
+	const struct v4l2_tuner *v)
 {
 	struct timbradio *tr = video_drvdata(file);
 	return v4l2_subdev_call(tr->sd_tuner, tuner, s_tuner, v);
@@ -91,7 +91,7 @@ static int timbradio_vidioc_s_audio(struct file *file, void *priv,
 }
 
 static int timbradio_vidioc_s_frequency(struct file *file, void *priv,
-	struct v4l2_frequency *f)
+	const struct v4l2_frequency *f)
 {
 	struct timbradio *tr = video_drvdata(file);
 	return v4l2_subdev_call(tr->sd_tuner, tuner, s_frequency, f);
@@ -145,7 +145,7 @@ static const struct v4l2_file_operations timbradio_fops = {
 	.unlocked_ioctl	= video_ioctl2,
 };
 
-static int __devinit timbradio_probe(struct platform_device *pdev)
+static int timbradio_probe(struct platform_device *pdev)
 {
 	struct timb_radio_platform_data *pdata = pdev->dev.platform_data;
 	struct timbradio *tr;
@@ -201,7 +201,7 @@ err:
 	return err;
 }
 
-static int __devexit timbradio_remove(struct platform_device *pdev)
+static int timbradio_remove(struct platform_device *pdev)
 {
 	struct timbradio *tr = platform_get_drvdata(pdev);
 
@@ -219,7 +219,7 @@ static struct platform_driver timbradio_platform_driver = {
 		.owner	= THIS_MODULE,
 	},
 	.probe		= timbradio_probe,
-	.remove		= __devexit_p(timbradio_remove),
+	.remove		= timbradio_remove,
 };
 
 module_platform_driver(timbradio_platform_driver);

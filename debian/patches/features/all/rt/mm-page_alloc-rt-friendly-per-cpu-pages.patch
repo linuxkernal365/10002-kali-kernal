@@ -1,6 +1,7 @@
 From: Ingo Molnar <mingo@elte.hu>
 Date: Fri, 3 Jul 2009 08:29:37 -0500
 Subject: mm: page_alloc: rt-friendly per-cpu pages
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
 
 rt-friendly per-cpu pages: convert the irqs-off per-cpu locking
 method into a preemptible, explicit-per-cpu-locks method.
@@ -13,22 +14,20 @@ Signed-off-by: Ingo Molnar <mingo@elte.hu>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 ---
- mm/page_alloc.c |   57 ++++++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 39 insertions(+), 18 deletions(-)
+ mm/page_alloc.c |   61 +++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 41 insertions(+), 20 deletions(-)
 
-Index: linux-stable/mm/page_alloc.c
-===================================================================
---- linux-stable.orig/mm/page_alloc.c
-+++ linux-stable/mm/page_alloc.c
-@@ -58,6 +58,7 @@
- #include <linux/prefetch.h>
- #include <linux/migrate.h>
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -60,6 +60,7 @@
  #include <linux/page-debug-flags.h>
+ #include <linux/hugetlb.h>
+ #include <linux/sched/rt.h>
 +#include <linux/locallock.h>
  
  #include <asm/tlbflush.h>
  #include <asm/div64.h>
-@@ -216,6 +217,18 @@ EXPORT_SYMBOL(nr_node_ids);
+@@ -221,6 +222,18 @@ EXPORT_SYMBOL(nr_node_ids);
  EXPORT_SYMBOL(nr_online_nodes);
  #endif
  
@@ -37,7 +36,7 @@ Index: linux-stable/mm/page_alloc.c
 +#ifdef CONFIG_PREEMPT_RT_BASE
 +# define cpu_lock_irqsave(cpu, flags)		\
 +	spin_lock_irqsave(&per_cpu(pa_lock, cpu).lock, flags)
-+# define cpu_unlock_irqrestore(cpu, flags)		\
++# define cpu_unlock_irqrestore(cpu, flags)	\
 +	spin_unlock_irqrestore(&per_cpu(pa_lock, cpu).lock, flags)
 +#else
 +# define cpu_lock_irqsave(cpu, flags)		local_irq_save(flags)
@@ -46,24 +45,23 @@ Index: linux-stable/mm/page_alloc.c
 +
  int page_group_by_mobility_disabled __read_mostly;
  
- /*
-@@ -726,13 +739,13 @@ static void __free_pages_ok(struct page 
+ void set_pageblock_migratetype(struct page *page, int migratetype)
+@@ -731,12 +744,12 @@ static void __free_pages_ok(struct page
  	if (!free_pages_prepare(page, order))
  		return;
  
 -	local_irq_save(flags);
 +	local_lock_irqsave(pa_lock, flags);
- 	if (unlikely(wasMlocked))
- 		free_page_mlock(page);
  	__count_vm_events(PGFREE, 1 << order);
- 	free_one_page(page_zone(page), page, order,
- 					get_pageblock_migratetype(page));
+ 	migratetype = get_pageblock_migratetype(page);
+ 	set_freepage_migratetype(page, migratetype);
+ 	free_one_page(page_zone(page), page, order, migratetype);
 -	local_irq_restore(flags);
 +	local_unlock_irqrestore(pa_lock, flags);
  }
  
- void __meminit __free_pages_bootmem(struct page *page, unsigned int order)
-@@ -1157,7 +1170,7 @@ void drain_zone_pages(struct zone *zone,
+ /*
+@@ -1180,7 +1193,7 @@ void drain_zone_pages(struct zone *zone,
  	unsigned long flags;
  	int to_drain;
  
@@ -72,7 +70,7 @@ Index: linux-stable/mm/page_alloc.c
  	if (pcp->count >= pcp->batch)
  		to_drain = pcp->batch;
  	else
-@@ -1166,7 +1179,7 @@ void drain_zone_pages(struct zone *zone,
+@@ -1189,7 +1202,7 @@ void drain_zone_pages(struct zone *zone,
  		free_pcppages_bulk(zone, to_drain, pcp);
  		pcp->count -= to_drain;
  	}
@@ -81,7 +79,7 @@ Index: linux-stable/mm/page_alloc.c
  }
  #endif
  
-@@ -1186,7 +1199,7 @@ static void drain_pages(unsigned int cpu
+@@ -1209,7 +1222,7 @@ static void drain_pages(unsigned int cpu
  		struct per_cpu_pageset *pset;
  		struct per_cpu_pages *pcp;
  
@@ -90,7 +88,7 @@ Index: linux-stable/mm/page_alloc.c
  		pset = per_cpu_ptr(zone->pageset, cpu);
  
  		pcp = &pset->pcp;
-@@ -1194,7 +1207,7 @@ static void drain_pages(unsigned int cpu
+@@ -1217,7 +1230,7 @@ static void drain_pages(unsigned int cpu
  			free_pcppages_bulk(zone, pcp->count, pcp);
  			pcp->count = 0;
  		}
@@ -99,7 +97,7 @@ Index: linux-stable/mm/page_alloc.c
  	}
  }
  
-@@ -1247,7 +1260,12 @@ void drain_all_pages(void)
+@@ -1270,7 +1283,12 @@ void drain_all_pages(void)
  		else
  			cpumask_clear_cpu(cpu, &cpus_with_pcps);
  	}
@@ -112,16 +110,16 @@ Index: linux-stable/mm/page_alloc.c
  }
  
  #ifdef CONFIG_HIBERNATION
-@@ -1303,7 +1321,7 @@ void free_hot_cold_page(struct page *pag
+@@ -1325,7 +1343,7 @@ void free_hot_cold_page(struct page *pag
  
  	migratetype = get_pageblock_migratetype(page);
- 	set_page_private(page, migratetype);
+ 	set_freepage_migratetype(page, migratetype);
 -	local_irq_save(flags);
 +	local_lock_irqsave(pa_lock, flags);
- 	if (unlikely(wasMlocked))
- 		free_page_mlock(page);
  	__count_vm_event(PGFREE);
-@@ -1335,7 +1353,7 @@ void free_hot_cold_page(struct page *pag
+ 
+ 	/*
+@@ -1355,7 +1373,7 @@ void free_hot_cold_page(struct page *pag
  	}
  
  out:
@@ -130,7 +128,7 @@ Index: linux-stable/mm/page_alloc.c
  }
  
  /*
-@@ -1447,7 +1465,7 @@ again:
+@@ -1485,7 +1503,7 @@ again:
  		struct per_cpu_pages *pcp;
  		struct list_head *list;
  
@@ -139,7 +137,7 @@ Index: linux-stable/mm/page_alloc.c
  		pcp = &this_cpu_ptr(zone->pageset)->pcp;
  		list = &pcp->lists[migratetype];
  		if (list_empty(list)) {
-@@ -1479,17 +1497,19 @@ again:
+@@ -1517,18 +1535,20 @@ again:
  			 */
  			WARN_ON_ONCE(order > 1);
  		}
@@ -152,7 +150,8 @@ Index: linux-stable/mm/page_alloc.c
 +			spin_unlock(&zone->lock);
  			goto failed;
 +		}
- 		__mod_zone_page_state(zone, NR_FREE_PAGES, -(1 << order));
+ 		__mod_zone_freepage_state(zone, -(1 << order),
+ 					  get_pageblock_migratetype(page));
 +		spin_unlock(&zone->lock);
  	}
  
@@ -163,7 +162,7 @@ Index: linux-stable/mm/page_alloc.c
  
  	VM_BUG_ON(bad_range(zone, page));
  	if (prep_new_page(page, order, gfp_flags))
-@@ -1497,7 +1517,7 @@ again:
+@@ -1536,7 +1556,7 @@ again:
  	return page;
  
  failed:
@@ -172,7 +171,7 @@ Index: linux-stable/mm/page_alloc.c
  	return NULL;
  }
  
-@@ -4992,6 +5012,7 @@ static int page_alloc_cpu_notify(struct 
+@@ -5233,6 +5253,7 @@ static int page_alloc_cpu_notify(struct
  void __init page_alloc_init(void)
  {
  	hotcpu_notifier(page_alloc_cpu_notify, 0);
@@ -180,7 +179,21 @@ Index: linux-stable/mm/page_alloc.c
  }
  
  /*
-@@ -5871,11 +5892,11 @@ static int __meminit __zone_pcp_update(v
+@@ -5471,11 +5492,11 @@ int __meminit init_per_zone_wmark_min(vo
+ module_init(init_per_zone_wmark_min)
+ 
+ /*
+- * min_free_kbytes_sysctl_handler - just a wrapper around proc_dointvec() so 
++ * min_free_kbytes_sysctl_handler - just a wrapper around proc_dointvec() so
+  *	that we can call two helper functions whenever min_free_kbytes
+  *	changes.
+  */
+-int min_free_kbytes_sysctl_handler(ctl_table *table, int write, 
++int min_free_kbytes_sysctl_handler(ctl_table *table, int write,
+ 	void __user *buffer, size_t *length, loff_t *ppos)
+ {
+ 	proc_dointvec(table, write, buffer, length, ppos);
+@@ -6060,12 +6081,12 @@ static int __meminit __zone_pcp_update(v
  		pset = per_cpu_ptr(zone->pageset, cpu);
  		pcp = &pset->pcp;
  
@@ -188,19 +201,23 @@ Index: linux-stable/mm/page_alloc.c
 +		cpu_lock_irqsave(cpu, flags);
  		if (pcp->count > 0)
  			free_pcppages_bulk(zone, pcp->count, pcp);
+ 		drain_zonestat(zone, pset);
  		setup_pageset(pset, batch);
 -		local_irq_restore(flags);
 +		cpu_unlock_irqrestore(cpu, flags);
  	}
  	return 0;
  }
-@@ -5892,12 +5913,12 @@ void zone_pcp_reset(struct zone *zone)
- 	unsigned long flags;
+@@ -6083,7 +6104,7 @@ void zone_pcp_reset(struct zone *zone)
+ 	struct per_cpu_pageset *pset;
  
  	/* avoid races with drain_pages()  */
 -	local_irq_save(flags);
 +	local_lock_irqsave(pa_lock, flags);
  	if (zone->pageset != &boot_pageset) {
+ 		for_each_online_cpu(cpu) {
+ 			pset = per_cpu_ptr(zone->pageset, cpu);
+@@ -6092,7 +6113,7 @@ void zone_pcp_reset(struct zone *zone)
  		free_percpu(zone->pageset);
  		zone->pageset = &boot_pageset;
  	}
@@ -208,4 +225,4 @@ Index: linux-stable/mm/page_alloc.c
 +	local_unlock_irqrestore(pa_lock, flags);
  }
  
- /*
+ #ifdef CONFIG_MEMORY_HOTREMOVE

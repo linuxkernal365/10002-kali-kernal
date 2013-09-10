@@ -32,6 +32,11 @@ SCHED_FEAT(LAST_BUDDY, true)
 SCHED_FEAT(CACHE_HOT_BUDDY, true)
 
 /*
+ * Allow wakeup-time preemption of the current task:
+ */
+SCHED_FEAT(WAKEUP_PREEMPTION, true)
+
+/*
  * Use arch dependent cpu power functions
  */
 SCHED_FEAT(ARCH_POWER, true)
@@ -39,13 +44,6 @@ SCHED_FEAT(ARCH_POWER, true)
 SCHED_FEAT(HRTICK, false)
 SCHED_FEAT(DOUBLE_TICK, false)
 SCHED_FEAT(LB_BIAS, true)
-
-/*
- * Spin-wait on mutex acquisition when the mutex owner is running on
- * another cpu -- assumes that when the owner is running, it will soon
- * release the lock. Decreases scheduling overhead.
- */
-SCHED_FEAT(OWNER_SPIN, true)
 
 /*
  * Decrement CPU power based on time not spent running tasks
@@ -61,3 +59,14 @@ SCHED_FEAT(TTWU_QUEUE, true)
 SCHED_FEAT(FORCE_SD_OVERLAP, false)
 SCHED_FEAT(RT_RUNTIME_SHARE, true)
 SCHED_FEAT(LB_MIN, false)
+
+/*
+ * Apply the automatic NUMA scheduling policy. Enabled automatically
+ * at runtime if running on a NUMA machine. Can be controlled via
+ * numa_balancing=. Allow PTE scanning to be forced on UMA machines
+ * for debugging the core machinery.
+ */
+#ifdef CONFIG_NUMA_BALANCING
+SCHED_FEAT(NUMA,	false)
+SCHED_FEAT(NUMA_FORCE,	false)
+#endif

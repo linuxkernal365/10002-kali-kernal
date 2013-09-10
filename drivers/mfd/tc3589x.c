@@ -219,25 +219,18 @@ static void tc3589x_irq_unmap(struct irq_domain *d, unsigned int virq)
 }
 
 static struct irq_domain_ops tc3589x_irq_ops = {
-        .map    = tc3589x_irq_map,
+	.map    = tc3589x_irq_map,
 	.unmap  = tc3589x_irq_unmap,
-        .xlate  = irq_domain_xlate_twocell,
+	.xlate  = irq_domain_xlate_twocell,
 };
 
 static int tc3589x_irq_init(struct tc3589x *tc3589x, struct device_node *np)
 {
 	int base = tc3589x->irq_base;
 
-	if (base) {
-		tc3589x->domain = irq_domain_add_legacy(
-			NULL, TC3589x_NR_INTERNAL_IRQS, base,
-			0, &tc3589x_irq_ops, tc3589x);
-	}
-	else {
-		tc3589x->domain = irq_domain_add_linear(
-			np, TC3589x_NR_INTERNAL_IRQS,
-			&tc3589x_irq_ops, tc3589x);
-	}
+	tc3589x->domain = irq_domain_add_simple(
+		np, TC3589x_NR_INTERNAL_IRQS, base,
+		&tc3589x_irq_ops, tc3589x);
 
 	if (!tc3589x->domain) {
 		dev_err(tc3589x->dev, "Failed to create irqdomain\n");
@@ -282,7 +275,7 @@ static int tc3589x_chip_init(struct tc3589x *tc3589x)
 	return tc3589x_reg_write(tc3589x, TC3589x_RSTINTCLR, 0x1);
 }
 
-static int __devinit tc3589x_device_init(struct tc3589x *tc3589x)
+static int tc3589x_device_init(struct tc3589x *tc3589x)
 {
 	int ret = 0;
 	unsigned int blocks = tc3589x->pdata->block;
@@ -329,7 +322,7 @@ static int tc3589x_of_probe(struct device_node *np,
 	return 0;
 }
 
-static int __devinit tc3589x_probe(struct i2c_client *i2c,
+static int tc3589x_probe(struct i2c_client *i2c,
 				   const struct i2c_device_id *id)
 {
 	struct tc3589x_platform_data *pdata = i2c->dev.platform_data;
@@ -357,7 +350,8 @@ static int __devinit tc3589x_probe(struct i2c_client *i2c,
 				     | I2C_FUNC_SMBUS_I2C_BLOCK))
 		return -EIO;
 
-	tc3589x = kzalloc(sizeof(struct tc3589x), GFP_KERNEL);
+	tc3589x = devm_kzalloc(&i2c->dev, sizeof(struct tc3589x),
+				GFP_KERNEL);
 	if (!tc3589x)
 		return -ENOMEM;
 
@@ -373,44 +367,34 @@ static int __devinit tc3589x_probe(struct i2c_client *i2c,
 
 	ret = tc3589x_chip_init(tc3589x);
 	if (ret)
-		goto out_free;
+		return ret;
 
 	ret = tc3589x_irq_init(tc3589x, np);
 	if (ret)
-		goto out_free;
+		return ret;
 
 	ret = request_threaded_irq(tc3589x->i2c->irq, NULL, tc3589x_irq,
 				   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
 				   "tc3589x", tc3589x);
 	if (ret) {
 		dev_err(tc3589x->dev, "failed to request IRQ: %d\n", ret);
-		goto out_free;
+		return ret;
 	}
 
 	ret = tc3589x_device_init(tc3589x);
 	if (ret) {
 		dev_err(tc3589x->dev, "failed to add child devices\n");
-		goto out_freeirq;
+		return ret;
 	}
 
 	return 0;
-
-out_freeirq:
-	free_irq(tc3589x->i2c->irq, tc3589x);
-out_free:
-	kfree(tc3589x);
-	return ret;
 }
 
-static int __devexit tc3589x_remove(struct i2c_client *client)
+static int tc3589x_remove(struct i2c_client *client)
 {
 	struct tc3589x *tc3589x = i2c_get_clientdata(client);
 
 	mfd_remove_devices(tc3589x->dev);
-
-	free_irq(tc3589x->i2c->irq, tc3589x);
-
-	kfree(tc3589x);
 
 	return 0;
 }
@@ -458,7 +442,7 @@ static struct i2c_driver tc3589x_driver = {
 	.driver.owner	= THIS_MODULE,
 	.driver.pm	= &tc3589x_dev_pm_ops,
 	.probe		= tc3589x_probe,
-	.remove		= __devexit_p(tc3589x_remove),
+	.remove		= tc3589x_remove,
 	.id_table	= tc3589x_id,
 };
 

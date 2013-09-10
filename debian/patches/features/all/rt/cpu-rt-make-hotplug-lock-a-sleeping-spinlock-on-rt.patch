@@ -1,6 +1,7 @@
 Subject: cpu: Make hotplug.lock a "sleeping" spinlock on RT
 From: Steven Rostedt <rostedt@goodmis.org>
 Date: Fri, 02 Mar 2012 10:36:57 -0500
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
 
 Tasks can block on hotplug.lock in pin_current_cpu(), but their state
 might be != RUNNING. So the mutex wakeup will set the state
@@ -22,10 +23,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  kernel/cpu.c |   35 ++++++++++++++++++++++++++---------
  1 file changed, 26 insertions(+), 9 deletions(-)
 
-Index: linux-stable/kernel/cpu.c
-===================================================================
---- linux-stable.orig/kernel/cpu.c
-+++ linux-stable/kernel/cpu.c
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
 @@ -51,7 +51,12 @@ static int cpu_hotplug_disabled;
  
  static struct {
@@ -73,7 +72,7 @@ Index: linux-stable/kernel/cpu.c
  	preempt_disable();
  	goto retry;
  }
-@@ -166,9 +183,9 @@ void get_online_cpus(void)
+@@ -165,9 +182,9 @@ void get_online_cpus(void)
  	might_sleep();
  	if (cpu_hotplug.active_writer == current)
  		return;
@@ -85,12 +84,16 @@ Index: linux-stable/kernel/cpu.c
  
  }
  EXPORT_SYMBOL_GPL(get_online_cpus);
-@@ -177,10 +194,10 @@ void put_online_cpus(void)
+@@ -176,14 +193,14 @@ void put_online_cpus(void)
  {
  	if (cpu_hotplug.active_writer == current)
  		return;
 -	mutex_lock(&cpu_hotplug.lock);
+ 
 +	hotplug_lock();
+ 	if (WARN_ON(!cpu_hotplug.refcount))
+ 		cpu_hotplug.refcount++; /* try to fix things up */
+ 
  	if (!--cpu_hotplug.refcount && unlikely(cpu_hotplug.active_writer))
  		wake_up_process(cpu_hotplug.active_writer);
 -	mutex_unlock(&cpu_hotplug.lock);
@@ -98,7 +101,7 @@ Index: linux-stable/kernel/cpu.c
  
  }
  EXPORT_SYMBOL_GPL(put_online_cpus);
-@@ -212,11 +229,11 @@ static void cpu_hotplug_begin(void)
+@@ -215,11 +232,11 @@ static void cpu_hotplug_begin(void)
  	cpu_hotplug.active_writer = current;
  
  	for (;;) {
@@ -112,7 +115,7 @@ Index: linux-stable/kernel/cpu.c
  		schedule();
  	}
  }
-@@ -224,7 +241,7 @@ static void cpu_hotplug_begin(void)
+@@ -227,7 +244,7 @@ static void cpu_hotplug_begin(void)
  static void cpu_hotplug_done(void)
  {
  	cpu_hotplug.active_writer = NULL;
@@ -120,4 +123,4 @@ Index: linux-stable/kernel/cpu.c
 +	hotplug_unlock();
  }
  
- #else /* #if CONFIG_HOTPLUG_CPU */
+ /*

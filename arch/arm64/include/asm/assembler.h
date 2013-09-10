@@ -82,7 +82,7 @@
 
 	.macro	enable_dbg_if_not_stepping, tmp
 	mrs	\tmp, mdscr_el1
-	tbnz	\tmp, #1, 9990f
+	tbnz	\tmp, #0, 9990f
 	enable_dbg
 9990:
 	.endm
@@ -107,3 +107,11 @@
  * Register aliases.
  */
 lr	.req	x30		// link register
+
+/*
+ * Vector entry
+ */
+	 .macro	ventry	label
+	.align	7
+	b	\label
+	.endm

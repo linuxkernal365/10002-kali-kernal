@@ -1,2 +1,2 @@
-8390
-libphy
+#include <nic-shared-modules>
+llc

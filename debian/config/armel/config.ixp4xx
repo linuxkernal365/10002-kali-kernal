@@ -15,7 +15,6 @@
 # CONFIG_ARCH_IOP32X is not set
 # CONFIG_ARCH_IOP33X is not set
 CONFIG_ARCH_IXP4XX=y
-# CONFIG_ARCH_PNX4008 is not set
 # CONFIG_ARCH_PXA is not set
 # CONFIG_ARCH_RPC is not set
 # CONFIG_ARCH_SA1100 is not set
@@ -29,9 +28,6 @@ CONFIG_CMDLINE="console=ttyS0,115200"
 # CONFIG_XIP_KERNEL is not set
 CONFIG_KEXEC=y
 CONFIG_ATAGS_PROC=y
-CONFIG_FPE_NWFPE=y
-# CONFIG_FPE_NWFPE_XP is not set
-# CONFIG_FPE_FASTFPE is not set
 # CONFIG_ARTHUR is not set
 
 ##
@@ -82,17 +78,11 @@ CONFIG_ULTRIX_PARTITION=y
 CONFIG_SUN_PARTITION=y
 
 ##
-## file: crypto/Kconfig
-##
-# CONFIG_CRYPTO_FIPS is not set
-
-##
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_ATA=m
 # CONFIG_SATA_PMP is not set
 # CONFIG_SATA_AHCI is not set
-# CONFIG_SATA_INIC162X is not set
 # CONFIG_SATA_SIL24 is not set
 CONFIG_ATA_SFF=y
 # CONFIG_PDC_ADMA is not set
@@ -157,7 +147,6 @@ CONFIG_SATA_VIA=m
 # CONFIG_BLK_DEV_DAC960 is not set
 # CONFIG_BLK_DEV_UMEM is not set
 # CONFIG_BLK_DEV_SX8 is not set
-# CONFIG_BLK_DEV_UB is not set
 # CONFIG_CDROM_PKTCDVD is not set
 
 ##
@@ -196,30 +185,6 @@ CONFIG_TELCLOCK=m
 ## file: drivers/gpu/drm/Kconfig
 ##
 # CONFIG_DRM is not set
-
-##
-## file: drivers/gpu/vga/Kconfig
-##
-# CONFIG_VGA_ARB is not set
-
-##
-## file: drivers/hid/Kconfig
-##
-CONFIG_HID_A4TECH=m
-CONFIG_HID_APPLE=m
-CONFIG_HID_BELKIN=m
-CONFIG_HID_CHERRY=m
-CONFIG_HID_CHICONY=m
-CONFIG_HID_CYPRESS=m
-CONFIG_HID_EZKEY=m
-CONFIG_HID_KYE=m
-CONFIG_HID_KENSINGTON=m
-CONFIG_HID_LOGITECH=m
-CONFIG_HID_LOGITECH_DJ=m
-CONFIG_HID_MICROSOFT=m
-CONFIG_HID_MONTEREY=m
-CONFIG_HID_PICOLCD_BACKLIGHT=y
-CONFIG_HID_PICOLCD_LEDS=y
 
 ##
 ## file: drivers/hwmon/Kconfig
@@ -266,6 +231,7 @@ CONFIG_SENSORS_W83627EHF=m
 ##
 CONFIG_I2C=y
 CONFIG_I2C_CHARDEV=y
+# CONFIG_I2C_STUB is not set
 # CONFIG_I2C_DEBUG_CORE is not set
 # CONFIG_I2C_DEBUG_ALGO is not set
 # CONFIG_I2C_DEBUG_BUS is not set
@@ -290,7 +256,6 @@ CONFIG_I2C_GPIO=y
 # CONFIG_I2C_IOP3XX is not set
 # CONFIG_I2C_PARPORT_LIGHT is not set
 # CONFIG_I2C_PCA_ISA is not set
-# CONFIG_I2C_STUB is not set
 # CONFIG_SCx200_ACB is not set
 
 ##
@@ -429,7 +394,6 @@ CONFIG_MTD_PLATRAM=m
 ## file: drivers/mtd/nand/Kconfig
 ##
 CONFIG_MTD_NAND=m
-# CONFIG_MTD_NAND_VERIFY_WRITE is not set
 # CONFIG_MTD_NAND_DISKONCHIP is not set
 
 ##
@@ -724,14 +688,6 @@ CONFIG_BINFMT_AOUT=m
 ## file: init/Kconfig
 ##
 CONFIG_LOG_BUF_SHIFT=14
-CONFIG_NAMESPACES=y
-CONFIG_UTS_NS=y
-CONFIG_IPC_NS=y
-CONFIG_USER_NS=y
-CONFIG_PID_NS=y
-CONFIG_NET_NS=y
-CONFIG_EXPERT=y
-# CONFIG_SYSCTL_SYSCALL is not set
 
 ##
 ## file: kernel/Kconfig.preempt
@@ -739,11 +695,6 @@ CONFIG_EXPERT=y
 ## choice: Preemption Model
 # CONFIG_PREEMPT is not set
 ## end choice
-
-##
-## file: kernel/trace/Kconfig
-##
-# CONFIG_FTRACE is not set
 
 ##
 ## file: lib/Kconfig.debug
@@ -780,11 +731,6 @@ CONFIG_DECNET_ROUTER=y
 # CONFIG_DECNET_NF_GRABULATOR is not set
 
 ##
-## file: net/ipv6/Kconfig
-##
-CONFIG_IPV6=m
-
-##
 ## file: net/ipx/Kconfig
 ##
 CONFIG_IPX=m
@@ -799,16 +745,6 @@ CONFIG_IPX_INTERN=y
 ## file: net/lapb/Kconfig
 ##
 CONFIG_LAPB=m
-
-##
-## file: net/mac80211/Kconfig
-##
-# CONFIG_MAC80211_RC_PID is not set
-
-##
-## file: net/wanrouter/Kconfig
-##
-CONFIG_WAN_ROUTER=m
 
 ##
 ## file: security/keys/Kconfig
@@ -874,10 +810,9 @@ CONFIG_SND_PCXHR=m
 # CONFIG_SND_HDA_INTEL is not set
 
 ##
-## file: usr/Kconfig
+## file: unknown
 ##
-CONFIG_RD_BZIP2=y
-CONFIG_RD_LZMA=y
-CONFIG_RD_XZ=y
-CONFIG_RD_LZO=y
+# CONFIG_ARCH_PNX4008 is not set
+# CONFIG_BLK_DEV_UB is not set
+# CONFIG_MTD_NAND_VERIFY_WRITE is not set
 

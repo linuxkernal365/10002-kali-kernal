@@ -318,7 +318,7 @@ static void tcp_fastopen_synack_timer(struct sock *sk)
 	req = tcp_sk(sk)->fastopen_rsk;
 	req->rsk_ops->syn_ack_timeout(sk, req);
 
-	if (req->retrans >= max_retries) {
+	if (req->num_timeout >= max_retries) {
 		tcp_write_err(sk);
 		return;
 	}
@@ -327,10 +327,10 @@ static void tcp_fastopen_synack_timer(struct sock *sk)
 	 * regular retransmit because if the child socket has been accepted
 	 * it's not good to give up too easily.
 	 */
-	req->rsk_ops->rtx_syn_ack(sk, req, NULL);
-	req->retrans++;
+	inet_rtx_syn_ack(sk, req);
+	req->num_timeout++;
 	inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
-			  TCP_TIMEOUT_INIT << req->retrans, TCP_RTO_MAX);
+			  TCP_TIMEOUT_INIT << req->num_timeout, TCP_RTO_MAX);
 }
 
 /*
@@ -342,10 +342,6 @@ void tcp_retransmit_timer(struct sock *sk)
 	struct tcp_sock *tp = tcp_sk(sk);
 	struct inet_connection_sock *icsk = inet_csk(sk);
 
-	if (tp->early_retrans_delayed) {
-		tcp_resume_early_retransmit(sk);
-		return;
-	}
 	if (tp->fastopen_rsk) {
 		WARN_ON_ONCE(sk->sk_state != TCP_SYN_RECV &&
 			     sk->sk_state != TCP_FIN_WAIT1);
@@ -359,6 +355,8 @@ void tcp_retransmit_timer(struct sock *sk)
 		goto out;
 
 	WARN_ON(tcp_write_queue_empty(sk));
+
+	tp->tlp_high_seq = 0;
 
 	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) &&
 	    !((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV))) {
@@ -418,11 +416,7 @@ void tcp_retransmit_timer(struct sock *sk)
 		NET_INC_STATS_BH(sock_net(sk), mib_idx);
 	}
 
-	if (tcp_use_frto(sk)) {
-		tcp_enter_frto(sk);
-	} else {
-		tcp_enter_loss(sk, 0);
-	}
+	tcp_enter_loss(sk, 0);
 
 	if (tcp_retransmit_skb(sk, tcp_write_queue_head(sk)) > 0) {
 		/* Retransmission failed because of local congestion,
@@ -495,13 +489,20 @@ void tcp_write_timer_handler(struct sock *sk)
 	}
 
 	event = icsk->icsk_pending;
-	icsk->icsk_pending = 0;
 
 	switch (event) {
+	case ICSK_TIME_EARLY_RETRANS:
+		tcp_resume_early_retransmit(sk);
+		break;
+	case ICSK_TIME_LOSS_PROBE:
+		tcp_send_loss_probe(sk);
+		break;
 	case ICSK_TIME_RETRANS:
+		icsk->icsk_pending = 0;
 		tcp_retransmit_timer(sk);
 		break;
 	case ICSK_TIME_PROBE0:
+		icsk->icsk_pending = 0;
 		tcp_probe_timer(sk);
 		break;
 	}

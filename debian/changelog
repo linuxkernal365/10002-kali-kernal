@@ -1,7 +1,1060 @@
-linux (3.7.2-1~experimental.1) UNRELEASED; urgency=low
+linux (3.10.11-1) unstable; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.8
+    - [arm] perf/arm: Fix armpmu_map_hw_event()
+    - memcg: don't initialize kmem-cache destroying work for root caches
+    - fs/proc/task_mmu.c: fix buffer overflow in add_page_map()
+    - elevator: Fix a race in elevator switching
+    - mac80211: fix infinite loop in ieee80211_determine_chantype
+    - can: pcan_usb: fix wrong memcpy() bytes length
+    - cfg80211: fix P2P GO interface teardown
+    - ASoC: dapm: Fix empty list check in dapm_new_mux()
+    - ALSA: 6fire: make buffers DMA-able (pcm)
+    - ALSA: 6fire: make buffers DMA-able (midi)
+    - USB: ti_usb_3410_5052: fix big-endian firmware handling
+    - USB: mos7720: fix broken control requests
+    - Fix TLB gather virtual address range invalidation corner cases
+    - [arm] 7809/1: perf: fix event validation for software group leaders
+      (CVE-2013-4254)
+    - jbd2: Fix use after free after error in jbd2_journal_dirty_metadata()
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.9
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.10
+    - [s390] KVM: s390: move kvm_guest_enter,exit closer to sie
+    - mac80211: don't wait for TX status forever
+    - tracing/kprobe: Wait for disabling all running kprobe handlers
+    - tracing: Fix many race conditions including potential use-after-free
+    - tracing/kprobes: Fail to unregister if probe event files are in use
+    - tracing/uprobes: Fail to unregister if probe event files are in use
+    - ftrace: Check module functions being traced on reload
+    - zd1201: do not use stack as URB transfer_buffer
+    - VFS: collect_mounts() should return an ERR_PTR
+    - [arm] davinci: nand: specify ecc strength
+    - drm/radeon/r7xx: fix copy paste typo in golden register setup
+    - drm/radeon: fix UVD message buffer validation
+    - drm/i915: Invalidate TLBs for the rings after a reset
+    - nilfs2: remove double bio_put() in nilfs_end_bio_write() for
+      BIO_EOPNOTSUPP error
+    - Hostap: copying wrong data prism2_ioctl_giwaplist()
+    - SCSI: zfcp: fix lock imbalance by reworking request queue locking
+    - SCSI: zfcp: fix schedule-inside-lock in scsi_device list loops
+    - SCSI: sg: Fix user memory corruption when SG_IO is interrupted by a
+      signal
+    - [x86] get_unmapped_area: Access mmap_legacy_base through mm_struct member
+    - bcache: FUA fixes
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.11
+    - drm/nouveau/mc: fix race condition between constructor and request_irq()
+    - jfs: fix readdir cookie incompatibility with NFSv4 (Closes: #714974)
+    - [powerpc] Work around gcc miscompilation of __pa() on 64-bit
+    - [powerpc] Don't Oops when accessing /proc/powerpc/lparcfg without
+      hypervisor
+    - timer_list: correct the iterator for timer_list
+    - drivers/base/memory.c: fix show_mem_removable() to handle missing sections
+    - memcg: check that kmem_cache has memcg_params before accessing it
+    - SUNRPC: Fix memory corruption issue on 32-bit highmem systems
+    - ath9k_htc: Restore skb headroom when returning skb to mac80211
+    - iscsi-target: Fix ImmediateData=Yes failure regression in >= v3.10
+    - iscsi-target: Fix potential NULL pointer in solicited NOPOUT reject
+    - ACPI / EC: Add ASUSTEK L4R to quirk list in order to validate ECDT
+    - regmap: rbtree: Fix overlapping rbnodes.
+
+  [ Ben Hutchings ]
+  * [rt] Update to 3.10.10-rt7:
+    - hwlat-detector: Update hwlat_detector to add outer loop detection
+    - hwlat-detector: Use thread instead of stop machine
+    - hwlat-detector: Use trace_clock_local if available
+    - genirq: do not invoke the affinity callback via a workqueue
+    - simple-wait: rename and export the equivalent of waitqueue_active()
+    - simple-wait: Fix a race condition with swait wakeups vs adding items
+      to the list
+    - rcu: Use swait_wake_all() in rcu_nocb_gp_cleanup()
+  * aufs: Update to aufs3.10-20130826
+  * aufs: mvdown, don't let unprivileged users provoke a WARNING
+  * [x86] ACPI: Re-enable ACPI_HOTPLUG_MEMORY as built-in
+  * [x86] amd64_edac: Fix single-channel setups (Closes: #717473)
+  * [x86] efi: Ensure efi-pstore is loaded on EFI systems
+  * bug script: Prompt to include crash logs from pstore
+  * ipv6: remove max_addresses check from ipv6_create_tempaddr (CVE-2013-0343)
+  * HID: validate HID report id size (CVE-2013-2888)
+  * HID: pantherlord: validate output report details (CVE-2013-2892)
+  * HID: ntrig: validate feature report details (CVE-2013-2896)
+  * HID: sensor-hub: validate feature report details (CVE-2013-2898)
+  * HID: picolcd_core: validate output report details (CVE-2013-2899)
+  * HID: check for NULL field when setting values
+
+  [ Ian Campbell ]
+  * [armel]: Enable MVMDIO and USB_EHCI_HCD_ORION on Kirkwood and Orion
+    (Closes: #719680)
+  * Bump ABI to 3
+  * [armhf]: Add udebs for armmp flavour
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Tue, 10 Sep 2013 14:13:16 +0100
+
+linux (3.10.7-1) unstable; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.6
+    - [arm] Modify vectors page to defend against ROP buffer overflow attacks
+    - [armel] 7790/1: Fix deferred mm switch on VIVT processors
+    - [armel] 7791/1: a.out: remove partial a.out support
+    - [powerpc] VPHN topology change updates all siblings
+    - hwmon: (max6697) fix MAX6581 ideality
+    - USB: mos7840: fix race in register handling
+    - USB: mos7840: fix race in led handling
+    - mac80211: fix duplicate retransmission detection
+    - mac80211: fix ethtool stats for non-station interfaces
+    - ixgbe: Fix Tx Hang issue with lldpad on 82598EB
+    - Bluetooth: ath3k: don't use stack memory for DMA
+    - Bluetooth: fix wrong use of PTR_ERR() in btusb
+    - svcrpc: fix gss-proxy xdr decoding oops
+    - svcrpc: fix gss_rpc_upcall create error
+    - svcrpc: fix kfree oops in gss-proxy code
+    - zram: avoid invalid memory access in zram_exit()
+    - zram: use zram->lock to protect zram_free_page() in swap free notify path
+    - zram: avoid double free in function zram_bvec_write()
+    - zram: avoid access beyond the zram device
+    - zram: protect sysfs handler from invalid memory access
+    - Revert "cpuidle: Quickly notice prediction failure in general case"
+    - cpufreq: Fix cpufreq driver module refcount balance after suspend/resume
+    - Revert "cpuidle: Quickly notice prediction failure for repeat mode"
+    - drm/radeon: Disable dma rings for bo moves on r6xx
+    - xen-blkfront: use a different scatterlist for each request
+    - drm/radeon: never unpin UVD bo v3
+    - Btrfs: fix crash regarding to ulist_add_merge
+    - [s390] bitops: fix find_next_bit_left
+    - userns: unshare_userns(&cred) should not populate cred on failure
+      (CVE-2013-4205)
+    - ipv6: take rtnl_lock and mark mrt6 table as freed on namespace cleanup
+    - usbnet: do not pretend to support SG/TSO
+    - net_sched: Fix stack info leak in cbq_dump_wrr().
+    - af_key: more info leaks in pfkey messages
+    - net_sched: info leak in atm_tc_dump_class()
+    - 8139cp: Add dma_mapping_error checking
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.7
+    - [powerpc] Save the TAR register earlier
+    - [powerpc] tm: Fix context switching TAR, PPR and DSCR SPRs
+    - ext4: make sure group number is bumped after a inode allocation race
+    - regmap: cache: Make sure to sync the last register in a block
+    - hwmon: (adt7470) Fix incorrect return code check
+    - media: em28xx: fix assignment of the eeprom data
+    - ACPI / PM: Walk physical_node_list under physical_node_lock
+    - ALSA: 6fire: fix DMA issues with URB transfer_buffer usage
+    - Btrfs: release both paths before logging dir/changed extents
+    - LOCKD: Don't call utsname()->nodename from nlmclnt_setlockargs
+    - SUNRPC: Don't auto-disconnect from the local rpcbind socket
+    - SUNRPC: If the rpcbind channel is disconnected, fail the call to
+      unregister
+    - virtio/console: Quit from splice_write if pipe->nrbufs is 0
+    - virtio/console: Add pipe_lock/unlock for splice_write
+    - virtio: console: fix race with port unplug and open/close
+    - virtio: console: fix race in port_fops_open() and port unplug
+    - virtio: console: clean up port data immediately at time of unplug
+    - virtio: console: fix raising SIGIO after port unplug
+    - virtio: console: return -ENODEV on all read operations after unplug
+    - drm/radeon: stop sending invalid UVD destroy msg
+    - ext4: flush the extent status cache during EXT4_IOC_SWAP_BOOT
+    - cifs: extend the buffer length enought for sprintf() using
+    - zram: allow request end to coincide with disksize
+    - reiserfs: fix deadlock in umount
+    - [x86] drm/i915: initialize gt_lock early with other spin locks
+
+  [ Ben Hutchings ]
+  * [x86] Enable ASUS_OLED as module (Closes: #680016)
+  * [armel/orion5x] I2C: mv64xxx: fix race between FSM/interrupt and process
+    context (Closes: #622325)
+  * [arm] Fix the world famous typo with is_gate_vma()
+  * [rt] Update to 3.10.6-rt3
+    - hpsa: fix warning with smp_processor_id() in preemptible
+  * [arm] Change SERIAL_8250_PCI from built-in to module
+  * net: Change WIZNET_W5{1,3}00 from built-in(!) to module
+  * net: Change DROP_MONITOR from built-in to module
+  * netlink: Change NETLINK_DIAG from built-in to module; enable on
+    armel/{iop32x,ixp4xx,orion5x}
+
+  [ Thorsten Glaser ]
+  * [m68k] debian/patches/bugfix/m68k/atari-irqs.patch: patch from mailing list
+    to silence IRQ problems on Atari platforms with multi-platform kernel
+  * [m68k] debian/patches/bugfix/m68k/type-fix-div64.patch: patch from Andreas
+    Schwab to handle do_div being called with a non-u32 second argument
+  * [m68k] begin working on d-i kernel configs (just enough to not FTBFS)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sat, 17 Aug 2013 22:35:15 +0200
+
+linux (3.10.5-1) unstable; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.4
+    - ipv6,mcast: always hold idev->lock before mca_lock
+    - ipv6: call udp_push_pending_frames when uncorking a socket with AF_INET
+      pending data (CVE-2013-4162)
+    - ipv6: ip6_append_data_mtu did not care about pmtudisc and frag_size
+      (CVE-2013-4163)
+    - sunvnet: vnet_port_remove must call unregister_netdev
+    - ipv6: only static routes qualify for equal cost multipathing
+      (CVE-2013-4125)
+    - atl1e: fix dma mapping warnings
+    - atl1e: unmap partially mapped skb on dma error and free skb
+    - vlan: mask vlan prio bits
+    - vlan: fix a race in egress prio management
+    - fuse: readdirplus: fix dentry leak
+    - fuse: readdirplus: fix instantiate
+    - fuse: readdirplus: sanity checks
+    - bcache: Fix a dumb race
+    - bcache: Advertise that flushes are supported
+    - bcache: Shutdown fix (possibly fixes #715019)
+    - bcache: Fix a sysfs splat on shutdown
+    - bcache: Journal replay fix
+    - ext4: fix error handling in ext4_ext_truncate()
+    - media: saa7134: Fix unlocked snd_pcm_stop() call
+    - media: dmxdev: remove dvb_ringbuffer_flush() on writer side
+    - lockd: protect nlm_blocked access in nlmsvc_retry_blocked
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.5
+    - mm: fix the TLB range flushed when __tlb_remove_page() runs out of slots
+    - iscsi-target: Fix tfc_tpg_nacl_auth_cit configfs length overflow
+    - iser-target: Fix session reset bug with RDMA_CM_EVENT_DISCONNECTED
+    - iscsi-target: Fix ISCSI_OP_SCSI_TMFUNC handling for iser
+    - firewire: fix libdc1394/FlyCap2 iso event regression
+    - SCSI: sd: fix crash when UA received on DIF enabled device
+    - tracing: Remove locking trace_types_lock from
+      tracing_reset_all_online_cpus()
+    - usb: host: xhci: Enable XHCI_SPURIOUS_SUCCESS for all controllers with
+      xhci 1.0
+    - xhci: fix null pointer dereference on ring_doorbell_for_active_rings
+    - xhci: Avoid NULL pointer deref when host dies.
+    - staging: comedi: fix a race between do_cmd_ioctl() and read/write
+    - Btrfs: fix wrong write offset when replacing a device
+    - Btrfs: fix lock leak when resuming snapshot deletion
+    - Btrfs: re-add root to dead root list if we stop dropping it
+    - xen-netfront: pull on receive skb may need to happen earlier
+    - md: Remove recent change which allows devices to skip recovery.
+    - md/raid1: fix bio handling problems in process_checks()
+    - md/raid5: fix interaction of 'replace' and 'recovery'.
+    - md/raid10: remove use-after-free bug.
+    - svcrdma: underflow issue in decode_write_list()
+    - nfsd: nfsd_open: when dentry_open returns an error do not propagate as
+      struct file
+    - ACPI / scan: Do not try to attach scan handlers to devices having them
+    - drm/radeon: fix endian issues with DP handling (v3)
+    - drm/radeon: fix combios tables on older cards
+    - drm/i915: fix up ring cleanup for the i830/i845 CS tlb w/a
+    - drm/i915: Fix write-read race with multiple rings
+    - Partially revert "drm/i915: unconditionally use mt forcewake on hsw/ivb"
+    - drm/i915: Fix incoherence with fence updates on Sandybridge+
+    - drm/i915: fix long-standing SNB regression in power consumption after resume v2
+    - drm/i915: Fix dereferencing invalid connectors in is_crtc_connector_off()
+    - drm/i915: correctly restore fences with objects attached
+    - drm/i915: Serialize almost all register access
+    - drm/radeon/atom: initialize more atom interpretor elements to 0
+    - mm: mempolicy: fix mbind_range() && vma_adjust() interaction
+    - tty_port: Fix refcounting leak in tty_port_tty_hangup()
+    - vfs: livelock avoidance in sget()
+    - iscsi-target: Fix iscsit_add_reject* usage for iser
+    - drm/i915: Correct obj->mm_list link to
+      dev_priv->dev_priv->mm.inactive_list
+
+  [ Ben Hutchings ]
+  * [hppa] udeb: Add core-modules package (Closes: #718270)
+  * nl80211: fix another nl80211_fam.attrbuf race
+  * Bump ABI to 2
+  * ext4: fix retry handling in ext4_ext_truncate()
+  * atl1c: Fix misuse of netdev_alloc_skb in refilling rx ring
+    (Closes: #718505)
+  * [rt] genpatch.py: Accept missing series-rt
+  * [rt] Update to 3.10.4-rt1 and reenable
+  * [rt] genpatch.py: Fix parsing of upstream patches with no header
+  * aufs: Update to aufs3.10-20130805
+  * [rt] md: Disable BCACHE, as it fails to build
+  * SCSI: Don't attempt to send extended INQUIRY command if skip_vpd_pages is
+    set (Closes: #719002)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Wed, 07 Aug 2013 22:38:45 +0200
+
+linux (3.10.3-1) unstable; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.2
+    - CIFS: Fix a deadlock when a file is reopened
+    - jbd2: move superblock checksum calculation to jbd2_write_superblock()
+    - jbd2: fix theoretical race in jbd2__journal_restart
+    - ext4: fix corruption when online resizing a fs with 1K block size
+    - ext3,ext4: don't mess with dir_file->f_pos in htree_dirblock_to_tree()
+    - ext4: check error return from ext4_write_inline_data_end()
+    - xhci: check for failed dma pool allocation
+    - [x86] drivers: hv: switch to use mb() instead of smp_mb()
+    - cgroup: fix umount vs cgroup_event_remove() race
+    - cgroup: fix RCU accesses to task->cgroups
+    - [hppa] Fix gcc miscompilation in pa_memcpy()
+    - [hppa] Ensure volatile space register %sr1 is not clobbered
+    - genirq: Fix can_request_irq() for IRQs without an action
+      (Closes: #709647)
+    - [x86] ACPI: Fix HP Folio 13 EC register access (Closes: #684186)
+      + ACPI: Add CMOS RTC Operation Region handler support
+      + ACPI / EC: Add HP Folio 13 to ec_dmi_table in order to skip DSDT scan
+    - ocfs2: xattr: fix inlined xattr reflink
+    - iwlwifi: pcie: fix race in queue unmapping
+    - Btrfs: fix estale with btrfs send
+    - Btrfs: hold the tree mod lock in __tree_mod_log_rewind
+    - Btrfs: only do the tree_mod_log_free_eb if this is our last ref
+    - ext4: fix data offset overflow on 32-bit archs in
+      ext4_inline_data_fiemap()
+    - ext4: fix overflows in SEEK_HOLE, SEEK_DATA implementations
+    - ext4: fix data offset overflow in ext4_xattr_fiemap() on 32-bit archs
+    - ext4: fix overflow when counting used blocks on 32-bit architectures
+    - ext4: fix ext4_get_group_number()
+    - ext4: don't allow ext4_free_blocks() to fail due to ENOMEM
+    - [arm] 7767/1: let the ASID allocator handle suspended animation
+    - [arm] 7768/1: prevent risks of out-of-bound access in ASID allocator
+    - [arm] 7769/1: Cortex-A15: fix erratum 798181 implementation
+    - [arm] 7778/1: smp_twd: twd_update_frequency need be run on all online CPUs
+    - [armhf] dts: imx: cpus/cpu nodes dts updates
+    - [armhf] drivers/dma/pl330.c: fix locking in pl330_free_chan_resources()
+    - memcg, kmem: fix reference count handling on the error path
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.3
+    - cpufreq: Revert commit a66b2e to fix suspend/resume regression
+    - iio: Fix iio_channel_has_info
+    - iio: inkern: fix iio_convert_raw_to_processed_unlocked
+    - ALSA: seq-oss: Initialize MIDI clients asynchronously
+    - ALSA: Fix unlocked snd_pcm_stop() calls in various drivers
+    - libata-zpodd: Use ata_tf_init() to select the right device
+    - md/raid10: fix bug which causes all RAID10 reshapes to move no data.
+    - md/raid10: fix two bugs affecting RAID10 reshape.
+    - md/raid10: fix two problems with RAID10 resync. (Closes: #717681)
+    - mac80211: close AP_VLAN interfaces before unregistering all
+    - svcrpc: fix failures to handle -1 uid's
+    - svcrpc: fix handling of too-short rpc's
+    - drm/i915: Fix context sizes on HSW
+    - drm/i915: Only clear write-domains after a successful wait-seqno
+    - drm/gem: fix not to assign error value to gem name
+    - drm/nv50-/disp: Use output specific mask in interrupt (Closes: #717590)
+    - iommu/amd: Only unmap large pages from the first pte
+    - MIPS: Octeon: Don't clobber bootloader data structures.
+    - perf: Clone child context from parent context pmu
+    - perf: Remove WARN_ON_ONCE() check in __perf_event_enable() for valid
+      scenario
+    - perf: Fix perf_lock_task_context() vs RCU
+    - tracing: Protect ftrace_trace_arrays list in trace_events.c
+    - tracing: Fix race between deleting buffer and setting events
+
+  [ Arnaud Patard ]
+  * udeb: add ehci-pci to usb-modules
+
+  [ Ben Hutchings ]
+  * udeb: Add snd-cmi8328 and snd-scs1x to sound-modules, thanks to
+    Samuel Thibault (Closes: #717183)
+  * be2net: Fix to avoid hardware workaround when not needed
+  * iwlwifi: Update 3160 and 7260 support to work with production firmware
+  * rtlwifi: rtl8723ae: Fix typo in firmware names
+  * [x86] Change INTEL_MEI_ME back to a module (Closes: #717383)
+  * [armhf/armmp] Enable NET_CALXEDA_XGMAC as module (Closes: #717269)
+  * linux-source: Switch compression of tarball and patch to xz.  Disable
+    compression of package (but use gzip, to keep old tools happy).
+  * linux-source: Install kernel config files for linux-image packages in
+    /usr/src/linux-config-$UPSTREAMVERSION directory
+  * ata: Disable SATA_INIC162X - this driver corrupts data and is not
+    expected to be fixed (Closes: #714295)
+  * writeback: Fix periodic writeback after fs mount
+  * sfc: Fix memory leak when discarding scattered packets
+  * neighbour: fix a race in neigh_destroy()
+  * virtio: support unlocked queue poll
+  * virtio_net: fix race in RX VQ processing
+  * vhost-net: fix use-after-free in vhost_net_flush
+  * tuntap: correctly linearize skb when zerocopy is used
+  * macvtap: correctly linearize skb when zerocopy is used
+  * ipv6: in case of link failure remove route directly instead of
+    letting it expire
+  * 9p: fix off by one causing access violations and memory corruption
+
+  [ Thorsten Glaser ]
+  * Update m68k configs (Closes: #717689):
+    - disable some functionality due to size constraints
+    - switch to using initrd
+    - drop all flavours; build a generic image that runs on
+      multiple subarchitectores (old Amiga, Atari, Macintosh tested;
+      old BVME6000, MVME147, MVME16x, new Apollo, Q40/Q60 untested)
+    - use gcc-4.8
+    - add patch to make Atari EtherNAT actually selectable
+  * nfs: Enable swap on NFS
+  * fs/nls: Enable Macintosh HFS+ codepage modules
+  * debian/control: Fix Vcs-Svn: use anonscm.debian.org
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sun, 28 Jul 2013 00:33:32 +0100
+
+linux (3.10.1-1) unstable; urgency=low
+
+  * New upstream release: http://kernelnewbies.org/Linux_3.10
+    - netfilter: nf_nat_sip: fix mangling (Closes: #715822)
+    - drm/i915: Add HPD IRQ storm detection (Closes: #572537)
+    - ipv6: ip6_sk_dst_check() must not assume ipv6 dst (CVE-2013-2232)
+    - af_key: fix info leaks in notify messages (CVE-2013-2234)
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.10.1
+    - libceph: Fix NULL pointer dereference in auth client code (CVE-2013-1059)
+    - ceph: fix sleeping function called from invalid context.
+    - libceph: fix invalid unsigned->signed conversion for timespec encoding
+    - module: do percpu allocation after uniqueness check. No, really!
+    - charger-manager: Ensure event is not used as format string
+    - hpfs: better test for errors
+    - crypto: sanitize argument for format string
+    - MAINTAINERS: add stable_kernel_rules.txt to stable maintainer information
+    - futex: Take hugepages into account when generating futex_key
+    - tty: Reset itty for other pty
+    - Revert "serial: 8250_pci: add support for another kind of NetMos
+      Technology PCI 9835 Multi-I/O Controller"
+    - NFSv4.1 end back channel session draining
+    - nfsd4: fix decoding of compounds across page boundaries
+    - KVM: VMX: mark unusable segment as nonpresent
+    - SCSI: sd: Fix parsing of 'temporary ' cache mode prefix
+    - cpufreq: Fix cpufreq regression after suspend/resume
+    - Revert "memcg: avoid dangling reference count in creation failure"
+	
+  [ Ben Hutchings ]
+  * cassini: Make missing firmware non-fatal (Closes: #714128)
+  * debian/patches: Add DEP-3 headers (From/Author, Subject/Description,
+    Forwarded/Origin) to all patches
+  * aufs: Add DEP-3 headers to generated/copied patches
+  * [rt] genpatch.py: Work with upstream patch series as well as git
+    - Fold convert-series into genpatch.py
+  * [rt] genpatch.py: Add Origin header to all patches
+  * debian/bin/check-patches.sh: Report missing DEP-3 headers
+  * alx: Use upstream minimal driver
+    - Update to 3.11-rc1
+  * [x86] efivars: Reenable 'paranoid' size check by default, as it should
+    no longer have false positives
+  * debian/patches: Reorder and group patches in series
+  * debian/rules.real: Remove support for pre-multiarch dpkg
+  * Update policy version to 3.9.4
+    - debian/control: Put xen-linux-system-* in the 'metapackages' section
+  * linux-source: Add bc to recommended packages (Closes: #715413)
+  * udeb: Add ath6kl_usb and mwifiex_usb to nic-wireless-modules
+  * udeb: Add pm80xx (previously pm8001) to scsi-extra-modules
+  * udeb: Add virtio_scsi to virtio-modules
+  * Set ABI to 1
+  * xen/blkback: Check device permissions before allowing OP_DISCARD
+    (CVE-2013-2140)
+  * udeb: Remove obsolete and unsupported drivers and filesystems
+    - Remove ppa from scsi-modules
+    - Remove floppy-modules, irda-modules, parport-modules, plip-modules,
+      qnx4-modules, reiserfs-modules, ufs-modules
+  * [x86] efivars: Re-enable pstore support by default.  It can be disabled
+    by setting module parameter pstore_disable=Y.
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Tue, 16 Jul 2013 02:06:53 +0100
+
+linux (3.10~rc7-1~exp1) experimental; urgency=low
+
+  * New upstream release candidate
+
+  [ Ben Hutchings ]
+  * [armhf/armmp] Add EMAC ethernet driver found on Allwinner A10 SoCs,
+    thanks to Niall Walsh (Closes: #711998)
+    - Add MDIO bus driver for the Allwinner EMAC
+    - Add EMAC controller node to sun4i DTSI
+    - cubieboard: Enable ethernet (EMAC) support in dts
+    - Add EMAC Controller to Hackberry dt
+  * [x86] cpufreq: Enable X86_INTEL_PSTATE (Closes: #712062)
+  * debian/control: Add Homepage field
+  * debian/watch: Add watch file and update script
+  * misc/bmp085: Enable building as a module
+  * misc: Enable BMP085_I2C as module
+  * team: Enable NET_TEAM_MODE_RANDOM as module
+  * 8021q: Enable VLAN_8021Q_MVRP
+  * batman: Enable BATMAN_ADV_NC
+  * netlink: Enable NETLINK_MMAP, NETLINK_DIAG [!armel/{iop32x,ixp4xx,orion5x}]
+  * sctp: Enable SCTP_COOKIE_HMAC_SHA1
+  * tipc: Enable TIPC_MEDIA_IB
+  * [x86] cpufreq: Enable X86_AMD_FREQ_SENSITIVITY as module
+  * [x86] i2c: Enable I2C_ISMT, I2C_DESIGNWARE_PCI as modules
+  * [x86] mouse: Enable MOUSE_CYAPA as modules
+  * [armel/{iop32x,ixp4xx,orion5x}] Disable features to reduce kernel size
+    - Disable KSM, YAMA
+    - [armel/orion5x] Disable FTRACE
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Mon, 24 Jun 2013 14:55:23 +0100
+
+linux (3.10~rc5-1~exp1) experimental; urgency=low
+
+  * New upstream release candidate
+
+  [ Ben Hutchings ]
+  * [x86] Enable HYPERVISOR_GUEST
+  * udeb: Clean up configuration:
+    - Move i2c-algo-bit to i2c-modules
+    - Remove redundant control file overrides
+    - [s390] Use symlinks to follow s390x configuration
+    - [sparc64] Use symlinks to follow sparc configuration
+    - Only list the 'new' firewire modules in firewire-core-modules
+    - Remove obsolete eth1394 and firewire-core-modules dependency from
+      nic-modules
+    - Move ide-modules and ide-core-modules into ia64 configuration
+    - [powerpc,x86] Fold nic-extra-modules into nic-modules
+  * iwlegacy: Use consistent condition for il_pm_ops (fixes FTBFS on ia64)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Tue, 11 Jun 2013 04:44:05 +0100
+
+linux (3.10~rc4-1~exp1) experimental; urgency=low
+
+  * New upstream release candidate
+
+  [ Ben Hutchings ]
+  * aufs: Update to aufs3.x-rcN-20130520
+  * alx: Update VLAN tag handling for 3.10
+  * md: Enable BCACHE as module
+  * net/usb: Enable USB_RTL8152 as module
+    - udeb: Add r8152 to nic-usb-modules
+  * rt2800usb: Enable RT2800USB_RT55XX
+  * net/wireless: Enable RTL8188EE
+    - udeb: Add rtl8188ee to nic-wireless-modules
+  * linux-image: Restore package date (in ISO format) to utsname version
+    string ('uname -v' output)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Mon, 03 Jun 2013 02:43:51 +0100
+
+linux (3.9.8-1) unstable; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.9.7
+    - b43: stop format string leaking into error msgs (CVE-2013-2852)
+    - ACPI / video: Do not bind to device objects with a scan handler
+    - libceph: must hold mutex for reset_changed_osds()
+    - ceph: ceph_pagelist_append might sleep while atomic
+    - rbd: don't destroy ceph_opts in rbd_add()
+    - Bluetooth: Fix missing length checks for L2CAP signalling PDUs
+    - kmsg: honor dmesg_restrict sysctl on /dev/kmsg
+    - memcg: don't initialize kmem-cache destroying work for root caches
+    - md/raid1: consider WRITE as successful only if at least one non-Faulty
+      and non-rebuilding drive completed it.
+    - md/raid1,5,10: Disable WRITE SAME until a recovery strategy is in place
+    - [x86] Modify UEFI anti-bricking code
+    - powerpc: Fix stack overflow crash in resume_kernel when ftracing
+    - USB: pl2303: fix device initialisation at open
+    - USB: f81232: fix device initialisation at open
+    - USB: spcp8x5: fix device initialisation at open
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.9.8
+    - ARM: 7752/1: errata: LoUIS bit field in CLIDR register is incorrect
+    - clk: remove notifier from list before freeing it
+    - [hppa] make interrupt and interruption stack allocation reentrant
+    - ACPI / dock: Take ACPI scan lock in write_undock()
+    - net: fec: fix kernel oops when plug/unplug cable many times
+    - tcp: fix tcp_md5_hash_skb_data()
+    - net/802/mrp: fix lockdep splat
+    - ipv6: fix possible crashes in ip6_cork_release()
+    - r8169: fix offloaded tx checksum for small packets.
+    - xfrm: properly handle invalid states as an error
+    - ip_tunnel: fix kernel panic with icmp_dest_unreach
+    - net: Block MSG_CMSG_COMPAT in send(m)msg and recv(m)msg
+    - net: force a reload of first item in hlist_nulls_for_each_entry_rcu
+    - vhost_net: clear msg.control for non-zerocopy case during tx
+    - net: sctp: fix NULL pointer dereference in socket destruction
+    - team: check return value of team_get_port_by_index_rcu() for NULL
+    - team: move add to port list before port enablement
+    - l2tp: Fix PPP header erasure and memory leak
+    - sctp: fully initialize sctp_outq in sctp_outq_init
+    - macvtap: set transport header before passing skb to lower device
+    - tuntap: set transport header before passing it to kernel
+    - packet: set transport header before doing xmit
+    - netback: set transport header before passing it to kernel
+    - net_sched: better precise estimation on packet length for untrusted
+      packets
+    - firmware loader: fix use-after-free by double abort
+    - target/iscsi: don't corrupt bh_count in iscsit_stop_time2retain_timer()
+    - rbd: use the correct length for format 2 object names
+    - perf: Fix perf mmap bugs
+    - perf: Fix mmap() accounting hole
+
+  [ Ben Hutchings ]
+  * yama: Disable ptrace restrictions by default, and change boot message
+    to indicate this (Closes: #712740)
+  * fanotify: info leak in copy_event_to_user() (CVE-2013-2148)
+  * drivers/cdrom/cdrom.c: use kzalloc() for failing hardware (CVE-2013-2164)
+  * block: do not pass disk names as format strings (CVE-2013-2851)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sat, 29 Jun 2013 18:44:21 +0100
+
+linux (3.9.6-1) unstable; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.9.6
+    - xhci - correct comp_mode_recovery_timer on return from hibernate
+    - usb: musb: make use_sg flag URB specific
+    - USB: keyspan: fix bogus array index
+    - [arm] 7747/1: pcpu: ensure __my_cpu_offset cannot be re-ordered across
+      barrier()
+    - hpfs: fix warnings when the filesystem fills up
+    - cifs: fix off-by-one bug in build_unc_path_to_root
+    - ecryptfs: fixed msync to flush data
+    - eCryptfs: Check return of filemap_write_and_wait during fsync
+    - hwmon: (adm1021) Strengthen chip detection for ADM1021, LM84 and MAX1617
+    - drm: fix a use-after-free when GPU acceleration disabled
+    - [powerpc] pseries: Force 32 bit MSIs for devices that require it
+    - [powerpc] pseries: Make 32-bit MSI quirk work on systems lacking firmware
+      support
+
+  [ Ben Hutchings ]
+  * [armel/orion5x] Enable EXPERT; disable FIPS, OABI_COMPAT, PCI_QUIRKS,
+    VGA_ARB to reduce kernel size (really fixes FTBFS)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sat, 15 Jun 2013 04:53:13 +0100
+
+linux (3.9.5-1) unstable; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.9.5
+    - [arm] 7723/1: crypto: sha1-armv4-large.S: fix SP handling
+    - mac80211: use just spin_lock() in ieee80211_get_tkip_p2k()
+    - USB: cxacru: potential underflow in cxacru_cm_get_array()
+    - TTY: Fix tty miss restart after we turn off flow-control
+      (Closes: #465823)
+    - cifs: only set ops for inodes in I_NEW state
+    - drivers/char/random.c: fix priming of last_data
+    - random: fix accounting race condition with lockless irq entropy_count
+      update
+    - fat: fix possible overflow for fat_clusters
+    - tg3: Fix data corruption on 5725 with TSO
+    - ocfs2: goto out_unlock if ocfs2_get_clusters_nocache() failed in
+      ocfs2_fiemap()
+    - mm compaction: fix of improper cache flush in migration code
+    - klist: del waiter from klist_remove_waiters before wakeup waitting process
+    - wait: fix false timeouts when using wait_event_timeout()
+    - nilfs2: fix issue of nilfs_set_page_dirty() for page at EOF boundary
+    - mm: mmu_notifier: re-fix freed page still mapped in secondary MMU
+    - mm: memcg: remove incorrect VM_BUG_ON for swap cache pages in uncharge
+    - mm/pagewalk.c: walk_page_range should avoid VM_PFNMAP areas
+    - mm/THP: use pmd_populate() to update the pmd with pgtable_t pointer
+    - module: don't unlink the module until we've removed all exposure.
+    - xfs: kill suid/sgid through the truncate path.
+    - SUNRPC: Prevent an rpc_task wakeup race
+    - cifs: fix potential buffer overrun when composing a new options string
+    - cgroup: initialize xattr before calling d_instantiate()
+    - [powerpc] 32bit:Store temporary result in r0 instead of r8
+    - [powerpc] tm: Fix userspace stack corruption on signal delivery for active
+      transactions
+    - [powerpc] tm: Abort on emulation and alignment faults
+    - iscsi-target: fix heap buffer overflow on error
+    - KVM: fix sil/dil/bpl/spl in the mod/rm fields
+    - reiserfs: fix deadlock with nfs racing on create/lookup
+    - reiserfs: fix problems with chowning setuid file w/ xattrs
+    - reiserfs: fix spurious multiple-fill in reiserfs_readdir_dentry
+    - jfs: fix a couple races
+    - IB/iser: Return error to upper layers on EAGAIN registration failures
+    - fuse: fix readdirplus Oops in fuse_dentry_revalidate
+    - target: Re-instate sess_wait_list for target_wait_for_sess_cmds
+    - xen-netback: Fix regressions caused by fix for CVE-2013-0216
+      + coalesce slots in TX path and fix regressions
+      + don't disconnect frontend when seeing oversize packet
+
+  [ Ben Hutchings ]
+  * [powerpcspe] Remove installer udebs (really fixes FTBFS)
+  * [s390] Add pgste to ptep_modify_prot_start()
+  * [s390] Enable PCI, PCI and USB drivers
+  * [powerpc] Fix build error in stable/3.9
+  * [armel/iop32x,armel/ixp4xx] Disable OABI_COMPAT, PCI_QUIRKS to reduce
+    kernel size (fixes FTBFS)
+  * ath9k: Disable PowerSave by default (Closes: #695968)
+  * [i386] udeb: Add viafb to fb-modules (Closes: #705788)
+    - [i386] udeb: Move i2c-algo-bit to i2c-modules and make fb-modules
+      depend on it
+    - viafb: Autoload on OLPC XO 1.5 only
+  * fs: Enable F2FS_FS as module (Closes: #711342)
+  * iio,HID: Enable IIO, HID_SENSOR_HUB, HID_SENSOR_ACCEL_3D,
+    HID_SENSOR_ALS, HID_SENSOR_GYRO_3D, HID_SENSOR_MAGNETOMETER_3D
+    as modules (Closes: #711690)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Mon, 10 Jun 2013 02:41:53 +0100
+
+linux (3.9.4-1) unstable; urgency=low
+
+  * New upstream release: http://kernelnewbies.org/Linux_3.9
+    - ALSA: hda - Add generic parser support to Analog Device codec driver
+      (Closes: #659033)
+    - Input: add support for Cypress PS/2 Trackpads (Closes: #703607)
+    - [armel] media: VIDEO_ZORAN is disabled as it requires virt_to_bus()
+    - [armhf/omap] OMAP_MBOX_FWK and TIDSPBRIDGE is disabled as they are
+      not yet compatible with ARM multiplatform
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.9.1
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.9.2
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.9.3
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.9.4
+
+  [ Ben Hutchings ]
+  * [rt] Disable until it is updated for Linux 3.9 or later
+  * Build-Depend on bc, needed to build kernel/timeconst.h
+  * [x86] Enable VMWARE_VMCI, VSOCKETS, VMWARE_VMCI_VSOCKETS as modules
+    (Closes: #707676)
+  * README.Debian: Correct reference to Berkeley Database development package
+  * aufs: Update to aufs3.9-20130506
+  * [powerpcspe] Prevent building uImage with missing mkimage, thanks to
+    Roland Stigge (Closes: #708094)
+  * udeb: Fix yet more configuration errors causing FTBFS:
+    - [powerpc/powerpc64] Replace ibmvscsic with ibmvscsi in scsi-modules
+    - [ppc64] Use symlinks to follow powerpc/powerpc64 configuration
+    - [powerpcspe] Use symlinks to follow powerpc configuration
+      (Closes: #708336, #708662)
+    - Add raid6_pq to md-modules, and make btrfs-modules depend on it
+  * netfilter: Enable NETFILTER_XT_MATCH_BPF, NETFILTER_XT_MATCH_CONNLABEL
+    as modules
+  * bridge: Enable BRIDGE_VLAN_FILTERING
+  * batman: Enable BATMAN_ADV_DAT
+  * nfc: Enable NFC_LLCP
+  * can: Enable CAN_PEAK_USB, CAN_8DEV_USB as modules
+  * hci_uart: Enable BT_HCIUART_3WIRE
+  * [amd64,powerpc/powerpc64,ppc64] block: Enable BLK_DEV_RSXX as module
+  * SCSI: Enable SCSI_CHELSIO_FCOE, SCSI_MPT3SAS, SCSI_UFSHCD as modules
+    - udeb: Add csiostor, mpt3sas, ufshcd, ufshcd-pci to scsi-extra-modules
+  * md: Enable DM_CACHE as module
+  * net/usb: Enable USB_NET_AX88179_178A as module (Closes: #704129)
+    - udeb: Add ax88179_178a to nic-usb-modules
+  * net/wireless: Enable AR5523 (Closes: #701777), IWLMVM,
+    RTL8723AE (Closes: #708348), WIL6210 as modules
+    - udeb: Add ar5523, iwldvm, iwlmvm, rtl8723ae, wil6210 to
+      nic-wireless-modules
+  * serial: Enable SERIAL_RP2 as module
+    - udeb: Add rp2 to serial-modules
+  * hw_random: Enable HW_RANDOM_TPM as module
+  * [x86] watchdog: Enable IE6XX_WDT, VIA_WDT as modules
+  * media/usb: Enable DVB_USB_AZ6007, USB_GSPCA_JL2005BCD as modules
+  * stk1160: Enable VIDEO_STK1160_AC97
+  * ivtv: Enable VIDEO_IVTV_ALSA as module
+  * radio: Enable RADIO_SHARK, RADIO_SHARK2, USB_KEENE, USB_MA901 as modules
+  * hda: Enable SND_HDA_CODEC_CA0132_DSP
+  * sound/firewire: Enable SND_SCS1X as module
+  * hid-holtek: Enable HOLTEK_FF
+  * hid: Enable HID_ICADE, HID_PS3REMOTE, HID_STEELSERIES, HID_THINGM as
+    modules
+  * usb/serial: Enable USB_SERIAL_F81232, USB_SERIAL_METRO, USB_SERIAL_QT2,
+    USB_SERIAL_XSENS_MT, USB_SERIAL_ZTE as modules
+    - udeb: Add f81232, quatech2, zte_ev to usb-serial-modules
+  * infiniband: Enable INFINIBAND_OCRDMA as module
+  * [x86] vfio: Enable VFIO, VFIO_PCI as modules
+  * [x86] hv: Enable HYPERV_BALLOON as module
+  * security: Enable SECURITY_YAMA, SECURITY_YAMA_STACKED (Closes: #704750)
+  * iscsi-target: fix heap buffer overflow on error (CVE-2013-2850)
+
+  [ Aurelien Jarno ]
+  * [mips] Enable KEXEC.
+
+  [ Arnaud Patard ]
+  * [armhf] Add armmp flavour
+  * [armhf] backport usb support for imx53 through chipidea and usb phy nop fixes
+  * [armhf] backport armada 370/xp thermal support
+  * [armhf] fix hard freeze when mvneta is used as module
+  * [arm] backport ehci split patches for omap and orion
+  * [armel] enable thermal
+  * [armel] kirkwood: enable more DT configs, thermal, POWER_RESET_*
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sat, 01 Jun 2013 23:13:01 +0100
+
+linux (3.8.13-1) unstable; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.13
+    - autofs - remove autofs dentry mount check
+    - hugetlbfs: fix mmap failure in unaligned size request
+      (fixes regression in 3.4)
+    - perf/x86/intel/lbr: Fix LBR filter
+    - perf/x86/intel/lbr: Demand proper privileges for PERF_SAMPLE_BRANCH_KERNEL
+    - ipvs: ip_vs_sip_fill_param() BUG: bad check of return value
+    - netfilter: ctnetlink: don't permit ct creation with random tuple
+    - ext4: add check for inodes_count overflow in new resize ioctl
+    - r8169: fix 8168evl frame padding.
+    - drm/prime: keep a reference from the handle to exported dma-buf (v6)
+    - Btrfs: compare relevant parts of delayed tree refs
+    - Btrfs: fix extent logging with O_DIRECT into prealloc
+    - kernel/audit_tree.c: tree will leak memory when failure occurs in
+      audit_trim_trees()
+
+  [ Ben Hutchings ]
+  * udeb: Fix more configuration errors causing FTBFS:
+    - [m68k,mips,mipsel,ppc64,sparc64] Add crc-modules as common dependency
+      of btrfs-modules and xfs-modules (and others)
+    - [powerpc] Add llc to nic-shared-modules
+  * Bump ABI to 2
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Thu, 16 May 2013 00:28:04 +0100
+
+linux (3.8.12-1) unstable; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.12
+    - [powerpc] spufs: Initialise inode->i_ino in spufs_new_inode()
+      (possibly fixes: #707175)
+    - iwlwifi: fix freeing uninitialized pointer
+    - tty: fix up atime/mtime mess, take three
+    - sysfs: fix use after free in case of concurrent read/write and readdir
+    - [ia64] Fix initialization of CMCI/CMCP interrupts
+    - [ia64] Wrong asm register contraints in the futex implementation
+      (Closes: #702641)
+    - [ia64] Wrong asm register contraints in the kvm implementation
+      (Closes: #702639)
+    - fs/fscache/stats.c: fix memory leak
+    - hrtimer: Fix ktime_add_ns() overflow on 32bit architectures
+    - swap: redirty page if page write fails on swap file
+    - mm: swap: mark swap pages writeback before queueing for direct IO
+    - ACPI: Fix wrong parameter passed to memblock_reserve
+    - cgroup: fix an off-by-one bug which may trigger BUG_ON()
+    - cgroup: fix broken file xattrs
+    - clockevents: Set dummy handler on CPU_DEAD shutdown (Closes: #700333)
+    - inotify: invalid mask should return a error number but not set it
+      (fixes regression in 3.8.1)
+    - exec: do not abuse ->cred_guard_mutex in threadgroup_lock()
+    - md: bad block list should default to disabled.
+    - MD: ignore discard request for hard disks of hybid raid1/raid10 array
+      (fixes regression in 3.6)
+    - nfsd4: don't close read-write opens too soon
+    - wireless: regulatory: fix channel disabling race condition
+    - ext4/jbd2: don't wait (forever) for stale tid caused by wraparound
+    - jbd2: fix race between jbd2_journal_remove_checkpoint and
+      ->j_commit_callback
+    - ext4: fix journal callback list traversal
+    - ext4: fix big-endian bug in metadata checksum calculations
+    - [x86] KVM: X86 emulator: fix source operand decoding for 8bit mov[zs]x
+      instructions
+
+  [ Ben Hutchings ]
+  * [rt] Remove xen-linux-system packages and references to Xen support,
+    as Xen does not support real-time scheduling
+  * udeb: Fix configuration errors causing FTBFS:
+    - [armhf/vexpress] Remove ipv6-modules; ipv6 is now built-in
+    - [mipsel/sb1-bcm91250a,sparc] Add crc-modules as common dependency of
+      btrfs-modules and xfs-modules (and others)
+    - [powerpc] Add nic-shared-modules as common dependency of nic-modules
+      and nic-extra-modules
+    - Unify module list for nic-shared-modules across architectures [!m68k]
+  * [rt] Update to 3.8.11-rt8:
+    - time/timekeeping: shadow tk->cycle_last together with clock->cycle_last
+    - sched/workqueue: Only wake up idle workers if not blocked on sleeping
+      spin lock
+  * aufs: Update to aufs3.8-20130506
+    - for linux-3.7, btrfs limits the link count explicitly
+    - for linux-3.6, push mnt_want_write() outside of i_mutex
+    - possible bugfix, make sure the target branch is upper
+    - possible bugfix, error handling in reopen_nondir()
+    - new copyup implementation
+    - pin the branch dir
+    - convert the plink list into hlist
+  * linux-doc: Include aufs documentation
+  * [x86] zsmalloc: Change to built-in, as it can no longer be modular
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Fri, 10 May 2013 04:46:36 +0100
+
+linux (3.8.11-1) unstable; urgency=high
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.6
+    - sysfs: fix race between readdir and lseek
+    - sysfs: handle failure path correctly for readdir()
+    - rtlwifi: usb: add missing freeing of skbuff
+    - b43: A fix for DMA transmission sequence errors
+    - tg3: fix length overflow in VPD firmware parsing (CVE-2013-1929)
+    - xen-blkback: fix dispatch_rw_block_io() error path
+    - net/irda: add missing error path release_sock call
+    - usb: xhci: Fix TRB transfer length macro used for Event TRB.
+    - Btrfs: fix locking on ROOT_REPLACE operations in tree mod log
+    - Btrfs: fix race between mmap writes and compression
+    - USB: serial: fix use-after-free in TIOCMIWAIT
+    - loop: prevent bdev freeing while device in use
+    - virtio: console: add locking around c_ovq operations
+    - nfsd4: reject "negative" acl lengths
+    - Btrfs: fix space leak when we fail to reserve metadata space
+    - net: remove a WARN_ON() in net_enable_timestamp()
+    - 8021q: fix a potential use-after-free
+    - unix: fix a race condition in unix_release()
+    - atl1e: drop pci-msi support because of packet corruption
+      (possibly fixes: #577747)
+    - ipv6: fix bad free of addrconf_init_net
+    - ipv6: don't accept multicast traffic with scope 0
+    - ipv6: don't accept node local multicast traffic from the wire
+    - pch_gbe: fix ip_summed checksum reporting on rx
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.7
+    - drm/nouveau: fix handling empty channel list in ioctl's
+    - drm/i915: Be sure to turn hsync/vsync back on at crt enable (v2)
+      (fixes regression in 3.8.3)
+    - drm: correctly restore mappings if drm_open fails
+    - mm: prevent mmap_cache race in find_vma()
+    - mwifiex: limit channel number not to overflow memory
+    - spinlocks and preemption points need to be at least compiler barriers
+    - crypto: gcm - fix assumption that assoc has one segment
+    - NFSv4/4.1: Fix bugs in nfs4[01]_walk_client_list
+    - vfio-pci: Fix possible integer overflow
+    - can: gw: use kmem_cache_free() instead of kfree()
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.8
+    - ipc: set msg back to -EAGAIN if copy wasn't performed
+    - GFS2: Fix unlock of fcntl locks during withdrawn state
+    - cifs: Allow passwords which begin with a delimitor (fixes
+      regression in 3.8)
+    - [i386] Fix possible incomplete TLB invalidate with PAE pagetables
+    - sched_clock: Prevent 64bit inatomicity on 32bit systems
+    - [x86] mm, paravirt: Fix vmalloc_fault oops during lazy MMU updates
+    - tty: don't deadlock while flushing workqueue
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.9
+    - [powerpc] add a missing label in resume_kernel
+    - [powerpc] kvm/powerpc/e500mc: fix tlb invalidation on cpu migration
+    - kthread: Prevent unpark race which puts threads on the wrong cpu
+    - hrtimer: Don't reinitialize a cpu_base lock on CPU_UP
+    - hugetlbfs: add swap entry check in follow_hugetlb_page()
+    - kernel/signal.c: stop info leak via the tkill and the tgkill syscalls
+    - hfsplus: fix potential overflow in hfsplus_file_truncate()
+    - md: raid1,10: Handle REQ_WRITE_SAME flag in write bios
+    - [x86] KVM: Allow cross page reads and writes from cached translations.
+      (fixes regression in fix for CVE-2013-1796)
+    - hsched: Convert BUG_ON()s in try_to_wake_up_local() to WARN_ON_ONCE()s
+    - [armel] Fix kexec by setting outer_cache.inv_all for Feroceon
+    - ath9k_htc: accept 1.x firmware newer than 1.3
+    - mac80211: fix cfg80211 interaction on auth/assoc request
+    - crypto: algif - suppress sending source address information in recvmsg
+      (CVE-2013-3076)
+    - vm: add and use vm_iomap_memory() helper function
+    - Btrfs: make sure nbytes are right after log replay
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.10
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.11
+    - TTY: do not update atime/mtime on read/write
+    - TTY: fix atime/mtime regression
+    - [sparc] sparc64: Fix race in TLB batch processing.
+    - atm: update msg_namelen in vcc_recvmsg() (CVE-2013-3222)
+    - ax25: fix info leak via msg_name in ax25_recvmsg() (CVE-2013-3223)
+    - Bluetooth: fix possible info leak in bt_sock_recvmsg() (CVE-2013-3224)
+    - Bluetooth: RFCOMM - Fix missing msg_namelen update in
+      rfcomm_sock_recvmsg() (CVE-2013-3225)
+    - Bluetooth: SCO - Fix missing msg_namelen update in sco_sock_recvmsg()
+    - caif: Fix missing msg_namelen update in caif_seqpkt_recvmsg()
+      (CVE-2013-3227)
+    - irda: Fix missing msg_namelen update in irda_recvmsg_dgram()
+      (CVE-2013-3228)
+    - [s390] iucv: Fix missing msg_namelen update in iucv_sock_recvmsg()
+      (CVE-2013-3229)
+    - l2tp: fix info leak in l2tp_ip6_recvmsg()
+    - llc: Fix missing msg_namelen update in llc_ui_recvmsg() (CVE-2013-3231)
+    - netrom: fix info leak via msg_name in nr_recvmsg()
+    - NFC: llcp: fix info leaks via msg_name in llcp_sock_recvmsg()
+    - rose: fix info leak via msg_name in rose_recvmsg() (CVE-2013-3234)
+    - tipc: fix info leaks via msg_name in recv_msg/recv_stream
+      (CVE-2013-3235)
+    - atl1e: limit gso segment size to prevent generation of wrong ip length
+      fields (Closes: #565404)
+    - af_unix: If we don't care about credentials coallesce all messages
+    - ipv6/tcp: Stop processing ICMPv6 redirect messages
+    - rtnetlink: Call nlmsg_parse() with correct header length
+    - tcp: incoming connections might use wrong route under synflood
+    - tcp: Reallocate headroom if it would overflow csum_start
+    - net: cdc_mbim: remove bogus sizeof()
+    - net: fix incorrect credentials passing (CVE-2013-1979)
+    - net: drop dst before queueing fragments
+
+  [ Ben Hutchings ]
+  * [rt] Update to 3.8.10-rt6
+  * aufs: Update to aufs3.8-20130325
+    - ftruncate() supports sb_{start,end}_write()
+    - replace mnt_drop_write_file() by __mnt_drop_write()
+    - support for vfs_truncate()
+  * udeb: Move modules and adjust dependencies to avoid duplicates
+    (Closes: #706646)
+    - Move crc16 to crc-modules; make ext4-modules and nic-usb-modules depend
+      on it
+    - Make xfs-modules depends on crc-modules
+    - Move pps_core and ptp to nic-common-modules or nic-modules as appropriate
+  * udeb: Merge redundant configuration for ext{2,3} dependency on mbcache
+  * Set ABI to 1
+  * bug script: Remove broken sound functions (Closes: #705619)
+  * [i386/486] udeb: Add lxfb to fb-modules (Closes: #705780)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sat, 04 May 2013 21:45:23 +0100
+
+linux (3.8.5-1~experimental.1) experimental; urgency=high
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.4
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.5
+
+  [ Ben Hutchings ]
+  * signal: Fix use of missing sa_restorer field (build regression
+    introduced by fix for CVE-2013-0914)
+  * udeb: Add hid-generic, hid-holtek-kbd, hid-lenovo-tpkbd,
+    hid-roccat-isku, hid-roccat-lua, hid-roccat-savu to input-modules
+  * cdc_ncm,cdc_mbim: Use NCM by default
+  * [rt] Update to 3.8.4-rt2 and reenable
+  * [rt] wireless: orinoco_usb is BROKEN
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sun, 31 Mar 2013 07:35:31 +0100
+
+linux (3.8.3-1~experimental.1) experimental; urgency=high
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.3
+
+  [ Ben Hutchings ]
+  * aufs: Update to aufs3.8-20130311
+  * USB: cdc-wdm: fix buffer overflow (CVE-2013-1860)
+  * signal: always clear sa_restorer on execve (CVE-2013-0914)
+  * ext3: Fix format string issues (CVE-2013-1848)
+  * net/sctp: Validate parameter size for SCTP_GET_ASSOC_STATS (CVE-2013-1828)
+  * bridge: fix mdb info leaks
+  * rtnl: fix info leak on RTM_GETLINK request for VF devices
+  * dcbnl: fix various netlink info leaks
+  * ALSA: seq: Fix missing error handling in snd_seq_timer_open()
+
+  [ Ian Campbell ]
+  * arm: correct path to DTB files. Patch from Nobuhiro Iwamatsu.
+    (Closes: #703082)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Tue, 19 Mar 2013 04:52:46 +0000
+
+linux (3.8.2-1~experimental.1) experimental; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.1
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.8.2
+
+  [ Ben Hutchings ]
+  * linux-image: Increase minimum version of initramfs-tools to 0.110~
+    which copes with the recently renamed EHCI and NFS modules
+  * genorig: Accept xz-compressed upstream tarballs and patches,
+    thanks to Sedat Dilek
+  * net: Enable USB_NET_CDC_MBIM as module (Closes: #701869)
+  * mfd,mmc,memstick: Enable MFD_RTSX_PCI, MMC_REALTEK_PCI and
+    MEMSTICK_REALTEK_PCI as modules, replacing RTS_PSTOR (Closes: #702108)
+  * [mips,mipsel] Add dependencies for HAVE_ARCH_TRANSPARENT_HUGEPAGE
+    (fixes FTBFS)
+
+  [ Aurelien Jarno ]
+  * [mips/octeon] Change HW_RANDOM and HW_RANDOM_OCTEON to modules.
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Thu, 07 Mar 2013 04:00:04 +0000
+
+linux (3.8-1~experimental.1) experimental; urgency=low
+
+  * New upstream release: http://kernelnewbies.org/Linux_3.8
+    - pidns: Support unsharing the pid namespace. (Closes: #595920)
+    - fsnotify: Rework locking and reference counting (Closes: #602966)
+
+  [ Ben Hutchings ]
+  * aufs: Update to aufs3.x-rcN-20130204
+  * sock_diag: Fix out-of-bounds access to sock_diag_handlers[]
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Mon, 25 Feb 2013 05:29:53 +0000
+
+linux (3.7.8-1~experimental.1) experimental; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.7.4
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.7.5
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.7.6
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.7.7
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.7.8
+
+  [ Ben Hutchings ]
+  * Add powerpcspe architecture, thanks to Roland Stigge (Closes: #693042)
+  * aufs: Hide CONFIG_AUFS_PROC_MAP, which requires a patch we don't apply
+    (Closes: #693332)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Fri, 15 Feb 2013 00:42:03 +0000
+
+linux (3.7.3-1~experimental.1) experimental; urgency=low
 
   * New upstream stable update:
     http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.7.2
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.7.3
 
   [ Ben Hutchings ]
   * [ia64] nouveau: Disable another bit of ACPI support (fixes FTBFS)
@@ -19,7 +1072,7 @@ linux (3.7.2-1~experimental.1) UNRELEASED; urgency=low
   [ Ian Campbell ]
   * [x86/xen] Update microcode driver to use new API.
 
- -- Ben Hutchings <ben@decadent.org.uk>  Sun, 06 Jan 2013 04:39:12 +0000
+ -- Ben Hutchings <ben@decadent.org.uk>  Fri, 18 Jan 2013 01:36:15 +0000
 
 linux (3.7.1-1~experimental.2) experimental; urgency=low
 
@@ -344,6 +1397,376 @@ linux-2.6 (3.3~rc6-1~experimental.1) experimental; urgency=low
   * rt: Disable until it is updated for Linux 3.3 or later
 
  -- Ben Hutchings <ben@decadent.org.uk>  Sun, 04 Mar 2012 20:27:42 +0000
+
+linux (3.2.41-2) unstable; urgency=low
+
+  * [ia64] udeb: Remove efi-modules package; make kernel-image provide
+    efi-modules (fixes FTBFS)
+  * linux-headers: Fix file installation on architectures without
+    Kbuild.platforms (Closes: #703800)
+  * [x86] drm/i915: bounds check execbuffer relocation count (CVE-2013-0913)
+  * [x86] drm: Enable DRM_GMA500 as module, replacing DRM_PSB (Closes: #703506)
+    - Enable DRM_GMA600, DRM_GMA3600, DRM_MEDFIELD
+  * [x86] KVM: x86: fix for buffer overflow in handling of MSR_KVM_SYSTEM_TIME
+    (CVE-2013-1796)
+  * [x86] KVM: x86: Convert MSR_KVM_SYSTEM_TIME to use gfn_to_hva_cache
+    functions (CVE-2013-1797)
+  * KVM: Fix bounds checking in ioapic indirect register reads (CVE-2013-1798)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Mon, 25 Mar 2013 15:17:44 +0000
+
+linux (3.2.41-1) unstable; urgency=low
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.2.40
+    - ext4: return ENOMEM if sb_getblk() fails
+    - ext4: fix possible use-after-free with AIO
+    - s390/kvm: Fix store status for ACRS/FPRS
+    - staging: comedi: disallow COMEDI_DEVCONFIG on non-board minors
+    - ext4: fix race in ext4_mb_add_n_trim()
+    - UBIFS: fix double free of ubifs_orphan objects
+    - hrtimer: Prevent hrtimer_enqueue_reprogram race
+    - nfsd: Fix memleak
+    - x86: Do not leak kernel page mapping locations
+    - USB: usb-storage: unusual_devs update for Super TOP SATA bridge
+    - posix-cpu-timers: Fix nanosleep task_struct leak
+    - NFSv4.1: Don't decode skipped layoutgets
+    - cgroup: fix exit() vs rmdir() race
+    - cpuset: fix cpuset_print_task_mems_allowed() vs rename() race
+    - ext4: fix xattr block allocation/release with bigalloc
+    - mm: fix pageblock bitmap allocation
+    - target: Add missing mapped_lun bounds checking during make_mappedlun
+      setup
+    - b43: Increase number of RX DMA slots
+    - posix-timer: Don't call idr_find() with out-of-range ID
+    - fs: Fix possible use-after-free with AIO
+    - powerpc/kexec: Disable hard IRQ before kexec
+    - mmu_notifier_unregister NULL Pointer deref and multiple ->release()
+      callouts
+    - tmpfs: fix use-after-free of mempolicy object (CVE-2013-1767)
+    - ocfs2: fix possible use-after-free with AIO
+    - ocfs2: fix ocfs2_init_security_and_acl() to initialize acl correctly
+    - ocfs2: ac->ac_allow_chain_relink=0 won't disable group relink
+    - idr: fix a subtle bug in idr_get_next()
+    - idr: make idr_get_next() good for rcu_read_lock()
+    - idr: fix top layer handling
+    - sysctl: fix null checking in bin_dn_node_address()
+    - nbd: fsync and kill block device on shutdown
+    - s390/timer: avoid overflow when programming clock comparator
+      (regression in 3.2.38)
+    - xen-pciback: rate limit error messages from xen_pcibk_enable_msi{,x}()
+      (CVE-2013-0231)
+    - xen-netback: correctly return errors from netbk_count_requests()
+    - xen-netback: cancel the credit timer when taking the vif down
+    - ipv6: use a stronger hash for tcp
+    - staging: comedi: ni_labpc: correct differential channel sequence for
+      AI commands
+    - staging: comedi: ni_labpc: set up command4 register *after* command3
+    - vhost: fix length for cross region descriptor (CVE-2013-0311)
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.2.41
+    - NFS: Don't allow NFS silly-renamed files to be deleted, no signal
+    - ARM: VFP: fix emulation of second VFP instruction
+    - md: fix two bugs when attempting to resize RAID0 array.
+    - proc connector: reject unprivileged listener bumps
+    - cifs: ensure that cifs_get_root() only traverses directories
+    - dm: fix truncated status strings
+    - hw_random: make buffer usable in scatterlist. (real fix for #701784)
+    - efi_pstore: Check remaining space with QueryVariableInfo() before
+      writing data
+    - efi: be more paranoid about available space when creating variables
+      (Closes: #703574)
+    - vfs: fix pipe counter breakage
+    - xen/pciback: Don't disable a PCI device that is already disabled.
+    - ALSA: seq: Fix missing error handling in snd_seq_timer_open()
+    - ext3: Fix format string issues (CVE-2013-1848)
+    - keys: fix race with concurrent install_user_keyrings() (CVE-2013-1792)
+    - USB: cdc-wdm: fix buffer overflow (CVE-2013-1860)
+    - signal: always clear sa_restorer on execve (CVE-2013-0914)
+    - crypto: user - fix info leaks in report API (CVE-2013-2546,
+      CVE-2013-2547, CVE-2013-2548)
+    - Fix: compat_rw_copy_check_uvector() misuse in aio, readv, writev, and
+      security keys
+    - batman-adv: bat_socket_read missing checks
+    - batman-adv: Only write requested number of byte to user buffer
+    - mm/hotplug: correctly add new zone to all other nodes' zone lists
+      (CVE-2012-5517)
+    - btrfs: use rcu_barrier() to wait for bdev puts at unmount
+
+  [ Aurelien Jarno]
+  * [mips,mipsel] Disable VGA_CONSOLE and ignore the corresponding ABI
+    change. It is completely broken on MIPS.
+  * headers: Include Kbuild.platforms and Platform files in -common to
+    fix out-of-tree building on mips and mipsel.
+  * [{mips,mipsel}/{4,5}kc-malta] Enable HW_RANDOM as module so that both
+    flavours have a consistent configuration.
+
+  [ Ben Hutchings ]
+  * [x86] ata_piix: reenable MS Virtual PC guests (fixes regression in
+    3.2.19-1)
+  * test-patches: Clean up all previous test patches, whether or not they
+    were applied
+  * test-patches: Add --fuzz option to allow testing patches that have fuzz
+  * [x86] efi: Fix processor-specific memcpy() build error (Closes: #698581)
+  * udeb: Add hid-topseed to input-modules (Closes: #702611)
+  * [x86] drm/i915: Unconditionally initialise the interrupt workers,
+    thanks to Bjørn Mork (Closes: #692607)
+  * efi: Ensure efivars is loaded on EFI systems (Closes: #703363)
+    - [x86] Use a platform device to trigger loading of efivars
+    - [ia64] Change EFI_VARS from module to built-in
+  * efivars: Work around serious firmware bugs
+    - Allow disabling use as a pstore backend
+    - Add module parameter to disable use as a pstore backend
+      * [x86] Set EFI_VARS_PSTORE_DEFAULT_DISABLE=y
+    - explicitly calculate length of VariableName
+    - Handle duplicate names from get_next_variable()
+  * efi_pstore: Introducing workqueue updating sysfs
+  * efivars: pstore: Do not check size when erasing variable
+  * efivars: Remove check for 50% full on write
+  * kmsg_dump: Only dump kernel log in error cases (Closes: #703386)
+    - kexec: remove KMSG_DUMP_KEXEC
+    - kmsg_dump: don't run on non-error paths by default
+  * [x86] i915: initialize CADL in opregion (Closes: #703271)
+  * drm, agp: Update to 3.4.37:
+    - drm/radeon/dce6: fix display powergating
+    - drm: don't add inferred modes for monitors that don't support them
+    - drm/i915: Increase the RC6p threshold.
+  * signal: Fix use of missing sa_restorer field (build regression
+    introduced by fix for CVE-2013-0914)
+  * rds: limit the size allocated by rds_message_alloc()
+  * rtnl: fix info leak on RTM_GETLINK request for VF devices
+  * dcbnl: fix various netlink info leaks
+  * [s390] mm: fix flush_tlb_kernel_range()
+  * [powerpc] Fix cputable entry for 970MP rev 1.0
+  * vhost/net: fix heads usage of ubuf_info
+  * udf: avoid info leak on export (CVE-2012-6548)
+  * isofs: avoid info leak on export (CVE-2012-6549)
+  * [x86,powerpc/powerpc64] random: Change HW_RANDOM back from built-in to
+    module, as we now have a real fix for #701784
+  * [rt] Update to 3.2.40-rt60
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sat, 23 Mar 2013 03:54:34 +0000
+
+linux (3.2.39-2) unstable; urgency=high
+
+  * [s390,s390x] virtio: Ignore ABI changes in 3.2.39 (fixes FTBFS)
+  * [sparc] drm: Ignore ABI changes in 3.2.39 (fixes FTBFS)
+  * [sparc] drm: Change from built-in to module
+  * [rt] Update to 3.2.39-rt59:
+    - acpi/rt: Convert acpi_gbl_hardware lock back to a raw_spinlock_t
+    - printk: Fix rq->lock vs logbuf_lock unlock lock inversion
+    - wait-simple: Simple waitqueue implementation
+    - rcutiny: Use simple waitqueue
+  * [x86] efi: Fix ABI change for introduction of efi_enabled() function
+    in 3.2.38 (Closes: #701690)
+  * [armel/versatile] i2c: Re-enable I2C_PCA_PLATFORM as module, erroneously
+    disabled in 3.2.39-1 (fixes FTBFS)
+  * [x86,powerpc/powerpc64] random: Change HW_RANDOM from module to built-in,
+    to work around virtio-rng bug (Closes: #701784)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Wed, 27 Feb 2013 03:48:30 +0000
+
+linux (3.2.39-1) unstable; urgency=high
+
+  * New upstream stable update:
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.2.36
+    - freezer: PF_FREEZER_NOSIG should be cleared along with PF_NOFREEZE
+      (Closes: #697077)
+    - tmpfs: fix shared mempolicy leak
+    - virtio: 9p: correctly pass physical address to userspace for high pages
+    - virtio: force vring descriptors to be allocated from lowmem
+    - USB: EHCI: bugfix: urb->hcpriv should not be NULL
+    - rcu: Fix batch-limit size problem
+    - Bluetooth: ath3k: Add support for VAIO VPCEH [0489:e027]
+      (Closes: #700550)
+    - mvsas: fix undefined bit shift
+    - ALSA: usb-audio: Avoid autopm calls after disconnection; Fix missing
+      autopm for MIDI input (Closes: #664068)
+    - target/file: Fix 32-bit highmem breakage for SGL -> iovec mapping
+    - SCSI: fix Null pointer dereference on disk error
+    - proc: pid/status: show all supplementary groups
+    - nfsd4: fix oops on unusual readlike compound
+    - ARM: missing ->mmap_sem around find_vma() in swp_emulate.c
+    - sctp: fix memory leak in sctp_datamsg_from_user() when copy from user
+      space fails
+    - ne2000: add the right platform device
+    - irda: sir_dev: Fix copy/paste typo
+    - ipv4: ip_check_defrag must not modify skb before unsharing
+    - telephony: ijx: buffer overflow in ixj_write_cid()
+    - udf: fix memory leak while allocating blocks during write
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.2.37
+    - ext4: fix extent tree corruption caused by hole punch
+    - jbd2: fix assertion failure in jbd2_journal_flush()
+    - tmpfs mempolicy: fix /proc/mounts corrupting memory
+    - sparc: huge_ptep_set_* functions need to call set_huge_pte_at()
+    - inet: Fix kmemleak in tcp_v4/6_syn_recv_sock and
+      dccp_v4/6_request_recv_sock
+    - net: sched: integer overflow fix
+    - tcp: implement RFC 5961 3.2
+    - tcp: implement RFC 5961 4.2
+    - tcp: refine SYN handling in tcp_validate_incoming
+    - tcp: tcp_replace_ts_recent() should not be called from
+      tcp_validate_incoming()
+    - tcp: RFC 5961 5.2 Blind Data Injection Attack Mitigation
+    - RDMA/nes: Fix for crash when registering zero length MR for CQ
+    - ACPI : do not use Lid and Sleep button for S5 wakeup
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.2.38
+    - staging: comedi: comedi_test: fix race when cancelling command
+    - mm: use aligned zone start for pfn_to_bitidx calculation
+    - [s390] s390/time: fix sched_clock() overflow (Closes: #698382) 
+    - [i386] xen: Fix stack corruption in xen_failsafe_callback for 32bit
+      PVOPS guests. (CVE-2013-0190)
+    - KVM: PPC: Emulate dcbf
+    - evm: checking if removexattr is not a NULL
+    - ath9k_htc: Fix memory leak
+    - ath9k: do not link receive buffers during flush
+    - ath9k: fix double-free bug on beacon generate failure
+    - x86/msr: Add capabilities check
+    - can: c_can: fix invalid error codes
+    - can: ti_hecc: fix invalid error codes
+    - can: pch_can: fix invalid error codes
+    - smp: Fix SMP function call empty cpu mask race
+    - xfs: Fix possible use-after-free with AIO
+    - EDAC: Test correct variable in ->store function
+    - samsung-laptop: Disable on EFI hardware, to avoid damaging it
+    - NFS: Don't silently fail setattr() requests on mountpoints
+    - intel-iommu: Prevent devices with RMRRs from being placed into SI Domain
+    - ALSA: usb-audio: Fix regression by disconnection-race-fix patch
+      (Closes: #696321)
+    - printk: fix buffer overflow when calling log_prefix function from
+      call_console_drivers
+    http://www.kernel.org/pub/linux/kernel/v3.x/ChangeLog-3.2.39
+    - USB: XHCI: fix memory leak of URB-private data
+    - sched/rt: Use root_domain of rt_rq not current processor
+    - mwifiex: fix incomplete scan in case of IE parsing error
+    - x86-64: Replace left over sti/cli in ia32 audit exit code
+    - Bluetooth: Fix handling of unexpected SMP PDUs
+    - ptrace/x86: Partly fix set_task_blockstep()->update_debugctlmsr() logic
+    - Fix race condition with PTRACE_SETREGS and fatal signal (CVE-2013-0871)
+      + ptrace: introduce signal_wake_up_state() and ptrace_signal_wake_up()
+      + ptrace: ensure arch_ptrace/ptrace_request can never race with SIGKILL
+      + wake_up_process() should be never used to wakeup a TASK_STOPPED/TRACED
+        task
+    - net: prevent setting ttl=0 via IP_TTL
+    - ipv6: fix header length calculation in ip6_append_data()
+    - netxen: fix off by one bug in netxen_release_tx_buffer()
+    - r8169: remove the obsolete and incorrect AMD workaround
+    - net: loopback: fix a dst refcounting issue
+    - packet: fix leakage of tx_ring memory
+    - net: sctp: sctp_setsockopt_auth_key: use kzfree instead of kfree
+    - net: sctp: sctp_endpoint_free: zero out secret key data
+    - xen/netback: shutdown the ring if it contains garbage. (CVE-2013-0216)
+    - xen/netback: don't leak pages on failure in xen_netbk_tx_check_gop.
+    - xen/netback: free already allocated memory on failure in
+      xen_netbk_get_requests
+    - netback: correct netbk_tx_err to handle wrap around. (CVE-2013-0217)
+    - tcp: frto should not set snd_cwnd to 0
+    - tcp: fix for zero packets_in_flight was too broad
+    - tcp: fix MSG_SENDPAGE_NOTLAST logic
+    - bridge: Pull ip header into skb->data before looking into ip header.
+      (Closes: #697903)
+    - x86/xen: don't assume %ds is usable in xen_iret for 32-bit PVOPS.
+      (CVE-2013-0228)
+
+  [ Aurelien Jarno ]
+  * [armhf/vexpress] Add kernel udebs.
+
+  [ Julien Cristau ]
+  * Backport drm and agp subsystems from Linux 3.4.29 (closes: #687442)
+    - [x86] i915: Fixes freezes on Ivy Bridge (Closes: #689268)
+    - nouveau: Support for newer nvidia chipsets (Closes: #690284)
+    - radeon: Support for HD7000 'Southern Islands' chips
+    - [x86] drm/i915: add Ivy Bridge GT2 Server entries (Closes: #684767)
+    - [x86] drm/i915: Close race between processing unpin task and queueing
+      the flip
+
+  [ Ben Hutchings ]
+  * Input: wacom - fix touch support for Bamboo Fun CTH-461
+  * media/rc: Add iguanair driver from Linux 3.7 (Closes: #696925)
+  * rt2800: add chipset revision RT5390R support (Closes: #696592)
+  * [armhf/mx5] mtd: Enable MTD_BLOCK as module
+  * [armhf/mx5] udeb: Add missing storage drivers (Closes: #697128)
+    - Add ata-modules including libata, pata-modules including pata_imx,
+      sata-modules including ahci_platform
+    - Add sdhci-esdhc-imx to mmc-modules
+    - Add mtd-modules including mtd, mtdblock and m25p80
+  * [armhf] udeb: Fix network driver selection
+    - [armhf/mx5] Remove nic-modules
+    - [armhf/vexpress] Add usb-modules
+    - Add standard set of USB drivers to nic-usb-modules
+    - Add nic-wireless-modules
+  * be2net: Apply backported fixes requested by Emulex (Closes: #697479)
+    - be2net: do not modify PCI MaxReadReq size
+    - be2net: fix reporting number of actual rx queues
+    - be2net: do not use SCRATCHPAD register
+    - be2net: reduce gso_max_size setting to account for ethernet header.
+    - be2net: Increase statistics structure size for skyhawk.
+    - be2net: Explicitly clear the reserved field in the Tx Descriptor
+    - be2net: Regression bug wherein VFs creation broken for multiple cards.
+    - be2net: Fix to trim skb for padded vlan packets to workaround an ASIC Bug
+    - be2net: Fix Endian
+    - be2net: Enable RSS UDP hashing for Lancer and Skyhawk
+    - be2net: dont pull too much data in skb linear part
+    - be2net: Fix to parse RSS hash from Receive completions correctly.
+    - be2net: Avoid disabling BH in be_poll()
+  * udeb: Add specialised USB keyboard/mouse drivers to input-modules:
+    hid-a4tech, hid-cypress, hid-ezkey (Closes: #697035), hid-kensington,
+    hid-keytouch, hid-kye, hid-multitouch, hid-ortek, hid-primax,
+    hid-quanta, hid-samsung, hid-speedlink
+  * radeon: Firmware is required for DRM and KMS on R600 onward, but not
+    for KMS on earlier chips (Closes: #697229)
+  * [!powerpc] radeon: Reenable DRM_RADEON_KMS, as it apparently works on
+    most non-PowerMac systems
+  * fs: cachefiles: add support for large files in filesystem caching
+    (Closes: #698376)
+  * [rt] Update to 3.2.38-rt57:
+    - sched: Adjust sched_reset_on_fork when nothing else changes
+    - sched: Queue RT tasks to head when prio drops
+    - sched: Consider pi boosting in setscheduler
+    - sched: Init idle->on_rq in init_idle()
+    - sched: Check for idle task in might_sleep()
+    - mm: swap: Initialize local locks early
+  * [armel/versatile,armhf/vexpress] i2c: Enable I2C, I2C_VERSATILE as modules
+    (Closes: #696182)
+  * ext4: Fix corruption by hole punch in large files (Closes: #685726)
+    - rewrite punch hole to use ext4_ext_remove_space()
+    - fix hole punch failure when depth is greater than 0
+    - fix kernel BUG on large-scale rm -rf commands
+  * md: protect against crash upon fsync on ro array (Closes: #696650)
+  * net: Add alx driver for Atheros AR8161 and AR8162 (Closes: #699129)
+    - Mark as staging, since it has not been accepted upstream
+  * [armel/kirkwood] rtc-s35390a: add wakealarm support (Closes: #693997)
+  * [x86] i915: Invert backlight brightness control for various models
+    including Packard Bell NCL20 (Closes: #627372) and eMachines G725
+    (Closes: #680737)
+    - Also allow this behaviour to be enabled via module parameter
+      invert_brightness=1
+  * [amd64] edac: Enable EDAC_SBRIDGE as module (Closes: #699283)
+  * SCSI: Add virtio_scsi driver (Closes: #686636)
+  * [x86] sound: Enable LINE6_USB as module (Closes: #700211)
+    - Apply upstream changes up to Linux 3.8-rc1
+  * [armhf/mx5] Update description to mention i.MX53
+  * mm: Try harder to allocate vmemmap blocks (Closes: #699913)
+  * aufs: Update to aufs3.2-20130204:
+    - support for syncfs(2)
+    - possible bugfix, race in lookup
+    - bugfix, half refreshed iinfo
+    - possible bugfix, au_lkup_by_ino() returns ESTALE
+  * [x86] efi: Clear EFI_RUNTIME_SERVICES rather than EFI_BOOT by "noefi" boot
+    parameter
+  * [x86] efi: Make "noefi" really disable EFI runtime serivces
+  * drm, agp: Update to 3.4.32
+    - drm/radeon: add WAIT_UNTIL to the non-VM safe regs list for cayman/TN
+    - drm/radeon: prevent crash in the ring space allocation
+  * linux-image-dbg: Add symlinks to vmlinux from the locations expected by
+    kdump-tools (Closes: #700418), systemtap and others
+  * mm: fix pageblock bitmap allocation (fixes regression in 3.2.38)
+  * USB: usb-storage: unusual_devs update for Super TOP SATA bridge
+
+  [ Cyril Brulebois ]
+  * Bump python build-dep, needed since the switch from local SortedDict
+    to collections.OrderedDict (new in version 2.7). (Closes: #697740)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Mon, 25 Feb 2013 00:36:51 +0000
 
 linux (3.2.35-2) unstable; urgency=low
 

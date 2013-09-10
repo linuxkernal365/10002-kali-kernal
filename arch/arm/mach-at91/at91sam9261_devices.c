@@ -21,12 +21,12 @@
 #include <linux/fb.h>
 #include <video/atmel_lcdc.h>
 
-#include <mach/board.h>
 #include <mach/at91sam9261.h>
 #include <mach/at91sam9261_matrix.h>
 #include <mach/at91_matrix.h>
 #include <mach/at91sam9_smc.h>
 
+#include "board.h"
 #include "generic.h"
 
 
@@ -488,7 +488,6 @@ static struct resource lcdc_resources[] = {
 };
 
 static struct platform_device at91_lcdc_device = {
-	.name		= "atmel_lcdfb",
 	.id		= 0,
 	.dev		= {
 				.dma_mask		= &lcdc_dmamask,
@@ -504,6 +503,11 @@ void __init at91_add_device_lcdc(struct atmel_lcdfb_info *data)
 	if (!data) {
 		return;
 	}
+
+	if (cpu_is_at91sam9g10())
+		at91_lcdc_device.name = "at91sam9g10-lcdfb";
+	else
+		at91_lcdc_device.name = "at91sam9261-lcdfb";
 
 #if defined(CONFIG_FB_ATMEL_STN)
 	at91_set_A_periph(AT91_PIN_PB0, 0);     /* LCDVSYNC */
@@ -706,7 +710,7 @@ static struct resource ssc0_resources[] = {
 };
 
 static struct platform_device at91sam9261_ssc0_device = {
-	.name	= "ssc",
+	.name	= "at91rm9200_ssc",
 	.id	= 0,
 	.dev	= {
 		.dma_mask		= &ssc0_dmamask,
@@ -748,7 +752,7 @@ static struct resource ssc1_resources[] = {
 };
 
 static struct platform_device at91sam9261_ssc1_device = {
-	.name	= "ssc",
+	.name	= "at91rm9200_ssc",
 	.id	= 1,
 	.dev	= {
 		.dma_mask		= &ssc1_dmamask,
@@ -790,7 +794,7 @@ static struct resource ssc2_resources[] = {
 };
 
 static struct platform_device at91sam9261_ssc2_device = {
-	.name	= "ssc",
+	.name	= "at91rm9200_ssc",
 	.id	= 2,
 	.dev	= {
 		.dma_mask		= &ssc2_dmamask,

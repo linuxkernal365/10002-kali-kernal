@@ -410,11 +410,11 @@ static int iscsit_dataout_pre_datapduinorder_yes(
 	/*
 	 * For DataSequenceInOrder=Yes: If the offset is greater than the global
 	 * DataPDUInOrder=Yes offset counter in struct iscsi_cmd a protcol error has
-	 * occured and fail the connection.
+	 * occurred and fail the connection.
 	 *
 	 * For DataSequenceInOrder=No: If the offset is greater than the per
 	 * sequence DataPDUInOrder=Yes offset counter in struct iscsi_seq a protocol
-	 * error has occured and fail the connection.
+	 * error has occurred and fail the connection.
 	 */
 	if (conn->sess->sess_ops->DataSequenceInOrder) {
 		if (be32_to_cpu(hdr->offset) != cmd->write_data_done) {
@@ -746,13 +746,12 @@ int iscsit_check_post_dataout(
 		if (!conn->sess->sess_ops->ErrorRecoveryLevel) {
 			pr_err("Unable to recover from DataOUT CRC"
 				" failure while ERL=0, closing session.\n");
-			iscsit_add_reject_from_cmd(ISCSI_REASON_DATA_DIGEST_ERROR,
-					1, 0, buf, cmd);
+			iscsit_reject_cmd(cmd, ISCSI_REASON_DATA_DIGEST_ERROR,
+					  buf);
 			return DATAOUT_CANNOT_RECOVER;
 		}
 
-		iscsit_add_reject_from_cmd(ISCSI_REASON_DATA_DIGEST_ERROR,
-				0, 0, buf, cmd);
+		iscsit_reject_cmd(cmd, ISCSI_REASON_DATA_DIGEST_ERROR, buf);
 		return iscsit_dataout_post_crc_failed(cmd, buf);
 	}
 }
@@ -801,7 +800,7 @@ void iscsit_start_time2retain_handler(struct iscsi_session *sess)
 {
 	int tpg_active;
 	/*
-	 * Only start Time2Retain timer when the assoicated TPG is still in
+	 * Only start Time2Retain timer when the associated TPG is still in
 	 * an ACTIVE (eg: not disabled or shutdown) state.
 	 */
 	spin_lock(&ISCSI_TPG_S(sess)->tpg_state_lock);
@@ -842,11 +841,11 @@ int iscsit_stop_time2retain_timer(struct iscsi_session *sess)
 		return 0;
 
 	sess->time2retain_timer_flags |= ISCSI_TF_STOP;
-	spin_unlock_bh(&se_tpg->session_lock);
+	spin_unlock(&se_tpg->session_lock);
 
 	del_timer_sync(&sess->time2retain_timer);
 
-	spin_lock_bh(&se_tpg->session_lock);
+	spin_lock(&se_tpg->session_lock);
 	sess->time2retain_timer_flags &= ~ISCSI_TF_RUNNING;
 	pr_debug("Stopped Time2Retain Timer for SID: %u\n",
 			sess->sid);
@@ -909,6 +908,7 @@ void iscsit_cause_connection_reinstatement(struct iscsi_conn *conn, int sleep)
 	wait_for_completion(&conn->conn_wait_comp);
 	complete(&conn->conn_post_wait_comp);
 }
+EXPORT_SYMBOL(iscsit_cause_connection_reinstatement);
 
 void iscsit_fall_back_to_erl0(struct iscsi_session *sess)
 {

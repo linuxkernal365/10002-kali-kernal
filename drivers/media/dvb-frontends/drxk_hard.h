@@ -320,11 +320,7 @@ struct drxk_state {
 
 	u8               *m_microcode;
 	int               m_microcode_length;
-	bool              m_DRXK_A1_PATCH_CODE;
-	bool              m_DRXK_A1_ROM_CODE;
-	bool              m_DRXK_A2_ROM_CODE;
-	bool              m_DRXK_A3_ROM_CODE;
-	bool              m_DRXK_A2_PATCH_CODE;
+	bool		  m_DRXK_A3_ROM_CODE;
 	bool              m_DRXK_A3_PATCH_CODE;
 
 	bool              m_rfmirror;
@@ -348,6 +344,8 @@ struct drxk_state {
 	bool	no_i2c_bridge;
 	bool	antenna_dvbt;
 	u16	antenna_gpio;
+
+	fe_status_t fe_status;
 
 	/* Firmware */
 	const char *microcode_name;

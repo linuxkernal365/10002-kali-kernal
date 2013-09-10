@@ -65,6 +65,7 @@ static const char * const iio_chan_type_name_spec[] = {
 	[IIO_CAPACITANCE] = "capacitance",
 	[IIO_ALTVOLTAGE] = "altvoltage",
 	[IIO_CCT] = "cct",
+	[IIO_PRESSURE] = "pressure",
 };
 
 static const char * const iio_modifier_names[] = {
@@ -397,10 +398,73 @@ static ssize_t iio_read_channel_info(struct device *dev,
 		val2 = do_div(tmp, 1000000000LL);
 		val = tmp;
 		return sprintf(buf, "%d.%09u\n", val, val2);
+	case IIO_VAL_FRACTIONAL_LOG2:
+		tmp = (s64)val * 1000000000LL >> val2;
+		val2 = do_div(tmp, 1000000000LL);
+		val = tmp;
+		return sprintf(buf, "%d.%09u\n", val, val2);
 	default:
 		return 0;
 	}
 }
+
+/**
+ * iio_str_to_fixpoint() - Parse a fixed-point number from a string
+ * @str: The string to parse
+ * @fract_mult: Multiplier for the first decimal place, should be a power of 10
+ * @integer: The integer part of the number
+ * @fract: The fractional part of the number
+ *
+ * Returns 0 on success, or a negative error code if the string could not be
+ * parsed.
+ */
+int iio_str_to_fixpoint(const char *str, int fract_mult,
+	int *integer, int *fract)
+{
+	int i = 0, f = 0;
+	bool integer_part = true, negative = false;
+
+	if (str[0] == '-') {
+		negative = true;
+		str++;
+	} else if (str[0] == '+') {
+		str++;
+	}
+
+	while (*str) {
+		if ('0' <= *str && *str <= '9') {
+			if (integer_part) {
+				i = i * 10 + *str - '0';
+			} else {
+				f += fract_mult * (*str - '0');
+				fract_mult /= 10;
+			}
+		} else if (*str == '\n') {
+			if (*(str + 1) == '\0')
+				break;
+			else
+				return -EINVAL;
+		} else if (*str == '.' && integer_part) {
+			integer_part = false;
+		} else {
+			return -EINVAL;
+		}
+		str++;
+	}
+
+	if (negative) {
+		if (i)
+			i = -i;
+		else
+			f = -f;
+	}
+
+	*integer = i;
+	*fract = f;
+
+	return 0;
+}
+EXPORT_SYMBOL_GPL(iio_str_to_fixpoint);
 
 static ssize_t iio_write_channel_info(struct device *dev,
 				      struct device_attribute *attr,
@@ -409,8 +473,8 @@ static ssize_t iio_write_channel_info(struct device *dev,
 {
 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
-	int ret, integer = 0, fract = 0, fract_mult = 100000;
-	bool integer_part = true, negative = false;
+	int ret, fract_mult = 100000;
+	int integer, fract;
 
 	/* Assumes decimal - precision based on number of digits */
 	if (!indio_dev->info->write_raw)
@@ -429,39 +493,9 @@ static ssize_t iio_write_channel_info(struct device *dev,
 			return -EINVAL;
 		}
 
-	if (buf[0] == '-') {
-		negative = true;
-		buf++;
-	}
-
-	while (*buf) {
-		if ('0' <= *buf && *buf <= '9') {
-			if (integer_part)
-				integer = integer*10 + *buf - '0';
-			else {
-				fract += fract_mult*(*buf - '0');
-				if (fract_mult == 1)
-					break;
-				fract_mult /= 10;
-			}
-		} else if (*buf == '\n') {
-			if (*(buf + 1) == '\0')
-				break;
-			else
-				return -EINVAL;
-		} else if (*buf == '.') {
-			integer_part = false;
-		} else {
-			return -EINVAL;
-		}
-		buf++;
-	}
-	if (negative) {
-		if (integer)
-			integer = -integer;
-		else
-			fract = -fract;
-	}
+	ret = iio_str_to_fixpoint(buf, fract_mult, &integer, &fract);
+	if (ret)
+		return ret;
 
 	ret = indio_dev->info->write_raw(indio_dev, this_attr->c,
 					 integer, fract, this_attr->address);
@@ -657,21 +691,34 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
 
 	if (chan->channel < 0)
 		return 0;
-	for_each_set_bit(i, &chan->info_mask, sizeof(long)*8) {
-		ret = __iio_add_chan_devattr(iio_chan_info_postfix[i/2],
+	for_each_set_bit(i, &chan->info_mask_separate, sizeof(long)*8) {
+		ret = __iio_add_chan_devattr(iio_chan_info_postfix[i],
 					     chan,
 					     &iio_read_channel_info,
 					     &iio_write_channel_info,
-					     i/2,
-					     !(i%2),
+					     i,
+					     0,
 					     &indio_dev->dev,
 					     &indio_dev->channel_attr_list);
-		if (ret == -EBUSY && (i%2 == 0)) {
-			ret = 0;
-			continue;
-		}
 		if (ret < 0)
 			goto error_ret;
+		attrcount++;
+	}
+	for_each_set_bit(i, &chan->info_mask_shared_by_type, sizeof(long)*8) {
+		ret = __iio_add_chan_devattr(iio_chan_info_postfix[i],
+					     chan,
+					     &iio_read_channel_info,
+					     &iio_write_channel_info,
+					     i,
+					     1,
+					     &indio_dev->dev,
+					     &indio_dev->channel_attr_list);
+		if (ret == -EBUSY) {
+			ret = 0;
+			continue;
+		} else if (ret < 0) {
+			goto error_ret;
+		}
 		attrcount++;
 	}
 
@@ -813,7 +860,7 @@ static void iio_dev_release(struct device *device)
 	kfree(indio_dev);
 }
 
-static struct device_type iio_dev_type = {
+struct device_type iio_device_type = {
 	.name = "iio_device",
 	.release = iio_dev_release,
 };
@@ -835,7 +882,7 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
 
 	if (dev) {
 		dev->dev.groups = dev->groups;
-		dev->dev.type = &iio_dev_type;
+		dev->dev.type = &iio_device_type;
 		dev->dev.bus = &iio_bus_type;
 		device_initialize(&dev->dev);
 		dev_set_drvdata(&dev->dev, (void *)dev);
@@ -851,6 +898,7 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
 			return NULL;
 		}
 		dev_set_name(&dev->dev, "iio:device%d", dev->id);
+		INIT_LIST_HEAD(&dev->buffer_list);
 	}
 
 	return dev;
@@ -924,6 +972,10 @@ static const struct iio_buffer_setup_ops noop_ring_setup_ops;
 int iio_device_register(struct iio_dev *indio_dev)
 {
 	int ret;
+
+	/* If the calling driver did not initialize of_node, do it here */
+	if (!indio_dev->dev.of_node && indio_dev->dev.parent)
+		indio_dev->dev.of_node = indio_dev->dev.parent->of_node;
 
 	/* configure elements for the chrdev */
 	indio_dev->dev.devt = MKDEV(MAJOR(iio_devt), indio_dev->id);

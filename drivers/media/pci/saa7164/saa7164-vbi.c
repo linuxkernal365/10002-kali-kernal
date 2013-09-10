@@ -183,17 +183,17 @@ static int saa7164_vbi_initialize(struct saa7164_port *port)
 }
 
 /* -- V4L2 --------------------------------------------------------- */
-static int vidioc_s_std(struct file *file, void *priv, v4l2_std_id *id)
+static int vidioc_s_std(struct file *file, void *priv, v4l2_std_id id)
 {
 	struct saa7164_vbi_fh *fh = file->private_data;
 	struct saa7164_port *port = fh->port;
 	struct saa7164_dev *dev = port->dev;
 	unsigned int i;
 
-	dprintk(DBGLVL_VBI, "%s(id=0x%x)\n", __func__, (u32)*id);
+	dprintk(DBGLVL_VBI, "%s(id=0x%x)\n", __func__, (u32)id);
 
 	for (i = 0; i < ARRAY_SIZE(saa7164_tvnorms); i++) {
-		if (*id & saa7164_tvnorms[i].id)
+		if (id & saa7164_tvnorms[i].id)
 			break;
 	}
 	if (i == ARRAY_SIZE(saa7164_tvnorms))
@@ -206,7 +206,7 @@ static int vidioc_s_std(struct file *file, void *priv, v4l2_std_id *id)
 	 */
 	saa7164_api_set_audio_std(port);
 
-	dprintk(DBGLVL_VBI, "%s(id=0x%x) OK\n", __func__, (u32)*id);
+	dprintk(DBGLVL_VBI, "%s(id=0x%x) OK\n", __func__, (u32)id);
 
 	return 0;
 }
@@ -290,7 +290,7 @@ static int vidioc_g_tuner(struct file *file, void *priv,
 }
 
 static int vidioc_s_tuner(struct file *file, void *priv,
-	struct v4l2_tuner *t)
+	const struct v4l2_tuner *t)
 {
 	/* Update the A/V core */
 	return 0;
@@ -309,7 +309,7 @@ static int vidioc_g_frequency(struct file *file, void *priv,
 }
 
 static int vidioc_s_frequency(struct file *file, void *priv,
-	struct v4l2_frequency *f)
+	const struct v4l2_frequency *f)
 {
 	struct saa7164_vbi_fh *fh = file->private_data;
 	struct saa7164_port *port = fh->port;
@@ -984,7 +984,8 @@ out:
 	return ret;
 }
 
-int saa7164_vbi_fmt(struct file *file, void *priv, struct v4l2_format *f)
+static int saa7164_vbi_fmt(struct file *file, void *priv,
+			   struct v4l2_format *f)
 {
 	/* ntsc */
 	f->fmt.vbi.samples_per_line = 1600;
@@ -1047,7 +1048,8 @@ static int fops_release(struct file *file)
 	return 0;
 }
 
-struct saa7164_user_buffer *saa7164_vbi_next_buf(struct saa7164_port *port)
+static struct
+saa7164_user_buffer *saa7164_vbi_next_buf(struct saa7164_port *port)
 {
 	struct saa7164_user_buffer *ubuf = NULL;
 	struct saa7164_dev *dev = port->dev;

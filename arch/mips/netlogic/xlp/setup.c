@@ -37,6 +37,7 @@
 #include <linux/pm.h>
 #include <linux/bootmem.h>
 
+#include <asm/idle.h>
 #include <asm/reboot.h>
 #include <asm/time.h>
 #include <asm/bootinfo.h>
@@ -52,26 +53,56 @@
 #include <asm/netlogic/xlp-hal/xlp.h>
 #include <asm/netlogic/xlp-hal/sys.h>
 
-unsigned long nlm_common_ebase = 0x0;
-
-/* default to uniprocessor */
-uint32_t nlm_coremask = 1, nlm_cpumask  = 1;
-int  nlm_threads_per_core = 1;
-extern u32 __dtb_start[];
+uint64_t nlm_io_base;
+struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
+cpumask_t nlm_cpumask = CPU_MASK_CPU0;
+unsigned int nlm_threads_per_core;
+extern u32 __dtb_xlp_evp_begin[], __dtb_xlp_svp_begin[], __dtb_start[];
 
 static void nlm_linux_exit(void)
 {
-	nlm_write_sys_reg(nlm_sys_base, SYS_CHIP_RESET, 1);
+	uint64_t sysbase = nlm_get_node(0)->sysbase;
+
+	nlm_write_sys_reg(sysbase, SYS_CHIP_RESET, 1);
 	for ( ; ; )
 		cpu_wait();
 }
 
 void __init plat_mem_setup(void)
 {
+	void *fdtp;
+
 	panic_timeout	= 5;
 	_machine_restart = (void (*)(char *))nlm_linux_exit;
 	_machine_halt	= nlm_linux_exit;
 	pm_power_off	= nlm_linux_exit;
+
+	/*
+	 * If no FDT pointer is passed in, use the built-in FDT.
+	 * device_tree_init() does not handle CKSEG0 pointers in
+	 * 64-bit, so convert pointer.
+	 */
+	fdtp = (void *)(long)fw_arg0;
+	if (!fdtp) {
+		switch (current_cpu_data.processor_id & 0xff00) {
+#ifdef CONFIG_DT_XLP_SVP
+		case PRID_IMP_NETLOGIC_XLP3XX:
+			fdtp = __dtb_xlp_svp_begin;
+			break;
+#endif
+#ifdef CONFIG_DT_XLP_EVP
+		case PRID_IMP_NETLOGIC_XLP8XX:
+			fdtp = __dtb_xlp_evp_begin;
+			break;
+#endif
+		default:
+			/* Pick a built-in if any, and hope for the best */
+			fdtp = __dtb_start;
+			break;
+		}
+	}
+	fdtp = phys_to_virt(__pa(fdtp));
+	early_init_devtree(fdtp);
 }
 
 const char *get_system_type(void)
@@ -94,27 +125,19 @@ void xlp_mmu_init(void)
 		(13 + (ffz(PM_DEFAULT_MASK >> 13) / 2)));
 }
 
+void nlm_percpu_init(int hwcpuid)
+{
+}
+
 void __init prom_init(void)
 {
-	void *fdtp;
-
+	nlm_io_base = CKSEG1ADDR(XLP_DEFAULT_IO_BASE);
 	xlp_mmu_init();
-	nlm_hal_init();
+	nlm_node_init(0);
 
-	/*
-	 * If no FDT pointer is passed in, use the built-in FDT.
-	 * device_tree_init() does not handle CKSEG0 pointers in
-	 * 64-bit, so convert pointer.
-	 */
-	fdtp = (void *)(long)fw_arg0;
-	if (!fdtp)
-		fdtp = __dtb_start;
-	fdtp = phys_to_virt(__pa(fdtp));
-	early_init_devtree(fdtp);
-
-	nlm_common_ebase = read_c0_ebase() & (~((1 << 12) - 1));
 #ifdef CONFIG_SMP
-	nlm_wakeup_secondary_cpus(0xffffffff);
+	cpumask_setall(&nlm_cpumask);
+	nlm_wakeup_secondary_cpus();
 
 	/* update TLB size after waking up threads */
 	current_cpu_data.tlbsize = ((read_c0_config6() >> 16) & 0xffff) + 1;

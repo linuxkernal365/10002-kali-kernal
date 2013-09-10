@@ -292,12 +292,12 @@
 
 /* Message Signalled Interrupts registers */
 
-#define PCI_MSI_FLAGS		2	/* Various flags */
-#define  PCI_MSI_FLAGS_64BIT	0x80	/* 64-bit addresses allowed */
-#define  PCI_MSI_FLAGS_QSIZE	0x70	/* Message queue size configured */
-#define  PCI_MSI_FLAGS_QMASK	0x0e	/* Maximum queue size available */
-#define  PCI_MSI_FLAGS_ENABLE	0x01	/* MSI feature enabled */
-#define  PCI_MSI_FLAGS_MASKBIT	0x100	/* 64-bit mask bits allowed */
+#define PCI_MSI_FLAGS		2	/* Message Control */
+#define  PCI_MSI_FLAGS_ENABLE	0x0001	/* MSI feature enabled */
+#define  PCI_MSI_FLAGS_QMASK	0x000e	/* Maximum queue size available */
+#define  PCI_MSI_FLAGS_QSIZE	0x0070	/* Message queue size configured */
+#define  PCI_MSI_FLAGS_64BIT	0x0080	/* 64-bit addresses allowed */
+#define  PCI_MSI_FLAGS_MASKBIT	0x0100	/* Per-vector masking capable */
 #define PCI_MSI_RFU		3	/* Rest of capability flags */
 #define PCI_MSI_ADDRESS_LO	4	/* Lower 32 bits */
 #define PCI_MSI_ADDRESS_HI	8	/* Upper 32 bits (if PCI_MSI_FLAGS_64BIT set) */
@@ -309,13 +309,17 @@
 #define PCI_MSI_PENDING_64	20	/* Pending intrs for 64-bit devices */
 
 /* MSI-X registers */
-#define PCI_MSIX_FLAGS		2
-#define  PCI_MSIX_FLAGS_QSIZE	0x7FF
-#define  PCI_MSIX_FLAGS_ENABLE	(1 << 15)
-#define  PCI_MSIX_FLAGS_MASKALL	(1 << 14)
-#define PCI_MSIX_TABLE		4
-#define PCI_MSIX_PBA		8
-#define  PCI_MSIX_FLAGS_BIRMASK	(7 << 0)
+#define PCI_MSIX_FLAGS		2	/* Message Control */
+#define  PCI_MSIX_FLAGS_QSIZE	0x07FF	/* Table size */
+#define  PCI_MSIX_FLAGS_MASKALL	0x4000	/* Mask all vectors for this function */
+#define  PCI_MSIX_FLAGS_ENABLE	0x8000	/* MSI-X enable */
+#define PCI_MSIX_TABLE		4	/* Table offset */
+#define  PCI_MSIX_TABLE_BIR	0x00000007 /* BAR index */
+#define  PCI_MSIX_TABLE_OFFSET	0xfffffff8 /* Offset into specified BAR */
+#define PCI_MSIX_PBA		8	/* Pending Bit Array offset */
+#define  PCI_MSIX_PBA_BIR	0x00000007 /* BAR index */
+#define  PCI_MSIX_PBA_OFFSET	0xfffffff8 /* Offset into specified BAR */
+#define  PCI_MSIX_FLAGS_BIRMASK	(7 << 0)   /* deprecated */
 #define PCI_CAP_MSIX_SIZEOF	12	/* size of MSIX registers */
 
 /* MSI-X entry's format */
@@ -349,7 +353,7 @@
 #define  PCI_AF_STATUS_TP	0x01
 #define PCI_CAP_AF_SIZEOF	6	/* size of AF registers */
 
-/* PCI-X registers */
+/* PCI-X registers (Type 0 (non-bridge) devices) */
 
 #define PCI_X_CMD		2	/* Modes & Features */
 #define  PCI_X_CMD_DPERR_E	0x0001	/* Data Parity Error Recovery Enable */
@@ -388,6 +392,19 @@
 #define PCI_CAP_PCIX_SIZEOF_V0	8	/* size of registers for Version 0 */
 #define PCI_CAP_PCIX_SIZEOF_V1	24	/* size for Version 1 */
 #define PCI_CAP_PCIX_SIZEOF_V2	PCI_CAP_PCIX_SIZEOF_V1	/* Same for v2 */
+
+/* PCI-X registers (Type 1 (bridge) devices) */
+
+#define PCI_X_BRIDGE_SSTATUS	2	/* Secondary Status */
+#define  PCI_X_SSTATUS_64BIT	0x0001	/* Secondary AD interface is 64 bits */
+#define  PCI_X_SSTATUS_133MHZ	0x0002	/* 133 MHz capable */
+#define  PCI_X_SSTATUS_FREQ	0x03c0	/* Secondary Bus Mode and Frequency */
+#define  PCI_X_SSTATUS_VERS	0x3000	/* PCI-X Capability Version */
+#define  PCI_X_SSTATUS_V1	0x1000	/* Mode 2, not Mode 1 */
+#define  PCI_X_SSTATUS_V2	0x2000	/* Mode 1 or Modes 1 and 2 */
+#define  PCI_X_SSTATUS_266MHZ	0x4000	/* 266 MHz capable */
+#define  PCI_X_SSTATUS_533MHZ	0x8000	/* 533 MHz capable */
+#define PCI_X_BRIDGE_STATUS	4	/* Bridge Status */
 
 /* PCI Bridge Subsystem ID registers */
 
@@ -445,6 +462,8 @@
 #define  PCI_EXP_DEVSTA_TRPND	0x20	/* Transactions Pending */
 #define PCI_EXP_LNKCAP		12	/* Link Capabilities */
 #define  PCI_EXP_LNKCAP_SLS	0x0000000f /* Supported Link Speeds */
+#define  PCI_EXP_LNKCAP_SLS_2_5GB 0x1	/* LNKCAP2 SLS Vector bit 0 (2.5GT/s) */
+#define  PCI_EXP_LNKCAP_SLS_5_0GB 0x2	/* LNKCAP2 SLS Vector bit 1 (5.0GT/s) */
 #define  PCI_EXP_LNKCAP_MLW	0x000003f0 /* Maximum Link Width */
 #define  PCI_EXP_LNKCAP_ASPMS	0x00000c00 /* ASPM Support */
 #define  PCI_EXP_LNKCAP_L0SEL	0x00007000 /* L0s Exit Latency */
@@ -456,6 +475,8 @@
 #define  PCI_EXP_LNKCAP_PN	0xff000000 /* Port Number */
 #define PCI_EXP_LNKCTL		16	/* Link Control */
 #define  PCI_EXP_LNKCTL_ASPMC	0x0003	/* ASPM Control */
+#define  PCI_EXP_LNKCTL_ASPM_L0S  0x01	/* L0s Enable */
+#define  PCI_EXP_LNKCTL_ASPM_L1   0x02	/* L1 Enable */
 #define  PCI_EXP_LNKCTL_RCB	0x0008	/* Read Completion Boundary */
 #define  PCI_EXP_LNKCTL_LD	0x0010	/* Link Disable */
 #define  PCI_EXP_LNKCTL_RL	0x0020	/* Retrain Link */
@@ -544,9 +565,9 @@
 #define  PCI_EXP_OBFF_WAKE_EN	0x6000	/* OBFF using WAKE# signaling */
 #define PCI_CAP_EXP_ENDPOINT_SIZEOF_V2	44	/* v2 endpoints end here */
 #define PCI_EXP_LNKCAP2		44	/* Link Capability 2 */
-#define  PCI_EXP_LNKCAP2_SLS_2_5GB 0x01	/* Current Link Speed 2.5GT/s */
-#define  PCI_EXP_LNKCAP2_SLS_5_0GB 0x02	/* Current Link Speed 5.0GT/s */
-#define  PCI_EXP_LNKCAP2_SLS_8_0GB 0x04	/* Current Link Speed 8.0GT/s */
+#define  PCI_EXP_LNKCAP2_SLS_2_5GB 0x02	/* Supported Link Speed 2.5GT/s */
+#define  PCI_EXP_LNKCAP2_SLS_5_0GB 0x04	/* Supported Link Speed 5.0GT/s */
+#define  PCI_EXP_LNKCAP2_SLS_8_0GB 0x08	/* Supported Link Speed 8.0GT/s */
 #define  PCI_EXP_LNKCAP2_CROSSLINK 0x100 /* Crosslink supported */
 #define PCI_EXP_LNKCTL2		48	/* Link Control 2 */
 #define PCI_EXP_LNKSTA2		50	/* Link Status 2 */

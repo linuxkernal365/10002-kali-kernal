@@ -1638,270 +1638,96 @@ static const struct alg_test_desc alg_test_descs[] = {
 	{
 		.alg = "__cbc-cast5-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "__cbc-cast6-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "__cbc-serpent-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "__cbc-serpent-avx2",
+		.test = alg_test_null,
 	}, {
 		.alg = "__cbc-serpent-sse2",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "__cbc-twofish-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "__cbc-twofish-avx2",
+		.test = alg_test_null,
 	}, {
 		.alg = "__driver-cbc-aes-aesni",
 		.test = alg_test_null,
 		.fips_allowed = 1,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "__driver-cbc-blowfish-avx2",
+		.test = alg_test_null,
+	}, {
+		.alg = "__driver-cbc-camellia-aesni",
+		.test = alg_test_null,
+	}, {
+		.alg = "__driver-cbc-camellia-aesni-avx2",
+		.test = alg_test_null,
 	}, {
 		.alg = "__driver-cbc-cast5-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "__driver-cbc-cast6-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "__driver-cbc-serpent-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "__driver-cbc-serpent-avx2",
+		.test = alg_test_null,
 	}, {
 		.alg = "__driver-cbc-serpent-sse2",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "__driver-cbc-twofish-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "__driver-cbc-twofish-avx2",
+		.test = alg_test_null,
 	}, {
 		.alg = "__driver-ecb-aes-aesni",
 		.test = alg_test_null,
 		.fips_allowed = 1,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "__driver-ecb-blowfish-avx2",
+		.test = alg_test_null,
+	}, {
+		.alg = "__driver-ecb-camellia-aesni",
+		.test = alg_test_null,
+	}, {
+		.alg = "__driver-ecb-camellia-aesni-avx2",
+		.test = alg_test_null,
 	}, {
 		.alg = "__driver-ecb-cast5-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "__driver-ecb-cast6-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "__driver-ecb-serpent-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "__driver-ecb-serpent-avx2",
+		.test = alg_test_null,
 	}, {
 		.alg = "__driver-ecb-serpent-sse2",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "__driver-ecb-twofish-avx",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "__driver-ecb-twofish-avx2",
+		.test = alg_test_null,
 	}, {
 		.alg = "__ghash-pclmulqdqni",
 		.test = alg_test_null,
 		.fips_allowed = 1,
-		.suite = {
-			.hash = {
-				.vecs = NULL,
-				.count = 0
-			}
-		}
 	}, {
 		.alg = "ansi_cprng",
 		.test = alg_test_cprng,
@@ -2117,6 +1943,27 @@ static const struct alg_test_desc alg_test_descs[] = {
 			}
 		}
 	}, {
+		.alg = "cmac(aes)",
+		.test = alg_test_hash,
+		.suite = {
+			.hash = {
+				.vecs = aes_cmac128_tv_template,
+				.count = CMAC_AES_TEST_VECTORS
+			}
+		}
+	}, {
+		.alg = "cmac(des3_ede)",
+		.test = alg_test_hash,
+		.suite = {
+			.hash = {
+				.vecs = des3_ede_cmac64_tv_template,
+				.count = CMAC_DES3_EDE_TEST_VECTORS
+			}
+		}
+	}, {
+		.alg = "compress_null",
+		.test = alg_test_null,
+	}, {
 		.alg = "crc32c",
 		.test = alg_test_crc32c,
 		.fips_allowed = 1,
@@ -2130,135 +1977,60 @@ static const struct alg_test_desc alg_test_descs[] = {
 		.alg = "cryptd(__driver-cbc-aes-aesni)",
 		.test = alg_test_null,
 		.fips_allowed = 1,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "cryptd(__driver-cbc-blowfish-avx2)",
+		.test = alg_test_null,
+	}, {
+		.alg = "cryptd(__driver-cbc-camellia-aesni)",
+		.test = alg_test_null,
+	}, {
+		.alg = "cryptd(__driver-cbc-camellia-aesni-avx2)",
+		.test = alg_test_null,
+	}, {
+		.alg = "cryptd(__driver-cbc-serpent-avx2)",
+		.test = alg_test_null,
 	}, {
 		.alg = "cryptd(__driver-ecb-aes-aesni)",
 		.test = alg_test_null,
 		.fips_allowed = 1,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "cryptd(__driver-ecb-blowfish-avx2)",
+		.test = alg_test_null,
+	}, {
+		.alg = "cryptd(__driver-ecb-camellia-aesni)",
+		.test = alg_test_null,
+	}, {
+		.alg = "cryptd(__driver-ecb-camellia-aesni-avx2)",
+		.test = alg_test_null,
 	}, {
 		.alg = "cryptd(__driver-ecb-cast5-avx)",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "cryptd(__driver-ecb-cast6-avx)",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "cryptd(__driver-ecb-serpent-avx)",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "cryptd(__driver-ecb-serpent-avx2)",
+		.test = alg_test_null,
 	}, {
 		.alg = "cryptd(__driver-ecb-serpent-sse2)",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "cryptd(__driver-ecb-twofish-avx)",
 		.test = alg_test_null,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
+	}, {
+		.alg = "cryptd(__driver-ecb-twofish-avx2)",
+		.test = alg_test_null,
 	}, {
 		.alg = "cryptd(__driver-gcm-aes-aesni)",
 		.test = alg_test_null,
 		.fips_allowed = 1,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "cryptd(__ghash-pclmulqdqni)",
 		.test = alg_test_null,
 		.fips_allowed = 1,
-		.suite = {
-			.hash = {
-				.vecs = NULL,
-				.count = 0
-			}
-		}
 	}, {
 		.alg = "ctr(aes)",
 		.test = alg_test_skcipher,
@@ -2336,6 +2108,36 @@ static const struct alg_test_desc alg_test_descs[] = {
 			}
 		}
 	}, {
+		.alg = "ctr(des)",
+		.test = alg_test_skcipher,
+		.suite = {
+			.cipher = {
+				.enc = {
+					.vecs = des_ctr_enc_tv_template,
+					.count = DES_CTR_ENC_TEST_VECTORS
+				},
+				.dec = {
+					.vecs = des_ctr_dec_tv_template,
+					.count = DES_CTR_DEC_TEST_VECTORS
+				}
+			}
+		}
+	}, {
+		.alg = "ctr(des3_ede)",
+		.test = alg_test_skcipher,
+		.suite = {
+			.cipher = {
+				.enc = {
+					.vecs = des3_ede_ctr_enc_tv_template,
+					.count = DES3_EDE_CTR_ENC_TEST_VECTORS
+				},
+				.dec = {
+					.vecs = des3_ede_ctr_dec_tv_template,
+					.count = DES3_EDE_CTR_DEC_TEST_VECTORS
+				}
+			}
+		}
+	}, {
 		.alg = "ctr(serpent)",
 		.test = alg_test_skcipher,
 		.suite = {
@@ -2383,6 +2185,7 @@ static const struct alg_test_desc alg_test_descs[] = {
 	}, {
 		.alg = "deflate",
 		.test = alg_test_comp,
+		.fips_allowed = 1,
 		.suite = {
 			.comp = {
 				.comp = {
@@ -2396,21 +2199,12 @@ static const struct alg_test_desc alg_test_descs[] = {
 			}
 		}
 	}, {
+		.alg = "digest_null",
+		.test = alg_test_null,
+	}, {
 		.alg = "ecb(__aes-aesni)",
 		.test = alg_test_null,
 		.fips_allowed = 1,
-		.suite = {
-			.cipher = {
-				.enc = {
-					.vecs = NULL,
-					.count = 0
-				},
-				.dec = {
-					.vecs = NULL,
-					.count = 0
-				}
-			}
-		}
 	}, {
 		.alg = "ecb(aes)",
 		.test = alg_test_skcipher,
@@ -2518,6 +2312,9 @@ static const struct alg_test_desc alg_test_descs[] = {
 			}
 		}
 	}, {
+		.alg = "ecb(cipher_null)",
+		.test = alg_test_null,
+	}, {
 		.alg = "ecb(des)",
 		.test = alg_test_skcipher,
 		.fips_allowed = 1,
@@ -2546,6 +2343,21 @@ static const struct alg_test_desc alg_test_descs[] = {
 				.dec = {
 					.vecs = des3_ede_dec_tv_template,
 					.count = DES3_EDE_DEC_TEST_VECTORS
+				}
+			}
+		}
+	}, {
+		.alg = "ecb(fcrypt)",
+		.test = alg_test_skcipher,
+		.suite = {
+			.cipher = {
+				.enc = {
+					.vecs = fcrypt_pcbc_enc_tv_template,
+					.count = 1
+				},
+				.dec = {
+					.vecs = fcrypt_pcbc_dec_tv_template,
+					.count = 1
 				}
 			}
 		}
@@ -2859,6 +2671,7 @@ static const struct alg_test_desc alg_test_descs[] = {
 	}, {
 		.alg = "lzo",
 		.test = alg_test_comp,
+		.fips_allowed = 1,
 		.suite = {
 			.comp = {
 				.comp = {
@@ -2961,8 +2774,6 @@ static const struct alg_test_desc alg_test_descs[] = {
 			}
 		}
 	}, {
-
-
 		.alg = "rfc4309(ccm(aes))",
 		.test = alg_test_aead,
 		.fips_allowed = 1,
@@ -2976,6 +2787,21 @@ static const struct alg_test_desc alg_test_descs[] = {
 					.vecs = aes_ccm_rfc4309_dec_tv_template,
 					.count = AES_CCM_4309_DEC_TEST_VECTORS
 				}
+			}
+		}
+	}, {
+		.alg = "rfc4543(gcm(aes))",
+		.test = alg_test_aead,
+		.suite = {
+			.aead = {
+				.enc = {
+					.vecs = aes_gcm_rfc4543_enc_tv_template,
+					.count = AES_GCM_4543_ENC_TEST_VECTORS
+				},
+				.dec = {
+					.vecs = aes_gcm_rfc4543_dec_tv_template,
+					.count = AES_GCM_4543_DEC_TEST_VECTORS
+				},
 			}
 		}
 	}, {
@@ -3226,6 +3052,7 @@ static const struct alg_test_desc alg_test_descs[] = {
 	}, {
 		.alg = "zlib",
 		.test = alg_test_pcomp,
+		.fips_allowed = 1,
 		.suite = {
 			.pcomp = {
 				.comp = {

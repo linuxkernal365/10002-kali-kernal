@@ -1,6 +1,7 @@
 Subject: sched-might-sleep-do-not-account-rcu-depth.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 07 Jun 2011 09:19:06 +0200
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -8,11 +9,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  kernel/sched/core.c      |    3 ++-
  2 files changed, 9 insertions(+), 1 deletion(-)
 
-Index: linux-stable/include/linux/rcupdate.h
-===================================================================
---- linux-stable.orig/include/linux/rcupdate.h
-+++ linux-stable/include/linux/rcupdate.h
-@@ -157,6 +157,11 @@ void synchronize_rcu(void);
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -190,6 +190,11 @@ void synchronize_rcu(void);
   * types of kernel builds, the rcu_read_lock() nesting depth is unknowable.
   */
  #define rcu_preempt_depth() (current->rcu_read_lock_nesting)
@@ -24,7 +23,7 @@ Index: linux-stable/include/linux/rcupdate.h
  
  #else /* #ifdef CONFIG_PREEMPT_RCU */
  
-@@ -180,6 +185,8 @@ static inline int rcu_preempt_depth(void
+@@ -213,6 +218,8 @@ static inline int rcu_preempt_depth(void
  	return 0;
  }
  
@@ -33,11 +32,9 @@ Index: linux-stable/include/linux/rcupdate.h
  #endif /* #else #ifdef CONFIG_PREEMPT_RCU */
  
  /* Internal to kernel */
-Index: linux-stable/kernel/sched/core.c
-===================================================================
---- linux-stable.orig/kernel/sched/core.c
-+++ linux-stable/kernel/sched/core.c
-@@ -7450,7 +7450,8 @@ void __init sched_init(void)
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7189,7 +7189,8 @@ void __init sched_init(void)
  #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
  static inline int preempt_count_equals(int preempt_offset)
  {
