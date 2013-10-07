@@ -392,39 +392,57 @@ static struct regulator_ops mc13783_gpo_regulator_ops = {
 	.set_voltage = mc13xxx_fixed_regulator_set_voltage,
 };
 
-static int __devinit mc13783_regulator_probe(struct platform_device *pdev)
+static int mc13783_regulator_probe(struct platform_device *pdev)
 {
 	struct mc13xxx_regulator_priv *priv;
 	struct mc13xxx *mc13783 = dev_get_drvdata(pdev->dev.parent);
 	struct mc13xxx_regulator_platform_data *pdata =
 		dev_get_platdata(&pdev->dev);
-	struct mc13xxx_regulator_init_data *init_data;
+	struct mc13xxx_regulator_init_data *mc13xxx_data;
 	struct regulator_config config = { };
-	int i, ret;
+	int i, ret, num_regulators;
 
-	dev_dbg(&pdev->dev, "%s id %d\n", __func__, pdev->id);
+	num_regulators = mc13xxx_get_num_regulators_dt(pdev);
 
-	if (!pdata)
+	if (num_regulators <= 0 && pdata)
+		num_regulators = pdata->num_regulators;
+	if (num_regulators <= 0)
 		return -EINVAL;
 
 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv) +
-			pdata->num_regulators * sizeof(priv->regulators[0]),
+			num_regulators * sizeof(priv->regulators[0]),
 			GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
 
+	priv->num_regulators = num_regulators;
 	priv->mc13xxx_regulators = mc13783_regulators;
 	priv->mc13xxx = mc13783;
+	platform_set_drvdata(pdev, priv);
 
-	for (i = 0; i < pdata->num_regulators; i++) {
+	mc13xxx_data = mc13xxx_parse_regulators_dt(pdev, mc13783_regulators,
+					ARRAY_SIZE(mc13783_regulators));
+
+	for (i = 0; i < priv->num_regulators; i++) {
+		struct regulator_init_data *init_data;
 		struct regulator_desc *desc;
+		struct device_node *node = NULL;
+		int id;
 
-		init_data = &pdata->regulators[i];
-		desc = &mc13783_regulators[init_data->id].desc;
+		if (mc13xxx_data) {
+			id = mc13xxx_data[i].id;
+			init_data = mc13xxx_data[i].init_data;
+			node = mc13xxx_data[i].node;
+		} else {
+			id = pdata->regulators[i].id;
+			init_data = pdata->regulators[i].init_data;
+		}
+		desc = &mc13783_regulators[id].desc;
 
 		config.dev = &pdev->dev;
-		config.init_data = init_data->init_data;
+		config.init_data = init_data;
 		config.driver_data = priv;
+		config.of_node = node;
 
 		priv->regulators[i] = regulator_register(desc, &config);
 		if (IS_ERR(priv->regulators[i])) {
@@ -435,8 +453,6 @@ static int __devinit mc13783_regulator_probe(struct platform_device *pdev)
 		}
 	}
 
-	platform_set_drvdata(pdev, priv);
-
 	return 0;
 err:
 	while (--i >= 0)
@@ -445,16 +461,14 @@ err:
 	return ret;
 }
 
-static int __devexit mc13783_regulator_remove(struct platform_device *pdev)
+static int mc13783_regulator_remove(struct platform_device *pdev)
 {
 	struct mc13xxx_regulator_priv *priv = platform_get_drvdata(pdev);
-	struct mc13xxx_regulator_platform_data *pdata =
-		dev_get_platdata(&pdev->dev);
 	int i;
 
 	platform_set_drvdata(pdev, NULL);
 
-	for (i = 0; i < pdata->num_regulators; i++)
+	for (i = 0; i < priv->num_regulators; i++)
 		regulator_unregister(priv->regulators[i]);
 
 	return 0;
@@ -465,7 +479,7 @@ static struct platform_driver mc13783_regulator_driver = {
 		.name	= "mc13783-regulator",
 		.owner	= THIS_MODULE,
 	},
-	.remove		= __devexit_p(mc13783_regulator_remove),
+	.remove		= mc13783_regulator_remove,
 	.probe		= mc13783_regulator_probe,
 };
 

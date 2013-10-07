@@ -226,7 +226,7 @@ static struct lcd_ops ltv_ops = {
 	.set_power	= ltv350qv_set_power,
 };
 
-static int __devinit ltv350qv_probe(struct spi_device *spi)
+static int ltv350qv_probe(struct spi_device *spi)
 {
 	struct ltv350qv *lcd;
 	struct lcd_device *ld;
@@ -252,7 +252,7 @@ static int __devinit ltv350qv_probe(struct spi_device *spi)
 	if (ret)
 		goto out_unregister;
 
-	dev_set_drvdata(&spi->dev, lcd);
+	spi_set_drvdata(spi, lcd);
 
 	return 0;
 
@@ -261,9 +261,9 @@ out_unregister:
 	return ret;
 }
 
-static int __devexit ltv350qv_remove(struct spi_device *spi)
+static int ltv350qv_remove(struct spi_device *spi)
 {
-	struct ltv350qv *lcd = dev_get_drvdata(&spi->dev);
+	struct ltv350qv *lcd = spi_get_drvdata(spi);
 
 	ltv350qv_power(lcd, FB_BLANK_POWERDOWN);
 	lcd_device_unregister(lcd->ld);
@@ -271,29 +271,28 @@ static int __devexit ltv350qv_remove(struct spi_device *spi)
 	return 0;
 }
 
-#ifdef CONFIG_PM
-static int ltv350qv_suspend(struct spi_device *spi, pm_message_t state)
+#ifdef CONFIG_PM_SLEEP
+static int ltv350qv_suspend(struct device *dev)
 {
-	struct ltv350qv *lcd = dev_get_drvdata(&spi->dev);
+	struct ltv350qv *lcd = dev_get_drvdata(dev);
 
 	return ltv350qv_power(lcd, FB_BLANK_POWERDOWN);
 }
 
-static int ltv350qv_resume(struct spi_device *spi)
+static int ltv350qv_resume(struct device *dev)
 {
-	struct ltv350qv *lcd = dev_get_drvdata(&spi->dev);
+	struct ltv350qv *lcd = dev_get_drvdata(dev);
 
 	return ltv350qv_power(lcd, FB_BLANK_UNBLANK);
 }
-#else
-#define ltv350qv_suspend	NULL
-#define ltv350qv_resume		NULL
 #endif
+
+static SIMPLE_DEV_PM_OPS(ltv350qv_pm_ops, ltv350qv_suspend, ltv350qv_resume);
 
 /* Power down all displays on reboot, poweroff or halt */
 static void ltv350qv_shutdown(struct spi_device *spi)
 {
-	struct ltv350qv *lcd = dev_get_drvdata(&spi->dev);
+	struct ltv350qv *lcd = spi_get_drvdata(spi);
 
 	ltv350qv_power(lcd, FB_BLANK_POWERDOWN);
 }
@@ -302,13 +301,12 @@ static struct spi_driver ltv350qv_driver = {
 	.driver = {
 		.name		= "ltv350qv",
 		.owner		= THIS_MODULE,
+		.pm		= &ltv350qv_pm_ops,
 	},
 
 	.probe		= ltv350qv_probe,
-	.remove		= __devexit_p(ltv350qv_remove),
+	.remove		= ltv350qv_remove,
 	.shutdown	= ltv350qv_shutdown,
-	.suspend	= ltv350qv_suspend,
-	.resume		= ltv350qv_resume,
 };
 
 module_spi_driver(ltv350qv_driver);

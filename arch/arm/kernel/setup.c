@@ -18,6 +18,7 @@
 #include <linux/bootmem.h>
 #include <linux/seq_file.h>
 #include <linux/screen_info.h>
+#include <linux/of_platform.h>
 #include <linux/init.h>
 #include <linux/kexec.h>
 #include <linux/of_fdt.h>
@@ -56,7 +57,6 @@
 #include <asm/virt.h>
 
 #include "atags.h"
-#include "tcm.h"
 
 
 #if defined(CONFIG_FPE_NWFPE) || defined(CONFIG_FPE_FASTFPE)
@@ -291,10 +291,10 @@ static int cpu_has_aliasing_icache(unsigned int arch)
 
 static void __init cacheid_init(void)
 {
-	unsigned int cachetype = read_cpuid_cachetype();
 	unsigned int arch = cpu_architecture();
 
 	if (arch >= CPU_ARCH_ARMv6) {
+		unsigned int cachetype = read_cpuid_cachetype();
 		if ((cachetype & (7 << 29)) == 4 << 29) {
 			/* ARMv7 register format */
 			arch = CPU_ARCH_ARMv7;
@@ -353,6 +353,23 @@ void __init early_print(const char *str, ...)
 	printk("%s", buf);
 }
 
+static void __init cpuid_init_hwcaps(void)
+{
+	unsigned int divide_instrs;
+
+	if (cpu_architecture() < CPU_ARCH_ARMv7)
+		return;
+
+	divide_instrs = (read_cpuid_ext(CPUID_EXT_ISAR0) & 0x0f000000) >> 24;
+
+	switch (divide_instrs) {
+	case 2:
+		elf_hwcap |= HWCAP_IDIVA;
+	case 1:
+		elf_hwcap |= HWCAP_IDIVT;
+	}
+}
+
 static void __init feat_v6_fixup(void)
 {
 	int id = read_cpuid_id();
@@ -373,7 +390,7 @@ static void __init feat_v6_fixup(void)
  *
  * cpu_init sets up the per-CPU stacks.
  */
-void cpu_init(void)
+void notrace cpu_init(void)
 {
 	unsigned int cpu = smp_processor_id();
 	struct stack *stk = &stacks[cpu];
@@ -382,6 +399,12 @@ void cpu_init(void)
 		printk(KERN_CRIT "CPU%u: bad primary CPU number\n", cpu);
 		BUG();
 	}
+
+	/*
+	 * This only works on resume and secondary cores. For booting on the
+	 * boot cpu, smp_prepare_boot_cpu is called after percpu area setup.
+	 */
+	set_my_cpu_offset(per_cpu_offset(cpu));
 
 	cpu_proc_init();
 
@@ -421,18 +444,19 @@ void cpu_init(void)
 	    : "r14");
 }
 
-int __cpu_logical_map[NR_CPUS];
+u32 __cpu_logical_map[NR_CPUS] = { [0 ... NR_CPUS-1] = MPIDR_INVALID };
 
 void __init smp_setup_processor_id(void)
 {
 	int i;
-	u32 cpu = is_smp() ? read_cpuid_mpidr() & 0xff : 0;
+	u32 mpidr = is_smp() ? read_cpuid_mpidr() & MPIDR_HWID_BITMASK : 0;
+	u32 cpu = MPIDR_AFFINITY_LEVEL(mpidr, 0);
 
 	cpu_logical_map(0) = cpu;
-	for (i = 1; i < NR_CPUS; ++i)
+	for (i = 1; i < nr_cpu_ids; ++i)
 		cpu_logical_map(i) = i == cpu ? 0 : i;
 
-	printk(KERN_INFO "Booting Linux on physical CPU %d\n", cpu);
+	printk(KERN_INFO "Booting Linux on physical CPU 0x%x\n", mpidr);
 }
 
 static void __init setup_processor(void)
@@ -476,8 +500,11 @@ static void __init setup_processor(void)
 	snprintf(elf_platform, ELF_PLATFORM_SIZE, "%s%c",
 		 list->elf_name, ENDIANNESS);
 	elf_hwcap = list->elf_hwcap;
+
+	cpuid_init_hwcaps();
+
 #ifndef CONFIG_ARM_THUMB
-	elf_hwcap &= ~HWCAP_THUMB;
+	elf_hwcap &= ~(HWCAP_THUMB | HWCAP_IDIVT);
 #endif
 
 	feat_v6_fixup();
@@ -517,7 +544,7 @@ int __init arm_add_memory(phys_addr_t start, phys_addr_t size)
 	size -= start & ~PAGE_MASK;
 	bank->start = PAGE_ALIGN(start);
 
-#ifndef CONFIG_LPAE
+#ifndef CONFIG_ARM_LPAE
 	if (bank->start + size < bank->start) {
 		printk(KERN_CRIT "Truncating memory at 0x%08llx to fit in "
 			"32-bit physical address space\n", (long long)start);
@@ -633,9 +660,19 @@ struct screen_info screen_info = {
 
 static int __init customize_machine(void)
 {
-	/* customizes platform devices, or adds new ones */
+	/*
+	 * customizes platform devices, or adds new ones
+	 * On DT based machines, we fall back to populating the
+	 * machine from the device tree, if no callback is provided,
+	 * otherwise we would always need an init_machine callback.
+	 */
 	if (machine_desc->init_machine)
 		machine_desc->init_machine();
+#ifdef CONFIG_OF
+	else
+		of_platform_populate(NULL, of_default_bus_match_table,
+					NULL, NULL);
+#endif
 	return 0;
 }
 arch_initcall(customize_machine);
@@ -726,7 +763,7 @@ void __init setup_arch(char **cmdline_p)
 	setup_processor();
 	mdesc = setup_machine_fdt(__atags_pointer);
 	if (!mdesc)
-		mdesc = setup_machine_tags(__atags_pointer, machine_arch_type);
+		mdesc = setup_machine_tags(__atags_pointer, __machine_arch_type);
 	machine_desc = mdesc;
 	machine_name = mdesc->name;
 
@@ -758,6 +795,7 @@ void __init setup_arch(char **cmdline_p)
 
 	unflatten_device_tree();
 
+	arm_dt_init_cpu_maps();
 #ifdef CONFIG_SMP
 	if (is_smp()) {
 		smp_set_ops(mdesc->smp);
@@ -769,8 +807,6 @@ void __init setup_arch(char **cmdline_p)
 		hyp_mode_check();
 
 	reserve_crashkernel();
-
-	tcm_init();
 
 #ifdef CONFIG_MULTI_IRQ_HANDLER
 	handle_arch_irq = mdesc->handle_irq;
@@ -841,12 +877,9 @@ static const char *hwcap_str[] = {
 
 static int c_show(struct seq_file *m, void *v)
 {
-	int i;
+	int i, j;
+	u32 cpuid;
 
-	seq_printf(m, "Processor\t: %s rev %d (%s)\n",
-		   cpu_name, read_cpuid_id() & 15, elf_platform);
-
-#if defined(CONFIG_SMP)
 	for_each_online_cpu(i) {
 		/*
 		 * glibc reads /proc/cpuinfo to determine the number of
@@ -854,45 +887,48 @@ static int c_show(struct seq_file *m, void *v)
 		 * "processor".  Give glibc what it expects.
 		 */
 		seq_printf(m, "processor\t: %d\n", i);
-		seq_printf(m, "BogoMIPS\t: %lu.%02lu\n\n",
+		cpuid = is_smp() ? per_cpu(cpu_data, i).cpuid : read_cpuid_id();
+		seq_printf(m, "model name\t: %s rev %d (%s)\n",
+			   cpu_name, cpuid & 15, elf_platform);
+
+#if defined(CONFIG_SMP)
+		seq_printf(m, "BogoMIPS\t: %lu.%02lu\n",
 			   per_cpu(cpu_data, i).loops_per_jiffy / (500000UL/HZ),
 			   (per_cpu(cpu_data, i).loops_per_jiffy / (5000UL/HZ)) % 100);
-	}
-#else /* CONFIG_SMP */
-	seq_printf(m, "BogoMIPS\t: %lu.%02lu\n",
-		   loops_per_jiffy / (500000/HZ),
-		   (loops_per_jiffy / (5000/HZ)) % 100);
+#else
+		seq_printf(m, "BogoMIPS\t: %lu.%02lu\n",
+			   loops_per_jiffy / (500000/HZ),
+			   (loops_per_jiffy / (5000/HZ)) % 100);
 #endif
+		/* dump out the processor features */
+		seq_puts(m, "Features\t: ");
 
-	/* dump out the processor features */
-	seq_puts(m, "Features\t: ");
+		for (j = 0; hwcap_str[j]; j++)
+			if (elf_hwcap & (1 << j))
+				seq_printf(m, "%s ", hwcap_str[j]);
 
-	for (i = 0; hwcap_str[i]; i++)
-		if (elf_hwcap & (1 << i))
-			seq_printf(m, "%s ", hwcap_str[i]);
+		seq_printf(m, "\nCPU implementer\t: 0x%02x\n", cpuid >> 24);
+		seq_printf(m, "CPU architecture: %s\n",
+			   proc_arch[cpu_architecture()]);
 
-	seq_printf(m, "\nCPU implementer\t: 0x%02x\n", read_cpuid_id() >> 24);
-	seq_printf(m, "CPU architecture: %s\n", proc_arch[cpu_architecture()]);
-
-	if ((read_cpuid_id() & 0x0008f000) == 0x00000000) {
-		/* pre-ARM7 */
-		seq_printf(m, "CPU part\t: %07x\n", read_cpuid_id() >> 4);
-	} else {
-		if ((read_cpuid_id() & 0x0008f000) == 0x00007000) {
-			/* ARM7 */
-			seq_printf(m, "CPU variant\t: 0x%02x\n",
-				   (read_cpuid_id() >> 16) & 127);
+		if ((cpuid & 0x0008f000) == 0x00000000) {
+			/* pre-ARM7 */
+			seq_printf(m, "CPU part\t: %07x\n", cpuid >> 4);
 		} else {
-			/* post-ARM7 */
-			seq_printf(m, "CPU variant\t: 0x%x\n",
-				   (read_cpuid_id() >> 20) & 15);
+			if ((cpuid & 0x0008f000) == 0x00007000) {
+				/* ARM7 */
+				seq_printf(m, "CPU variant\t: 0x%02x\n",
+					   (cpuid >> 16) & 127);
+			} else {
+				/* post-ARM7 */
+				seq_printf(m, "CPU variant\t: 0x%x\n",
+					   (cpuid >> 20) & 15);
+			}
+			seq_printf(m, "CPU part\t: 0x%03x\n",
+				   (cpuid >> 4) & 0xfff);
 		}
-		seq_printf(m, "CPU part\t: 0x%03x\n",
-			   (read_cpuid_id() >> 4) & 0xfff);
+		seq_printf(m, "CPU revision\t: %d\n\n", cpuid & 15);
 	}
-	seq_printf(m, "CPU revision\t: %d\n", read_cpuid_id() & 15);
-
-	seq_puts(m, "\n");
 
 	seq_printf(m, "Hardware\t: %s\n", machine_name);
 	seq_printf(m, "Revision\t: %04x\n", system_rev);

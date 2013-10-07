@@ -18,9 +18,6 @@
 #include <asm/ptrace.h>
 #include <asm/page.h>
 
-/* Don't hold the runqueue lock over context switch */
-#define __ARCH_WANT_UNLOCKED_CTXSW
-
 /* The sparc has no problems with write protection */
 #define wp_works_ok 1
 #define wp_works_ok__is_a_macro /* for versions in ksyms.c */
@@ -94,6 +91,7 @@ struct thread_struct {
 #ifndef __ASSEMBLY__
 
 #include <linux/types.h>
+#include <asm/fpumacro.h>
 
 /* Return saved PC of a blocked thread. */
 struct task_struct;
@@ -143,6 +141,10 @@ do { \
 	: \
 	: "r" (regs), "r" (sp - sizeof(struct reg_window) - STACK_BIAS), \
 	  "i" ((const unsigned long)(&((struct pt_regs *)0)->u_regs[0]))); \
+	fprs_write(0);	\
+	current_thread_info()->xfsr[0] = 0;	\
+	current_thread_info()->fpsaved[0] = 0;	\
+	regs->tstate &= ~TSTATE_PEF;	\
 } while (0)
 
 #define start_thread32(regs, pc, sp) \
@@ -183,12 +185,14 @@ do { \
 	: \
 	: "r" (regs), "r" (sp - sizeof(struct reg_window32)), \
 	  "i" ((const unsigned long)(&((struct pt_regs *)0)->u_regs[0]))); \
+	fprs_write(0);	\
+	current_thread_info()->xfsr[0] = 0;	\
+	current_thread_info()->fpsaved[0] = 0;	\
+	regs->tstate &= ~TSTATE_PEF;	\
 } while (0)
 
 /* Free all resources held by a thread. */
 #define release_thread(tsk)		do { } while (0)
-
-extern pid_t kernel_thread(int (*fn)(void *), void * arg, unsigned long flags);
 
 extern unsigned long get_wchan(struct task_struct *task);
 

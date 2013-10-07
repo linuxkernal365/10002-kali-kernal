@@ -112,8 +112,8 @@ static struct imx_drm_crtc *imx_drm_crtc_by_num(struct imx_drm_device *imxdrm,
 	return NULL;
 }
 
-int imx_drm_crtc_panel_format(struct drm_crtc *crtc, u32 encoder_type,
-		u32 interface_pix_fmt)
+int imx_drm_crtc_panel_format_pins(struct drm_crtc *crtc, u32 encoder_type,
+		u32 interface_pix_fmt, int hsync_pin, int vsync_pin)
 {
 	struct imx_drm_device *imxdrm = crtc->dev->dev_private;
 	struct imx_drm_crtc *imx_crtc;
@@ -134,8 +134,17 @@ found:
 	helper = &imx_crtc->imx_drm_helper_funcs;
 	if (helper->set_interface_pix_fmt)
 		return helper->set_interface_pix_fmt(crtc,
-				encoder_type, interface_pix_fmt);
+				encoder_type, interface_pix_fmt,
+				hsync_pin, vsync_pin);
 	return 0;
+}
+EXPORT_SYMBOL_GPL(imx_drm_crtc_panel_format_pins);
+
+int imx_drm_crtc_panel_format(struct drm_crtc *crtc, u32 encoder_type,
+		u32 interface_pix_fmt)
+{
+	return imx_drm_crtc_panel_format_pins(crtc, encoder_type,
+					      interface_pix_fmt, 0, 0);
 }
 EXPORT_SYMBOL_GPL(imx_drm_crtc_panel_format);
 
@@ -584,7 +593,6 @@ int imx_drm_add_encoder(struct drm_encoder *encoder,
 
 	ret = imx_drm_encoder_register(imx_drm_encoder);
 	if (ret) {
-		kfree(imx_drm_encoder);
 		ret = -ENOMEM;
 		goto err_register;
 	}
@@ -673,6 +681,7 @@ found:
 
 	return i;
 }
+EXPORT_SYMBOL_GPL(imx_drm_encoder_get_mux_id);
 
 /*
  * imx_drm_remove_encoder - remove an encoder
@@ -824,7 +833,7 @@ static int imx_drm_platform_remove(struct platform_device *pdev)
 
 static struct platform_driver imx_drm_pdrv = {
 	.probe		= imx_drm_platform_probe,
-	.remove		= __devexit_p(imx_drm_platform_remove),
+	.remove		= imx_drm_platform_remove,
 	.driver		= {
 		.owner	= THIS_MODULE,
 		.name	= "imx-drm",

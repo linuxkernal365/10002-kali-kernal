@@ -24,6 +24,7 @@
 #include <linux/mutex.h>
 #include <linux/list.h>
 #include <linux/spinlock.h>
+#include <linux/pci.h>
 
 /*
  * Maximum number of IOMMUs supported
@@ -99,6 +100,7 @@
 #define PASID_MASK		0x000fffff
 
 /* MMIO status bits */
+#define MMIO_STATUS_EVT_INT_MASK	(1 << 1)
 #define MMIO_STATUS_COM_WAIT_INT_MASK	(1 << 2)
 #define MMIO_STATUS_PPR_INT_MASK	(1 << 6)
 
@@ -315,9 +317,6 @@
 
 #define MAX_DOMAIN_ID 65536
 
-/* FIXME: move this macro to <linux/pci.h> */
-#define PCI_BUS(x) (((x) >> 8) & 0xff)
-
 /* Protection domain flags */
 #define PD_DMA_OPS_MASK		(1UL << 0) /* domain used for dma_ops */
 #define PD_DEFAULT_MASK		(1UL << 1) /* domain is a default dma_ops
@@ -426,6 +425,7 @@ struct iommu_dev_data {
 	struct iommu_dev_data *alias_data;/* The alias dev_data */
 	struct protection_domain *domain; /* Domain the device is bound to */
 	atomic_t bind;			  /* Domain attach reference count */
+	struct iommu_group *group;	  /* IOMMU group for virtual aliases */
 	u16 devid;			  /* PCI Device ID */
 	bool iommu_v2;			  /* Device can make use of IOMMUv2 */
 	bool passthrough;		  /* Default for device is pt_domain */
@@ -590,6 +590,7 @@ struct devid_map {
 	struct list_head list;
 	u8 id;
 	u16 devid;
+	bool cmd_line;
 };
 
 /* Map HPET and IOAPIC ids to the devid used by the IOMMU */
@@ -701,13 +702,6 @@ extern int amd_iommu_max_glx_val;
  * the IOMMU used by this driver.
  */
 extern void iommu_flush_all_caches(struct amd_iommu *iommu);
-
-/* takes bus and device/function and returns the device id
- * FIXME: should that be in generic PCI code? */
-static inline u16 calc_devid(u8 bus, u8 devfn)
-{
-	return (((u16)bus) << 8) | devfn;
-}
 
 static inline int get_ioapic_devid(int id)
 {

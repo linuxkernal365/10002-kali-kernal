@@ -35,6 +35,7 @@
 
 #include <linux/sunrpc/metrics.h>
 
+#include "nfs4session.h"
 #include "internal.h"
 #include "delegation.h"
 #include "nfs4filelayout.h"
@@ -98,7 +99,8 @@ static void filelayout_reset_write(struct nfs_write_data *data)
 
 		task->tk_status = pnfs_write_done_resend_to_mds(hdr->inode,
 							&hdr->pages,
-							hdr->completion_ops);
+							hdr->completion_ops,
+							hdr->dreq);
 	}
 }
 
@@ -118,7 +120,8 @@ static void filelayout_reset_read(struct nfs_read_data *data)
 
 		task->tk_status = pnfs_read_done_resend_to_mds(hdr->inode,
 							&hdr->pages,
-							hdr->completion_ops);
+							hdr->completion_ops,
+							hdr->dreq);
 	}
 }
 
@@ -126,7 +129,6 @@ static void filelayout_fenceme(struct inode *inode, struct pnfs_layout_hdr *lo)
 {
 	if (!test_and_clear_bit(NFS_LAYOUT_RETURN, &lo->plh_flags))
 		return;
-	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(inode)->flags);
 	pnfs_return_layout(inode);
 }
 
@@ -156,11 +158,14 @@ static int filelayout_async_handle_error(struct rpc_task *task,
 	case -NFS4ERR_OPENMODE:
 		if (state == NULL)
 			break;
-		nfs4_schedule_stateid_recovery(mds_server, state);
+		if (nfs4_schedule_stateid_recovery(mds_server, state) < 0)
+			goto out_bad_stateid;
 		goto wait_on_recovery;
 	case -NFS4ERR_EXPIRED:
-		if (state != NULL)
-			nfs4_schedule_stateid_recovery(mds_server, state);
+		if (state != NULL) {
+			if (nfs4_schedule_stateid_recovery(mds_server, state) < 0)
+				goto out_bad_stateid;
+		}
 		nfs4_schedule_lease_recovery(mds_client);
 		goto wait_on_recovery;
 	/* DS session errors */
@@ -178,7 +183,6 @@ static int filelayout_async_handle_error(struct rpc_task *task,
 		break;
 	case -NFS4ERR_DELAY:
 	case -NFS4ERR_GRACE:
-	case -EKEYEXPIRED:
 		rpc_delay(task, FILELAYOUT_POLL_RETRY_MAX);
 		break;
 	case -NFS4ERR_RETRY_UNCACHED_REP:
@@ -225,6 +229,9 @@ reset:
 out:
 	task->tk_status = 0;
 	return -EAGAIN;
+out_bad_stateid:
+	task->tk_status = -EIO;
+	return 0;
 wait_on_recovery:
 	rpc_sleep_on(&mds_client->cl_rpcwaitq, task, NULL);
 	if (test_bit(NFS4CLNT_MANAGER_RUNNING, &mds_client->cl_state) == 0)
@@ -298,6 +305,10 @@ static void filelayout_read_prepare(struct rpc_task *task, void *data)
 {
 	struct nfs_read_data *rdata = data;
 
+	if (unlikely(test_bit(NFS_CONTEXT_BAD, &rdata->args.context->flags))) {
+		rpc_exit(task, -EIO);
+		return;
+	}
 	if (filelayout_reset_to_mds(rdata->header->lseg)) {
 		dprintk("%s task %u reset io to MDS\n", __func__, task->tk_pid);
 		filelayout_reset_read(rdata);
@@ -307,11 +318,12 @@ static void filelayout_read_prepare(struct rpc_task *task, void *data)
 	rdata->read_done_cb = filelayout_read_done_cb;
 
 	if (nfs41_setup_sequence(rdata->ds_clp->cl_session,
-				&rdata->args.seq_args, &rdata->res.seq_res,
-				task))
+			&rdata->args.seq_args,
+			&rdata->res.seq_res,
+			task))
 		return;
-
-	rpc_call_start(task);
+	nfs4_set_rw_stateid(&rdata->args.stateid, rdata->args.context,
+			rdata->args.lock_context, FMODE_READ);
 }
 
 static void filelayout_read_call_done(struct rpc_task *task, void *data)
@@ -402,6 +414,10 @@ static void filelayout_write_prepare(struct rpc_task *task, void *data)
 {
 	struct nfs_write_data *wdata = data;
 
+	if (unlikely(test_bit(NFS_CONTEXT_BAD, &wdata->args.context->flags))) {
+		rpc_exit(task, -EIO);
+		return;
+	}
 	if (filelayout_reset_to_mds(wdata->header->lseg)) {
 		dprintk("%s task %u reset io to MDS\n", __func__, task->tk_pid);
 		filelayout_reset_write(wdata);
@@ -409,11 +425,12 @@ static void filelayout_write_prepare(struct rpc_task *task, void *data)
 		return;
 	}
 	if (nfs41_setup_sequence(wdata->ds_clp->cl_session,
-				&wdata->args.seq_args, &wdata->res.seq_res,
-				task))
+			&wdata->args.seq_args,
+			&wdata->res.seq_res,
+			task))
 		return;
-
-	rpc_call_start(task);
+	nfs4_set_rw_stateid(&wdata->args.stateid, wdata->args.context,
+			wdata->args.lock_context, FMODE_WRITE);
 }
 
 static void filelayout_write_call_done(struct rpc_task *task, void *data)
@@ -449,12 +466,10 @@ static void filelayout_commit_prepare(struct rpc_task *task, void *data)
 {
 	struct nfs_commit_data *wdata = data;
 
-	if (nfs41_setup_sequence(wdata->ds_clp->cl_session,
-				&wdata->args.seq_args, &wdata->res.seq_res,
-				task))
-		return;
-
-	rpc_call_start(task);
+	nfs41_setup_sequence(wdata->ds_clp->cl_session,
+			&wdata->args.seq_args,
+			&wdata->res.seq_res,
+			task);
 }
 
 static void filelayout_write_commit_done(struct rpc_task *task, void *data)
@@ -512,7 +527,6 @@ filelayout_read_pagelist(struct nfs_read_data *data)
 	loff_t offset = data->args.offset;
 	u32 j, idx;
 	struct nfs_fh *fh;
-	int status;
 
 	dprintk("--> %s ino %lu pgbase %u req %Zu@%llu\n",
 		__func__, hdr->inode->i_ino,
@@ -538,9 +552,8 @@ filelayout_read_pagelist(struct nfs_read_data *data)
 	data->mds_offset = offset;
 
 	/* Perform an asynchronous read to ds */
-	status = nfs_initiate_read(ds->ds_clp->cl_rpcclient, data,
+	nfs_initiate_read(ds->ds_clp->cl_rpcclient, data,
 				  &filelayout_read_call_ops, RPC_TASK_SOFTCONN);
-	BUG_ON(status != 0);
 	return PNFS_ATTEMPTED;
 }
 
@@ -554,7 +567,6 @@ filelayout_write_pagelist(struct nfs_write_data *data, int sync)
 	loff_t offset = data->args.offset;
 	u32 j, idx;
 	struct nfs_fh *fh;
-	int status;
 
 	/* Retrieve the correct rpc_client for the byte range */
 	j = nfs4_fl_calc_j_index(lseg, offset);
@@ -579,10 +591,9 @@ filelayout_write_pagelist(struct nfs_write_data *data, int sync)
 	data->args.offset = filelayout_get_dserver_offset(lseg, offset);
 
 	/* Perform an asynchronous write */
-	status = nfs_initiate_write(ds->ds_clp->cl_rpcclient, data,
+	nfs_initiate_write(ds->ds_clp->cl_rpcclient, data,
 				    &filelayout_write_call_ops, sync,
 				    RPC_TASK_SOFTCONN);
-	BUG_ON(status != 0);
 	return PNFS_ATTEMPTED;
 }
 
@@ -909,7 +920,7 @@ static void
 filelayout_pg_init_read(struct nfs_pageio_descriptor *pgio,
 			struct nfs_page *req)
 {
-	BUG_ON(pgio->pg_lseg != NULL);
+	WARN_ON_ONCE(pgio->pg_lseg != NULL);
 
 	if (req->wb_offset != req->wb_pgbase) {
 		/*
@@ -939,7 +950,7 @@ filelayout_pg_init_write(struct nfs_pageio_descriptor *pgio,
 	struct nfs_commit_info cinfo;
 	int status;
 
-	BUG_ON(pgio->pg_lseg != NULL);
+	WARN_ON_ONCE(pgio->pg_lseg != NULL);
 
 	if (req->wb_offset != req->wb_pgbase)
 		goto out_mds;
@@ -1187,7 +1198,6 @@ static void filelayout_recover_commit_reqs(struct list_head *dst,
 	 */
 	for (i = 0, b = cinfo->ds->buckets; i < cinfo->ds->nbuckets; i++, b++) {
 		if (transfer_commit_list(&b->written, dst, cinfo, 0)) {
-			BUG_ON(!list_empty(&b->written));
 			pnfs_put_lseg(b->wlseg);
 			b->wlseg = NULL;
 		}

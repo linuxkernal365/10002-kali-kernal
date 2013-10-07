@@ -20,12 +20,12 @@
 #include <linux/fb.h>
 #include <video/atmel_lcdc.h>
 
-#include <mach/board.h>
 #include <mach/at91sam9263.h>
 #include <mach/at91sam9263_matrix.h>
 #include <mach/at91_matrix.h>
 #include <mach/at91sam9_smc.h>
 
+#include "board.h"
 #include "generic.h"
 
 
@@ -848,7 +848,7 @@ static struct resource lcdc_resources[] = {
 };
 
 static struct platform_device at91_lcdc_device = {
-	.name		= "atmel_lcdfb",
+	.name		= "at91sam9263-lcdfb",
 	.id		= 0,
 	.dev		= {
 				.dma_mask		= &lcdc_dmamask,
@@ -1199,7 +1199,7 @@ static struct resource ssc0_resources[] = {
 };
 
 static struct platform_device at91sam9263_ssc0_device = {
-	.name	= "ssc",
+	.name	= "at91rm9200_ssc",
 	.id	= 0,
 	.dev	= {
 		.dma_mask		= &ssc0_dmamask,
@@ -1241,7 +1241,7 @@ static struct resource ssc1_resources[] = {
 };
 
 static struct platform_device at91sam9263_ssc1_device = {
-	.name	= "ssc",
+	.name	= "at91rm9200_ssc",
 	.id	= 1,
 	.dev	= {
 		.dma_mask		= &ssc1_dmamask,

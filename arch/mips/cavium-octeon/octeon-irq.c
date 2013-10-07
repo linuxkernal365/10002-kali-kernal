@@ -1032,9 +1032,8 @@ static int octeon_irq_gpio_map_common(struct irq_domain *d,
 	if (!octeon_irq_virq_in_range(virq))
 		return -EINVAL;
 
-	hw += gpiod->base_hwirq;
-	line = hw >> 6;
-	bit = hw & 63;
+	line = (hw + gpiod->base_hwirq) >> 6;
+	bit = (hw + gpiod->base_hwirq) & 63;
 	if (line > line_limit || octeon_irq_ciu_to_irq[line][bit] != 0)
 		return -EINVAL;
 
@@ -1266,7 +1265,6 @@ static void __init octeon_irq_init_ciu(void)
 		octeon_irq_force_ciu_mapping(ciu_domain, i + OCTEON_IRQ_TIMER0, 0, i + 52);
 
 	octeon_irq_force_ciu_mapping(ciu_domain, OCTEON_IRQ_USB0, 0, 56);
-	octeon_irq_force_ciu_mapping(ciu_domain, OCTEON_IRQ_BOOTDMA, 0, 63);
 
 	/* CIU_1 */
 	for (i = 0; i < 16; i++)
@@ -1543,7 +1541,7 @@ static bool octeon_irq_ciu2_is_edge(unsigned int line, unsigned int bit)
 
 	if (line == 3) /* MIO */
 		switch (bit) {
-		case 2:  /* IPD_DRP */
+		case 2:	 /* IPD_DRP */
 		case 8 ... 11: /* Timers */
 		case 48: /* PTP */
 			edge = true;
@@ -1554,7 +1552,7 @@ static bool octeon_irq_ciu2_is_edge(unsigned int line, unsigned int bit)
 	else if (line == 6) /* PKT */
 		switch (bit) {
 		case 52 ... 53: /* ILK_DRP */
-		case 8 ... 12:  /* GMX_DRP */
+		case 8 ... 12:	/* GMX_DRP */
 			edge = true;
 			break;
 		default:

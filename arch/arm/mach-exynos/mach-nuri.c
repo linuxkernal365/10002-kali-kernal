@@ -25,7 +25,10 @@
 #include <linux/mmc/host.h>
 #include <linux/fb.h>
 #include <linux/pwm_backlight.h>
+#include <linux/platform_data/i2c-s3c2410.h>
+#include <linux/platform_data/mipi-csis.h>
 #include <linux/platform_data/s3c-hsotg.h>
+#include <linux/platform_data/usb-ehci-s5p.h>
 #include <drm/exynos_drm.h>
 
 #include <video/platform_lcd.h>
@@ -36,7 +39,6 @@
 #include <media/v4l2-mediabus.h>
 
 #include <asm/mach/arch.h>
-#include <asm/hardware/gic.h>
 #include <asm/mach-types.h>
 
 #include <plat/adc.h>
@@ -45,15 +47,13 @@
 #include <plat/devs.h>
 #include <plat/fb.h>
 #include <plat/sdhci.h>
-#include <linux/platform_data/usb-ehci-s5p.h>
 #include <plat/clock.h>
 #include <plat/gpio-cfg.h>
-#include <linux/platform_data/i2c-s3c2410.h>
 #include <plat/mfc.h>
 #include <plat/fimc-core.h>
 #include <plat/camport.h>
-#include <linux/platform_data/mipi-csis.h>
 
+#include <mach/irqs.h>
 #include <mach/map.h>
 
 #include "common.h"
@@ -113,7 +113,6 @@ static struct s3c_sdhci_platdata nuri_hsmmc0_data __initdata = {
 	.host_caps		= (MMC_CAP_8_BIT_DATA | MMC_CAP_4_BIT_DATA |
 				MMC_CAP_MMC_HIGHSPEED | MMC_CAP_SD_HIGHSPEED |
 				MMC_CAP_ERASE),
-	.host_caps2		= MMC_CAP2_BROKEN_VOLTAGE,
 	.cd_type		= S3C_SDHCI_CD_PERMANENT,
 };
 
@@ -1210,25 +1209,25 @@ static struct i2c_board_info m5mols_board_info = {
 	.platform_data	= &m5mols_platdata,
 };
 
-static struct s5p_fimc_isp_info nuri_camera_sensors[] = {
+static struct fimc_source_info nuri_camera_sensors[] = {
 	{
 		.flags		= V4L2_MBUS_PCLK_SAMPLE_RISING |
 				  V4L2_MBUS_VSYNC_ACTIVE_LOW,
-		.bus_type	= FIMC_ITU_601,
+		.fimc_bus_type	= FIMC_BUS_TYPE_ITU_601,
 		.board_info	= &s5k6aa_board_info,
 		.clk_frequency	= 24000000UL,
 		.i2c_bus_num	= 6,
 	}, {
 		.flags		= V4L2_MBUS_PCLK_SAMPLE_FALLING |
 				  V4L2_MBUS_VSYNC_ACTIVE_LOW,
-		.bus_type	= FIMC_MIPI_CSI2,
+		.fimc_bus_type	= FIMC_BUS_TYPE_MIPI_CSI2,
 		.board_info	= &m5mols_board_info,
 		.clk_frequency	= 24000000UL,
 	},
 };
 
 static struct s5p_platform_fimc fimc_md_platdata = {
-	.isp_info	= nuri_camera_sensors,
+	.source_info	= nuri_camera_sensors,
 	.num_clients	= ARRAY_SIZE(nuri_camera_sensors),
 };
 
@@ -1253,7 +1252,7 @@ static void __init nuri_camera_init(void)
 	}
 
 	m5mols_board_info.irq = s5p_register_gpio_interrupt(GPIO_CAM_8M_ISP_INT);
-	if (!IS_ERR_VALUE(m5mols_board_info.irq))
+	if (m5mols_board_info.irq >= 0)
 		s3c_gpio_cfgpin(GPIO_CAM_8M_ISP_INT, S3C_GPIO_SFN(0xF));
 	else
 		pr_err("%s: Failed to configure 8M_ISP_INT GPIO\n", __func__);
@@ -1327,16 +1326,14 @@ static struct platform_device *nuri_devices[] __initdata = {
 	&cam_vdda_fixed_rdev,
 	&cam_8m_12v_fixed_rdev,
 	&exynos4_bus_devfreq,
-#ifdef CONFIG_DRM_EXYNOS
-	&exynos_device_drm,
-#endif
 };
 
 static void __init nuri_map_io(void)
 {
 	exynos_init_io(NULL, 0);
-	s3c24xx_init_clocks(clk_xusbxti.rate);
 	s3c24xx_init_uarts(nuri_uartcfgs, ARRAY_SIZE(nuri_uartcfgs));
+	xxti_f = 0;
+	xusbxti_f = 24000000;
 }
 
 static void __init nuri_reserve(void)
@@ -1383,10 +1380,9 @@ MACHINE_START(NURI, "NURI")
 	.smp		= smp_ops(exynos_smp_ops),
 	.init_irq	= exynos4_init_irq,
 	.map_io		= nuri_map_io,
-	.handle_irq	= gic_handle_irq,
 	.init_machine	= nuri_machine_init,
 	.init_late	= exynos_init_late,
-	.timer		= &exynos4_timer,
+	.init_time	= exynos_init_time,
 	.reserve        = &nuri_reserve,
 	.restart	= exynos4_restart,
 MACHINE_END

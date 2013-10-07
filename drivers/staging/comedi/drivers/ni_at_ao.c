@@ -167,10 +167,10 @@ struct atao_private {
 	unsigned int ao_readback[10];
 };
 
-#define devpriv ((struct atao_private *)dev->private)
-
 static void atao_reset(struct comedi_device *dev)
 {
+	struct atao_private *devpriv = dev->private;
+
 	/* This is the reset sequence described in the manual */
 
 	devpriv->cfg1 = 0;
@@ -202,6 +202,7 @@ static void atao_reset(struct comedi_device *dev)
 static int atao_ao_winsn(struct comedi_device *dev, struct comedi_subdevice *s,
 			 struct comedi_insn *insn, unsigned int *data)
 {
+	struct atao_private *devpriv = dev->private;
 	int i;
 	int chan = CR_CHAN(insn->chanspec);
 	short bits;
@@ -226,6 +227,7 @@ static int atao_ao_winsn(struct comedi_device *dev, struct comedi_subdevice *s,
 static int atao_ao_rinsn(struct comedi_device *dev, struct comedi_subdevice *s,
 			 struct comedi_insn *insn, unsigned int *data)
 {
+	struct atao_private *devpriv = dev->private;
 	int i;
 	int chan = CR_CHAN(insn->chanspec);
 
@@ -254,6 +256,7 @@ static int atao_dio_insn_config(struct comedi_device *dev,
 				struct comedi_subdevice *s,
 				struct comedi_insn *insn, unsigned int *data)
 {
+	struct atao_private *devpriv = dev->private;
 	int chan = CR_CHAN(insn->chanspec);
 	unsigned int mask, bit;
 
@@ -309,6 +312,7 @@ static int atao_calib_insn_write(struct comedi_device *dev,
 				 struct comedi_subdevice *s,
 				 struct comedi_insn *insn, unsigned int *data)
 {
+	struct atao_private *devpriv = dev->private;
 	unsigned int bitstring, bit;
 	unsigned int chan = CR_CHAN(insn->chanspec);
 
@@ -331,28 +335,21 @@ static int atao_calib_insn_write(struct comedi_device *dev,
 static int atao_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 {
 	const struct atao_board *board = comedi_board(dev);
+	struct atao_private *devpriv;
 	struct comedi_subdevice *s;
-	unsigned long iobase;
 	int ao_unipolar;
 	int ret;
 
-	iobase = it->options[0];
-	if (iobase == 0)
-		iobase = 0x1c0;
 	ao_unipolar = it->options[3];
 
-	printk(KERN_INFO "comedi%d: ni_at_ao: 0x%04lx", dev->minor, iobase);
+	ret = comedi_request_region(dev, it->options[0], ATAO_SIZE);
+	if (ret)
+		return ret;
 
-	if (!request_region(iobase, ATAO_SIZE, "ni_at_ao")) {
-		printk(" I/O port conflict\n");
-		return -EIO;
-	}
-	dev->iobase = iobase;
-
-	dev->board_name = board->name;
-
-	if (alloc_private(dev, sizeof(struct atao_private)) < 0)
+	devpriv = kzalloc(sizeof(*devpriv), GFP_KERNEL);
+	if (!devpriv)
 		return -ENOMEM;
+	dev->private = devpriv;
 
 	ret = comedi_alloc_subdevices(dev, 4);
 	if (ret)
@@ -402,12 +399,6 @@ static int atao_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	return 0;
 }
 
-static void atao_detach(struct comedi_device *dev)
-{
-	if (dev->iobase)
-		release_region(dev->iobase, ATAO_SIZE);
-}
-
 static const struct atao_board atao_boards[] = {
 	{
 		.name		= "ai-ao-6",
@@ -422,7 +413,7 @@ static struct comedi_driver ni_at_ao_driver = {
 	.driver_name	= "ni_at_ao",
 	.module		= THIS_MODULE,
 	.attach		= atao_attach,
-	.detach		= atao_detach,
+	.detach		= comedi_legacy_detach,
 	.board_name	= &atao_boards[0].name,
 	.offset		= sizeof(struct atao_board),
 	.num_names	= ARRAY_SIZE(atao_boards),

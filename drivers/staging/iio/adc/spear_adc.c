@@ -180,8 +180,8 @@ static int spear_read_raw(struct iio_dev *indio_dev,
 #define SPEAR_ADC_CHAN(idx) {				\
 	.type = IIO_VOLTAGE,				\
 	.indexed = 1,					\
-	.info_mask = IIO_CHAN_INFO_RAW_SEPARATE_BIT |	\
-	IIO_CHAN_INFO_SCALE_SHARED_BIT,			\
+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
 	.channel = idx,					\
 	.scan_type = {					\
 		.sign = 'u',				\
@@ -291,7 +291,7 @@ static const struct iio_info spear_adc_iio_info = {
 	.driver_module = THIS_MODULE,
 };
 
-static int __devinit spear_adc_probe(struct platform_device *pdev)
+static int spear_adc_probe(struct platform_device *pdev)
 {
 	struct device_node *np = pdev->dev.of_node;
 	struct device *dev = &pdev->dev;
@@ -401,7 +401,7 @@ errout1:
 	return ret;
 }
 
-static int __devexit spear_adc_remove(struct platform_device *pdev)
+static int spear_adc_remove(struct platform_device *pdev)
 {
 	struct iio_dev *iodev = platform_get_drvdata(pdev);
 	struct spear_adc_info *info = iio_priv(iodev);
@@ -424,7 +424,7 @@ MODULE_DEVICE_TABLE(of, spear_adc_dt_ids);
 
 static struct platform_driver spear_adc_driver = {
 	.probe		= spear_adc_probe,
-	.remove		= __devexit_p(spear_adc_remove),
+	.remove		= spear_adc_remove,
 	.driver		= {
 		.name	= MOD_NAME,
 		.owner	= THIS_MODULE,

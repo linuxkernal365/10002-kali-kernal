@@ -768,7 +768,7 @@ static inline void sm7xx_init_hw(void)
 	outb_p(0x11, 0x3c5);
 }
 
-static int __devinit smtcfb_pci_probe(struct pci_dev *pdev,
+static int smtcfb_pci_probe(struct pci_dev *pdev,
 				   const struct pci_device_id *ent)
 {
 	struct smtcfb_info *sfb;
@@ -928,7 +928,7 @@ static DEFINE_PCI_DEVICE_TABLE(smtcfb_pci_table) = {
 	{0,}
 };
 
-static void __devexit smtcfb_pci_remove(struct pci_dev *pdev)
+static void smtcfb_pci_remove(struct pci_dev *pdev)
 {
 	struct smtcfb_info *sfb;
 
@@ -1006,15 +1006,7 @@ static int smtcfb_pci_resume(struct device *device)
 	return 0;
 }
 
-static const struct dev_pm_ops sm7xx_pm_ops = {
-	.suspend = smtcfb_pci_suspend,
-	.resume = smtcfb_pci_resume,
-	.freeze = smtcfb_pci_suspend,
-	.thaw = smtcfb_pci_resume,
-	.poweroff = smtcfb_pci_suspend,
-	.restore = smtcfb_pci_resume,
-};
-
+static SIMPLE_DEV_PM_OPS(sm7xx_pm_ops, smtcfb_pci_suspend, smtcfb_pci_resume);
 #define SM7XX_PM_OPS (&sm7xx_pm_ops)
 
 #else  /* !CONFIG_PM */
@@ -1027,7 +1019,7 @@ static struct pci_driver smtcfb_driver = {
 	.name = "smtcfb",
 	.id_table = smtcfb_pci_table,
 	.probe = smtcfb_pci_probe,
-	.remove = __devexit_p(smtcfb_pci_remove),
+	.remove = smtcfb_pci_remove,
 	.driver.pm  = SM7XX_PM_OPS,
 };
 

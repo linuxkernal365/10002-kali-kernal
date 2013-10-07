@@ -65,7 +65,7 @@ struct bfin_tmr_state {
 
 static int iio_bfin_tmr_set_state(struct iio_trigger *trig, bool state)
 {
-	struct bfin_tmr_state *st = trig->private_data;
+	struct bfin_tmr_state *st = iio_trigger_get_drvdata(trig);
 
 	if (get_gptimer_period(st->t->id) == 0)
 		return -EINVAL;
@@ -82,7 +82,7 @@ static ssize_t iio_bfin_tmr_frequency_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t count)
 {
 	struct iio_trigger *trig = to_iio_trigger(dev);
-	struct bfin_tmr_state *st = trig->private_data;
+	struct bfin_tmr_state *st = iio_trigger_get_drvdata(trig);
 	unsigned long val;
 	bool enabled;
 	int ret;
@@ -125,7 +125,7 @@ static ssize_t iio_bfin_tmr_frequency_show(struct device *dev,
 				 char *buf)
 {
 	struct iio_trigger *trig = to_iio_trigger(dev);
-	struct bfin_tmr_state *st = trig->private_data;
+	struct bfin_tmr_state *st = iio_trigger_get_drvdata(trig);
 	unsigned int period = get_gptimer_period(st->t->id);
 	unsigned long val;
 
@@ -180,7 +180,7 @@ static const struct iio_trigger_ops iio_bfin_tmr_trigger_ops = {
 	.set_trigger_state = iio_bfin_tmr_set_state,
 };
 
-static int __devinit iio_bfin_tmr_trigger_probe(struct platform_device *pdev)
+static int iio_bfin_tmr_trigger_probe(struct platform_device *pdev)
 {
 	struct iio_bfin_timer_trigger_pdata *pdata = pdev->dev.platform_data;
 	struct bfin_tmr_state *st;
@@ -213,9 +213,9 @@ static int __devinit iio_bfin_tmr_trigger_probe(struct platform_device *pdev)
 		goto out1;
 	}
 
-	st->trig->private_data = st;
 	st->trig->ops = &iio_bfin_tmr_trigger_ops;
 	st->trig->dev.groups = iio_bfin_tmr_trigger_attr_groups;
+	iio_trigger_set_drvdata(st->trig, st);
 	ret = iio_trigger_register(st->trig);
 	if (ret)
 		goto out2;
@@ -275,7 +275,7 @@ out:
 	return ret;
 }
 
-static int __devexit iio_bfin_tmr_trigger_remove(struct platform_device *pdev)
+static int iio_bfin_tmr_trigger_remove(struct platform_device *pdev)
 {
 	struct bfin_tmr_state *st = platform_get_drvdata(pdev);
 
@@ -296,7 +296,7 @@ static struct platform_driver iio_bfin_tmr_trigger_driver = {
 		.owner = THIS_MODULE,
 	},
 	.probe = iio_bfin_tmr_trigger_probe,
-	.remove = __devexit_p(iio_bfin_tmr_trigger_remove),
+	.remove = iio_bfin_tmr_trigger_remove,
 };
 
 module_platform_driver(iio_bfin_tmr_trigger_driver);

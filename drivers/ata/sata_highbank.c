@@ -196,10 +196,26 @@ static int highbank_initialize_phys(struct device *dev, void __iomem *addr)
 	return 0;
 }
 
+/*
+ * The Calxeda SATA phy intermittently fails to bring up a link with Gen3
+ * Retrying the phy hard reset can work around the issue, but the drive
+ * may fail again. In less than 150 out of 15000 test runs, it took more
+ * than 10 tries for the link to be established (but never more than 35).
+ * Triple the maximum observed retry count to provide plenty of margin for
+ * rare events and to guarantee that the link is established.
+ *
+ * Also, the default 2 second time-out on a failed drive is too long in
+ * this situation. The uboot implementation of the same driver function
+ * uses a much shorter time-out period and never experiences a time out
+ * issue. Reducing the time-out to 500ms improves the responsiveness.
+ * The other timing constants were kept the same as the stock AHCI driver.
+ * This change was also tested 15000 times on 24 drives and none of them
+ * experienced a time out.
+ */
 static int ahci_highbank_hardreset(struct ata_link *link, unsigned int *class,
 				unsigned long deadline)
 {
-	const unsigned long *timing = sata_ehc_deb_timing(&link->eh_context);
+	static const unsigned long timing[] = { 5, 100, 500};
 	struct ata_port *ap = link->ap;
 	struct ahci_port_priv *pp = ap->private_data;
 	u8 *d2h_fis = pp->rx_fis + RX_FIS_D2H_REG;
@@ -207,13 +223,13 @@ static int ahci_highbank_hardreset(struct ata_link *link, unsigned int *class,
 	bool online;
 	u32 sstatus;
 	int rc;
-	int retry = 10;
+	int retry = 100;
 
 	ahci_stop_engine(ap);
 
 	/* clear D2H reception area to properly wait for D2H FIS */
 	ata_tf_init(link->device, &tf);
-	tf.command = 0x80;
+	tf.command = ATA_BUSY;
 	ata_tf_to_fis(&tf, 0, 0, d2h_fis);
 
 	do {
@@ -251,7 +267,7 @@ static const struct ata_port_info ahci_highbank_port_info = {
 };
 
 static struct scsi_host_template ahci_highbank_platform_sht = {
-	AHCI_SHT("highbank-ahci"),
+	AHCI_SHT("sata_highbank"),
 };
 
 static const struct of_device_id ahci_of_match[] = {
@@ -260,7 +276,7 @@ static const struct of_device_id ahci_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, ahci_of_match);
 
-static int __devinit ahci_highbank_probe(struct platform_device *pdev)
+static int ahci_highbank_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct ahci_host_priv *hpriv;
@@ -368,16 +384,6 @@ err0:
 	return rc;
 }
 
-static int __devexit ahci_highbank_remove(struct platform_device *pdev)
-{
-	struct device *dev = &pdev->dev;
-	struct ata_host *host = dev_get_drvdata(dev);
-
-	ata_host_detach(host);
-
-	return 0;
-}
-
 #ifdef CONFIG_PM_SLEEP
 static int ahci_highbank_suspend(struct device *dev)
 {
@@ -428,11 +434,11 @@ static int ahci_highbank_resume(struct device *dev)
 }
 #endif
 
-SIMPLE_DEV_PM_OPS(ahci_highbank_pm_ops,
+static SIMPLE_DEV_PM_OPS(ahci_highbank_pm_ops,
 		  ahci_highbank_suspend, ahci_highbank_resume);
 
 static struct platform_driver ahci_highbank_driver = {
-        .remove = __devexit_p(ahci_highbank_remove),
+	.remove = ata_platform_remove_one,
         .driver = {
                 .name = "highbank-ahci",
                 .owner = THIS_MODULE,

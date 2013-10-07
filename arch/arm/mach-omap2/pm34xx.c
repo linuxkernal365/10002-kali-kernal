@@ -28,29 +28,27 @@
 #include <linux/clk.h>
 #include <linux/delay.h>
 #include <linux/slab.h>
+#include <linux/omap-dma.h>
 #include <linux/platform_data/gpio-omap.h>
 
 #include <trace/events/power.h>
 
+#include <asm/fncpy.h>
 #include <asm/suspend.h>
 #include <asm/system_misc.h>
 
-#include <plat/sram.h>
 #include "clockdomain.h"
 #include "powerdomain.h"
-#include <plat/sdrc.h>
-#include <plat/prcm.h>
-#include <plat/gpmc.h>
-#include <plat/dma.h>
-
+#include "soc.h"
 #include "common.h"
-#include "cm2xxx_3xxx.h"
+#include "cm3xxx.h"
 #include "cm-regbits-34xx.h"
+#include "gpmc.h"
 #include "prm-regbits-34xx.h"
-
-#include "prm2xxx_3xxx.h"
+#include "prm3xxx.h"
 #include "pm.h"
 #include "sdrc.h"
+#include "sram.h"
 #include "control.h"
 
 /* pm34xx errata defined in pm.h */
@@ -348,21 +346,14 @@ void omap_sram_idle(void)
 
 static void omap3_pm_idle(void)
 {
-	local_fiq_disable();
-
 	if (omap_irq_pending())
-		goto out;
+		return;
 
-	trace_power_start(POWER_CSTATE, 1, smp_processor_id());
 	trace_cpu_idle(1, smp_processor_id());
 
 	omap_sram_idle();
 
-	trace_power_end(smp_processor_id());
 	trace_cpu_idle(PWR_EVENT_EXIT, smp_processor_id());
-
-out:
-	local_fiq_enable();
 }
 
 #ifdef CONFIG_SUSPEND
@@ -555,8 +546,10 @@ static void __init prcm_setup_regs(void)
 	/* Clear any pending PRCM interrupts */
 	omap2_prm_write_mod_reg(0, OCP_MOD, OMAP3_PRM_IRQSTATUS_MPU_OFFSET);
 
-	if (omap3_has_iva())
-		omap3_iva_idle();
+	/*
+	 * We need to idle iva2_pwrdm even on am3703 with no iva2.
+	 */
+	omap3_iva_idle();
 
 	omap3_d2d_idle();
 }
@@ -761,14 +754,12 @@ int __init omap3_pm_init(void)
 			pr_err("Memory allocation failed when allocating for secure sram context\n");
 
 		local_irq_disable();
-		local_fiq_disable();
 
 		omap_dma_global_context_save();
 		omap3_save_secure_ram_context();
 		omap_dma_global_context_restore();
 
 		local_irq_enable();
-		local_fiq_enable();
 	}
 
 	omap3_save_scratchpad_contents();

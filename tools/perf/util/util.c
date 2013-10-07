@@ -10,8 +10,14 @@
 /*
  * XXX We need to find a better place for these things...
  */
+unsigned int page_size;
+
+bool test_attr__enabled;
+
 bool perf_host  = true;
 bool perf_guest = false;
+
+char tracing_events_path[PATH_MAX + 1] = "/sys/kernel/debug/tracing/events";
 
 void event_attr_init(struct perf_event_attr *attr)
 {
@@ -164,6 +170,39 @@ size_t hex_width(u64 v)
 	return n;
 }
 
+static int hex(char ch)
+{
+	if ((ch >= '0') && (ch <= '9'))
+		return ch - '0';
+	if ((ch >= 'a') && (ch <= 'f'))
+		return ch - 'a' + 10;
+	if ((ch >= 'A') && (ch <= 'F'))
+		return ch - 'A' + 10;
+	return -1;
+}
+
+/*
+ * While we find nice hex chars, build a long_val.
+ * Return number of chars processed.
+ */
+int hex2u64(const char *ptr, u64 *long_val)
+{
+	const char *p = ptr;
+	*long_val = 0;
+
+	while (*p) {
+		const int hex_val = hex(*p);
+
+		if (hex_val < 0)
+			break;
+
+		*long_val = (*long_val << 4) | hex_val;
+		p++;
+	}
+
+	return p - ptr;
+}
+
 /* Obtain a backtrace and print it to stdout. */
 #ifdef BACKTRACE_SUPPORT
 void dump_stack(void)
@@ -183,3 +222,50 @@ void dump_stack(void)
 #else
 void dump_stack(void) {}
 #endif
+
+void get_term_dimensions(struct winsize *ws)
+{
+	char *s = getenv("LINES");
+
+	if (s != NULL) {
+		ws->ws_row = atoi(s);
+		s = getenv("COLUMNS");
+		if (s != NULL) {
+			ws->ws_col = atoi(s);
+			if (ws->ws_row && ws->ws_col)
+				return;
+		}
+	}
+#ifdef TIOCGWINSZ
+	if (ioctl(1, TIOCGWINSZ, ws) == 0 &&
+	    ws->ws_row && ws->ws_col)
+		return;
+#endif
+	ws->ws_row = 25;
+	ws->ws_col = 80;
+}
+
+static void set_tracing_events_path(const char *mountpoint)
+{
+	snprintf(tracing_events_path, sizeof(tracing_events_path), "%s/%s",
+		 mountpoint, "tracing/events");
+}
+
+const char *perf_debugfs_mount(const char *mountpoint)
+{
+	const char *mnt;
+
+	mnt = debugfs_mount(mountpoint);
+	if (!mnt)
+		return NULL;
+
+	set_tracing_events_path(mnt);
+
+	return mnt;
+}
+
+void perf_debugfs_set_path(const char *mntpt)
+{
+	snprintf(debugfs_mountpoint, strlen(debugfs_mountpoint), "%s", mntpt);
+	set_tracing_events_path(mntpt);
+}

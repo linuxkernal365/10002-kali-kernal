@@ -13,10 +13,12 @@
 #include <linux/slab.h>
 #include <linux/types.h>
 #include <linux/uaccess.h>
+#include <linux/compat.h>
 
 #include <asm/ioctls.h>
 
 #include "../../mount.h"
+#include "../fdinfo.h"
 
 #define FANOTIFY_DEFAULT_MAX_EVENTS	16384
 #define FANOTIFY_DEFAULT_MAX_MARKS	8192
@@ -120,6 +122,7 @@ static int fill_event_metadata(struct fsnotify_group *group,
 	metadata->event_len = FAN_EVENT_METADATA_LEN;
 	metadata->metadata_len = FAN_EVENT_METADATA_LEN;
 	metadata->vers = FANOTIFY_METADATA_VERSION;
+	metadata->reserved = 0;
 	metadata->mask = event->mask & FAN_ALL_OUTGOING_EVENTS;
 	metadata->pid = pid_vnr(event->tgid);
 	if (unlikely(event->mask & FAN_Q_OVERFLOW))
@@ -396,8 +399,12 @@ static int fanotify_release(struct inode *ignored, struct file *file)
 
 	wake_up(&group->fanotify_data.access_waitq);
 #endif
+
+	if (file->f_flags & FASYNC)
+		fsnotify_fasync(-1, file, 0);
+
 	/* matches the fanotify_init->fsnotify_alloc_group */
-	fsnotify_put_group(group);
+	fsnotify_destroy_group(group);
 
 	return 0;
 }
@@ -428,6 +435,7 @@ static long fanotify_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 }
 
 static const struct file_operations fanotify_fops = {
+	.show_fdinfo	= fanotify_show_fdinfo,
 	.poll		= fanotify_poll,
 	.read		= fanotify_read,
 	.write		= fanotify_write,
@@ -460,7 +468,7 @@ static int fanotify_find_path(int dfd, const char __user *filename,
 
 		ret = -ENOTDIR;
 		if ((flags & FAN_MARK_ONLYDIR) &&
-		    !(S_ISDIR(f.file->f_path.dentry->d_inode->i_mode))) {
+		    !(S_ISDIR(file_inode(f.file)->i_mode))) {
 			fdput(f);
 			goto out;
 		}
@@ -491,7 +499,8 @@ out:
 
 static __u32 fanotify_mark_remove_from_mask(struct fsnotify_mark *fsn_mark,
 					    __u32 mask,
-					    unsigned int flags)
+					    unsigned int flags,
+					    int *destroy)
 {
 	__u32 oldmask;
 
@@ -505,8 +514,7 @@ static __u32 fanotify_mark_remove_from_mask(struct fsnotify_mark *fsn_mark,
 	}
 	spin_unlock(&fsn_mark->lock);
 
-	if (!(oldmask & ~mask))
-		fsnotify_destroy_mark(fsn_mark);
+	*destroy = !(oldmask & ~mask);
 
 	return mask & oldmask;
 }
@@ -517,12 +525,17 @@ static int fanotify_remove_vfsmount_mark(struct fsnotify_group *group,
 {
 	struct fsnotify_mark *fsn_mark = NULL;
 	__u32 removed;
+	int destroy_mark;
 
 	fsn_mark = fsnotify_find_vfsmount_mark(group, mnt);
 	if (!fsn_mark)
 		return -ENOENT;
 
-	removed = fanotify_mark_remove_from_mask(fsn_mark, mask, flags);
+	removed = fanotify_mark_remove_from_mask(fsn_mark, mask, flags,
+						 &destroy_mark);
+	if (destroy_mark)
+		fsnotify_destroy_mark(fsn_mark, group);
+
 	fsnotify_put_mark(fsn_mark);
 	if (removed & real_mount(mnt)->mnt_fsnotify_mask)
 		fsnotify_recalc_vfsmount_mask(mnt);
@@ -536,12 +549,16 @@ static int fanotify_remove_inode_mark(struct fsnotify_group *group,
 {
 	struct fsnotify_mark *fsn_mark = NULL;
 	__u32 removed;
+	int destroy_mark;
 
 	fsn_mark = fsnotify_find_inode_mark(group, inode);
 	if (!fsn_mark)
 		return -ENOENT;
 
-	removed = fanotify_mark_remove_from_mask(fsn_mark, mask, flags);
+	removed = fanotify_mark_remove_from_mask(fsn_mark, mask, flags,
+						 &destroy_mark);
+	if (destroy_mark)
+		fsnotify_destroy_mark(fsn_mark, group);
 	/* matches the fsnotify_find_inode_mark() */
 	fsnotify_put_mark(fsn_mark);
 	if (removed & inode->i_fsnotify_mask)
@@ -708,13 +725,13 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
 		break;
 	default:
 		fd = -EINVAL;
-		goto out_put_group;
+		goto out_destroy_group;
 	}
 
 	if (flags & FAN_UNLIMITED_QUEUE) {
 		fd = -EPERM;
 		if (!capable(CAP_SYS_ADMIN))
-			goto out_put_group;
+			goto out_destroy_group;
 		group->max_events = UINT_MAX;
 	} else {
 		group->max_events = FANOTIFY_DEFAULT_MAX_EVENTS;
@@ -723,7 +740,7 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
 	if (flags & FAN_UNLIMITED_MARKS) {
 		fd = -EPERM;
 		if (!capable(CAP_SYS_ADMIN))
-			goto out_put_group;
+			goto out_destroy_group;
 		group->fanotify_data.max_marks = UINT_MAX;
 	} else {
 		group->fanotify_data.max_marks = FANOTIFY_DEFAULT_MAX_MARKS;
@@ -731,18 +748,18 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
 
 	fd = anon_inode_getfd("[fanotify]", &fanotify_fops, group, f_flags);
 	if (fd < 0)
-		goto out_put_group;
+		goto out_destroy_group;
 
 	return fd;
 
-out_put_group:
-	fsnotify_put_group(group);
+out_destroy_group:
+	fsnotify_destroy_group(group);
 	return fd;
 }
 
-SYSCALL_DEFINE(fanotify_mark)(int fanotify_fd, unsigned int flags,
-			      __u64 mask, int dfd,
-			      const char  __user * pathname)
+SYSCALL_DEFINE5(fanotify_mark, int, fanotify_fd, unsigned int, flags,
+			      __u64, mask, int, dfd,
+			      const char  __user *, pathname)
 {
 	struct inode *inode = NULL;
 	struct vfsmount *mnt = NULL;
@@ -842,15 +859,20 @@ fput_and_out:
 	return ret;
 }
 
-#ifdef CONFIG_HAVE_SYSCALL_WRAPPERS
-asmlinkage long SyS_fanotify_mark(long fanotify_fd, long flags, __u64 mask,
-				  long dfd, long pathname)
+#ifdef CONFIG_COMPAT
+COMPAT_SYSCALL_DEFINE6(fanotify_mark,
+				int, fanotify_fd, unsigned int, flags,
+				__u32, mask0, __u32, mask1, int, dfd,
+				const char  __user *, pathname)
 {
-	return SYSC_fanotify_mark((int) fanotify_fd, (unsigned int) flags,
-				  mask, (int) dfd,
-				  (const char  __user *) pathname);
+	return sys_fanotify_mark(fanotify_fd, flags,
+#ifdef __BIG_ENDIAN
+				((__u64)mask1 << 32) | mask0,
+#else
+				((__u64)mask0 << 32) | mask1,
+#endif
+				 dfd, pathname);
 }
-SYSCALL_ALIAS(sys_fanotify_mark, SyS_fanotify_mark);
 #endif
 
 /*

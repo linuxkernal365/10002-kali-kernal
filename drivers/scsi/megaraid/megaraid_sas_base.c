@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  *  FILE: megaraid_sas_base.c
- *  Version : v06.504.01.00-rc1
+ *  Version : v06.506.00.00-rc1
  *
  *  Authors: LSI Corporation
  *           Sreenivas Bagalkote
@@ -3508,11 +3508,21 @@ static int megasas_init_fw(struct megasas_instance *instance)
 		break;
 	}
 
-	/*
-	 * We expect the FW state to be READY
-	 */
-	if (megasas_transition_to_ready(instance, 0))
-		goto fail_ready_state;
+	if (megasas_transition_to_ready(instance, 0)) {
+		atomic_set(&instance->fw_reset_no_pci_access, 1);
+		instance->instancet->adp_reset
+			(instance, instance->reg_set);
+		atomic_set(&instance->fw_reset_no_pci_access, 0);
+		dev_info(&instance->pdev->dev,
+			"megasas: FW restarted successfully from %s!\n",
+			__func__);
+
+		/*waitting for about 30 second before retry*/
+		ssleep(30);
+
+		if (megasas_transition_to_ready(instance, 0))
+			goto fail_ready_state;
+	}
 
 	/* Check if MSI-X is supported while in ready state */
 	msix_enable = (instance->instancet->read_fw_status_reg(reg_set) &
@@ -3972,8 +3982,8 @@ fail_set_dma_mask:
  * @pdev:		PCI device structure
  * @id:			PCI ids of supported hotplugged adapter
  */
-static int __devinit
-megasas_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+static int megasas_probe_one(struct pci_dev *pdev,
+			     const struct pci_device_id *id)
 {
 	int rval, pos, i, j;
 	struct Scsi_Host *host;
@@ -3984,12 +3994,12 @@ megasas_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
 	if (reset_devices) {
 		pos = pci_find_capability(pdev, PCI_CAP_ID_MSIX);
 		if (pos) {
-			pci_read_config_word(pdev, msi_control_reg(pos),
+			pci_read_config_word(pdev, pos + PCI_MSIX_FLAGS,
 					     &control);
 			if (control & PCI_MSIX_FLAGS_ENABLE) {
 				dev_info(&pdev->dev, "resetting MSI-X\n");
 				pci_write_config_word(pdev,
-						      msi_control_reg(pos),
+						      pos + PCI_MSIX_FLAGS,
 						      control &
 						      ~PCI_MSIX_FLAGS_ENABLE);
 			}
@@ -4525,7 +4535,7 @@ fail_ready_state:
  * megasas_detach_one -	PCI hot"un"plug entry point
  * @pdev:		PCI device structure
  */
-static void __devexit megasas_detach_one(struct pci_dev *pdev)
+static void megasas_detach_one(struct pci_dev *pdev)
 {
 	int i;
 	struct Scsi_Host *host;
@@ -4852,10 +4862,12 @@ megasas_mgmt_fw_ioctl(struct megasas_instance *instance,
 				    sense, sense_handle);
 	}
 
-	for (i = 0; i < ioc->sge_count && kbuff_arr[i]; i++) {
-		dma_free_coherent(&instance->pdev->dev,
-				    kern_sge32[i].length,
-				    kbuff_arr[i], kern_sge32[i].phys_addr);
+	for (i = 0; i < ioc->sge_count; i++) {
+		if (kbuff_arr[i])
+			dma_free_coherent(&instance->pdev->dev,
+					  kern_sge32[i].length,
+					  kbuff_arr[i],
+					  kern_sge32[i].phys_addr);
 	}
 
 	megasas_return_cmd(instance, cmd);
@@ -4931,11 +4943,12 @@ static int megasas_mgmt_ioctl_fw(struct file *file, unsigned long arg)
 		printk(KERN_ERR "megaraid_sas: timed out while"
 			"waiting for HBA to recover\n");
 		error = -ENODEV;
-		goto out_kfree_ioc;
+		goto out_up;
 	}
 	spin_unlock_irqrestore(&instance->hba_lock, flags);
 
 	error = megasas_mgmt_fw_ioctl(instance, user_ioc, ioc);
+      out_up:
 	up(&instance->ioctl_sem);
 
       out_kfree_ioc:
@@ -5119,7 +5132,7 @@ static struct pci_driver megasas_pci_driver = {
 	.name = "megaraid_sas",
 	.id_table = megasas_pci_table,
 	.probe = megasas_probe_one,
-	.remove = __devexit_p(megasas_detach_one),
+	.remove = megasas_detach_one,
 	.suspend = megasas_suspend,
 	.resume = megasas_resume,
 	.shutdown = megasas_shutdown,

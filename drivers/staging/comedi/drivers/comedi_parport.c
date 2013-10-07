@@ -196,28 +196,13 @@ static int parport_intr_cmdtest(struct comedi_device *dev,
 	if (err)
 		return 2;
 
-	/* step 3: */
+	/* Step 3: check if arguments are trivially valid */
 
-	if (cmd->start_arg != 0) {
-		cmd->start_arg = 0;
-		err++;
-	}
-	if (cmd->scan_begin_arg != 0) {
-		cmd->scan_begin_arg = 0;
-		err++;
-	}
-	if (cmd->convert_arg != 0) {
-		cmd->convert_arg = 0;
-		err++;
-	}
-	if (cmd->scan_end_arg != 1) {
-		cmd->scan_end_arg = 1;
-		err++;
-	}
-	if (cmd->stop_arg != 0) {
-		cmd->stop_arg = 0;
-		err++;
-	}
+	err |= cfc_check_trigger_arg_is(&cmd->start_arg, 0);
+	err |= cfc_check_trigger_arg_is(&cmd->scan_begin_arg, 0);
+	err |= cfc_check_trigger_arg_is(&cmd->convert_arg, 0);
+	err |= cfc_check_trigger_arg_is(&cmd->scan_end_arg, 1);
+	err |= cfc_check_trigger_arg_is(&cmd->stop_arg, 0);
 
 	if (err)
 		return 3;
@@ -276,19 +261,13 @@ static int parport_attach(struct comedi_device *dev,
 			  struct comedi_devconfig *it)
 {
 	struct parport_private *devpriv;
-	int ret;
-	unsigned int irq;
-	unsigned long iobase;
 	struct comedi_subdevice *s;
+	unsigned int irq;
+	int ret;
 
-	dev->board_name = dev->driver->driver_name;
-
-	iobase = it->options[0];
-	if (!request_region(iobase, PARPORT_SIZE, dev->board_name)) {
-		dev_err(dev->class_dev, "I/O port conflict\n");
-		return -EIO;
-	}
-	dev->iobase = iobase;
+	ret = comedi_request_region(dev, it->options[0], PARPORT_SIZE);
+	if (ret)
+		return ret;
 
 	irq = it->options[1];
 	if (irq) {
@@ -305,10 +284,10 @@ static int parport_attach(struct comedi_device *dev,
 	if (ret)
 		return ret;
 
-	ret = alloc_private(dev, sizeof(*devpriv));
-	if (ret < 0)
-		return ret;
-	devpriv = dev->private;
+	devpriv = kzalloc(sizeof(*devpriv), GFP_KERNEL);
+	if (!devpriv)
+		return -ENOMEM;
+	dev->private = devpriv;
 
 	s = &dev->subdevices[0];
 	s->type = COMEDI_SUBD_DIO;
@@ -356,25 +335,14 @@ static int parport_attach(struct comedi_device *dev,
 	devpriv->c_data = 0;
 	outb(devpriv->c_data, dev->iobase + PARPORT_C);
 
-	dev_info(dev->class_dev, "%s: iobase=0x%04lx, irq %sabled",
-		dev->board_name, dev->iobase, dev->irq ? "en" : "dis");
-
 	return 0;
-}
-
-static void parport_detach(struct comedi_device *dev)
-{
-	if (dev->iobase)
-		release_region(dev->iobase, PARPORT_SIZE);
-	if (dev->irq)
-		free_irq(dev->irq, dev);
 }
 
 static struct comedi_driver parport_driver = {
 	.driver_name	= "comedi_parport",
 	.module		= THIS_MODULE,
 	.attach		= parport_attach,
-	.detach		= parport_detach,
+	.detach		= comedi_legacy_detach,
 };
 module_comedi_driver(parport_driver);
 
