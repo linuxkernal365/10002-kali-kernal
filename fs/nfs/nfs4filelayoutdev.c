@@ -31,8 +31,10 @@
 #include <linux/nfs_fs.h>
 #include <linux/vmalloc.h>
 #include <linux/module.h>
+#include <linux/sunrpc/addr.h>
 
 #include "internal.h"
+#include "nfs4session.h"
 #include "nfs4filelayout.h"
 
 #define NFSDBG_FACILITY		NFSDBG_PNFS_LD
@@ -161,8 +163,6 @@ nfs4_ds_connect(struct nfs_server *mds_srv, struct nfs4_pnfs_ds *ds)
 
 	dprintk("--> %s DS %s au_flavor %d\n", __func__, ds->ds_remotestr,
 		mds_srv->nfs_client->cl_rpcclient->cl_auth->au_flavor);
-
-	BUG_ON(list_empty(&ds->ds_addrs));
 
 	list_for_each_entry(da, &ds->ds_addrs, da_node) {
 		dprintk("%s: DS %s: trying address %s\n",
@@ -775,6 +775,22 @@ nfs4_fl_select_ds_fh(struct pnfs_layout_segment *lseg, u32 j)
 	return flseg->fh_array[i];
 }
 
+static void nfs4_wait_ds_connect(struct nfs4_pnfs_ds *ds)
+{
+	might_sleep();
+	wait_on_bit(&ds->ds_state, NFS4DS_CONNECTING,
+			nfs_wait_bit_killable, TASK_KILLABLE);
+}
+
+static void nfs4_clear_ds_conn_bit(struct nfs4_pnfs_ds *ds)
+{
+	smp_mb__before_clear_bit();
+	clear_bit(NFS4DS_CONNECTING, &ds->ds_state);
+	smp_mb__after_clear_bit();
+	wake_up_bit(&ds->ds_state, NFS4DS_CONNECTING);
+}
+
+
 struct nfs4_pnfs_ds *
 nfs4_fl_prepare_ds(struct pnfs_layout_segment *lseg, u32 ds_idx)
 {
@@ -791,16 +807,22 @@ nfs4_fl_prepare_ds(struct pnfs_layout_segment *lseg, u32 ds_idx)
 		filelayout_mark_devid_invalid(devid);
 		return NULL;
 	}
+	if (ds->ds_clp)
+		return ds;
 
-	if (!ds->ds_clp) {
+	if (test_and_set_bit(NFS4DS_CONNECTING, &ds->ds_state) == 0) {
 		struct nfs_server *s = NFS_SERVER(lseg->pls_layout->plh_inode);
 		int err;
 
 		err = nfs4_ds_connect(s, ds);
 		if (err) {
 			nfs4_mark_deviceid_unavailable(devid);
-			return NULL;
+			ds = NULL;
 		}
+		nfs4_clear_ds_conn_bit(ds);
+	} else {
+		/* Either ds is connected, or ds is NULL */
+		nfs4_wait_ds_connect(ds);
 	}
 	return ds;
 }

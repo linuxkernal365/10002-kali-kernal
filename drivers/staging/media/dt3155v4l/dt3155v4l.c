@@ -26,6 +26,7 @@
 #include <linux/slab.h>
 #include <media/v4l2-dev.h>
 #include <media/v4l2-ioctl.h>
+#include <media/v4l2-common.h>
 #include <media/videobuf2-dma-contig.h>
 
 #include "dt3155v4l.h"
@@ -341,7 +342,7 @@ dt3155_irq_handler_even(int irq, void *dev_id)
 
 	spin_lock(&ipd->lock);
 	if (ipd->curr_buf) {
-		do_gettimeofday(&ipd->curr_buf->v4l2_buf.timestamp);
+		v4l2_get_timestamp(&ipd->curr_buf->v4l2_buf.timestamp);
 		ipd->curr_buf->v4l2_buf.sequence = (ipd->field_count) >> 1;
 		vb2_buffer_done(ipd->curr_buf, VB2_BUF_STATE_DONE);
 	}
@@ -390,13 +391,16 @@ dt3155_open(struct file *filp)
 			goto err_alloc_queue;
 		}
 		pd->q->type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+		pd->q->timestamp_type = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
 		pd->q->io_modes = VB2_READ | VB2_MMAP;
 		pd->q->ops = &q_ops;
 		pd->q->mem_ops = &vb2_dma_contig_memops;
 		pd->q->drv_priv = pd;
 		pd->curr_buf = NULL;
 		pd->field_count = 0;
-		vb2_queue_init(pd->q); /* cannot fail */
+		ret = vb2_queue_init(pd->q);
+		if (ret < 0)
+			goto err_request_irq;
 		INIT_LIST_HEAD(&pd->dmaq);
 		spin_lock_init(&pd->lock);
 		/* disable all irqs, clear all irq flags */
@@ -408,6 +412,7 @@ dt3155_open(struct file *filp)
 			goto err_request_irq;
 	}
 	pd->users++;
+	mutex_unlock(&pd->mux);
 	return 0; /* success */
 err_request_irq:
 	kfree(pd->q);
@@ -610,9 +615,9 @@ dt3155_ioc_g_std(struct file *filp, void *p, v4l2_std_id *norm)
 }
 
 static int
-dt3155_ioc_s_std(struct file *filp, void *p, v4l2_std_id *norm)
+dt3155_ioc_s_std(struct file *filp, void *p, v4l2_std_id norm)
 {
-	if (*norm & DT3155_CURRENT_NORM)
+	if (norm & DT3155_CURRENT_NORM)
 		return 0;
 	return -EINVAL;
 }
@@ -718,7 +723,7 @@ static const struct v4l2_ioctl_ops dt3155_ioctl_ops = {
 */
 };
 
-static int __devinit
+static int
 dt3155_init_board(struct pci_dev *pdev)
 {
 	struct dt3155_priv *pd = pci_get_drvdata(pdev);
@@ -783,7 +788,7 @@ dt3155_init_board(struct pci_dev *pdev)
 	}
 	write_i2c_reg(pd->regs, CONFIG, pd->config); /*  ACQ_MODE_EVEN  */
 
-	/* select chanel 1 for input and set sync level */
+	/* select channel 1 for input and set sync level */
 	write_i2c_reg(pd->regs, AD_ADDR, AD_CMD_REG);
 	write_i2c_reg(pd->regs, AD_CMD, VIDEO_CNL_1 | SYNC_CNL_1 | SYNC_LVL_3);
 
@@ -836,7 +841,7 @@ struct dma_coherent_mem {
 	unsigned long	*bitmap;
 };
 
-static int __devinit
+static int
 dt3155_alloc_coherent(struct device *dev, size_t size, int flags)
 {
 	struct dma_coherent_mem *mem;
@@ -877,7 +882,7 @@ out:
 	return 0;
 }
 
-static void __devexit
+static void
 dt3155_free_coherent(struct device *dev)
 {
 	struct dma_coherent_mem *mem = dev->dma_mem;
@@ -891,7 +896,7 @@ dt3155_free_coherent(struct device *dev)
 	kfree(mem);
 }
 
-static int __devinit
+static int
 dt3155_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 {
 	int err;
@@ -956,7 +961,7 @@ err_video_device_alloc:
 	return err;
 }
 
-static void __devexit
+static void
 dt3155_remove(struct pci_dev *pdev)
 {
 	struct dt3155_priv *pd = pci_get_drvdata(pdev);
@@ -983,7 +988,7 @@ static struct pci_driver pci_driver = {
 	.name = DT3155_NAME,
 	.id_table = pci_ids,
 	.probe = dt3155_probe,
-	.remove = __devexit_p(dt3155_remove),
+	.remove = dt3155_remove,
 };
 
 module_pci_driver(pci_driver);

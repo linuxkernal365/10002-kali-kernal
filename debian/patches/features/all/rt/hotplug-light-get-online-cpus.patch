@@ -1,6 +1,7 @@
 Subject: hotplug: Lightweight get online cpus
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 15 Jun 2011 12:36:06 +0200
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
 
 get_online_cpus() is a heavy weight function which involves a global
 mutex. migrate_disable() wants a simpler construct which prevents only
@@ -12,37 +13,53 @@ tasks on the cpu which should be brought down.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- include/linux/cpu.h |    4 +
- kernel/cpu.c        |  127 ++++++++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 128 insertions(+), 3 deletions(-)
+ include/linux/cpu.h |   12 +++-
+ kernel/cpu.c        |  126 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 131 insertions(+), 7 deletions(-)
 
-Index: linux-stable/include/linux/cpu.h
-===================================================================
---- linux-stable.orig/include/linux/cpu.h
-+++ linux-stable/include/linux/cpu.h
-@@ -175,6 +175,8 @@ extern struct bus_type cpu_subsys;
- 
- extern void get_online_cpus(void);
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -1,15 +1,15 @@
+ /*
+  * include/linux/cpu.h - generic cpu definition
+  *
+- * This is mainly for topological representation. We define the 
+- * basic 'struct cpu' here, which can be embedded in per-arch 
++ * This is mainly for topological representation. We define the
++ * basic 'struct cpu' here, which can be embedded in per-arch
+  * definitions of processors.
+  *
+  * Basic handling of the devices is done in drivers/base/cpu.c
+- * and system devices are handled in drivers/base/sys.c. 
++ * and system devices are handled in drivers/base/sys.c.
+  *
+  * CPUs are exported via sysfs in the class/cpu/devices/
+- * directory. 
++ * directory.
+  */
+ #ifndef _LINUX_CPU_H_
+ #define _LINUX_CPU_H_
+@@ -177,6 +177,8 @@ extern void get_online_cpus(void);
  extern void put_online_cpus(void);
+ extern void cpu_hotplug_disable(void);
+ extern void cpu_hotplug_enable(void);
 +extern void pin_current_cpu(void);
 +extern void unpin_current_cpu(void);
  #define hotcpu_notifier(fn, pri)	cpu_notifier(fn, pri)
  #define register_hotcpu_notifier(nb)	register_cpu_notifier(nb)
  #define unregister_hotcpu_notifier(nb)	unregister_cpu_notifier(nb)
-@@ -198,6 +200,8 @@ static inline void cpu_hotplug_driver_un
- 
- #define get_online_cpus()	do { } while (0)
+@@ -202,6 +204,8 @@ static inline void cpu_hotplug_driver_un
  #define put_online_cpus()	do { } while (0)
+ #define cpu_hotplug_disable()	do { } while (0)
+ #define cpu_hotplug_enable()	do { } while (0)
 +static inline void pin_current_cpu(void) { }
 +static inline void unpin_current_cpu(void) { }
  #define hotcpu_notifier(fn, pri)	do { (void)(fn); } while (0)
  /* These aren't inline functions due to a GCC bug. */
  #define register_hotcpu_notifier(nb)	({ (void)(nb); 0; })
-Index: linux-stable/kernel/cpu.c
-===================================================================
---- linux-stable.orig/kernel/cpu.c
-+++ linux-stable/kernel/cpu.c
-@@ -63,6 +63,102 @@ static struct {
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -63,6 +63,101 @@ static struct {
  	.refcount = 0,
  };
  
@@ -68,7 +85,7 @@ Index: linux-stable/kernel/cpu.c
 +
 +retry:
 +	if (!hp->unplug || hp->refcount || preempt_count() > 1 ||
-+	    hp->unplug == current || (current->flags & PF_STOMPER)) {
++	    hp->unplug == current) {
 +		hp->refcount++;
 +		return;
 +	}
@@ -91,8 +108,7 @@ Index: linux-stable/kernel/cpu.c
 +	WARN_ON(hp->refcount <= 0);
 +
 +	/* This is safe. sync_unplug_thread is pinned to this cpu */
-+	if (!--hp->refcount && hp->unplug && hp->unplug != current &&
-+	    !(current->flags & PF_STOMPER))
++	if (!--hp->refcount && hp->unplug && hp->unplug != current)
 +		wake_up_process(hp->unplug);
 +}
 +
@@ -145,7 +161,7 @@ Index: linux-stable/kernel/cpu.c
  void get_online_cpus(void)
  {
  	might_sleep();
-@@ -256,13 +352,14 @@ static int __ref take_cpu_down(void *_pa
+@@ -285,13 +380,14 @@ static int __ref take_cpu_down(void *_pa
  /* Requires cpu_add_remove_lock to be held */
  static int __ref _cpu_down(unsigned int cpu, int tasks_frozen)
  {
@@ -161,7 +177,7 @@ Index: linux-stable/kernel/cpu.c
  
  	if (num_online_cpus() == 1)
  		return -EBUSY;
-@@ -270,7 +367,20 @@ static int __ref _cpu_down(unsigned int 
+@@ -299,7 +395,20 @@ static int __ref _cpu_down(unsigned int
  	if (!cpu_online(cpu))
  		return -EINVAL;
  
@@ -183,7 +199,7 @@ Index: linux-stable/kernel/cpu.c
  
  	err = __cpu_notify(CPU_DOWN_PREPARE | mod, hcpu, -1, &nr_calls);
  	if (err) {
-@@ -278,7 +388,16 @@ static int __ref _cpu_down(unsigned int 
+@@ -307,7 +416,16 @@ static int __ref _cpu_down(unsigned int
  		__cpu_notify(CPU_DOWN_FAILED | mod, hcpu, nr_calls, NULL);
  		printk("%s: attempt to take down CPU %u failed\n",
  				__func__, cpu);
@@ -199,9 +215,9 @@ Index: linux-stable/kernel/cpu.c
 +		printk("cpu_unplug_begin(%d) failed\n", cpu);
 +		goto out_cancel;
  	}
+ 	smpboot_park_threads(cpu);
  
- 	err = __stop_machine(take_cpu_down, &tcd_param, cpumask_of(cpu));
-@@ -309,6 +428,8 @@ static int __ref _cpu_down(unsigned int 
+@@ -339,6 +457,8 @@ static int __ref _cpu_down(unsigned int
  	check_for_tasks(cpu);
  
  out_release:

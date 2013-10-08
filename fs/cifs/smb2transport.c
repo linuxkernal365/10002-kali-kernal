@@ -39,7 +39,7 @@
 #include "smb2status.h"
 #include "smb2glob.h"
 
-static int
+int
 smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 {
 	int i, rc;
@@ -55,13 +55,13 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 	rc = crypto_shash_setkey(server->secmech.hmacsha256,
 		server->session_key.response, SMB2_NTLMV2_SESSKEY_SIZE);
 	if (rc) {
-		cERROR(1, "%s: Could not update with response\n", __func__);
+		cifs_dbg(VFS, "%s: Could not update with response\n", __func__);
 		return rc;
 	}
 
 	rc = crypto_shash_init(&server->secmech.sdeschmacsha256->shash);
 	if (rc) {
-		cERROR(1, "%s: Could not init md5\n", __func__);
+		cifs_dbg(VFS, "%s: Could not init md5\n", __func__);
 		return rc;
 	}
 
@@ -69,7 +69,7 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 		if (iov[i].iov_len == 0)
 			continue;
 		if (iov[i].iov_base == NULL) {
-			cERROR(1, "null iovec entry");
+			cifs_dbg(VFS, "null iovec entry\n");
 			return -EIO;
 		}
 		/*
@@ -90,8 +90,8 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 				iov[i].iov_base, iov[i].iov_len);
 		}
 		if (rc) {
-			cERROR(1, "%s: Could not update with payload\n",
-							__func__);
+			cifs_dbg(VFS, "%s: Could not update with payload\n",
+				 __func__);
 			return rc;
 		}
 	}
@@ -109,11 +109,18 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 	rc = crypto_shash_final(&server->secmech.sdeschmacsha256->shash,
 				sigptr);
 	if (rc)
-		cERROR(1, "%s: Could not generate sha256 hash\n", __func__);
+		cifs_dbg(VFS, "%s: Could not generate sha256 hash\n", __func__);
 
 	memcpy(smb2_pdu->Signature, sigptr, SMB2_SIGNATURE_SIZE);
 
 	return rc;
+}
+
+int
+smb3_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
+{
+	cifs_dbg(FYI, "smb3 signatures not supported yet\n");
+	return -EOPNOTSUPP;
 }
 
 /* must be called with server->srv_mutex held */
@@ -132,7 +139,7 @@ smb2_sign_rqst(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 		return rc;
 	}
 
-	rc = smb2_calc_signature(rqst, server);
+	rc = server->ops->calc_signature(rqst, server);
 
 	return rc;
 }
@@ -156,8 +163,8 @@ smb2_verify_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 
 	/* Do not need to verify session setups with signature "BSRSPYL " */
 	if (memcmp(smb2_pdu->Signature, "BSRSPYL ", 8) == 0)
-		cFYI(1, "dummy signature received for smb command 0x%x",
-			smb2_pdu->Command);
+		cifs_dbg(FYI, "dummy signature received for smb command 0x%x\n",
+			 smb2_pdu->Command);
 
 	/*
 	 * Save off the origiginal signature so we can modify the smb and check
@@ -168,7 +175,7 @@ smb2_verify_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 	memset(smb2_pdu->Signature, 0, SMB2_SIGNATURE_SIZE);
 
 	mutex_lock(&server->srv_mutex);
-	rc = smb2_calc_signature(rqst, server);
+	rc = server->ops->calc_signature(rqst, server);
 	mutex_unlock(&server->srv_mutex);
 
 	if (rc)
@@ -198,7 +205,7 @@ smb2_mid_entry_alloc(const struct smb2_hdr *smb_buffer,
 	struct mid_q_entry *temp;
 
 	if (server == NULL) {
-		cERROR(1, "Null TCP session in smb2_mid_entry_alloc");
+		cifs_dbg(VFS, "Null TCP session in smb2_mid_entry_alloc\n");
 		return NULL;
 	}
 
@@ -234,7 +241,7 @@ smb2_get_mid_entry(struct cifs_ses *ses, struct smb2_hdr *buf,
 		return -ENOENT;
 
 	if (ses->server->tcpStatus == CifsNeedReconnect) {
-		cFYI(1, "tcp session dead - return to caller to retry");
+		cifs_dbg(FYI, "tcp session dead - return to caller to retry\n");
 		return -EAGAIN;
 	}
 
@@ -274,8 +281,8 @@ smb2_check_receive(struct mid_q_entry *mid, struct TCP_Server_Info *server,
 
 		rc = smb2_verify_signature(&rqst, server);
 		if (rc)
-			cERROR(1, "SMB signature verification returned error = "
-			       "%d", rc);
+			cifs_dbg(VFS, "SMB signature verification returned error = %d\n",
+				 rc);
 	}
 
 	return map_smb2_to_linux_error(mid->resp_buf, log_error);

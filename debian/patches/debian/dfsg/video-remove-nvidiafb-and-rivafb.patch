@@ -2,6 +2,7 @@ From: Ben Hutchings <ben@decadent.org.uk>
 Date: Sat, 2 Jun 2012 19:53:38 +0100
 Subject: video: Remove nvidiafb and rivafb
 Bug-Debian: http://bugs.debian.org/383481
+Forwarded: no
 
 These drivers contain register programming code provided by the
 hardware vendor that appears to have been deliberately obfuscated.
@@ -114,8 +115,8 @@ probably discontinued 10 years ago.
 -	  Say Y here if you want to control the backlight of your display.
 -
  config FB_I740
- 	tristate "Intel740 support (EXPERIMENTAL)"
- 	depends on EXPERIMENTAL && FB && PCI
+ 	tristate "Intel740 support"
+ 	depends on FB && PCI
 --- a/drivers/video/Makefile
 +++ b/drivers/video/Makefile
 @@ -38,8 +38,6 @@ obj-$(CONFIG_FB_PM2)              += pm2fb.o

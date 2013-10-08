@@ -124,19 +124,28 @@ nf_nat_ipv4_fn(unsigned int hooknum,
 			ret = nf_nat_rule_find(skb, hooknum, in, out, ct);
 			if (ret != NF_ACCEPT)
 				return ret;
-		} else
+		} else {
 			pr_debug("Already setup manip %s for ct %p\n",
 				 maniptype == NF_NAT_MANIP_SRC ? "SRC" : "DST",
 				 ct);
+			if (nf_nat_oif_changed(hooknum, ctinfo, nat, out))
+				goto oif_changed;
+		}
 		break;
 
 	default:
 		/* ESTABLISHED */
 		NF_CT_ASSERT(ctinfo == IP_CT_ESTABLISHED ||
 			     ctinfo == IP_CT_ESTABLISHED_REPLY);
+		if (nf_nat_oif_changed(hooknum, ctinfo, nat, out))
+			goto oif_changed;
 	}
 
 	return nf_nat_packet(ct, ctinfo, hooknum, skb);
+
+oif_changed:
+	nf_ct_kill_acct(ct, ctinfo, skb);
+	return NF_DROP;
 }
 
 static unsigned int
@@ -167,6 +176,7 @@ nf_nat_ipv4_out(unsigned int hooknum,
 #ifdef CONFIG_XFRM
 	const struct nf_conn *ct;
 	enum ip_conntrack_info ctinfo;
+	int err;
 #endif
 	unsigned int ret;
 
@@ -186,9 +196,11 @@ nf_nat_ipv4_out(unsigned int hooknum,
 		     ct->tuplehash[!dir].tuple.dst.u3.ip) ||
 		    (ct->tuplehash[dir].tuple.dst.protonum != IPPROTO_ICMP &&
 		     ct->tuplehash[dir].tuple.src.u.all !=
-		     ct->tuplehash[!dir].tuple.dst.u.all))
-			if (nf_xfrm_me_harder(skb, AF_INET) < 0)
-				ret = NF_DROP;
+		     ct->tuplehash[!dir].tuple.dst.u.all)) {
+			err = nf_xfrm_me_harder(skb, AF_INET);
+			if (err < 0)
+				ret = NF_DROP_ERR(err);
+		}
 	}
 #endif
 	return ret;
@@ -204,6 +216,7 @@ nf_nat_ipv4_local_fn(unsigned int hooknum,
 	const struct nf_conn *ct;
 	enum ip_conntrack_info ctinfo;
 	unsigned int ret;
+	int err;
 
 	/* root is playing with raw sockets. */
 	if (skb->len < sizeof(struct iphdr) ||
@@ -217,16 +230,19 @@ nf_nat_ipv4_local_fn(unsigned int hooknum,
 
 		if (ct->tuplehash[dir].tuple.dst.u3.ip !=
 		    ct->tuplehash[!dir].tuple.src.u3.ip) {
-			if (ip_route_me_harder(skb, RTN_UNSPEC))
-				ret = NF_DROP;
+			err = ip_route_me_harder(skb, RTN_UNSPEC);
+			if (err < 0)
+				ret = NF_DROP_ERR(err);
 		}
 #ifdef CONFIG_XFRM
 		else if (!(IPCB(skb)->flags & IPSKB_XFRM_TRANSFORMED) &&
 			 ct->tuplehash[dir].tuple.dst.protonum != IPPROTO_ICMP &&
 			 ct->tuplehash[dir].tuple.dst.u.all !=
-			 ct->tuplehash[!dir].tuple.src.u.all)
-			if (nf_xfrm_me_harder(skb, AF_INET) < 0)
-				ret = NF_DROP;
+			 ct->tuplehash[!dir].tuple.src.u.all) {
+			err = nf_xfrm_me_harder(skb, AF_INET);
+			if (err < 0)
+				ret = NF_DROP_ERR(err);
+		}
 #endif
 	}
 	return ret;
@@ -276,9 +292,7 @@ static int __net_init iptable_nat_net_init(struct net *net)
 		return -ENOMEM;
 	net->ipv4.nat_table = ipt_register_table(net, &nf_nat_ipv4_table, repl);
 	kfree(repl);
-	if (IS_ERR(net->ipv4.nat_table))
-		return PTR_ERR(net->ipv4.nat_table);
-	return 0;
+	return PTR_RET(net->ipv4.nat_table);
 }
 
 static void __net_exit iptable_nat_net_exit(struct net *net)

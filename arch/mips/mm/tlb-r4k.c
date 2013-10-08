@@ -13,6 +13,7 @@
 #include <linux/smp.h>
 #include <linux/mm.h>
 #include <linux/hugetlb.h>
+#include <linux/module.h>
 
 #include <asm/cpu.h>
 #include <asm/bootinfo.h>
@@ -94,6 +95,7 @@ void local_flush_tlb_all(void)
 	FLUSH_ITLB;
 	EXIT_CRITICAL(flags);
 }
+EXPORT_SYMBOL(local_flush_tlb_all);
 
 /* All entries common to a mm share an asid.  To effectively flush
    these entries, we just bump the asid. */
@@ -295,7 +297,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
 	pudp = pud_offset(pgdp, address);
 	pmdp = pmd_offset(pudp, address);
 	idx = read_c0_index();
-#ifdef CONFIG_HUGETLB_PAGE
+#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
 	/* this could be a huge page  */
 	if (pmd_huge(*pmdp)) {
 		unsigned long lo;
@@ -367,6 +369,26 @@ void add_wired_entry(unsigned long entrylo0, unsigned long entrylo1,
 	EXIT_CRITICAL(flags);
 }
 
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+
+int __init has_transparent_hugepage(void)
+{
+	unsigned int mask;
+	unsigned long flags;
+
+	ENTER_CRITICAL(flags);
+	write_c0_pagemask(PM_HUGE_MASK);
+	back_to_back_c0_hazard();
+	mask = read_c0_pagemask();
+	write_c0_pagemask(PM_DEFAULT_MASK);
+
+	EXIT_CRITICAL(flags);
+
+	return mask == PM_HUGE_MASK;
+}
+
+#endif /* CONFIG_TRANSPARENT_HUGEPAGE  */
+
 static int __cpuinitdata ntlb;
 static int __init set_ntlb(char *str)
 {
@@ -404,7 +426,7 @@ void __cpuinit tlb_init(void)
 		write_c0_pagegrain(pg);
 	}
 
-        /* From this point on the ARC firmware is dead.  */
+	/* From this point on the ARC firmware is dead.	 */
 	local_flush_tlb_all();
 
 	/* Did I tell you that ARC SUCKS?  */

@@ -24,7 +24,7 @@
 #include <linux/gpio.h>
 #include <drm/drm_edid.h>
 
-#include <video/omap-panel-tfp410.h>
+#include <video/omap-panel-data.h>
 
 static const struct omap_video_timings tfp410_default_timings = {
 	.x_res		= 640,
@@ -135,7 +135,7 @@ static int tfp410_probe(struct omap_dss_device *dssdev)
 		if (!adapter) {
 			dev_err(&dssdev->dev, "Failed to get I2C adapter, bus %d\n",
 					i2c_bus_num);
-			return -EINVAL;
+			return -EPROBE_DEFER;
 		}
 
 		ddata->i2c_adapter = adapter;
@@ -187,37 +187,6 @@ static void tfp410_disable(struct omap_dss_device *dssdev)
 	dssdev->state = OMAP_DSS_DISPLAY_DISABLED;
 
 	mutex_unlock(&ddata->lock);
-}
-
-static int tfp410_suspend(struct omap_dss_device *dssdev)
-{
-	struct panel_drv_data *ddata = dev_get_drvdata(&dssdev->dev);
-
-	mutex_lock(&ddata->lock);
-
-	tfp410_power_off(dssdev);
-
-	dssdev->state = OMAP_DSS_DISPLAY_SUSPENDED;
-
-	mutex_unlock(&ddata->lock);
-
-	return 0;
-}
-
-static int tfp410_resume(struct omap_dss_device *dssdev)
-{
-	struct panel_drv_data *ddata = dev_get_drvdata(&dssdev->dev);
-	int r;
-
-	mutex_lock(&ddata->lock);
-
-	r = tfp410_power_on(dssdev);
-	if (r == 0)
-		dssdev->state = OMAP_DSS_DISPLAY_ACTIVE;
-
-	mutex_unlock(&ddata->lock);
-
-	return r;
 }
 
 static void tfp410_set_timings(struct omap_dss_device *dssdev,
@@ -355,8 +324,6 @@ static struct omap_dss_driver tfp410_driver = {
 
 	.enable		= tfp410_enable,
 	.disable	= tfp410_disable,
-	.suspend	= tfp410_suspend,
-	.resume		= tfp410_resume,
 
 	.set_timings	= tfp410_set_timings,
 	.get_timings	= tfp410_get_timings,

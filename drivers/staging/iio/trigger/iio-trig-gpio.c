@@ -51,7 +51,7 @@ static const struct iio_trigger_ops iio_gpio_trigger_ops = {
 	.owner = THIS_MODULE,
 };
 
-static int __devinit iio_gpio_trigger_probe(struct platform_device *pdev)
+static int iio_gpio_trigger_probe(struct platform_device *pdev)
 {
 	struct iio_gpio_trigger_info *trig_info;
 	struct iio_trigger *trig, *trig2;
@@ -83,7 +83,7 @@ static int __devinit iio_gpio_trigger_probe(struct platform_device *pdev)
 				ret = -ENOMEM;
 				goto error_put_trigger;
 			}
-			trig->private_data = trig_info;
+			iio_trigger_set_drvdata(trig, trig_info);
 			trig_info->irq = irq;
 			trig->ops = &iio_gpio_trigger_ops;
 			ret = request_irq(irq, iio_gpio_trigger_poll,
@@ -121,7 +121,7 @@ error_free_completed_registrations:
 				 trig2,
 				 &iio_gpio_trigger_list,
 				 alloc_list) {
-		trig_info = trig->private_data;
+		trig_info = iio_trigger_get_drvdata(trig);
 		free_irq(gpio_to_irq(trig_info->irq), trig);
 		kfree(trig_info);
 		iio_trigger_unregister(trig);
@@ -130,7 +130,7 @@ error_free_completed_registrations:
 	return ret;
 }
 
-static int __devexit iio_gpio_trigger_remove(struct platform_device *pdev)
+static int iio_gpio_trigger_remove(struct platform_device *pdev)
 {
 	struct iio_trigger *trig, *trig2;
 	struct iio_gpio_trigger_info *trig_info;
@@ -140,7 +140,7 @@ static int __devexit iio_gpio_trigger_remove(struct platform_device *pdev)
 				 trig2,
 				 &iio_gpio_trigger_list,
 				 alloc_list) {
-		trig_info = trig->private_data;
+		trig_info = iio_trigger_get_drvdata(trig);
 		iio_trigger_unregister(trig);
 		free_irq(trig_info->irq, trig);
 		kfree(trig_info);
@@ -153,7 +153,7 @@ static int __devexit iio_gpio_trigger_remove(struct platform_device *pdev)
 
 static struct platform_driver iio_gpio_trigger_driver = {
 	.probe = iio_gpio_trigger_probe,
-	.remove = __devexit_p(iio_gpio_trigger_remove),
+	.remove = iio_gpio_trigger_remove,
 	.driver = {
 		.name = "iio_gpio_trigger",
 		.owner = THIS_MODULE,

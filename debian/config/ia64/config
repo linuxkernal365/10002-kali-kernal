@@ -70,7 +70,7 @@ CONFIG_SUN_PARTITION=y
 ## file: drivers/acpi/Kconfig
 ##
 CONFIG_ACPI_DOCK=y
-CONFIG_ACPI_PCI_SLOT=m
+CONFIG_ACPI_PCI_SLOT=y
 CONFIG_ACPI_CONTAINER=y
 
 ##
@@ -155,7 +155,8 @@ CONFIG_IPMI_POWEROFF=m
 ##
 ## file: drivers/firmware/Kconfig
 ##
-CONFIG_EFI_VARS=m
+CONFIG_EFI_VARS=y
+CONFIG_EFI_VARS_PSTORE=y
 CONFIG_DMIID=y
 
 ##
@@ -173,7 +174,6 @@ CONFIG_DRM_SIS=m
 ##
 CONFIG_DRM_NOUVEAU=m
 # CONFIG_DRM_NOUVEAU_BACKLIGHT is not set
-# CONFIG_DRM_NOUVEAU_DEBUG is not set
 CONFIG_DRM_I2C_CH7006=m
 CONFIG_DRM_I2C_SIL164=m
 
@@ -224,6 +224,7 @@ CONFIG_SENSORS_W83627HF=m
 ##
 CONFIG_I2C=m
 CONFIG_I2C_CHARDEV=m
+CONFIG_I2C_STUB=m
 # CONFIG_I2C_DEBUG_CORE is not set
 # CONFIG_I2C_DEBUG_ALGO is not set
 # CONFIG_I2C_DEBUG_BUS is not set
@@ -248,7 +249,6 @@ CONFIG_I2C_VIAPRO=m
 CONFIG_I2C_PARPORT=m
 CONFIG_I2C_PARPORT_LIGHT=m
 CONFIG_I2C_PCA_ISA=m
-CONFIG_I2C_STUB=m
 CONFIG_SCx200_ACB=m
 
 ##
@@ -568,7 +568,6 @@ CONFIG_DSCC4=m
 # CONFIG_DSCC4_PCI_RST is not set
 CONFIG_DLCI=m
 CONFIG_DLCI_MAX=8
-# CONFIG_CYCLADES_SYNC is not set
 
 ##
 ## file: drivers/net/wireless/Kconfig
@@ -669,13 +668,6 @@ CONFIG_SGI_IOC3=m
 ##
 CONFIG_PC300=m
 CONFIG_PC300_MLPPP=y
-
-##
-## file: drivers/staging/telephony/Kconfig
-##
-CONFIG_PHONE=m
-CONFIG_PHONE_IXJ=m
-CONFIG_PHONE_IXJ_PCMCIA=m
 
 ##
 ## file: drivers/staging/wlan-ng/Kconfig
@@ -877,4 +869,9 @@ CONFIG_SND_YMFPCI=m
 ## file: sound/pci/hda/Kconfig
 ##
 CONFIG_SND_HDA_INTEL=m
+
+##
+## file: unknown
+##
+# CONFIG_DRM_NOUVEAU_DEBUG is not set
 

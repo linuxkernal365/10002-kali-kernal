@@ -28,7 +28,7 @@ MODULE_AUTHOR("Javier Martin <javier.martin@vista-silicon.com");
 MODULE_LICENSE("GPL");
 MODULE_VERSION("0.0.1");
 
-static bool debug = true;
+static bool debug;
 module_param(debug, bool, 0644);
 
 /* Flags that indicate a format can be used for capture/output */
@@ -207,6 +207,9 @@ static void dma_callback(void *data)
 	src_vb = v4l2_m2m_src_buf_remove(curr_ctx->m2m_ctx);
 	dst_vb = v4l2_m2m_dst_buf_remove(curr_ctx->m2m_ctx);
 
+	src_vb->v4l2_buf.timestamp = dst_vb->v4l2_buf.timestamp;
+	src_vb->v4l2_buf.timecode = dst_vb->v4l2_buf.timecode;
+
 	v4l2_m2m_buf_done(src_vb, VB2_BUF_STATE_DONE);
 	v4l2_m2m_buf_done(dst_vb, VB2_BUF_STATE_DONE);
 
@@ -218,15 +221,14 @@ static void dma_callback(void *data)
 static void deinterlace_issue_dma(struct deinterlace_ctx *ctx, int op,
 				  int do_callback)
 {
-	struct deinterlace_q_data *s_q_data, *d_q_data;
+	struct deinterlace_q_data *s_q_data;
 	struct vb2_buffer *src_buf, *dst_buf;
 	struct deinterlace_dev *pcdev = ctx->dev;
 	struct dma_chan *chan = pcdev->dma_chan;
 	struct dma_device *dmadev = chan->device;
 	struct dma_async_tx_descriptor *tx;
 	unsigned int s_width, s_height;
-	unsigned int d_width, d_height;
-	unsigned int d_size, s_size;
+	unsigned int s_size;
 	dma_addr_t p_in, p_out;
 	enum dma_ctrl_flags flags;
 
@@ -237,11 +239,6 @@ static void deinterlace_issue_dma(struct deinterlace_ctx *ctx, int op,
 	s_width	= s_q_data->width;
 	s_height = s_q_data->height;
 	s_size = s_width * s_height;
-
-	d_q_data = get_q_data(V4L2_BUF_TYPE_VIDEO_CAPTURE);
-	d_width = d_q_data->width;
-	d_height = d_q_data->height;
-	d_size = d_width * d_height;
 
 	p_in = (dma_addr_t)vb2_dma_contig_plane_dma_addr(src_buf, 0);
 	p_out = (dma_addr_t)vb2_dma_contig_plane_dma_addr(dst_buf, 0);
@@ -872,6 +869,7 @@ static int queue_init(void *priv, struct vb2_queue *src_vq,
 	src_vq->buf_struct_size = sizeof(struct v4l2_m2m_buffer);
 	src_vq->ops = &deinterlace_qops;
 	src_vq->mem_ops = &vb2_dma_contig_memops;
+	src_vq->timestamp_type = V4L2_BUF_FLAG_TIMESTAMP_COPY;
 	q_data[V4L2_M2M_SRC].fmt = &formats[0];
 	q_data[V4L2_M2M_SRC].width = 640;
 	q_data[V4L2_M2M_SRC].height = 480;
@@ -888,6 +886,7 @@ static int queue_init(void *priv, struct vb2_queue *src_vq,
 	dst_vq->buf_struct_size = sizeof(struct v4l2_m2m_buffer);
 	dst_vq->ops = &deinterlace_qops;
 	dst_vq->mem_ops = &vb2_dma_contig_memops;
+	dst_vq->timestamp_type = V4L2_BUF_FLAG_TIMESTAMP_COPY;
 	q_data[V4L2_M2M_DST].fmt = &formats[0];
 	q_data[V4L2_M2M_DST].width = 640;
 	q_data[V4L2_M2M_DST].height = 480;
@@ -923,10 +922,8 @@ static int deinterlace_open(struct file *file)
 	ctx->xt = kzalloc(sizeof(struct dma_async_tx_descriptor) +
 				sizeof(struct data_chunk), GFP_KERNEL);
 	if (!ctx->xt) {
-		int ret = PTR_ERR(ctx->xt);
-
 		kfree(ctx);
-		return ret;
+		return -ENOMEM;
 	}
 
 	ctx->colorspace = V4L2_COLORSPACE_REC709;
@@ -1108,17 +1105,5 @@ static struct platform_driver deinterlace_pdrv = {
 		.owner	= THIS_MODULE,
 	},
 };
-
-static void __exit deinterlace_exit(void)
-{
-	platform_driver_unregister(&deinterlace_pdrv);
-}
-
-static int __init deinterlace_init(void)
-{
-	return platform_driver_register(&deinterlace_pdrv);
-}
-
-module_init(deinterlace_init);
-module_exit(deinterlace_exit);
+module_platform_driver(deinterlace_pdrv);
 

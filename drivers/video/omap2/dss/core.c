@@ -53,14 +53,30 @@ static char *def_disp_name;
 module_param_named(def_disp, def_disp_name, charp, 0);
 MODULE_PARM_DESC(def_disp, "default display name");
 
-#ifdef DEBUG
-bool dss_debug;
-module_param_named(debug, dss_debug, bool, 0644);
-#endif
+static bool dss_initialized;
 
-const char *dss_get_default_display_name(void)
+const char *omapdss_get_default_display_name(void)
 {
 	return core.default_display_name;
+}
+EXPORT_SYMBOL(omapdss_get_default_display_name);
+
+enum omapdss_version omapdss_get_version(void)
+{
+	struct omap_dss_board_info *pdata = core.pdev->dev.platform_data;
+	return pdata->version;
+}
+EXPORT_SYMBOL(omapdss_get_version);
+
+bool omapdss_is_initialized(void)
+{
+	return dss_initialized;
+}
+EXPORT_SYMBOL(omapdss_is_initialized);
+
+struct platform_device *dss_get_core_pdev(void)
+{
+	return core.pdev;
 }
 
 /* REGULATORS */
@@ -93,21 +109,6 @@ struct regulator *dss_get_vdds_sdi(void)
 	return reg;
 }
 
-int dss_get_ctx_loss_count(struct device *dev)
-{
-	struct omap_dss_board_info *board_data = core.pdev->dev.platform_data;
-	int cnt;
-
-	if (!board_data->get_context_loss_count)
-		return -ENOENT;
-
-	cnt = board_data->get_context_loss_count(dev);
-
-	WARN_ONCE(cnt < 0, "get_context_loss_count failed: %d\n", cnt);
-
-	return cnt;
-}
-
 int dss_dsi_enable_pads(int dsi_id, unsigned lane_mask)
 {
 	struct omap_dss_board_info *board_data = core.pdev->dev.platform_data;
@@ -122,7 +123,7 @@ void dss_dsi_disable_pads(int dsi_id, unsigned lane_mask)
 {
 	struct omap_dss_board_info *board_data = core.pdev->dev.platform_data;
 
-	if (!board_data->dsi_enable_pads)
+	if (!board_data->dsi_disable_pads)
 		return;
 
 	return board_data->dsi_disable_pads(dsi_id, lane_mask);
@@ -138,7 +139,7 @@ int dss_set_min_bus_tput(struct device *dev, unsigned long tput)
 		return 0;
 }
 
-#if defined(CONFIG_DEBUG_FS) && defined(CONFIG_OMAP2_DSS_DEBUG_SUPPORT)
+#if defined(CONFIG_OMAP2_DSS_DEBUGFS)
 static int dss_debug_show(struct seq_file *s, void *unused)
 {
 	void (*func)(struct seq_file *) = s->private;
@@ -188,12 +189,9 @@ int dss_debugfs_create_file(const char *name, void (*write)(struct seq_file *))
 	d = debugfs_create_file(name, S_IRUGO, dss_debugfs_dir,
 			write, &dss_debug_fops);
 
-	if (IS_ERR(d))
-		return PTR_ERR(d);
-
-	return 0;
+	return PTR_RET(d);
 }
-#else /* CONFIG_DEBUG_FS && CONFIG_OMAP2_DSS_DEBUG_SUPPORT */
+#else /* CONFIG_OMAP2_DSS_DEBUGFS */
 static inline int dss_initialize_debugfs(void)
 {
 	return 0;
@@ -205,7 +203,7 @@ int dss_debugfs_create_file(const char *name, void (*write)(struct seq_file *))
 {
 	return 0;
 }
-#endif /* CONFIG_DEBUG_FS && CONFIG_OMAP2_DSS_DEBUG_SUPPORT */
+#endif /* CONFIG_OMAP2_DSS_DEBUGFS */
 
 /* PLATFORM DEVICE */
 static int omap_dss_pm_notif(struct notifier_block *b, unsigned long v, void *d)
@@ -237,12 +235,7 @@ static int __init omap_dss_probe(struct platform_device *pdev)
 
 	core.pdev = pdev;
 
-	dss_features_init();
-
-	dss_apply_init();
-
-	dss_init_overlay_managers(pdev);
-	dss_init_overlays(pdev);
+	dss_features_init(omapdss_get_version());
 
 	r = dss_initialize_debugfs();
 	if (r)
@@ -267,9 +260,6 @@ static int omap_dss_remove(struct platform_device *pdev)
 	unregister_pm_notifier(&omap_dss_pm_notif_block);
 
 	dss_uninitialize_debugfs();
-
-	dss_uninit_overlays(pdev);
-	dss_uninit_overlay_managers(pdev);
 
 	return 0;
 }
@@ -358,15 +348,10 @@ static int dss_driver_probe(struct device *dev)
 				dev_name(dev), dssdev->driver_name,
 				dssdrv->driver.name);
 
-	r = dss_init_device(core.pdev, dssdev);
-	if (r)
-		return r;
-
 	r = dssdrv->probe(dssdev);
 
 	if (r) {
 		DSSERR("driver probe failed: %d\n", r);
-		dss_uninit_device(core.pdev, dssdev);
 		return r;
 	}
 
@@ -386,8 +371,6 @@ static int dss_driver_remove(struct device *dev)
 			dssdev->driver_name);
 
 	dssdrv->remove(dssdev);
-
-	dss_uninit_device(core.pdev, dssdev);
 
 	dssdev->driver = NULL;
 
@@ -507,6 +490,9 @@ static int __init omap_dss_bus_register(void)
 
 /* INIT */
 static int (*dss_output_drv_reg_funcs[])(void) __initdata = {
+#ifdef CONFIG_OMAP2_DSS_DSI
+	dsi_init_platform_driver,
+#endif
 #ifdef CONFIG_OMAP2_DSS_DPI
 	dpi_init_platform_driver,
 #endif
@@ -519,15 +505,15 @@ static int (*dss_output_drv_reg_funcs[])(void) __initdata = {
 #ifdef CONFIG_OMAP2_DSS_VENC
 	venc_init_platform_driver,
 #endif
-#ifdef CONFIG_OMAP2_DSS_DSI
-	dsi_init_platform_driver,
-#endif
 #ifdef CONFIG_OMAP4_DSS_HDMI
 	hdmi_init_platform_driver,
 #endif
 };
 
 static void (*dss_output_drv_unreg_funcs[])(void) __exitdata = {
+#ifdef CONFIG_OMAP2_DSS_DSI
+	dsi_uninit_platform_driver,
+#endif
 #ifdef CONFIG_OMAP2_DSS_DPI
 	dpi_uninit_platform_driver,
 #endif
@@ -539,9 +525,6 @@ static void (*dss_output_drv_unreg_funcs[])(void) __exitdata = {
 #endif
 #ifdef CONFIG_OMAP2_DSS_VENC
 	venc_uninit_platform_driver,
-#endif
-#ifdef CONFIG_OMAP2_DSS_DSI
-	dsi_uninit_platform_driver,
 #endif
 #ifdef CONFIG_OMAP4_DSS_HDMI
 	hdmi_uninit_platform_driver,
@@ -628,6 +611,8 @@ static int __init omap_dss_init(void)
 		return r;
 	}
 
+	dss_initialized = true;
+
 	return 0;
 }
 
@@ -658,7 +643,15 @@ static int __init omap_dss_init(void)
 
 static int __init omap_dss_init2(void)
 {
-	return omap_dss_register_drivers();
+	int r;
+
+	r = omap_dss_register_drivers();
+	if (r)
+		return r;
+
+	dss_initialized = true;
+
+	return 0;
 }
 
 core_initcall(omap_dss_init);

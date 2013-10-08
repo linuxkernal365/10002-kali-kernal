@@ -96,9 +96,12 @@
 #define ABIT_UGURU_MAX_TIMEOUTS			2
 /* utility macros */
 #define ABIT_UGURU_NAME				"abituguru"
-#define ABIT_UGURU_DEBUG(level, format, arg...)				\
-	if (level <= verbose)						\
-		printk(KERN_DEBUG ABIT_UGURU_NAME ": "	format , ## arg)
+#define ABIT_UGURU_DEBUG(level, format, arg...)		\
+	do {						\
+		if (level <= verbose)			\
+			pr_debug(format , ## arg);	\
+	} while (0)
+
 /* Macros to help calculate the sysfs_names array length */
 /*
  * sum of strlen of: in??_input\0, in??_{min,max}\0, in??_{min,max}_alarm\0,
@@ -478,7 +481,7 @@ static int abituguru_write(struct abituguru_data *data,
  * alarm for sensor type X and then enabling the sensor as sensor type
  * X, if we then get an alarm it is a sensor of type X.
  */
-static int __devinit
+static int
 abituguru_detect_bank1_sensor_type(struct abituguru_data *data,
 				   u8 sensor_addr)
 {
@@ -635,7 +638,7 @@ abituguru_detect_bank1_sensor_type_exit:
  * read/write test would be feasible because of the reaction above, I've
  * however opted to stay on the safe side.
  */
-static void __devinit
+static void
 abituguru_detect_no_bank2_sensors(struct abituguru_data *data)
 {
 	int i;
@@ -691,7 +694,7 @@ abituguru_detect_no_bank2_sensors(struct abituguru_data *data)
 		(int)data->bank2_sensors);
 }
 
-static void __devinit
+static void
 abituguru_detect_no_pwms(struct abituguru_data *data)
 {
 	int i, j;
@@ -1264,7 +1267,7 @@ static struct sensor_device_attribute_2 abituguru_sysfs_attr[] = {
 	SENSOR_ATTR_2(name, 0444, show_name, NULL, 0, 0),
 };
 
-static int __devinit abituguru_probe(struct platform_device *pdev)
+static int abituguru_probe(struct platform_device *pdev)
 {
 	struct abituguru_data *data;
 	int i, j, used, sysfs_names_free, sysfs_attr_i, res = -ENODEV;
@@ -1411,14 +1414,18 @@ static int __devinit abituguru_probe(struct platform_device *pdev)
 	pr_info("found Abit uGuru\n");
 
 	/* Register sysfs hooks */
-	for (i = 0; i < sysfs_attr_i; i++)
-		if (device_create_file(&pdev->dev,
-				&data->sysfs_attr[i].dev_attr))
+	for (i = 0; i < sysfs_attr_i; i++) {
+		res = device_create_file(&pdev->dev,
+					 &data->sysfs_attr[i].dev_attr);
+		if (res)
 			goto abituguru_probe_error;
-	for (i = 0; i < ARRAY_SIZE(abituguru_sysfs_attr); i++)
-		if (device_create_file(&pdev->dev,
-				&abituguru_sysfs_attr[i].dev_attr))
+	}
+	for (i = 0; i < ARRAY_SIZE(abituguru_sysfs_attr); i++) {
+		res = device_create_file(&pdev->dev,
+					 &abituguru_sysfs_attr[i].dev_attr);
+		if (res)
 			goto abituguru_probe_error;
+	}
 
 	data->hwmon_dev = hwmon_device_register(&pdev->dev);
 	if (!IS_ERR(data->hwmon_dev))
@@ -1434,7 +1441,7 @@ abituguru_probe_error:
 	return res;
 }
 
-static int __devexit abituguru_remove(struct platform_device *pdev)
+static int abituguru_remove(struct platform_device *pdev)
 {
 	int i;
 	struct abituguru_data *data = platform_get_drvdata(pdev);
@@ -1533,7 +1540,7 @@ static int abituguru_resume(struct device *dev)
 }
 
 static SIMPLE_DEV_PM_OPS(abituguru_pm, abituguru_suspend, abituguru_resume);
-#define ABIT_UGURU_PM	&abituguru_pm
+#define ABIT_UGURU_PM	(&abituguru_pm)
 #else
 #define ABIT_UGURU_PM	NULL
 #endif /* CONFIG_PM */
@@ -1545,7 +1552,7 @@ static struct platform_driver abituguru_driver = {
 		.pm	= ABIT_UGURU_PM,
 	},
 	.probe		= abituguru_probe,
-	.remove		= __devexit_p(abituguru_remove),
+	.remove		= abituguru_remove,
 };
 
 static int __init abituguru_detect(void)

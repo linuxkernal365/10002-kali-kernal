@@ -42,11 +42,6 @@
 
 #include <linux/module.h>
 
-#ifndef CONFIG_TIPC_PORTS
-#define CONFIG_TIPC_PORTS 8191
-#endif
-
-
 /* global variables used by multiple sub-systems within TIPC */
 int tipc_random __read_mostly;
 
@@ -87,6 +82,7 @@ static void tipc_core_stop_net(void)
 {
 	tipc_net_stop();
 	tipc_eth_media_stop();
+	tipc_ib_media_stop();
 }
 
 /**
@@ -98,8 +94,15 @@ int tipc_core_start_net(unsigned long addr)
 
 	tipc_net_start(addr);
 	res = tipc_eth_media_start();
-	if (res)
-		tipc_core_stop_net();
+	if (res < 0)
+		goto err;
+	res = tipc_ib_media_start();
+	if (res < 0)
+		goto err;
+	return res;
+
+err:
+	tipc_core_stop_net();
 	return res;
 }
 

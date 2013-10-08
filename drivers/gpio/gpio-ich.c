@@ -128,16 +128,13 @@ static int ichx_read_bit(int reg, unsigned nr)
 	return data & (1 << bit) ? 1 : 0;
 }
 
-static int ichx_gpio_check_available(struct gpio_chip *gpio, unsigned nr)
+static bool ichx_gpio_check_available(struct gpio_chip *gpio, unsigned nr)
 {
-	return (ichx_priv.use_gpio & (1 << (nr / 32))) ? 0 : -ENXIO;
+	return !!(ichx_priv.use_gpio & (1 << (nr / 32)));
 }
 
 static int ichx_gpio_direction_input(struct gpio_chip *gpio, unsigned nr)
 {
-	if (!ichx_gpio_check_available(gpio, nr))
-		return -ENXIO;
-
 	/*
 	 * Try setting pin as an input and verify it worked since many pins
 	 * are output-only.
@@ -151,9 +148,6 @@ static int ichx_gpio_direction_input(struct gpio_chip *gpio, unsigned nr)
 static int ichx_gpio_direction_output(struct gpio_chip *gpio, unsigned nr,
 					int val)
 {
-	if (!ichx_gpio_check_available(gpio, nr))
-		return -ENXIO;
-
 	/* Set GPIO output value. */
 	ichx_write_bit(GPIO_LVL, nr, val, 0);
 
@@ -169,9 +163,6 @@ static int ichx_gpio_direction_output(struct gpio_chip *gpio, unsigned nr,
 
 static int ichx_gpio_get(struct gpio_chip *chip, unsigned nr)
 {
-	if (!ichx_gpio_check_available(chip, nr))
-		return -ENXIO;
-
 	return ichx_read_bit(GPIO_LVL, nr);
 }
 
@@ -179,9 +170,6 @@ static int ich6_gpio_get(struct gpio_chip *chip, unsigned nr)
 {
 	unsigned long flags;
 	u32 data;
-
-	if (!ichx_gpio_check_available(chip, nr))
-		return -ENXIO;
 
 	/*
 	 * GPI 0 - 15 need to be read from the power management registers on
@@ -207,6 +195,9 @@ static int ich6_gpio_get(struct gpio_chip *chip, unsigned nr)
 
 static int ichx_gpio_request(struct gpio_chip *chip, unsigned nr)
 {
+	if (!ichx_gpio_check_available(chip, nr))
+		return -ENXIO;
+
 	/*
 	 * Note we assume the BIOS properly set a bridge's USE value.  Some
 	 * chips (eg Intel 3100) have bogus USE values though, so first see if
@@ -214,7 +205,7 @@ static int ichx_gpio_request(struct gpio_chip *chip, unsigned nr)
 	 * If it can't be trusted, assume that the pin can be used as a GPIO.
 	 */
 	if (ichx_priv.desc->use_sel_ignore[nr / 32] & (1 << (nr & 0x1f)))
-		return 1;
+		return 0;
 
 	return ichx_read_bit(GPIO_USE_SEL, nr) ? 0 : -ENODEV;
 }
@@ -238,7 +229,7 @@ static void ichx_gpio_set(struct gpio_chip *chip, unsigned nr, int val)
 	ichx_write_bit(GPIO_LVL, nr, val, 0);
 }
 
-static void __devinit ichx_gpiolib_setup(struct gpio_chip *chip)
+static void ichx_gpiolib_setup(struct gpio_chip *chip)
 {
 	chip->owner = THIS_MODULE;
 	chip->label = DRV_NAME;
@@ -313,7 +304,7 @@ static struct ichx_desc intel5_desc = {
 	.ngpio = 76,
 };
 
-static int __devinit ichx_gpio_request_regions(struct resource *res_base,
+static int ichx_gpio_request_regions(struct resource *res_base,
 						const char *name, u8 use_gpio)
 {
 	int i;
@@ -353,7 +344,7 @@ static void ichx_gpio_release_regions(struct resource *res_base, u8 use_gpio)
 	}
 }
 
-static int __devinit ichx_gpio_probe(struct platform_device *pdev)
+static int ichx_gpio_probe(struct platform_device *pdev)
 {
 	struct resource *res_base, *res_pm;
 	int err;
@@ -390,6 +381,7 @@ static int __devinit ichx_gpio_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
+	spin_lock_init(&ichx_priv.lock);
 	res_base = platform_get_resource(pdev, IORESOURCE_IO, ICH_RES_GPIO);
 	ichx_priv.use_gpio = ich_info->use_gpio;
 	err = ichx_gpio_request_regions(res_base, pdev->name,
@@ -442,7 +434,7 @@ add_err:
 	return err;
 }
 
-static int __devexit ichx_gpio_remove(struct platform_device *pdev)
+static int ichx_gpio_remove(struct platform_device *pdev)
 {
 	int err;
 
@@ -467,7 +459,7 @@ static struct platform_driver ichx_gpio_driver = {
 		.name	= DRV_NAME,
 	},
 	.probe		= ichx_gpio_probe,
-	.remove		= __devexit_p(ichx_gpio_remove),
+	.remove		= ichx_gpio_remove,
 };
 
 module_platform_driver(ichx_gpio_driver);

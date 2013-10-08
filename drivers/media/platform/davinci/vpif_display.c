@@ -177,11 +177,14 @@ static void vpif_buffer_queue(struct vb2_buffer *vb)
 				struct vpif_disp_buffer, vb);
 	struct channel_obj *ch = fh->channel;
 	struct common_obj *common;
+	unsigned long flags;
 
 	common = &ch->common[VPIF_VIDEO_INDEX];
 
 	/* add the buffer to the DMA queue */
+	spin_lock_irqsave(&common->irqlock, flags);
 	list_add_tail(&buf->list, &common->dma_queue);
+	spin_unlock_irqrestore(&common->irqlock, flags);
 }
 
 /*
@@ -246,10 +249,13 @@ static int vpif_start_streaming(struct vb2_queue *vq, unsigned int count)
 	struct common_obj *common = &ch->common[VPIF_VIDEO_INDEX];
 	struct vpif_params *vpif = &ch->vpifparams;
 	unsigned long addr = 0;
+	unsigned long flags;
 	int ret;
 
 	/* If buffer queue is empty, return error */
+	spin_lock_irqsave(&common->irqlock, flags);
 	if (list_empty(&common->dma_queue)) {
+		spin_unlock_irqrestore(&common->irqlock, flags);
 		vpif_err("buffer queue is empty\n");
 		return -EIO;
 	}
@@ -260,6 +266,7 @@ static int vpif_start_streaming(struct vb2_queue *vq, unsigned int count)
 				       struct vpif_disp_buffer, list);
 
 	list_del(&common->cur_frm->list);
+	spin_unlock_irqrestore(&common->irqlock, flags);
 	/* Mark state of the current frame to active */
 	common->cur_frm->vb.state = VB2_BUF_STATE_ACTIVE;
 
@@ -330,6 +337,7 @@ static int vpif_stop_streaming(struct vb2_queue *vq)
 	struct vpif_fh *fh = vb2_get_drv_priv(vq);
 	struct channel_obj *ch = fh->channel;
 	struct common_obj *common;
+	unsigned long flags;
 
 	if (!vb2_is_streaming(vq))
 		return 0;
@@ -337,12 +345,14 @@ static int vpif_stop_streaming(struct vb2_queue *vq)
 	common = &ch->common[VPIF_VIDEO_INDEX];
 
 	/* release all active buffers */
+	spin_lock_irqsave(&common->irqlock, flags);
 	while (!list_empty(&common->dma_queue)) {
 		common->next_frm = list_entry(common->dma_queue.next,
 						struct vpif_disp_buffer, list);
 		list_del(&common->next_frm->list);
 		vb2_buffer_done(&common->next_frm->vb, VB2_BUF_STATE_ERROR);
 	}
+	spin_unlock_irqrestore(&common->irqlock, flags);
 
 	return 0;
 }
@@ -363,11 +373,13 @@ static void process_progressive_mode(struct common_obj *common)
 {
 	unsigned long addr = 0;
 
+	spin_lock(&common->irqlock);
 	/* Get the next buffer from buffer queue */
 	common->next_frm = list_entry(common->dma_queue.next,
 				struct vpif_disp_buffer, list);
 	/* Remove that buffer from the buffer queue */
 	list_del(&common->next_frm->list);
+	spin_unlock(&common->irqlock);
 	/* Mark status of the buffer as active */
 	common->next_frm->vb.state = VB2_BUF_STATE_ACTIVE;
 
@@ -390,7 +402,7 @@ static void process_interlaced_mode(int fid, struct common_obj *common)
 		/* one frame is displayed If next frame is
 		 *  available, release cur_frm and move on */
 		/* Copy frame display time */
-		do_gettimeofday(&common->cur_frm->vb.v4l2_buf.timestamp);
+		v4l2_get_timestamp(&common->cur_frm->vb.v4l2_buf.timestamp);
 		/* Change status of the cur_frm */
 		vb2_buffer_done(&common->cur_frm->vb,
 					    VB2_BUF_STATE_DONE);
@@ -398,16 +410,18 @@ static void process_interlaced_mode(int fid, struct common_obj *common)
 		common->cur_frm = common->next_frm;
 
 	} else if (1 == fid) {	/* odd field */
+		spin_lock(&common->irqlock);
 		if (list_empty(&common->dma_queue)
 		    || (common->cur_frm != common->next_frm)) {
+			spin_unlock(&common->irqlock);
 			return;
 		}
+		spin_unlock(&common->irqlock);
 		/* one field is displayed configure the next
 		 * frame if it is available else hold on current
 		 * frame */
 		/* Get next from the buffer queue */
 		process_progressive_mode(common);
-
 	}
 }
 
@@ -437,15 +451,19 @@ static irqreturn_t vpif_channel_isr(int irq, void *dev_id)
 			continue;
 
 		if (1 == ch->vpifparams.std_info.frm_fmt) {
-			if (list_empty(&common->dma_queue))
+			spin_lock(&common->irqlock);
+			if (list_empty(&common->dma_queue)) {
+				spin_unlock(&common->irqlock);
 				continue;
+			}
+			spin_unlock(&common->irqlock);
 
 			/* Progressive mode */
 			if (!channel_first_int[i][channel_id]) {
 				/* Mark status of the cur_frm to
 				 * done and unlock semaphore on it */
-				do_gettimeofday(&common->cur_frm->vb.
-						v4l2_buf.timestamp);
+				v4l2_get_timestamp(&common->cur_frm->vb.
+						   v4l2_buf.timestamp);
 				vb2_buffer_done(&common->cur_frm->vb,
 					    VB2_BUF_STATE_DONE);
 				/* Make cur_frm pointing to next_frm */
@@ -493,7 +511,7 @@ static int vpif_update_std_info(struct channel_obj *ch)
 	int i;
 
 	for (i = 0; i < vpif_ch_params_count; i++) {
-		config = &ch_params[i];
+		config = &vpif_ch_params[i];
 		if (config->hd_sd == 0) {
 			vpif_dbg(2, debug, "SD format\n");
 			if (config->stdid & vid_ch->stdid) {
@@ -972,9 +990,9 @@ static int vpif_reqbufs(struct file *file, void *priv,
 	}
 	/* Initialize videobuf2 queue as per the buffer type */
 	common->alloc_ctx = vb2_dma_contig_init_ctx(vpif_dev);
-	if (!common->alloc_ctx) {
+	if (IS_ERR(common->alloc_ctx)) {
 		vpif_err("Failed to get the context\n");
-		return -EINVAL;
+		return PTR_ERR(common->alloc_ctx);
 	}
 	q = &common->buffer_queue;
 	q->type = V4L2_BUF_TYPE_VIDEO_OUTPUT;
@@ -983,6 +1001,7 @@ static int vpif_reqbufs(struct file *file, void *priv,
 	q->ops = &video_qops;
 	q->mem_ops = &vb2_dma_contig_memops;
 	q->buf_struct_size = sizeof(struct vpif_disp_buffer);
+	q->timestamp_type = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
 
 	ret = vb2_queue_init(q);
 	if (ret) {
@@ -1040,14 +1059,14 @@ static int vpif_qbuf(struct file *file, void *priv, struct v4l2_buffer *buf)
 	return vb2_qbuf(&common->buffer_queue, buf);
 }
 
-static int vpif_s_std(struct file *file, void *priv, v4l2_std_id *std_id)
+static int vpif_s_std(struct file *file, void *priv, v4l2_std_id std_id)
 {
 	struct vpif_fh *fh = priv;
 	struct channel_obj *ch = fh->channel;
 	struct common_obj *common = &ch->common[VPIF_VIDEO_INDEX];
 	int ret = 0;
 
-	if (!(*std_id & VPIF_V4L2_STD))
+	if (!(std_id & VPIF_V4L2_STD))
 		return -EINVAL;
 
 	if (common->started) {
@@ -1056,7 +1075,7 @@ static int vpif_s_std(struct file *file, void *priv, v4l2_std_id *std_id)
 	}
 
 	/* Call encoder subdevice function to set the standard */
-	ch->video.stdid = *std_id;
+	ch->video.stdid = std_id;
 	memset(&ch->video.dv_timings, 0, sizeof(ch->video.dv_timings));
 	/* Get the information about the standard */
 	if (vpif_update_resolution(ch))
@@ -1074,14 +1093,14 @@ static int vpif_s_std(struct file *file, void *priv, v4l2_std_id *std_id)
 	vpif_config_format(ch);
 
 	ret = v4l2_device_call_until_err(&vpif_obj.v4l2_dev, 1, video,
-						s_std_output, *std_id);
+						s_std_output, std_id);
 	if (ret < 0) {
 		vpif_err("Failed to set output standard\n");
 		return ret;
 	}
 
 	ret = v4l2_device_call_until_err(&vpif_obj.v4l2_dev, 1, core,
-							s_std, *std_id);
+							s_std, std_id);
 	if (ret < 0)
 		vpif_err("Failed to set standard for sub devices\n");
 	return ret;
@@ -1380,7 +1399,7 @@ vpif_enum_dv_timings(struct file *file, void *priv,
 	int ret;
 
 	ret = v4l2_subdev_call(ch->sd, video, enum_dv_timings, timings);
-	if (ret == -ENOIOCTLCMD && ret == -ENODEV)
+	if (ret == -ENOIOCTLCMD || ret == -ENODEV)
 		return -EINVAL;
 	return ret;
 }
@@ -1549,7 +1568,8 @@ static int vpif_dbg_g_register(struct file *file, void *priv,
  * Returns zero or -EINVAL if write operations fails.
  */
 static int vpif_dbg_s_register(struct file *file, void *priv,
-		struct v4l2_dbg_register *reg){
+		const struct v4l2_dbg_register *reg)
+{
 	struct vpif_fh *fh = priv;
 	struct channel_obj *ch = fh->channel;
 

@@ -209,7 +209,8 @@ enum radeon_connector_table {
 	CT_RN50_POWER,
 	CT_MAC_X800,
 	CT_MAC_G5_9600,
-	CT_SAM440EP
+	CT_SAM440EP,
+	CT_MAC_G4_SILVER
 };
 
 enum radeon_dvo_chip {
@@ -301,7 +302,6 @@ struct radeon_crtc {
 	u16 lut_r[256], lut_g[256], lut_b[256];
 	bool enabled;
 	bool can_tile;
-	bool in_mode_set;
 	uint32_t crtc_offset;
 	struct drm_gem_object *cursor_bo;
 	uint64_t cursor_addr;
@@ -427,7 +427,7 @@ struct radeon_connector_atom_dig {
 	uint32_t igp_lane_info;
 	/* displayport */
 	struct radeon_i2c_chan *dp_i2c_bus;
-	u8 dpcd[8];
+	u8 dpcd[DP_RECEIVER_CAP_SIZE];
 	u8 dp_sink_type;
 	int dp_clock;
 	int dp_lane_count;
@@ -490,6 +490,29 @@ struct radeon_framebuffer {
 
 #define ENCODER_MODE_IS_DP(em) (((em) == ATOM_ENCODER_MODE_DP) || \
 				((em) == ATOM_ENCODER_MODE_DP_MST))
+
+struct atom_clock_dividers {
+	u32 post_div;
+	union {
+		struct {
+#ifdef __BIG_ENDIAN
+			u32 reserved : 6;
+			u32 whole_fb_div : 12;
+			u32 frac_fb_div : 14;
+#else
+			u32 frac_fb_div : 14;
+			u32 whole_fb_div : 12;
+			u32 reserved : 6;
+#endif
+		};
+		u32 fb_div;
+	};
+	u32 ref_div;
+	bool enable_post_div;
+	bool enable_dithen;
+	u32 vco_mode;
+	u32 real_clock;
+};
 
 extern enum radeon_tv_std
 radeon_combios_get_tv_info(struct radeon_device *rdev);
@@ -558,7 +581,7 @@ extern void radeon_i2c_put_byte(struct radeon_i2c_chan *i2c,
 				u8 val);
 extern void radeon_router_select_ddc_port(struct radeon_connector *radeon_connector);
 extern void radeon_router_select_cd_port(struct radeon_connector *radeon_connector);
-extern bool radeon_ddc_probe(struct radeon_connector *radeon_connector);
+extern bool radeon_ddc_probe(struct radeon_connector *radeon_connector, bool use_aux);
 extern int radeon_ddc_get_modes(struct radeon_connector *radeon_connector);
 
 extern struct drm_encoder *radeon_best_encoder(struct drm_connector *connector);

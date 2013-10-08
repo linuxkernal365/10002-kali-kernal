@@ -120,11 +120,7 @@ static void smu_start_cmd(void)
 
 	DPRINTK("SMU: starting cmd %x, %d bytes data\n", cmd->cmd,
 		cmd->data_len);
-	DPRINTK("SMU: data buffer: %02x %02x %02x %02x %02x %02x %02x %02x\n",
-		((u8 *)cmd->data_buf)[0], ((u8 *)cmd->data_buf)[1],
-		((u8 *)cmd->data_buf)[2], ((u8 *)cmd->data_buf)[3],
-		((u8 *)cmd->data_buf)[4], ((u8 *)cmd->data_buf)[5],
-		((u8 *)cmd->data_buf)[6], ((u8 *)cmd->data_buf)[7]);
+	DPRINTK("SMU: data buffer: %8ph\n", cmd->data_buf);
 
 	/* Fill the SMU command buffer */
 	smu->cmd_buf->cmd = cmd->cmd;
@@ -565,7 +561,7 @@ fail_msg_node:
 fail_db_node:
 	of_node_put(smu->db_node);
 fail_bootmem:
-	free_bootmem((unsigned long)smu, sizeof(struct smu_device));
+	free_bootmem(__pa(smu), sizeof(struct smu_device));
 	smu = NULL;
 fail_np:
 	of_node_put(np);
@@ -997,7 +993,7 @@ static struct smu_sdbp_header *smu_create_sdb_partition(int id)
 		       "%02x !\n", id, hdr->id);
 		goto failure;
 	}
-	if (prom_add_property(smu->of_node, prop)) {
+	if (of_add_property(smu->of_node, prop)) {
 		printk(KERN_DEBUG "SMU: Failed creating sdb-partition-%02x "
 		       "property !\n", id);
 		goto failure;

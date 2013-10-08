@@ -73,7 +73,7 @@ int (*ivtv_ext_init)(struct ivtv *);
 EXPORT_SYMBOL(ivtv_ext_init);
 
 /* add your revision and whatnot here */
-static struct pci_device_id ivtv_pci_tbl[] __devinitdata = {
+static struct pci_device_id ivtv_pci_tbl[] = {
 	{PCI_VENDOR_ID_ICOMP, PCI_DEVICE_ID_IVTV15,
 	 PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},
 	{PCI_VENDOR_ID_ICOMP, PCI_DEVICE_ID_IVTV16,
@@ -304,7 +304,7 @@ static void request_modules(struct ivtv *dev)
 
 static void flush_request_modules(struct ivtv *dev)
 {
-	flush_work_sync(&dev->request_module_wk);
+	flush_work(&dev->request_module_wk);
 }
 #else
 #define request_modules(dev)
@@ -736,7 +736,7 @@ done:
    No assumptions on the card type may be made here (see ivtv_init_struct2
    for that).
  */
-static int __devinit ivtv_init_struct1(struct ivtv *itv)
+static int ivtv_init_struct1(struct ivtv *itv)
 {
 	struct sched_param param = { .sched_priority = 99 };
 
@@ -802,7 +802,7 @@ static int __devinit ivtv_init_struct1(struct ivtv *itv)
 
 /* Second initialization part. Here the card type has been
    autodetected. */
-static void __devinit ivtv_init_struct2(struct ivtv *itv)
+static void ivtv_init_struct2(struct ivtv *itv)
 {
 	int i;
 
@@ -1001,8 +1001,7 @@ static void ivtv_load_and_init_modules(struct ivtv *itv)
 	}
 }
 
-static int __devinit ivtv_probe(struct pci_dev *pdev,
-				const struct pci_device_id *pci_id)
+static int ivtv_probe(struct pci_dev *pdev, const struct pci_device_id *pci_id)
 {
 	int retval = 0;
 	int vbi_buf_size;
@@ -1388,7 +1387,7 @@ int ivtv_init_on_first_open(struct ivtv *itv)
 	if (!itv->has_cx23415)
 		write_reg_sync(0x03, IVTV_REG_DMACONTROL);
 
-	ivtv_s_std_enc(itv, &itv->tuner_std);
+	ivtv_s_std_enc(itv, itv->tuner_std);
 
 	/* Default interrupts enabled. For the PVR350 this includes the
 	   decoder VSYNC interrupt, which is always on. It is not only used
@@ -1398,7 +1397,7 @@ int ivtv_init_on_first_open(struct ivtv *itv)
 	if (itv->v4l2_cap & V4L2_CAP_VIDEO_OUTPUT) {
 		ivtv_clear_irq_mask(itv, IVTV_IRQ_MASK_INIT | IVTV_IRQ_DEC_VSYNC);
 		ivtv_set_osd_alpha(itv);
-		ivtv_s_std_dec(itv, &itv->tuner_std);
+		ivtv_s_std_dec(itv, itv->tuner_std);
 	} else {
 		ivtv_clear_irq_mask(itv, IVTV_IRQ_MASK_INIT);
 	}

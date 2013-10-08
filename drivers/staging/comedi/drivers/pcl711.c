@@ -161,14 +161,13 @@ struct pcl711_private {
 	unsigned int divisor2;
 };
 
-#define devpriv ((struct pcl711_private *)dev->private)
-
 static irqreturn_t pcl711_interrupt(int irq, void *d)
 {
 	int lo, hi;
 	int data;
 	struct comedi_device *dev = d;
 	const struct pcl711_board *board = comedi_board(dev);
+	struct pcl711_private *devpriv = dev->private;
 	struct comedi_subdevice *s = &dev->subdevices[0];
 
 	if (!dev->attached) {
@@ -264,6 +263,7 @@ ok:
 static int pcl711_ai_cmdtest(struct comedi_device *dev,
 			     struct comedi_subdevice *s, struct comedi_cmd *cmd)
 {
+	struct pcl711_private *devpriv = dev->private;
 	int tmp;
 	int err = 0;
 
@@ -289,38 +289,24 @@ static int pcl711_ai_cmdtest(struct comedi_device *dev,
 	if (err)
 		return 2;
 
-	/* step 3 */
+	/* Step 3: check if arguments are trivially valid */
 
-	if (cmd->start_arg != 0) {
-		cmd->start_arg = 0;
-		err++;
-	}
+	err |= cfc_check_trigger_arg_is(&cmd->start_arg, 0);
+
 	if (cmd->scan_begin_src == TRIG_EXT) {
-		if (cmd->scan_begin_arg != 0) {
-			cmd->scan_begin_arg = 0;
-			err++;
-		}
+		err |= cfc_check_trigger_arg_is(&cmd->scan_begin_arg, 0);
 	} else {
 #define MAX_SPEED 1000
 #define TIMER_BASE 100
-		if (cmd->scan_begin_arg < MAX_SPEED) {
-			cmd->scan_begin_arg = MAX_SPEED;
-			err++;
-		}
+		err |= cfc_check_trigger_arg_min(&cmd->scan_begin_arg,
+						 MAX_SPEED);
 	}
-	if (cmd->convert_arg != 0) {
-		cmd->convert_arg = 0;
-		err++;
-	}
-	if (cmd->scan_end_arg != cmd->chanlist_len) {
-		cmd->scan_end_arg = cmd->chanlist_len;
-		err++;
-	}
+
+	err |= cfc_check_trigger_arg_is(&cmd->convert_arg, 0);
+	err |= cfc_check_trigger_arg_is(&cmd->scan_end_arg, cmd->chanlist_len);
+
 	if (cmd->stop_src == TRIG_NONE) {
-		if (cmd->stop_arg != 0) {
-			cmd->stop_arg = 0;
-			err++;
-		}
+		err |= cfc_check_trigger_arg_is(&cmd->stop_arg, 0);
 	} else {
 		/* ignore */
 	}
@@ -349,6 +335,7 @@ static int pcl711_ai_cmdtest(struct comedi_device *dev,
 
 static int pcl711_ai_cmd(struct comedi_device *dev, struct comedi_subdevice *s)
 {
+	struct pcl711_private *devpriv = dev->private;
 	int timer1, timer2;
 	struct comedi_cmd *cmd = &s->async->cmd;
 
@@ -398,6 +385,7 @@ static int pcl711_ai_cmd(struct comedi_device *dev, struct comedi_subdevice *s)
 static int pcl711_ao_insn(struct comedi_device *dev, struct comedi_subdevice *s,
 			  struct comedi_insn *insn, unsigned int *data)
 {
+	struct pcl711_private *devpriv = dev->private;
 	int n;
 	int chan = CR_CHAN(insn->chanspec);
 
@@ -417,6 +405,7 @@ static int pcl711_ao_insn_read(struct comedi_device *dev,
 			       struct comedi_subdevice *s,
 			       struct comedi_insn *insn, unsigned int *data)
 {
+	struct pcl711_private *devpriv = dev->private;
 	int n;
 	int chan = CR_CHAN(insn->chanspec);
 
@@ -460,24 +449,14 @@ static int pcl711_do_insn_bits(struct comedi_device *dev,
 static int pcl711_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 {
 	const struct pcl711_board *board = comedi_board(dev);
+	struct pcl711_private *devpriv;
 	int ret;
-	unsigned long iobase;
 	unsigned int irq;
 	struct comedi_subdevice *s;
 
-	/* claim our I/O space */
-
-	iobase = it->options[0];
-	printk(KERN_INFO "comedi%d: pcl711: 0x%04lx ", dev->minor, iobase);
-	if (!request_region(iobase, PCL711_SIZE, "pcl711")) {
-		printk("I/O port conflict\n");
-		return -EIO;
-	}
-	dev->iobase = iobase;
-
-	/* there should be a sanity check here */
-
-	dev->board_name = board->name;
+	ret = comedi_request_region(dev, it->options[0], PCL711_SIZE);
+	if (ret)
+		return ret;
 
 	/* grab our IRQ */
 	irq = it->options[1];
@@ -486,7 +465,8 @@ static int pcl711_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 		return -EINVAL;
 	}
 	if (irq) {
-		if (request_irq(irq, pcl711_interrupt, 0, "pcl711", dev)) {
+		if (request_irq(irq, pcl711_interrupt, 0, dev->board_name,
+			        dev)) {
 			printk(KERN_ERR "unable to allocate irq %u\n", irq);
 			return -EINVAL;
 		} else {
@@ -499,9 +479,10 @@ static int pcl711_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	if (ret)
 		return ret;
 
-	ret = alloc_private(dev, sizeof(struct pcl711_private));
-	if (ret < 0)
-		return ret;
+	devpriv = kzalloc(sizeof(*devpriv), GFP_KERNEL);
+	if (!devpriv)
+		return -ENOMEM;
+	dev->private = devpriv;
 
 	s = &dev->subdevices[0];
 	/* AI subdevice */
@@ -569,14 +550,6 @@ static int pcl711_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	return 0;
 }
 
-static void pcl711_detach(struct comedi_device *dev)
-{
-	if (dev->irq)
-		free_irq(dev->irq, dev);
-	if (dev->iobase)
-		release_region(dev->iobase, PCL711_SIZE);
-}
-
 static const struct pcl711_board boardtypes[] = {
 	{ "pcl711", 0, 0, 0, 5, 8, 1, 0, &range_bipolar5 },
 	{ "pcl711b", 1, 0, 0, 5, 8, 1, 7, &range_pcl711b_ai },
@@ -588,7 +561,7 @@ static struct comedi_driver pcl711_driver = {
 	.driver_name	= "pcl711",
 	.module		= THIS_MODULE,
 	.attach		= pcl711_attach,
-	.detach		= pcl711_detach,
+	.detach		= comedi_legacy_detach,
 	.board_name	= &boardtypes[0].name,
 	.num_names	= ARRAY_SIZE(boardtypes),
 	.offset		= sizeof(struct pcl711_board),

@@ -587,7 +587,7 @@ static ssize_t rfkill_name_show(struct device *dev,
 
 static const char *rfkill_get_type_str(enum rfkill_type type)
 {
-	BUILD_BUG_ON(NUM_RFKILL_TYPES != RFKILL_TYPE_FM + 1);
+	BUILD_BUG_ON(NUM_RFKILL_TYPES != RFKILL_TYPE_NFC + 1);
 
 	switch (type) {
 	case RFKILL_TYPE_WLAN:
@@ -604,6 +604,8 @@ static const char *rfkill_get_type_str(enum rfkill_type type)
 		return "gps";
 	case RFKILL_TYPE_FM:
 		return "fm";
+	case RFKILL_TYPE_NFC:
+		return "nfc";
 	default:
 		BUG();
 	}
@@ -676,7 +678,7 @@ static ssize_t rfkill_soft_store(struct device *dev,
 	rfkill_set_block(rfkill, state);
 	mutex_unlock(&rfkill_global_mutex);
 
-	return err ?: count;
+	return count;
 }
 
 static u8 user_state_from_blocked(unsigned long state)
@@ -721,7 +723,7 @@ static ssize_t rfkill_state_store(struct device *dev,
 	rfkill_set_block(rfkill, state == RFKILL_USER_STATE_SOFT_BLOCKED);
 	mutex_unlock(&rfkill_global_mutex);
 
-	return err ?: count;
+	return count;
 }
 
 static ssize_t rfkill_claim_show(struct device *dev,

@@ -86,7 +86,6 @@ Devices: [Quanser Consulting] MultiQ-3 (multiq3)
 struct multiq3_private {
 	unsigned int ao_readback[2];
 };
-#define devpriv ((struct multiq3_private *)dev->private)
 
 static int multiq3_ai_insn_read(struct comedi_device *dev,
 				struct comedi_subdevice *s,
@@ -129,6 +128,7 @@ static int multiq3_ao_insn_read(struct comedi_device *dev,
 				struct comedi_subdevice *s,
 				struct comedi_insn *insn, unsigned int *data)
 {
+	struct multiq3_private *devpriv = dev->private;
 	int i;
 	int chan = CR_CHAN(insn->chanspec);
 
@@ -142,6 +142,7 @@ static int multiq3_ao_insn_write(struct comedi_device *dev,
 				 struct comedi_subdevice *s,
 				 struct comedi_insn *insn, unsigned int *data)
 {
+	struct multiq3_private *devpriv = dev->private;
 	int i;
 	int chan = CR_CHAN(insn->chanspec);
 
@@ -221,44 +222,25 @@ static void encoder_reset(struct comedi_device *dev)
 	}
 }
 
-/*
-   options[0] - I/O port
-   options[1] - irq
-   options[2] - number of encoder chips installed
- */
-
 static int multiq3_attach(struct comedi_device *dev,
 			  struct comedi_devconfig *it)
 {
-	int result = 0;
-	unsigned long iobase;
-	unsigned int irq;
+	struct multiq3_private *devpriv;
 	struct comedi_subdevice *s;
+	int ret;
 
-	iobase = it->options[0];
-	printk(KERN_INFO "comedi%d: multiq3: 0x%04lx ", dev->minor, iobase);
-	if (!request_region(iobase, MULTIQ3_SIZE, "multiq3")) {
-		printk(KERN_ERR "comedi%d: I/O port conflict\n", dev->minor);
-		return -EIO;
-	}
+	ret = comedi_request_region(dev, it->options[0], MULTIQ3_SIZE);
+	if (ret)
+		return ret;
 
-	dev->iobase = iobase;
+	ret = comedi_alloc_subdevices(dev, 5);
+	if (ret)
+		return ret;
 
-	irq = it->options[1];
-	if (irq)
-		printk(KERN_WARNING "comedi%d: irq = %u ignored\n",
-			dev->minor, irq);
-	else
-		printk(KERN_WARNING "comedi%d: no irq\n", dev->minor);
-	dev->board_name = "multiq3";
-
-	result = comedi_alloc_subdevices(dev, 5);
-	if (result)
-		return result;
-
-	result = alloc_private(dev, sizeof(struct multiq3_private));
-	if (result < 0)
-		return result;
+	devpriv = kzalloc(sizeof(*devpriv), GFP_KERNEL);
+	if (!devpriv)
+		return -ENOMEM;
+	dev->private = devpriv;
 
 	s = &dev->subdevices[0];
 	/* ai subdevice */
@@ -312,19 +294,11 @@ static int multiq3_attach(struct comedi_device *dev,
 	return 0;
 }
 
-static void multiq3_detach(struct comedi_device *dev)
-{
-	if (dev->iobase)
-		release_region(dev->iobase, MULTIQ3_SIZE);
-	if (dev->irq)
-		free_irq(dev->irq, dev);
-}
-
 static struct comedi_driver multiq3_driver = {
 	.driver_name	= "multiq3",
 	.module		= THIS_MODULE,
 	.attach		= multiq3_attach,
-	.detach		= multiq3_detach,
+	.detach		= comedi_legacy_detach,
 };
 module_comedi_driver(multiq3_driver);
 

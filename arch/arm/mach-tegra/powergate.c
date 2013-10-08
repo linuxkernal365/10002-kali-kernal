@@ -22,16 +22,16 @@
 #include <linux/debugfs.h>
 #include <linux/delay.h>
 #include <linux/err.h>
+#include <linux/export.h>
 #include <linux/init.h>
 #include <linux/io.h>
 #include <linux/seq_file.h>
 #include <linux/spinlock.h>
-
-#include <mach/clk.h>
-#include <mach/iomap.h>
-#include <mach/powergate.h>
+#include <linux/clk/tegra.h>
+#include <linux/tegra-powergate.h>
 
 #include "fuse.h"
+#include "iomap.h"
 
 #define PWRGATE_TOGGLE		0x30
 #define  PWRGATE_TOGGLE_START	(1 << 8)
@@ -75,7 +75,7 @@ static int tegra_powergate_set(int id, bool new_state)
 
 	if (status == new_state) {
 		spin_unlock_irqrestore(&tegra_powergate_lock, flags);
-		return -EINVAL;
+		return 0;
 	}
 
 	pmc_write(PWRGATE_TOGGLE_START | id, PWRGATE_TOGGLE);
@@ -168,6 +168,7 @@ err_clk:
 err_power:
 	return ret;
 }
+EXPORT_SYMBOL(tegra_powergate_sequence_power_up);
 
 int tegra_cpu_powergate_id(int cpuid)
 {

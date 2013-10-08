@@ -48,9 +48,9 @@ TODO:
 3. Implement calibration.
 */
 
-#include "../comedidev.h"
+#include <linux/pci.h>
 
-#define PCI_VENDOR_ID_ADVANTECH		0x13fe	/* Advantech PCI vendor ID */
+#include "../comedidev.h"
 
 /* all the registers for the pci1723 board */
 #define PCI1723_DA(N)   ((N)<<1)	/* W: D/A register N (0 to 7) */
@@ -234,22 +234,20 @@ static int pci1723_dio_insn_bits(struct comedi_device *dev,
 	return insn->n;
 }
 
-static int pci1723_attach_pci(struct comedi_device *dev,
-			      struct pci_dev *pcidev)
+static int pci1723_auto_attach(struct comedi_device *dev,
+					 unsigned long context_unused)
 {
+	struct pci_dev *pcidev = comedi_to_pci_dev(dev);
 	struct pci1723_private *devpriv;
 	struct comedi_subdevice *s;
 	int ret;
 
-	comedi_set_hw_dev(dev, &pcidev->dev);
-	dev->board_name = dev->driver->driver_name;
+	devpriv = kzalloc(sizeof(*devpriv), GFP_KERNEL);
+	if (!devpriv)
+		return -ENOMEM;
+	dev->private = devpriv;
 
-	ret = alloc_private(dev, sizeof(*devpriv));
-	if (ret < 0)
-		return ret;
-	devpriv = dev->private;
-
-	ret = comedi_pci_enable(pcidev, dev->board_name);
+	ret = comedi_pci_enable(dev);
 	if (ret)
 		return ret;
 	dev->iobase = pci_resource_start(pcidev, 2);
@@ -306,32 +304,23 @@ static int pci1723_attach_pci(struct comedi_device *dev,
 
 static void pci1723_detach(struct comedi_device *dev)
 {
-	struct pci_dev *pcidev = comedi_to_pci_dev(dev);
-
-	if (pcidev) {
-		if (dev->iobase) {
-			pci1723_reset(dev);
-			comedi_pci_disable(pcidev);
-		}
-	}
+	if (dev->iobase)
+		pci1723_reset(dev);
+	comedi_pci_disable(dev);
 }
 
 static struct comedi_driver adv_pci1723_driver = {
 	.driver_name	= "adv_pci1723",
 	.module		= THIS_MODULE,
-	.attach_pci	= pci1723_attach_pci,
+	.auto_attach	= pci1723_auto_attach,
 	.detach		= pci1723_detach,
 };
 
-static int __devinit adv_pci1723_pci_probe(struct pci_dev *dev,
-					   const struct pci_device_id *ent)
+static int adv_pci1723_pci_probe(struct pci_dev *dev,
+				 const struct pci_device_id *id)
 {
-	return comedi_pci_auto_config(dev, &adv_pci1723_driver);
-}
-
-static void __devexit adv_pci1723_pci_remove(struct pci_dev *dev)
-{
-	comedi_pci_auto_unconfig(dev);
+	return comedi_pci_auto_config(dev, &adv_pci1723_driver,
+				      id->driver_data);
 }
 
 static DEFINE_PCI_DEVICE_TABLE(adv_pci1723_pci_table) = {
@@ -344,7 +333,7 @@ static struct pci_driver adv_pci1723_pci_driver = {
 	.name		= "adv_pci1723",
 	.id_table	= adv_pci1723_pci_table,
 	.probe		= adv_pci1723_pci_probe,
-	.remove		= __devexit_p(adv_pci1723_pci_remove),
+	.remove		= comedi_pci_auto_unconfig,
 };
 module_comedi_pci_driver(adv_pci1723_driver, adv_pci1723_pci_driver);
 

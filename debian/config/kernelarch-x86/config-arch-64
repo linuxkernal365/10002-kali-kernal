@@ -48,6 +48,7 @@ CONFIG_ACPI_BGRT=y
 ## file: drivers/block/Kconfig
 ##
 CONFIG_BLK_DEV_RAM_SIZE=65536
+CONFIG_BLK_DEV_RSXX=m
 
 ##
 ## file: drivers/char/agp/Kconfig
@@ -57,7 +58,12 @@ CONFIG_AGP=y
 CONFIG_AGP_AMD64=y
 
 ##
-## file: drivers/i2c/busses/Kconfig
+## file: drivers/edac/Kconfig
+##
+CONFIG_EDAC_SBRIDGE=m
+
+##
+## file: drivers/i2c/Kconfig
 ##
 CONFIG_I2C_STUB=m
 

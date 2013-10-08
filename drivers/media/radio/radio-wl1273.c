@@ -1559,7 +1559,7 @@ out:
 }
 
 static int wl1273_fm_vidioc_s_tuner(struct file *file, void *priv,
-				    struct v4l2_tuner *tuner)
+				    const struct v4l2_tuner *tuner)
 {
 	struct wl1273_device *radio = video_get_drvdata(video_devdata(file));
 	struct wl1273_core *core = radio->core;
@@ -1640,7 +1640,7 @@ static int wl1273_fm_vidioc_g_frequency(struct file *file, void *priv,
 }
 
 static int wl1273_fm_vidioc_s_frequency(struct file *file, void *priv,
-					struct v4l2_frequency *freq)
+					const struct v4l2_frequency *freq)
 {
 	struct wl1273_device *radio = video_get_drvdata(video_devdata(file));
 	struct wl1273_core *core = radio->core;
@@ -1971,6 +1971,7 @@ static struct video_device wl1273_viddev_template = {
 	.ioctl_ops		= &wl1273_ioctl_ops,
 	.name			= WL1273_FM_DRIVER_NAME,
 	.release		= wl1273_vdev_release,
+	.vfl_dir		= VFL_DIR_TX,
 };
 
 static int wl1273_fm_radio_remove(struct platform_device *pdev)
@@ -1990,7 +1991,7 @@ static int wl1273_fm_radio_remove(struct platform_device *pdev)
 	return 0;
 }
 
-static int __devinit wl1273_fm_radio_probe(struct platform_device *pdev)
+static int wl1273_fm_radio_probe(struct platform_device *pdev)
 {
 	struct wl1273_core **core = pdev->dev.platform_data;
 	struct wl1273_device *radio;
@@ -2084,8 +2085,7 @@ static int __devinit wl1273_fm_radio_probe(struct platform_device *pdev)
 	}
 
 	/* V4L2 configuration */
-	memcpy(&radio->videodev, &wl1273_viddev_template,
-	       sizeof(wl1273_viddev_template));
+	radio->videodev = wl1273_viddev_template;
 
 	radio->videodev.v4l2_dev = &radio->v4l2dev;
 
@@ -2145,7 +2145,7 @@ pdata_err:
 
 static struct platform_driver wl1273_fm_radio_driver = {
 	.probe		= wl1273_fm_radio_probe,
-	.remove		= __devexit_p(wl1273_fm_radio_remove),
+	.remove		= wl1273_fm_radio_remove,
 	.driver		= {
 		.name	= "wl1273_fm_radio",
 		.owner	= THIS_MODULE,

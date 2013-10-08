@@ -25,7 +25,7 @@
 #include <drm/drmP.h>
 #include "nouveau_drm.h"
 #include "nouveau_bios.h"
-#include "nouveau_hw.h"
+#include "dispnv04/hw.h"
 #include "nouveau_pm.h"
 #include "nouveau_hwsq.h"
 
@@ -546,7 +546,7 @@ calc_mclk(struct drm_device *dev, struct nouveau_pm_level *perflvl,
 {
 	struct nouveau_drm *drm = nouveau_drm(dev);
 	struct nouveau_device *device = nouveau_dev(dev);
-	u32 crtc_mask = nv50_display_active_crtcs(dev);
+	u32 crtc_mask = 0; /*XXX: nv50_display_active_crtcs(dev); */
 	struct nouveau_mem_exec_func exec = {
 		.dev = dev,
 		.precharge = mclk_precharge,
