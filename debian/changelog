@@ -1,3 +1,9 @@
+linux-kali (3.10.11-1kali1) kali-dev; urgency=low
+
+  * Integrate new upstream release in Kali.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Tue, 08 Oct 2013 09:46:15 +0200
+
 linux (3.10.11-1) unstable; urgency=low
 
   * New upstream stable update:
