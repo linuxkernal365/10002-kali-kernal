@@ -2,7 +2,7 @@
 debian/version.patch
 debian/kernelvariables.patch
 features/all/doc-build-parallel.patch
-debian/gitignore.patch
+#debian/gitignore.patch
 debian/ia64-hardcode-arch-script-output.patch
 debian/mips-disable-werror.patch
 debian/arch-sh4-fix-uimage-build.patch

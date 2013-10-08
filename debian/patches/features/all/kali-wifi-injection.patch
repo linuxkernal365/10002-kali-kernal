@@ -1,6 +1,5 @@
-diff -rupN linux-source-3.7/drivers/net/wireless/rtl818x/rtl8187/dev.c linux-source-3.7-patched/drivers/net/wireless/rtl818x/rtl8187/dev.c
---- linux-source-3.7/drivers/net/wireless/rtl818x/rtl8187/dev.c	2013-06-03 13:31:19.182860876 -0400
-+++ linux-source-3.7-patched/drivers/net/wireless/rtl818x/rtl8187/dev.c	2013-06-03 13:36:10.781111314 -0400
+--- a/drivers/net/wireless/rtl818x/rtl8187/dev.c
++++ b/drivers/net/wireless/rtl818x/rtl8187/dev.c
 @@ -252,8 +252,18 @@ static void rtl8187_tx(struct ieee80211_
  	flags |= RTL818X_TX_DESC_FLAG_NO_ENC;
  
@@ -21,9 +20,8 @@ diff -rupN linux-source-3.7/drivers/net/wireless/rtl818x/rtl8187/dev.c linux-sou
  	if (info->control.rates[0].flags & IEEE80211_TX_RC_USE_RTS_CTS) {
  		flags |= RTL818X_TX_DESC_FLAG_RTS;
  		flags |= ieee80211_get_rts_cts_rate(dev, info)->hw_value << 19;
-diff -rupN linux-source-3.7/drivers/net/wireless/zd1211rw/zd_mac.c linux-source-3.7-patched/drivers/net/wireless/zd1211rw/zd_mac.c
---- linux-source-3.7/drivers/net/wireless/zd1211rw/zd_mac.c	2013-06-03 13:31:19.182860876 -0400
-+++ linux-source-3.7-patched/drivers/net/wireless/zd1211rw/zd_mac.c	2013-06-03 13:36:10.781111314 -0400
+--- a/drivers/net/wireless/zd1211rw/zd_mac.c
++++ b/drivers/net/wireless/zd1211rw/zd_mac.c
 @@ -243,14 +243,19 @@ void zd_mac_clear(struct zd_mac *mac)
  static int set_rx_filter(struct zd_mac *mac)
  {
@@ -58,10 +56,9 @@ diff -rupN linux-source-3.7/drivers/net/wireless/zd1211rw/zd_mac.c linux-source-
  		if (mac->pass_failed_fcs &&
  				(status->frame_status & ZD_RX_CRC32_ERROR)) {
  			stats.flag |= RX_FLAG_FAILED_FCS_CRC;
-diff -rupN linux-source-3.7/net/mac80211/tx.c linux-source-3.7-patched/net/mac80211/tx.c
---- linux-source-3.7/net/mac80211/tx.c	2013-06-03 13:31:19.182860876 -0400
-+++ linux-source-3.7-patched/net/mac80211/tx.c	2013-06-03 13:41:45.486517091 -0400
-@@ -792,11 +792,19 @@ ieee80211_tx_h_sequence(struct ieee80211
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -745,11 +745,19 @@ ieee80211_tx_h_sequence(struct ieee80211
  
  	/*
  	 * Packet injection may want to control the sequence
@@ -84,11 +81,10 @@ diff -rupN linux-source-3.7/net/mac80211/tx.c linux-source-3.7-patched/net/mac80
  
  	if (unlikely(ieee80211_is_ctl(hdr->frame_control)))
  		return TX_CONTINUE;
-diff -rupN linux-source-3.7/net/wireless/chan.c linux-source-3.7-patched/net/wireless/chan.c
---- linux-source-3.7/net/wireless/chan.c	2013-06-03 13:31:19.182860876 -0400
-+++ linux-source-3.7-patched/net/wireless/chan.c	2013-06-03 13:36:10.781111314 -0400
-@@ -85,8 +85,8 @@ int cfg80211_set_monitor_channel(struct
- 
+--- a/net/wireless/chan.c
++++ b/net/wireless/chan.c
+@@ -439,8 +439,8 @@ int cfg80211_set_monitor_channel(struct
+ {
  	if (!rdev->ops->set_monitor_channel)
  		return -EOPNOTSUPP;
 -	if (!cfg80211_has_monitors_only(rdev))
@@ -96,5 +92,5 @@ diff -rupN linux-source-3.7/net/wireless/chan.c linux-source-3.7-patched/net/wir
 +	//if (!cfg80211_has_monitors_only(rdev))
 +	//	return -EBUSY;
  
- 	chan = rdev_freq_to_chan(rdev, freq, chantype);
- 	if (!chan)
+ 	return rdev_set_monitor_channel(rdev, chandef);
+ }

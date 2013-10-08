@@ -1,6 +1,8 @@
 linux-kali (3.10.11-1kali1) kali-dev; urgency=low
 
   * Integrate new upstream release in Kali.
+  * Refresh Kali injection patches and disable debian/gitignore.patch (already
+    patched in the Kali git repository).
 
  -- Raphaël Hertzog <hertzog@debian.org>  Tue, 08 Oct 2013 09:46:15 +0200
 
