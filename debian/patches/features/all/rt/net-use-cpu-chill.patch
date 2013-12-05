@@ -1,7 +1,7 @@
 Subject: net: Use cpu_chill() instead of cpu_relax()
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 07 Mar 2012 21:10:04 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Retry loops on RT might loop forever when the modifying side was
 preempted. Use cpu_chill() instead of cpu_relax() to let the system
@@ -16,14 +16,14 @@ Cc: stable-rt@vger.kernel.org
 
 --- a/net/packet/af_packet.c
 +++ b/net/packet/af_packet.c
-@@ -88,6 +88,7 @@
- #include <linux/virtio_net.h>
- #include <linux/errqueue.h>
- #include <linux/net_tstamp.h>
+@@ -63,6 +63,7 @@
+ #include <linux/if_packet.h>
+ #include <linux/wireless.h>
+ #include <linux/kernel.h>
 +#include <linux/delay.h>
- 
- #ifdef CONFIG_INET
- #include <net/inet_common.h>
+ #include <linux/kmod.h>
+ #include <linux/slab.h>
+ #include <linux/vmalloc.h>
 @@ -602,7 +603,7 @@ static void prb_retire_rx_blk_timer_expi
  	if (BLOCK_NUM_PKTS(pbd)) {
  		while (atomic_read(&pkc->blk_fill_in_prog)) {

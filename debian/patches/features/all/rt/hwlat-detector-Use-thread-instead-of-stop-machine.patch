@@ -2,7 +2,7 @@ From 42b3963c5d3dcdb54226fc6bbb6b5fbcf3f2ddee Mon Sep 17 00:00:00 2001
 From: Steven Rostedt <rostedt@goodmis.org>
 Date: Mon, 19 Aug 2013 17:33:27 -0400
 Subject: [PATCH 3/3] hwlat-detector: Use thread instead of stop machine
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 There's no reason to use stop machine to search for hardware latency.
 Simply disabling interrupts while running the loop will do enough to
@@ -99,7 +99,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  out:
  	return ret;
  }
-@@ -305,32 +305,30 @@ out:
+@@ -305,32 +305,30 @@ static int get_sample(void *unused)
   * @unused: A required part of the kthread API.
   *
   * Used to periodically sample the CPU TSC via a call to get_sample. We
@@ -162,7 +162,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  /**
-@@ -442,8 +435,7 @@ out:
+@@ -442,8 +435,7 @@ static int init_stats(void)
   * This function provides a generic read implementation for the global state
   * "data" structure debugfs filesystem entries. It would be nice to use
   * simple_attr_read directly, but we need to make sure that the data.lock

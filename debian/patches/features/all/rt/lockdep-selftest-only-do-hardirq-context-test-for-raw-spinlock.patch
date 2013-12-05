@@ -1,7 +1,7 @@
 Subject: lockdep: Selftest: Only do hardirq context test for raw spinlock
 From: Yong Zhang <yong.zhang0@gmail.com>
 Date: Mon, 16 Apr 2012 15:01:56 +0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 From: Yong Zhang <yong.zhang@windriver.com>
 
@@ -18,7 +18,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/lib/locking-selftest.c
 +++ b/lib/locking-selftest.c
-@@ -1175,6 +1175,7 @@ void locking_selftest(void)
+@@ -1858,6 +1858,7 @@ void locking_selftest(void)
  
  	printk("  --------------------------------------------------------------------------\n");
  
@@ -26,7 +26,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	/*
  	 * irq-context testcases:
  	 */
-@@ -1187,6 +1188,28 @@ void locking_selftest(void)
+@@ -1870,6 +1871,28 @@ void locking_selftest(void)
  
  	DO_TESTCASE_6x2("irq read-recursion", irq_read_recursion);
  //	DO_TESTCASE_6x2B("irq read-recursion #2", irq_read_recursion2);
@@ -53,5 +53,5 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	DO_TESTCASE_1B("hard-safe-A + unsafe-B #2", irqsafe4_hard_spin, 321);
 +#endif
  
- 	if (unexpected_testcase_failures) {
- 		printk("-----------------------------------------------------------------\n");
+ 	ww_tests();
+ 

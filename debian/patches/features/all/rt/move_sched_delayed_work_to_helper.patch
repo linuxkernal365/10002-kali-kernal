@@ -10,7 +10,7 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 Subject: [RFC][PATCH RT 5/6] rt,ntp: Move call to schedule_delayed_work() to helper thread
 References: <20130626192806.107564905@goodmis.org>
 Content-Disposition: inline; filename=ntp-sched-delay-thread.patch
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 The ntp code for notify_cmos_timer() is called from a hard interrupt
 context. schedule_delayed_work() under PREEMPT_RT_FULL calls spinlocks
@@ -69,7 +69,7 @@ Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 +	return 0;
 +}
 +
-+static void notify_cmos_timer(void)
++void ntp_notify_cmos_timer(void)
 +{
 +	do_cmos_delay = true;
 +	/* Make visible before waking up process */
@@ -85,11 +85,11 @@ Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 +}
 +early_initcall(create_cmos_delay_thread);
 +#else
- static void notify_cmos_timer(void)
+ void ntp_notify_cmos_timer(void)
  {
  	schedule_delayed_work(&sync_cmos_work, 0);
  }
 +#endif /* CONFIG_PREEMPT_RT_FULL */
  
  #else
- static inline void notify_cmos_timer(void) { }
+ void ntp_notify_cmos_timer(void) { }

@@ -1,7 +1,7 @@
 Subject: rwsem-add-rt-variant.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 29 Jun 2011 21:02:53 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -163,7 +163,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#endif
 --- a/lib/Makefile
 +++ b/lib/Makefile
-@@ -41,8 +41,11 @@ obj-$(CONFIG_HAS_IOMEM) += iomap_copy.o
+@@ -43,8 +43,11 @@ obj-$(CONFIG_HAS_IOMEM) += iomap_copy.o
  obj-$(CONFIG_CHECK_SIGNATURE) += check_signature.o
  obj-$(CONFIG_DEBUG_LOCKING_API_SELFTESTS) += locking-selftest.o
  obj-$(CONFIG_DEBUG_SPINLOCK) += spinlock_debug.o

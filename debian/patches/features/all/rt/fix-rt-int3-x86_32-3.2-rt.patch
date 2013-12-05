@@ -1,6 +1,6 @@
 From: Steven Rostedt <rostedt@goodmis.org>
 Subject: x86: Do not disable preemption in int3 on 32bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Preemption must be disabled before enabling interrupts in do_trap
 on x86_64 because the stack in use for int3 and debug is a per CPU
@@ -25,7 +25,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/arch/x86/kernel/traps.c
 +++ b/arch/x86/kernel/traps.c
-@@ -85,9 +85,21 @@ static inline void conditional_sti(struc
+@@ -86,9 +86,21 @@ static inline void conditional_sti(struc
  		local_irq_enable();
  }
  
@@ -48,7 +48,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	if (regs->flags & X86_EFLAGS_IF)
  		local_irq_enable();
  }
-@@ -98,11 +110,13 @@ static inline void conditional_cli(struc
+@@ -99,11 +111,13 @@ static inline void conditional_cli(struc
  		local_irq_disable();
  }
  
@@ -63,7 +63,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static int __kprobes
-@@ -235,9 +249,9 @@ dotraplinkage void do_stack_segment(stru
+@@ -236,9 +250,9 @@ dotraplinkage void do_stack_segment(stru
  	prev_state = exception_enter();
  	if (notify_die(DIE_TRAP, "stack segment", regs, error_code,
  		       X86_TRAP_SS, SIGBUS) != NOTIFY_STOP) {
@@ -75,7 +75,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  	exception_exit(prev_state);
  }
-@@ -340,9 +354,9 @@ dotraplinkage void __kprobes notrace do_
+@@ -347,9 +361,9 @@ dotraplinkage void __kprobes notrace do_
  	 * as we may switch to the interrupt stack.
  	 */
  	debug_stack_usage_inc();
@@ -87,7 +87,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	debug_stack_usage_dec();
  exit:
  	exception_exit(prev_state);
-@@ -448,12 +462,12 @@ dotraplinkage void __kprobes do_debug(st
+@@ -455,12 +469,12 @@ dotraplinkage void __kprobes do_debug(st
  	debug_stack_usage_inc();
  
  	/* It's safe to allow irq's after DR6 has been saved */
@@ -102,7 +102,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		debug_stack_usage_dec();
  		goto exit;
  	}
-@@ -473,7 +487,7 @@ dotraplinkage void __kprobes do_debug(st
+@@ -480,7 +494,7 @@ dotraplinkage void __kprobes do_debug(st
  	si_code = get_si_code(tsk->thread.debugreg6);
  	if (tsk->thread.debugreg6 & (DR_STEP | DR_TRAP_BITS) || user_icebp)
  		send_sigtrap(tsk, regs, error_code, si_code);

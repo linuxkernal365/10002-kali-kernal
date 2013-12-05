@@ -12,7 +12,7 @@ should go mainline as well, as it lowers memory consumption and
 runtime overhead.
     
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 smp_mb() added by Steven Rostedt to fix a race condition with swait
 wakeups vs adding items to the list.
@@ -265,7 +265,7 @@ wakeups vs adding items to the list.
 @@ -10,7 +10,7 @@ obj-y     = fork.o exec_domain.o panic.o
  	    kthread.o wait.o sys_ni.o posix-cpu-timers.o \
  	    hrtimer.o nsproxy.o srcu.o semaphore.o \
- 	    notifier.o ksysfs.o cred.o \
+ 	    notifier.o ksysfs.o cred.o reboot.o \
 -	    async.o range.o groups.o lglock.o smpboot.o
 +	    async.o range.o groups.o lglock.o smpboot.o wait-simple.o
  

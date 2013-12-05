@@ -1,7 +1,7 @@
 From: Frank Rowand <frank.rowand@am.sony.com>
 Date: Mon, 19 Sep 2011 14:51:14 -0700
 Subject: [PATCH] preempt-rt: Convert arm boot_lock to raw
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 The arm boot_lock is used by the secondary processor startup code.  The locking
 task is the idle thread, which has idle->sched_class == &idle_sched_class.
@@ -31,16 +31,16 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/arch/arm/mach-exynos/platsmp.c
 +++ b/arch/arm/mach-exynos/platsmp.c
-@@ -71,7 +71,7 @@ static void __iomem *scu_base_addr(void)
+@@ -73,7 +73,7 @@ static void __iomem *scu_base_addr(void)
  	return (void __iomem *)(S5P_VA_SCU);
  }
  
 -static DEFINE_SPINLOCK(boot_lock);
 +static DEFINE_RAW_SPINLOCK(boot_lock);
  
- static void __cpuinit exynos_secondary_init(unsigned int cpu)
+ static void exynos_secondary_init(unsigned int cpu)
  {
-@@ -84,8 +84,8 @@ static void __cpuinit exynos_secondary_i
+@@ -86,8 +86,8 @@ static void exynos_secondary_init(unsign
  	/*
  	 * Synchronise with the boot thread.
  	 */
@@ -50,8 +50,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	raw_spin_unlock(&boot_lock);
  }
  
- static int __cpuinit exynos_boot_secondary(unsigned int cpu, struct task_struct *idle)
-@@ -97,7 +97,7 @@ static int __cpuinit exynos_boot_seconda
+ static int exynos_boot_secondary(unsigned int cpu, struct task_struct *idle)
+@@ -99,7 +99,7 @@ static int exynos_boot_secondary(unsigne
  	 * Set synchronisation state between this boot processor
  	 * and the secondary one
  	 */
@@ -60,7 +60,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 * The secondary processor is waiting to be released from
-@@ -126,7 +126,7 @@ static int __cpuinit exynos_boot_seconda
+@@ -128,7 +128,7 @@ static int exynos_boot_secondary(unsigne
  
  		if (timeout == 0) {
  			printk(KERN_ERR "cpu1 power enable failed");
@@ -69,7 +69,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  			return -ETIMEDOUT;
  		}
  	}
-@@ -165,7 +165,7 @@ static int __cpuinit exynos_boot_seconda
+@@ -167,7 +167,7 @@ static int exynos_boot_secondary(unsigne
  	 * now the secondary core is starting up let it run its
  	 * calibrations, then wait for it to finish
  	 */
@@ -89,7 +89,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  static inline int get_core_count(void)
  {
-@@ -50,8 +50,8 @@ static void __cpuinit msm_secondary_init
+@@ -50,8 +50,8 @@ static void msm_secondary_init(unsigned
  	/*
  	 * Synchronise with the boot thread.
  	 */
@@ -99,8 +99,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	raw_spin_unlock(&boot_lock);
  }
  
- static __cpuinit void prepare_cold_cpu(unsigned int cpu)
-@@ -88,7 +88,7 @@ static int __cpuinit msm_boot_secondary(
+ static void prepare_cold_cpu(unsigned int cpu)
+@@ -88,7 +88,7 @@ static int msm_boot_secondary(unsigned i
  	 * set synchronisation state between this boot processor
  	 * and the secondary one
  	 */
@@ -109,7 +109,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 * The secondary processor is waiting to be released from
-@@ -122,7 +122,7 @@ static int __cpuinit msm_boot_secondary(
+@@ -122,7 +122,7 @@ static int msm_boot_secondary(unsigned i
  	 * now the secondary core is starting up let it run its
  	 * calibrations, then wait for it to finish
  	 */
@@ -129,7 +129,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  void __iomem *omap4_get_scu_base(void)
  {
-@@ -68,8 +68,8 @@ static void __cpuinit omap4_secondary_in
+@@ -68,8 +68,8 @@ static void omap4_secondary_init(unsigne
  	/*
  	 * Synchronise with the boot thread.
  	 */
@@ -139,8 +139,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	raw_spin_unlock(&boot_lock);
  }
  
- static int __cpuinit omap4_boot_secondary(unsigned int cpu, struct task_struct *idle)
-@@ -83,7 +83,7 @@ static int __cpuinit omap4_boot_secondar
+ static int omap4_boot_secondary(unsigned int cpu, struct task_struct *idle)
+@@ -83,7 +83,7 @@ static int omap4_boot_secondary(unsigned
  	 * Set synchronisation state between this boot processor
  	 * and the secondary one
  	 */
@@ -149,7 +149,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 * Update the AuxCoreBoot0 with boot state for secondary core.
-@@ -160,7 +160,7 @@ static int __cpuinit omap4_boot_secondar
+@@ -160,7 +160,7 @@ static int omap4_boot_secondary(unsigned
  	 * Now the secondary core is starting up let it run its
  	 * calibrations, then wait for it to finish
  	 */
@@ -169,7 +169,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  static struct map_desc scu_io_desc __initdata = {
  	.length		= SZ_4K,
-@@ -56,8 +56,8 @@ static void __cpuinit sirfsoc_secondary_
+@@ -56,8 +56,8 @@ static void sirfsoc_secondary_init(unsig
  	/*
  	 * Synchronise with the boot thread.
  	 */
@@ -180,7 +180,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static struct of_device_id rsc_ids[]  = {
-@@ -95,7 +95,7 @@ static int __cpuinit sirfsoc_boot_second
+@@ -95,7 +95,7 @@ static int sirfsoc_boot_secondary(unsign
  	/* make sure write buffer is drained */
  	mb();
  
@@ -189,7 +189,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 * The secondary processor is waiting to be released from
-@@ -128,7 +128,7 @@ static int __cpuinit sirfsoc_boot_second
+@@ -128,7 +128,7 @@ static int sirfsoc_boot_secondary(unsign
  	 * now the secondary core is starting up let it run its
  	 * calibrations, then wait for it to finish
  	 */
@@ -209,7 +209,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  static void __iomem *scu_base = IOMEM(VA_SCU_BASE);
  
-@@ -36,8 +36,8 @@ static void __cpuinit spear13xx_secondar
+@@ -36,8 +36,8 @@ static void spear13xx_secondary_init(uns
  	/*
  	 * Synchronise with the boot thread.
  	 */
@@ -219,8 +219,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	raw_spin_unlock(&boot_lock);
  }
  
- static int __cpuinit spear13xx_boot_secondary(unsigned int cpu, struct task_struct *idle)
-@@ -48,7 +48,7 @@ static int __cpuinit spear13xx_boot_seco
+ static int spear13xx_boot_secondary(unsigned int cpu, struct task_struct *idle)
+@@ -48,7 +48,7 @@ static int spear13xx_boot_secondary(unsi
  	 * set synchronisation state between this boot processor
  	 * and the secondary one
  	 */
@@ -229,7 +229,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 * The secondary processor is waiting to be released from
-@@ -75,7 +75,7 @@ static int __cpuinit spear13xx_boot_seco
+@@ -75,7 +75,7 @@ static int spear13xx_boot_secondary(unsi
  	 * now the secondary core is starting up let it run its
  	 * calibrations, then wait for it to finish
  	 */
@@ -247,9 +247,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -static DEFINE_SPINLOCK(boot_lock);
 +static DEFINE_RAW_SPINLOCK(boot_lock);
  
- static void __cpuinit ux500_secondary_init(unsigned int cpu)
+ static void ux500_secondary_init(unsigned int cpu)
  {
-@@ -65,8 +65,8 @@ static void __cpuinit ux500_secondary_in
+@@ -65,8 +65,8 @@ static void ux500_secondary_init(unsigne
  	/*
  	 * Synchronise with the boot thread.
  	 */
@@ -259,8 +259,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	raw_spin_unlock(&boot_lock);
  }
  
- static int __cpuinit ux500_boot_secondary(unsigned int cpu, struct task_struct *idle)
-@@ -77,7 +77,7 @@ static int __cpuinit ux500_boot_secondar
+ static int ux500_boot_secondary(unsigned int cpu, struct task_struct *idle)
+@@ -77,7 +77,7 @@ static int ux500_boot_secondary(unsigned
  	 * set synchronisation state between this boot processor
  	 * and the secondary one
  	 */
@@ -269,7 +269,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 * The secondary processor is waiting to be released from
-@@ -98,7 +98,7 @@ static int __cpuinit ux500_boot_secondar
+@@ -98,7 +98,7 @@ static int ux500_boot_secondary(unsigned
  	 * now the secondary core is starting up let it run its
  	 * calibrations, then wait for it to finish
  	 */
@@ -280,16 +280,16 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
 --- a/arch/arm/plat-versatile/platsmp.c
 +++ b/arch/arm/plat-versatile/platsmp.c
-@@ -31,7 +31,7 @@ static void __cpuinit write_pen_release(
+@@ -31,7 +31,7 @@ static void write_pen_release(int val)
  	outer_clean_range(__pa(&pen_release), __pa(&pen_release + 1));
  }
  
 -static DEFINE_SPINLOCK(boot_lock);
 +static DEFINE_RAW_SPINLOCK(boot_lock);
  
- void __cpuinit versatile_secondary_init(unsigned int cpu)
+ void versatile_secondary_init(unsigned int cpu)
  {
-@@ -44,8 +44,8 @@ void __cpuinit versatile_secondary_init(
+@@ -44,8 +44,8 @@ void versatile_secondary_init(unsigned i
  	/*
  	 * Synchronise with the boot thread.
  	 */
@@ -299,8 +299,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	raw_spin_unlock(&boot_lock);
  }
  
- int __cpuinit versatile_boot_secondary(unsigned int cpu, struct task_struct *idle)
-@@ -56,7 +56,7 @@ int __cpuinit versatile_boot_secondary(u
+ int versatile_boot_secondary(unsigned int cpu, struct task_struct *idle)
+@@ -56,7 +56,7 @@ int versatile_boot_secondary(unsigned in
  	 * Set synchronisation state between this boot processor
  	 * and the secondary one
  	 */
@@ -309,7 +309,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 * This is really belt and braces; we hold unintended secondary
-@@ -86,7 +86,7 @@ int __cpuinit versatile_boot_secondary(u
+@@ -86,7 +86,7 @@ int versatile_boot_secondary(unsigned in
  	 * now the secondary core is starting up let it run its
  	 * calibrations, then wait for it to finish
  	 */

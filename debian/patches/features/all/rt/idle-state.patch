@@ -1,7 +1,7 @@
 Subject: sched: Init idle->on_rq in init_idle()
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 09 Jan 2013 23:03:29 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -4745,6 +4745,7 @@ void __cpuinit init_idle(struct task_str
+@@ -4206,6 +4206,7 @@ void init_idle(struct task_struct *idle,
  	rcu_read_unlock();
  
  	rq->curr = rq->idle = idle;

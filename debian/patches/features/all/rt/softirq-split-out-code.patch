@@ -1,12 +1,12 @@
 Subject: softirq-split-out-code.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 28 Jun 2011 15:46:49 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- kernel/softirq.c |   62 ++++++++++++++++++++++++++-----------------------------
- 1 file changed, 30 insertions(+), 32 deletions(-)
+ kernel/softirq.c |   60 ++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 29 insertions(+), 31 deletions(-)
 
 --- a/kernel/softirq.c
 +++ b/kernel/softirq.c
@@ -45,24 +45,15 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * preempt_count and SOFTIRQ_OFFSET usage:
   * - preempt_count is changed by SOFTIRQ_OFFSET on entering or leaving
-@@ -212,7 +240,6 @@ EXPORT_SYMBOL(local_bh_enable_ip);
- 
- asmlinkage void __do_softirq(void)
- {
+@@ -252,7 +280,6 @@ asmlinkage void __do_softirq(void)
+ 	unsigned long end = jiffies + MAX_SOFTIRQ_TIME;
+ 	unsigned long old_flags = current->flags;
+ 	int max_restart = MAX_SOFTIRQ_RESTART;
 -	struct softirq_action *h;
  	__u32 pending;
- 	unsigned long end = jiffies + MAX_SOFTIRQ_TIME;
  	int cpu;
-@@ -230,7 +257,7 @@ asmlinkage void __do_softirq(void)
- 	account_irq_enter_time(current);
  
- 	__local_bh_disable((unsigned long)__builtin_return_address(0),
--				SOFTIRQ_OFFSET);
-+			   SOFTIRQ_OFFSET);
- 	lockdep_softirq_enter();
- 
- 	cpu = smp_processor_id();
-@@ -238,36 +265,7 @@ restart:
+@@ -274,36 +301,7 @@ asmlinkage void __do_softirq(void)
  	/* Reset the pending bitmask before enabling irqs */
  	set_softirq_pending(0);
  

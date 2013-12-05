@@ -1,7 +1,7 @@
 Subject: mm: raw_pagefault_disable
 From: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Date: Fri Aug 05 17:16:58 CEST 2011
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Adding migrate_disable() to pagefault_disable() to preserve the
 per-cpu thing for kmap_atomic might not have been the best of choices.
@@ -130,7 +130,7 @@ Link: http://lkml.kernel.org/n/tip-31keae8mkjiv8esq4rl76cib@git.kernel.org
  	})
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -3757,6 +3757,7 @@ unlock:
+@@ -3742,6 +3742,7 @@ static int handle_pte_fault(struct mm_st
  	return 0;
  }
  
@@ -138,7 +138,7 @@ Link: http://lkml.kernel.org/n/tip-31keae8mkjiv8esq4rl76cib@git.kernel.org
  void pagefault_disable(void)
  {
  	inc_preempt_count();
-@@ -3785,6 +3786,7 @@ void pagefault_enable(void)
+@@ -3770,6 +3771,7 @@ void pagefault_enable(void)
  	preempt_check_resched();
  }
  EXPORT_SYMBOL(pagefault_enable);

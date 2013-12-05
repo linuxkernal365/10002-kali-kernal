@@ -1,7 +1,7 @@
 Subject: jump-label-rt.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 13 Jul 2011 11:03:16 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -10,9 +10,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/include/linux/jump_label.h
 +++ b/include/linux/jump_label.h
-@@ -50,7 +50,8 @@
+@@ -49,7 +49,8 @@
+ #include <linux/types.h>
  #include <linux/compiler.h>
- #include <linux/workqueue.h>
  
 -#if defined(CC_HAVE_ASM_GOTO) && defined(CONFIG_JUMP_LABEL)
 +#if defined(CC_HAVE_ASM_GOTO) && defined(CONFIG_JUMP_LABEL) && \

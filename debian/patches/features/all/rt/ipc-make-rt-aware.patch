@@ -1,7 +1,7 @@
 From: Ingo Molnar <mingo@elte.hu>
 Date: Fri, 3 Jul 2009 08:30:12 -0500
 Subject: ipc: Make the ipc code -rt aware
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 RT serializes the code with the (rt)spinlock but keeps preemption
 enabled. Some parts of the code need to be atomic nevertheless.
@@ -18,7 +18,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/ipc/mqueue.c
 +++ b/ipc/mqueue.c
-@@ -921,12 +921,17 @@ static inline void pipelined_send(struct
+@@ -923,12 +923,17 @@ static inline void pipelined_send(struct
  				  struct msg_msg *message,
  				  struct ext_wait_queue *receiver)
  {
@@ -38,7 +38,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /* pipelined_receive() - if there is task waiting in sys_mq_timedsend()
 --- a/ipc/msg.c
 +++ b/ipc/msg.c
-@@ -252,10 +252,18 @@ static void expunge_all(struct msg_queue
+@@ -253,10 +253,18 @@ static void expunge_all(struct msg_queue
  	struct msg_receiver *msr, *t;
  
  	list_for_each_entry_safe(msr, t, &msq->q_receivers, r_list) {
@@ -57,7 +57,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  }
  
-@@ -597,6 +605,12 @@ static inline int pipelined_send(struct
+@@ -636,6 +644,12 @@ static inline int pipelined_send(struct
  		    !security_msg_queue_msgrcv(msq, msg, msr->r_tsk,
  					       msr->r_msgtype, msr->r_mode)) {
  
@@ -70,7 +70,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  			list_del(&msr->r_list);
  			if (msr->r_maxsize < msg->m_ts) {
  				msr->r_msg = NULL;
-@@ -610,9 +624,11 @@ static inline int pipelined_send(struct
+@@ -649,9 +663,11 @@ static inline int pipelined_send(struct
  				wake_up_process(msr->r_tsk);
  				smp_mb();
  				msr->r_msg = msg;

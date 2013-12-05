@@ -1,7 +1,7 @@
 Subject: timers: Avoid the switch timers base set to NULL trick on RT
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 21 Jul 2011 15:23:39 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 On RT that code is preemptible, so we cannot assign NULL to timers
 base as a preempter would spin forever in lock_timer_base().
@@ -50,7 +50,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  static inline int
  __mod_timer(struct timer_list *timer, unsigned long expires,
  						bool pending_only, int pinned)
-@@ -761,14 +791,8 @@ __mod_timer(struct timer_list *timer, un
+@@ -761,14 +791,8 @@ static inline int
  		 * handler yet has not finished. This also guarantees that
  		 * the timer is serialized wrt itself.
  		 */

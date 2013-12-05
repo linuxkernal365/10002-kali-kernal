@@ -3,7 +3,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 7 Jun 2013 22:37:06 +0200
 Subject: [PATCH] kernel/cpu: fix cpu down problem if kthread's cpu is
  going down
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 If kthread is pinned to CPUx and CPUx is going down then we get into
 trouble:
@@ -78,7 +78,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	return 0;
  }
  
-@@ -594,6 +604,8 @@ static int __ref _cpu_down(unsigned int
+@@ -591,6 +601,8 @@ static int __ref _cpu_down(unsigned int
  				__func__, cpu);
  		goto out_release;
  	}

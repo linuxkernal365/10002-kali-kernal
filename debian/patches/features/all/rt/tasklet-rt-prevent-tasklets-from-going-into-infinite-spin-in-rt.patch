@@ -1,7 +1,7 @@
 Subject: tasklet: Prevent tasklets from going into infinite spin in RT
 From: Ingo Molnar <mingo@elte.hu>
 Date: Tue Nov 29 20:18:22 2011 -0500
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 When CONFIG_PREEMPT_RT_FULL is enabled, tasklets run as threads,
 and spinlocks turn are mutexes. But this can cause issues with
@@ -44,7 +44,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/include/linux/interrupt.h
 +++ b/include/linux/interrupt.h
-@@ -503,8 +503,9 @@ extern void __send_remote_softirq(struct
+@@ -434,8 +434,9 @@ extern void __send_remote_softirq(struct
       to be executed on some cpu at least once after this.
     * If the tasklet is already scheduled, but its execution is still not
       started, it will be executed only once.
@@ -56,7 +56,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
     * Tasklet is strictly serialized wrt itself, but not
       wrt another tasklets. If client needs some intertask synchronization,
       he makes it with spinlocks.
-@@ -529,27 +530,36 @@ struct tasklet_struct name = { NULL, 0,
+@@ -460,27 +461,36 @@ struct tasklet_struct name = { NULL, 0,
  enum
  {
  	TASKLET_STATE_SCHED,	/* Tasklet is scheduled for execution */
@@ -99,7 +99,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define tasklet_unlock_wait(t) do { } while (0)
  #define tasklet_unlock(t) do { } while (0)
  #endif
-@@ -598,17 +608,8 @@ static inline void tasklet_disable(struc
+@@ -529,17 +539,8 @@ static inline void tasklet_disable(struc
  	smp_mb();
  }
  
@@ -129,7 +129,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #include <linux/ftrace.h>
  #include <linux/smp.h>
  #include <linux/smpboot.h>
-@@ -662,15 +663,45 @@ struct tasklet_head
+@@ -707,15 +708,45 @@ struct tasklet_head
  static DEFINE_PER_CPU(struct tasklet_head, tasklet_vec);
  static DEFINE_PER_CPU(struct tasklet_head, tasklet_hi_vec);
  
@@ -179,7 +179,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	local_irq_restore(flags);
  }
  
-@@ -681,10 +712,7 @@ void __tasklet_hi_schedule(struct taskle
+@@ -726,10 +757,7 @@ void __tasklet_hi_schedule(struct taskle
  	unsigned long flags;
  
  	local_irq_save(flags);
@@ -191,7 +191,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	local_irq_restore(flags);
  }
  
-@@ -692,50 +720,119 @@ EXPORT_SYMBOL(__tasklet_hi_schedule);
+@@ -737,50 +765,119 @@ EXPORT_SYMBOL(__tasklet_hi_schedule);
  
  void __tasklet_hi_schedule_first(struct tasklet_struct *t)
  {
@@ -337,7 +337,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  static void tasklet_hi_action(struct softirq_action *a)
  {
  	struct tasklet_struct *list;
-@@ -746,29 +843,7 @@ static void tasklet_hi_action(struct sof
+@@ -791,29 +888,7 @@ static void tasklet_hi_action(struct sof
  	__this_cpu_write(tasklet_hi_vec.tail, &__get_cpu_var(tasklet_hi_vec).head);
  	local_irq_enable();
  
@@ -368,7 +368,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  
-@@ -791,7 +866,7 @@ void tasklet_kill(struct tasklet_struct
+@@ -836,7 +911,7 @@ void tasklet_kill(struct tasklet_struct
  
  	while (test_and_set_bit(TASKLET_STATE_SCHED, &t->state)) {
  		do {
@@ -377,7 +377,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		} while (test_bit(TASKLET_STATE_SCHED, &t->state));
  	}
  	tasklet_unlock_wait(t);
-@@ -995,6 +1070,23 @@ void __init softirq_init(void)
+@@ -1040,6 +1115,23 @@ void __init softirq_init(void)
  	open_softirq(HI_SOFTIRQ, tasklet_hi_action);
  }
  

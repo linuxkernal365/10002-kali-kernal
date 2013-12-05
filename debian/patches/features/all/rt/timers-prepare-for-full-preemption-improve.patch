@@ -2,7 +2,7 @@ From a57194f115acfc967aa0907bc130e95b68723121 Mon Sep 17 00:00:00 2001
 From: Zhao Hongjiang <zhaohongjiang@huawei.com>
 Date: Wed, 17 Apr 2013 17:44:16 +0800
 Subject: [PATCH] timers: prepare for full preemption improve
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 wake_up should do nothing on the nort, so we should use wakeup_timer_waiters,
 also fix a spell mistake.
@@ -45,7 +45,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	spin_unlock_irq(&base->lock);
  }
  
-@@ -1576,7 +1578,9 @@ static int __cpuinit init_timers_cpu(int
+@@ -1576,7 +1578,9 @@ static int init_timers_cpu(int cpu)
  		base = per_cpu(tvec_bases, cpu);
  	}
  

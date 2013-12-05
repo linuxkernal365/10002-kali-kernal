@@ -1,7 +1,7 @@
 Subject: x86-preempt-lazy.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 01 Nov 2012 11:03:47 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -14,14 +14,14 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -121,6 +121,7 @@ config X86
- 	select OLD_SIGACTION if X86_32
- 	select COMPAT_OLD_SIGACTION if IA32_EMULATION
- 	select RTC_LIB
-+	select HAVE_PREEMPT_LAZY
- 
- config INSTRUCTION_DECODER
+@@ -21,6 +21,7 @@ config X86_64
+ ### Arch settings
+ config X86
  	def_bool y
++	select HAVE_PREEMPT_LAZY
+ 	select ARCH_HAS_DEBUG_STRICT_USER_COPY_CHECKS
+ 	select HAVE_AOUT if X86_32
+ 	select HAVE_UNSTABLE_SCHED_CLOCK
 --- a/arch/x86/include/asm/thread_info.h
 +++ b/arch/x86/include/asm/thread_info.h
 @@ -30,6 +30,8 @@ struct thread_info {
@@ -41,7 +41,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define TIF_MCE_NOTIFY		10	/* notify userspace of an MCE */
  #define TIF_USER_RETURN_NOTIFY	11	/* notify kernel of userspace return */
  #define TIF_UPROBE		12	/* breakpointed or singlestepping */
-@@ -106,6 +109,7 @@ struct thread_info {
+@@ -105,6 +108,7 @@ struct thread_info {
  #define _TIF_SYSCALL_EMU	(1 << TIF_SYSCALL_EMU)
  #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
  #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
@@ -49,9 +49,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define _TIF_MCE_NOTIFY		(1 << TIF_MCE_NOTIFY)
  #define _TIF_USER_RETURN_NOTIFY	(1 << TIF_USER_RETURN_NOTIFY)
  #define _TIF_UPROBE		(1 << TIF_UPROBE)
-@@ -156,6 +160,8 @@ struct thread_info {
+@@ -154,6 +158,8 @@ struct thread_info {
  #define _TIF_WORK_CTXSW_PREV (_TIF_WORK_CTXSW|_TIF_USER_RETURN_NOTIFY)
- #define _TIF_WORK_CTXSW_NEXT (_TIF_WORK_CTXSW|_TIF_DEBUG)
+ #define _TIF_WORK_CTXSW_NEXT (_TIF_WORK_CTXSW)
  
 +#define _TIF_NEED_RESCHED_MASK (_TIF_NEED_RESCHED | _TIF_NEED_RESCHED_LAZY)
 +
@@ -105,7 +105,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	jz work_notifysig
  work_resched:
  	call schedule
-@@ -620,7 +628,7 @@ work_resched:
+@@ -620,7 +628,7 @@ ENDPROC(system_call)
  	andl $_TIF_WORK_MASK, %ecx	# is there any work to be done other
  					# than syscall tracing?
  	jz restore_all
@@ -116,7 +116,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  work_notifysig:				# deal with pending signals and
 --- a/arch/x86/kernel/entry_64.S
 +++ b/arch/x86/kernel/entry_64.S
-@@ -673,8 +673,8 @@ sysret_check:
+@@ -658,8 +658,8 @@ GLOBAL(system_call_after_swapgs)
  	/* Handle reschedules */
  	/* edx:	work, edi: workmask */
  sysret_careful:
@@ -127,7 +127,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	TRACE_IRQS_ON
  	ENABLE_INTERRUPTS(CLBR_NONE)
  	pushq_cfi %rdi
-@@ -786,8 +786,8 @@ GLOBAL(int_with_check)
+@@ -771,8 +771,8 @@ GLOBAL(int_with_check)
  	/* First do a reschedule test. */
  	/* edx:	work, edi: workmask */
  int_careful:
@@ -138,7 +138,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	TRACE_IRQS_ON
  	ENABLE_INTERRUPTS(CLBR_NONE)
  	pushq_cfi %rdi
-@@ -1086,8 +1086,8 @@ bad_iret:
+@@ -1071,8 +1071,8 @@ ENTRY(native_iret)
  	/* edi: workmask, edx: work */
  retint_careful:
  	CFI_RESTORE_STATE
@@ -149,7 +149,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	TRACE_IRQS_ON
  	ENABLE_INTERRUPTS(CLBR_NONE)
  	pushq_cfi %rdi
-@@ -1120,9 +1120,15 @@ retint_signal:
+@@ -1105,9 +1105,15 @@ ENTRY(native_iret)
  ENTRY(retint_kernel)
  	cmpl $0,TI_preempt_count(%rcx)
  	jnz  retint_restore_args
@@ -167,7 +167,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	jnc  retint_restore_args
  	call preempt_schedule_irq
  	jmp exit_intr
-@@ -1524,7 +1530,7 @@ paranoid_userspace:
+@@ -1531,7 +1537,7 @@ ENTRY(paranoid_exit)
  	movq %rsp,%rdi			/* &pt_regs */
  	call sync_regs
  	movq %rax,%rsp			/* switch stack for scheduling */

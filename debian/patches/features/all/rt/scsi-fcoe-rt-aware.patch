@@ -1,7 +1,7 @@
 Subject: scsi-fcoe-rt-aware.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sat, 12 Nov 2011 14:00:48 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -12,7 +12,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/drivers/scsi/fcoe/fcoe.c
 +++ b/drivers/scsi/fcoe/fcoe.c
-@@ -1281,7 +1281,7 @@ static void fcoe_percpu_thread_destroy(u
+@@ -1285,7 +1285,7 @@ static void fcoe_percpu_thread_destroy(u
  	struct sk_buff *skb;
  #ifdef CONFIG_SMP
  	struct fcoe_percpu_s *p0;
@@ -21,7 +21,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif /* CONFIG_SMP */
  
  	FCOE_DBG("Destroying receive thread for CPU %d\n", cpu);
-@@ -1337,7 +1337,7 @@ static void fcoe_percpu_thread_destroy(u
+@@ -1341,7 +1341,7 @@ static void fcoe_percpu_thread_destroy(u
  			kfree_skb(skb);
  		spin_unlock_bh(&p->fcoe_rx_list.lock);
  	}
@@ -30,7 +30,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #else
  	/*
  	 * This a non-SMP scenario where the singular Rx thread is
-@@ -1555,11 +1555,11 @@ err2:
+@@ -1559,11 +1559,11 @@ static int fcoe_rcv(struct sk_buff *skb,
  static int fcoe_alloc_paged_crc_eof(struct sk_buff *skb, int tlen)
  {
  	struct fcoe_percpu_s *fps;
@@ -45,7 +45,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	return rc;
  }
-@@ -1757,11 +1757,11 @@ static inline int fcoe_filter_frames(str
+@@ -1761,11 +1761,11 @@ static inline int fcoe_filter_frames(str
  		return 0;
  	}
  
@@ -59,7 +59,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	return -EINVAL;
  }
  
-@@ -1837,13 +1837,13 @@ static void fcoe_recv_frame(struct sk_bu
+@@ -1841,13 +1841,13 @@ static void fcoe_recv_frame(struct sk_bu
  		goto drop;
  
  	if (!fcoe_filter_frames(lport, fp)) {

@@ -1,7 +1,7 @@
 From: Steven Rostedt <srostedt@redhat.com>
 Date: Mon, 16 Jul 2012 08:07:43 +0000
 Subject: cpu/rt: Rework cpu down for PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Bringing a CPU down is a pain with the PREEMPT_RT kernel because
 tasks can be preempted in many more places than in non-RT. In
@@ -57,7 +57,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1812,6 +1812,10 @@ extern void do_set_cpus_allowed(struct t
+@@ -1807,6 +1807,10 @@ extern void do_set_cpus_allowed(struct t
  
  extern int set_cpus_allowed_ptr(struct task_struct *p,
  				const struct cpumask *new_mask);
@@ -68,7 +68,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #else
  static inline void do_set_cpus_allowed(struct task_struct *p,
  				      const struct cpumask *new_mask)
-@@ -1824,6 +1828,9 @@ static inline int set_cpus_allowed_ptr(s
+@@ -1819,6 +1823,9 @@ static inline int set_cpus_allowed_ptr(s
  		return -EINVAL;
  	return 0;
  }
@@ -408,7 +408,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  EXPORT_SYMBOL_GPL(put_online_cpus);
  
-@@ -232,11 +383,11 @@ static void cpu_hotplug_begin(void)
+@@ -232,11 +383,11 @@ void cpu_hotplug_begin(void)
  	cpu_hotplug.active_writer = current;
  
  	for (;;) {
@@ -422,8 +422,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		schedule();
  	}
  }
-@@ -244,7 +395,7 @@ static void cpu_hotplug_begin(void)
- static void cpu_hotplug_done(void)
+@@ -244,7 +395,7 @@ void cpu_hotplug_begin(void)
+ void cpu_hotplug_done(void)
  {
  	cpu_hotplug.active_writer = NULL;
 -	hotplug_unlock();
@@ -431,7 +431,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  /*
-@@ -445,6 +596,9 @@ static int __ref _cpu_down(unsigned int
+@@ -442,6 +593,9 @@ static int __ref _cpu_down(unsigned int
  	}
  	smpboot_park_threads(cpu);
  
@@ -443,7 +443,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		/* CPU didn't die: tell everyone.  Can't complain. */
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -2935,7 +2935,7 @@ void migrate_disable(void)
+@@ -2359,7 +2359,7 @@ void migrate_disable(void)
  {
  	struct task_struct *p = current;
  
@@ -452,7 +452,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #ifdef CONFIG_SCHED_DEBUG
  		p->migrate_disable_atomic++;
  #endif
-@@ -2966,7 +2966,7 @@ void migrate_enable(void)
+@@ -2389,7 +2389,7 @@ void migrate_enable(void)
  	unsigned long flags;
  	struct rq *rq;
  
@@ -461,7 +461,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #ifdef CONFIG_SCHED_DEBUG
  		p->migrate_disable_atomic--;
  #endif
-@@ -4969,6 +4969,84 @@ void do_set_cpus_allowed(struct task_str
+@@ -4428,6 +4428,84 @@ void do_set_cpus_allowed(struct task_str
  	cpumask_copy(&p->cpus_allowed, new_mask);
  }
  

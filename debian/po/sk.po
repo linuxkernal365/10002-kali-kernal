@@ -1,3 +1,6 @@
+# THIS IS A GENERATED FILE; DO NOT EDIT IT!
+# Translators should edit debian/templates/po/sk.po instead.
+#
 # Slovak translations for linux package
 # Slovenské preklady pre balík linux.
 # Copyright (C) 2011 Slavko
@@ -7,8 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linux-2.6 2.6.32-29\n"
-"Report-Msgid-Bugs-To: linux@packages.debian.org\n"
-"POT-Creation-Date: 2011-06-09 10:31+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
 "PO-Revision-Date: 2011-07-10 09:19+0200\n"
 "Last-Translator: Slavko <linux@slavino.sk>\n"
 "Language-Team: Slovak <nomail>\n"
@@ -20,13 +23,13 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates/temp.image.plain/templates:2001
+#: ../image.plain.templates.in:2001
 msgid "Abort installation after depmod error?"
 msgstr "Prerušiť inštaláciu po chybe depmod?"
 
 #. Type: boolean
 #. Description
-#: ../templates/temp.image.plain/templates:2001
+#: ../image.plain.templates.in:2001
 msgid ""
 "The 'depmod' command exited with the exit code ${exit_value} "
 "(${SIGNAL}${CORE})."
@@ -35,17 +38,17 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates/temp.image.plain/templates:2001
+#: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/=V/modules.dep file will "
-"not be deleted, even though it may be invalid."
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-alpha-generic/"
+"modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/=V/modules."
-"dep zmazaný, hoci môže byť neplatný."
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-alpha-generic/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
-#: ../templates/temp.image.plain/templates:2001
+#: ../image.plain.templates.in:2001
 msgid ""
 "You should abort the installation and fix the errors in depmod, or "
 "regenerate the initrd image with a known good modules.dep file. If you don't "
@@ -57,13 +60,13 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates/temp.image.plain/templates:3001
+#: ../image.plain.templates.in:3001
 msgid "Abort kernel removal?"
 msgstr "Prerušiť odstraňovanie jadra?"
 
 #. Type: boolean
 #. Description
-#: ../templates/temp.image.plain/templates:3001
+#: ../image.plain.templates.in:3001
 msgid ""
 "You are running a kernel (version ${running}) and attempting to remove the "
 "same version."
@@ -73,7 +76,7 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates/temp.image.plain/templates:3001
+#: ../image.plain.templates.in:3001
 msgid ""
 "This can make the system unbootable as it will remove /boot/vmlinuz-"
 "${running} and all modules under the directory /lib/modules/${running}. This "
@@ -86,61 +89,4760 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../templates/temp.image.plain/templates:3001
+#: ../image.plain.templates.in:3001
 msgid ""
 "It is highly recommended to abort the kernel removal unless you are prepared "
 "to fix the system after removal."
 msgstr ""
 "Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
 "opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../templates/temp.image.plain/templates:4001
-msgid "Required firmware files may be missing"
-msgstr "Vyžadované súbory s firmware môžu chýbať"
-
-#. Type: note
-#. Description
-#: ../templates/temp.image.plain/templates:4001
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
 msgid ""
-"This system is currently running Linux ${runningversion} and you are "
-"installing Linux ${version}.  In the new version some of the drivers used on "
-"this system may require additional firmware files:"
 msgstr ""
-"Tento systém práve používa Linux ${runningversion} a vy inštalujete Linux "
-"${version}. V novej verzii môžu niektoré ovládače používané týmto systémom "
-"vyžadovať dodatočné súbory s firmware:"
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#. Type: note
+#. Type: boolean
 #. Description
-#: ../templates/temp.image.plain/templates:4001
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
 msgid ""
-"Most firmware files are not included in the system because they do not "
-"conform to the Debian Free Software Guidelines. You may need to reconfigure "
-"the package manager to include the contrib and non-free sections of the "
-"package archive before you can install these firmware files."
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
 msgstr ""
-"Väčšina súborov s firmware nie je v systéme zahrnutá, pretože nie sú v "
-"súlade so Zásadami slobodného softvéru Debianu. Pred inštaláciou týchto "
-"súborov s firmware, budete možno musieť nastaviť správcu balíkov tak, aby "
-"zahŕňal sekcie archívu balíkov contrib a non-free."
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
 
-#. Type: error
+#. Type: boolean
 #. Description
-#: ../templates/temp.image.plain/templates:5001
-msgid "Ramdisk configuration must be updated"
-msgstr "Nastavenie ramdisku musí byť aktualizované"
-
-#. Type: error
-#. Description
-#: ../templates/temp.image.plain/templates:5001
+#: ../image.plain.templates.in:2001
 msgid ""
-"Kernel packages will no longer run a specific ramdisk creator.  The ramdisk "
-"creator package must install a script in /etc/kernel/postinst.d, and you "
-"should remove the line beginning 'ramdisk =' from /etc/kernel-img.conf."
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-alpha-smp/"
+"modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
-"Balíky jadra už nebudú viac spúšťať vytváranie špecifického ramdisku. "
-"Nástroj na vytváranie ramdisku musí nainštalovať skript do /etc/kernel/"
-"postinst.d a vy musíte odstrániť riadok, ktorý začína „ramdisk =” z /etc/"
-"kernel-img.conf."
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-alpha-smp/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-alpha-legacy/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-alpha-legacy/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-amd64/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-amd64/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-rt-amd64/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-rt-amd64/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-iop32x/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-iop32x/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-ixp4xx/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-ixp4xx/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-kirkwood/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-kirkwood/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-mv78xx0/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-mv78xx0/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-orion5x/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-orion5x/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-versatile/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-versatile/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-armmp/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-armmp/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-armmp-lpae/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-armmp-lpae/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-parisc/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-parisc/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-parisc-smp/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-parisc-smp/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-parisc64/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-parisc64/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-parisc64-smp/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-parisc64-smp/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-486/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-486/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-686-pae/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-686-pae/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-amd64/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-amd64/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-rt-686-pae/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-rt-686-pae/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-itanium/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-itanium/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-mckinley/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-mckinley/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-m68k/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-m68k/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-r4k-ip22/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-r4k-ip22/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-r5k-ip32/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-r5k-ip32/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-sb1-bcm91250a/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-sb1-bcm91250a/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-sb1a-bcm91480b/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-sb1a-bcm91480b/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-4kc-malta/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-4kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-5kc-malta/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-5kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-octeon/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-octeon/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-r5k-cobalt/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-r5k-cobalt/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-sb1-bcm91250a/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-sb1-bcm91250a/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-sb1a-bcm91480b/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-sb1a-bcm91480b/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-4kc-malta/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-4kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-5kc-malta/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-5kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-loongson-2e/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-loongson-2e/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-loongson-2f/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-loongson-2f/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-powerpc/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-powerpc/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-powerpc-smp/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-powerpc-smp/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-powerpc64/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-powerpc64/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-powerpcspe/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-powerpcspe/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-powerpc64/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-powerpc64/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-s390x/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-s390x/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-s390x/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-s390x/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-sh7751r/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-sh7751r/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-sh7785lcr/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-sh7785lcr/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-sparc64/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-sparc64/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-sparc64-smp/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-sparc64-smp/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-sparc64/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-sparc64/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."
+# Slovak translations for linux package
+# Slovenské preklady pre balík linux.
+# Copyright (C) 2011 Slavko
+# This file is distributed under the same license as the linux package.
+# Slavko <linux@slavino.sk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linux-2.6 2.6.32-29\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-10 00:43+0200\n"
+"PO-Revision-Date: 2011-07-10 09:19+0200\n"
+"Last-Translator: Slavko <linux@slavino.sk>\n"
+"Language-Team: Slovak <nomail>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid "Abort installation after depmod error?"
+msgstr "Prerušiť inštaláciu po chybe depmod?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"The 'depmod' command exited with the exit code ${exit_value} "
+"(${SIGNAL}${CORE})."
+msgstr ""
+"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"Since this image uses initrd, the ${modules_base}/3.12-trunk-sparc64-smp/"
+"modules.dep file will not be deleted, even though it may be invalid."
+msgstr ""
+"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
+"3.12-trunk-sparc64-smp/modules.dep zmazaný, hoci môže byť neplatný."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:2001
+msgid ""
+"You should abort the installation and fix the errors in depmod, or "
+"regenerate the initrd image with a known good modules.dep file. If you don't "
+"abort the installation, there is a danger that the system will fail to boot."
+msgstr ""
+"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
+"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
+"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid "Abort kernel removal?"
+msgstr "Prerušiť odstraňovanie jadra?"
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"You are running a kernel (version ${running}) and attempting to remove the "
+"same version."
+msgstr ""
+"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
+"${running})."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"This can make the system unbootable as it will remove /boot/vmlinuz-"
+"${running} and all modules under the directory /lib/modules/${running}. This "
+"can only be fixed with a copy of the kernel image and the corresponding "
+"modules."
+msgstr ""
+"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
+"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
+"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
+
+#. Type: boolean
+#. Description
+#: ../image.plain.templates.in:3001
+msgid ""
+"It is highly recommended to abort the kernel removal unless you are prepared "
+"to fix the system after removal."
+msgstr ""
+"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
+"opravu systému po jeho odstránení."

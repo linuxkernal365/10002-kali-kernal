@@ -1,7 +1,7 @@
 Subject: net: Another local_irq_disable/kmalloc headache
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 26 Sep 2012 16:21:08 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Replace it by a local lock. Though that's pretty inefficient :(
 
@@ -20,7 +20,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  #include <net/protocol.h>
  #include <net/dst.h>
-@@ -367,6 +368,7 @@ struct netdev_alloc_cache {
+@@ -362,6 +363,7 @@ struct netdev_alloc_cache {
  	unsigned int		pagecnt_bias;
  };
  static DEFINE_PER_CPU(struct netdev_alloc_cache, netdev_alloc_cache);
@@ -28,7 +28,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  static void *__netdev_alloc_frag(unsigned int fragsz, gfp_t gfp_mask)
  {
-@@ -375,7 +377,7 @@ static void *__netdev_alloc_frag(unsigne
+@@ -370,7 +372,7 @@ static void *__netdev_alloc_frag(unsigne
  	int order;
  	unsigned long flags;
  
@@ -37,7 +37,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	nc = &__get_cpu_var(netdev_alloc_cache);
  	if (unlikely(!nc->frag.page)) {
  refill:
-@@ -409,7 +411,7 @@ recycle:
+@@ -404,7 +406,7 @@ static void *__netdev_alloc_frag(unsigne
  	nc->frag.offset += fragsz;
  	nc->pagecnt_bias--;
  end:

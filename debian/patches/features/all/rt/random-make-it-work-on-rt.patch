@@ -1,7 +1,7 @@
 Subject: random: Make it work on rt
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 21 Aug 2012 20:38:50 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Delegate the random insertion to the forced threaded interrupt
 handler. Store the return IP of the hard interrupt handler in the irq
@@ -20,7 +20,7 @@ Cc: stable-rt@vger.kernel.org
 
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -742,18 +742,16 @@ EXPORT_SYMBOL_GPL(add_input_randomness);
+@@ -739,18 +739,16 @@ EXPORT_SYMBOL_GPL(add_input_randomness);
  
  static DEFINE_PER_CPU(struct fast_pool, irq_randomness);
  
@@ -31,7 +31,7 @@ Cc: stable-rt@vger.kernel.org
  	struct fast_pool	*fast_pool = &__get_cpu_var(irq_randomness);
 -	struct pt_regs		*regs = get_irq_regs();
  	unsigned long		now = jiffies;
- 	__u32			input[4], cycles = get_cycles();
+ 	__u32			input[4], cycles = random_get_entropy();
  
  	input[0] = cycles ^ jiffies;
  	input[1] = irq;
@@ -41,7 +41,7 @@ Cc: stable-rt@vger.kernel.org
  		input[2] = ip;
  		input[3] = ip >> 32;
  	}
-@@ -767,7 +765,11 @@ void add_interrupt_randomness(int irq, i
+@@ -764,7 +762,11 @@ void add_interrupt_randomness(int irq, i
  	fast_pool->last = now;
  
  	r = nonblocking_pool.initialized ? &input_pool : &nonblocking_pool;
@@ -100,7 +100,7 @@ Cc: stable-rt@vger.kernel.org
  		note_interrupt(irq, desc, retval);
 --- a/kernel/irq/manage.c
 +++ b/kernel/irq/manage.c
-@@ -953,6 +953,12 @@ static int irq_thread(void *data)
+@@ -948,6 +948,12 @@ static int irq_thread(void *data)
  		if (!noirqdebug)
  			note_interrupt(action->irq, desc, action_ret);
  

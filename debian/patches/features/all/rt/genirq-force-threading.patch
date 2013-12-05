@@ -1,7 +1,7 @@
 Subject: genirq-force-threading.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 03 Apr 2011 11:57:29 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -11,7 +11,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/include/linux/interrupt.h
 +++ b/include/linux/interrupt.h
-@@ -383,9 +383,13 @@ static inline int disable_irq_wake(unsig
+@@ -314,9 +314,13 @@ static inline int disable_irq_wake(unsig
  
  
  #ifdef CONFIG_IRQ_FORCED_THREADING
