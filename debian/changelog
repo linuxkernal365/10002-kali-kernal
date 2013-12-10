@@ -1,3 +1,9 @@
+linux-kali (3.12.3-1~kali1) UNRELEASED; urgency=low
+
+  * Backport into Kali.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Tue, 10 Dec 2013 15:52:06 +0100
+
 linux (3.12.3-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
