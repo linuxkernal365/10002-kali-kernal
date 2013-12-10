@@ -1,7 +1,7 @@
 Subject: mm: pagefault_disabled()
 From: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Date: Thu Aug 11 15:31:31 CEST 2011
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Wrap the test for pagefault_disabled() into a helper, this allows us
 to remove the need for current->pagefault_disabled on !-rt kernels.
@@ -21,6 +21,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  arch/mips/mm/fault.c       |    2 +-
  arch/mn10300/mm/fault.c    |    2 +-
  arch/parisc/mm/fault.c     |    2 +-
+ arch/powerpc/mm/fault.c    |    2 +-
  arch/s390/mm/fault.c       |    8 ++++----
  arch/score/mm/fault.c      |    2 +-
  arch/sh/mm/fault.c         |    2 +-
@@ -32,11 +33,11 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  arch/xtensa/mm/fault.c     |    2 +-
  include/linux/sched.h      |   14 ++++++++++++++
  kernel/fork.c              |    2 ++
- 23 files changed, 40 insertions(+), 25 deletions(-)
+ 24 files changed, 41 insertions(+), 26 deletions(-)
 
 --- a/arch/alpha/mm/fault.c
 +++ b/arch/alpha/mm/fault.c
-@@ -108,7 +108,7 @@ do_page_fault(unsigned long address, uns
+@@ -107,7 +107,7 @@ do_page_fault(unsigned long address, uns
  
  	/* If we're in an interrupt context, or have no user context,
  	   we must not take the fault.  */
@@ -47,7 +48,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  #ifdef CONFIG_ALPHA_LARGE_VMALLOC
 --- a/arch/arm/mm/fault.c
 +++ b/arch/arm/mm/fault.c
-@@ -279,7 +279,7 @@ do_page_fault(unsigned long addr, unsign
+@@ -277,7 +277,7 @@ do_page_fault(unsigned long addr, unsign
  	 * If we're in an interrupt or have no user
  	 * context, we must not take the fault..
  	 */
@@ -55,7 +56,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
 +	if (!mm || pagefault_disabled())
  		goto no_context;
  
- 	/*
+ 	if (user_mode(regs))
 --- a/arch/avr32/mm/fault.c
 +++ b/arch/avr32/mm/fault.c
 @@ -81,8 +81,7 @@ asmlinkage void do_page_fault(unsigned l
@@ -70,7 +71,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  	local_irq_enable();
 --- a/arch/cris/mm/fault.c
 +++ b/arch/cris/mm/fault.c
-@@ -114,7 +114,7 @@ do_page_fault(unsigned long address, str
+@@ -113,7 +113,7 @@ do_page_fault(unsigned long address, str
  	 * user context, we must not take the fault.
  	 */
  
@@ -78,7 +79,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
 +	if (!mm || pagefault_disabled())
  		goto no_context;
  
- retry:
+ 	if (user_mode(regs))
 --- a/arch/frv/mm/fault.c
 +++ b/arch/frv/mm/fault.c
 @@ -78,7 +78,7 @@ asmlinkage void do_page_fault(int datamm
@@ -89,10 +90,10 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
 +	if (!mm || pagefault_disabled())
  		goto no_context;
  
- 	down_read(&mm->mmap_sem);
+ 	if (user_mode(__frame))
 --- a/arch/ia64/mm/fault.c
 +++ b/arch/ia64/mm/fault.c
-@@ -98,7 +98,7 @@ ia64_do_page_fault (unsigned long addres
+@@ -96,7 +96,7 @@ ia64_do_page_fault (unsigned long addres
  	/*
  	 * If we're in an interrupt or have no user context, we must not take the fault..
  	 */
@@ -107,11 +108,11 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  	 * If we're in an interrupt or have no user context or are running in an
  	 * atomic region then we must not take the fault..
  	 */
--	if (in_atomic() || !mm || current->pagefault_disabled)
+-	if (in_atomic() || !mm || current->pagefault_disabled
 +	if (!mm || pagefault_disabled())
  		goto bad_area_nosemaphore;
  
- 	/* When running in the kernel we expect faults to occur only to
+ 	if (error_code & ACE_USERMODE)
 --- a/arch/m68k/mm/fault.c
 +++ b/arch/m68k/mm/fault.c
 @@ -85,7 +85,7 @@ int do_page_fault(struct pt_regs *regs,
@@ -122,10 +123,10 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
 +	if (!mm || pagefault_disabled())
  		goto no_context;
  
- retry:
+ 	if (user_mode(regs))
 --- a/arch/microblaze/mm/fault.c
 +++ b/arch/microblaze/mm/fault.c
-@@ -108,7 +108,7 @@ void do_page_fault(struct pt_regs *regs,
+@@ -107,7 +107,7 @@ void do_page_fault(struct pt_regs *regs,
  	if ((error_code & 0x13) == 0x13 || (error_code & 0x11) == 0x11)
  		is_write = 0;
  
@@ -136,7 +137,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  
 --- a/arch/mips/mm/fault.c
 +++ b/arch/mips/mm/fault.c
-@@ -89,7 +89,7 @@ asmlinkage void __kprobes do_page_fault(
+@@ -89,7 +89,7 @@ static void __kprobes __do_page_fault(st
  	 * If we're in an interrupt or have no user
  	 * context, we must not take the fault..
  	 */
@@ -144,7 +145,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
 +	if (!mm || pagefault_disabled())
  		goto bad_area_nosemaphore;
  
- retry:
+ 	if (user_mode(regs))
 --- a/arch/mn10300/mm/fault.c
 +++ b/arch/mn10300/mm/fault.c
 @@ -168,7 +168,7 @@ asmlinkage void do_page_fault(struct pt_
@@ -155,18 +156,29 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
 +	if (!mm || pagefault_disabled())
  		goto no_context;
  
- retry:
+ 	if ((fault_code & MMUFCR_xFC_ACCESS) == MMUFCR_xFC_ACCESS_USR)
 --- a/arch/parisc/mm/fault.c
 +++ b/arch/parisc/mm/fault.c
 @@ -177,7 +177,7 @@ void do_page_fault(struct pt_regs *regs,
  	int fault;
- 	unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
+ 	unsigned int flags;
  
--	if (in_atomic() || !mm || current->pagefault_disabled)
-+	if (!mm || pagefault_disabled())
+-	if (in_atomic() || current->pagefault_disabled)
++	if (pagefault_disabled())
  		goto no_context;
  
- retry:
+ 	tsk = current;
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -261,7 +261,7 @@ int __kprobes do_page_fault(struct pt_re
+ 	if (!arch_irq_disabled_regs(regs))
+ 		local_irq_enable();
+ 
+-	if (in_atomic() || mm == NULL || current->pagefault_disabled) {
++	if (in_atomic() || mm == NULL || pagefault_disabled()) {
+ 		if (!user_mode(regs)) {
+ 			rc = SIGSEGV;
+ 			goto bail;
 --- a/arch/s390/mm/fault.c
 +++ b/arch/s390/mm/fault.c
 @@ -296,8 +296,8 @@ static inline int do_exception(struct pt
@@ -180,7 +192,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  		goto out;
  
  	address = trans_exc_code & __FAIL_ADDR_MASK;
-@@ -441,8 +441,8 @@ void __kprobes do_asce_exception(struct
+@@ -443,8 +443,8 @@ void __kprobes do_asce_exception(struct
  	clear_tsk_thread_flag(current, TIF_PER_TRAP);
  
  	trans_exc_code = regs->int_parm_long;
@@ -193,7 +205,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  	down_read(&mm->mmap_sem);
 --- a/arch/score/mm/fault.c
 +++ b/arch/score/mm/fault.c
-@@ -72,7 +72,7 @@ asmlinkage void do_page_fault(struct pt_
+@@ -73,7 +73,7 @@ asmlinkage void do_page_fault(struct pt_
  	* If we're in an interrupt or have no user
  	* context, we must not take the fault..
  	*/
@@ -201,10 +213,10 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
 +	if (!mm || pagefault_disabled())
  		goto bad_area_nosemaphore;
  
- 	down_read(&mm->mmap_sem);
+ 	if (user_mode(regs))
 --- a/arch/sh/mm/fault.c
 +++ b/arch/sh/mm/fault.c
-@@ -440,7 +440,7 @@ asmlinkage void __kprobes do_page_fault(
+@@ -438,7 +438,7 @@ asmlinkage void __kprobes do_page_fault(
  	 * If we're in an interrupt, have no user context or are running
  	 * in an atomic region then we must not take the fault:
  	 */
@@ -215,7 +227,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  	}
 --- a/arch/sparc/mm/fault_32.c
 +++ b/arch/sparc/mm/fault_32.c
-@@ -200,7 +200,7 @@ asmlinkage void do_sparc_fault(struct pt
+@@ -199,7 +199,7 @@ asmlinkage void do_sparc_fault(struct pt
  	 * If we're in an interrupt or have no user
  	 * context, we must not take the fault..
  	 */
@@ -226,7 +238,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
 --- a/arch/sparc/mm/fault_64.c
 +++ b/arch/sparc/mm/fault_64.c
-@@ -321,7 +321,7 @@ asmlinkage void __kprobes do_sparc64_fau
+@@ -322,7 +322,7 @@ asmlinkage void __kprobes do_sparc64_fau
  	 * If we're in an interrupt or have no user
  	 * context, we must not take the fault..
  	 */
@@ -237,7 +249,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
 --- a/arch/tile/mm/fault.c
 +++ b/arch/tile/mm/fault.c
-@@ -360,7 +360,7 @@ static int handle_page_fault(struct pt_r
+@@ -357,7 +357,7 @@ static int handle_page_fault(struct pt_r
  	 * If we're in an interrupt, have no user context or are running in an
  	 * atomic region then we must not take the fault.
  	 */
@@ -248,7 +260,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  	}
 --- a/arch/um/kernel/trap.c
 +++ b/arch/um/kernel/trap.c
-@@ -39,7 +39,7 @@ int handle_page_fault(unsigned long addr
+@@ -38,7 +38,7 @@ int handle_page_fault(unsigned long addr
  	 * If the fault was during atomic operation, don't take the fault, just
  	 * fail.
  	 */
@@ -256,10 +268,10 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
 +	if (pagefault_disabled())
  		goto out_nosemaphore;
  
- retry:
+ 	if (is_user)
 --- a/arch/x86/mm/fault.c
 +++ b/arch/x86/mm/fault.c
-@@ -1104,7 +1104,7 @@ __do_page_fault(struct pt_regs *regs, un
+@@ -1094,7 +1094,7 @@ static void __kprobes
  	 * If we're in an interrupt, have no user context or are running
  	 * in an atomic region then we must not take the fault:
  	 */
@@ -289,7 +301,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  
  #include <asm/processor.h>
  
-@@ -1261,7 +1262,9 @@ struct task_struct {
+@@ -1248,7 +1249,9 @@ struct task_struct {
  	/* mutex deadlock detection */
  	struct mutex_waiter *blocked_on;
  #endif
@@ -299,7 +311,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  #ifdef CONFIG_TRACE_IRQFLAGS
  	unsigned int irq_events;
  	unsigned long hardirq_enable_ip;
-@@ -1444,6 +1447,17 @@ static inline void set_numabalancing_sta
+@@ -1434,6 +1437,17 @@ static inline void set_numabalancing_sta
  }
  #endif
  
@@ -319,7 +331,7 @@ Link: http://lkml.kernel.org/n/tip-3yy517m8zsi9fpsf14xfaqkw@git.kernel.org
  	return task->pids[PIDTYPE_PID].pid;
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -1293,7 +1293,9 @@ static struct task_struct *copy_process(
+@@ -1296,7 +1296,9 @@ static struct task_struct *copy_process(
  	p->hardirq_context = 0;
  	p->softirq_context = 0;
  #endif

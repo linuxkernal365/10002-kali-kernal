@@ -1,7 +1,7 @@
 From: John Stultz <johnstul@us.ibm.com>
 Date: Fri, 3 Jul 2009 08:29:58 -0500
 Subject: posix-timers: thread posix-cpu-timers on -rt
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 posix-cpu-timer code takes non -rt safe locks in hard irq
 context. Move it to a thread.
@@ -44,7 +44,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		[PIDTYPE_PGID] = INIT_PID_LINK(PIDTYPE_PGID),		\
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1186,6 +1186,9 @@ struct task_struct {
+@@ -1173,6 +1173,9 @@ struct task_struct {
  
  	struct task_cputime cputime_expires;
  	struct list_head cpu_timers[3];
@@ -70,12 +70,12 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #include <linux/blkdev.h>
  #include <linux/elevator.h>
 +#include <linux/posix-timers.h>
- 
- #include <asm/io.h>
- #include <asm/bugs.h>
+ #include <linux/sched_clock.h>
+ #include <linux/context_tracking.h>
+ #include <linux/random.h>
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -1113,6 +1113,9 @@ void mm_init_owner(struct mm_struct *mm,
+@@ -1106,6 +1106,9 @@ void mm_init_owner(struct mm_struct *mm,
   */
  static void posix_cpu_timers_init(struct task_struct *tsk)
  {
@@ -95,7 +95,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #include <linux/posix-timers.h>
  #include <linux/errno.h>
  #include <linux/math64.h>
-@@ -722,7 +723,7 @@ static int posix_cpu_timer_set(struct k_
+@@ -663,7 +664,7 @@ static int posix_cpu_timer_set(struct k_
  	/*
  	 * Disarm any old timer after extracting its expiry time.
  	 */
@@ -104,7 +104,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	ret = 0;
  	old_incr = timer->it.cpu.incr;
-@@ -1225,7 +1226,7 @@ void posix_cpu_timer_schedule(struct k_i
+@@ -1110,7 +1111,7 @@ void posix_cpu_timer_schedule(struct k_i
  	/*
  	 * Now re-arm for the new expiry time.
  	 */
@@ -113,7 +113,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	arm_timer(timer);
  	spin_unlock(&p->sighand->siglock);
  
-@@ -1292,10 +1293,11 @@ static inline int fastpath_timer_check(s
+@@ -1177,10 +1178,11 @@ static inline int fastpath_timer_check(s
  	sig = tsk->signal;
  	if (sig->cputimer.running) {
  		struct task_cputime group_sample;
@@ -127,7 +127,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  		if (task_cputime_expired(&group_sample, &sig->cputime_expires))
  			return 1;
-@@ -1309,13 +1311,13 @@ static inline int fastpath_timer_check(s
+@@ -1194,13 +1196,13 @@ static inline int fastpath_timer_check(s
   * already updated our counts.  We need to check if any timers fire now.
   * Interrupts are disabled.
   */
@@ -143,7 +143,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 * The fast path checks that there are no expired thread or thread
-@@ -1380,6 +1382,175 @@ void run_posix_cpu_timers(struct task_st
+@@ -1265,6 +1267,175 @@ void run_posix_cpu_timers(struct task_st
  		posix_cpu_timer_kick_nohz();
  }
  

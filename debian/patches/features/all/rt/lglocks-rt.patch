@@ -1,7 +1,7 @@
 Subject: lglocks-rt.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 15 Jun 2011 11:02:21 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -93,7 +93,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 -	preempt_disable();
 +	migrate_disable();
- 	rwlock_acquire_read(&lg->lock_dep_map, 0, 0, _RET_IP_);
+ 	lock_acquire_shared(&lg->lock_dep_map, 0, 0, NULL, _RET_IP_);
  	lock = this_cpu_ptr(lg->lock);
 -	arch_spin_lock(lock);
 +	lg_do_lock(lock);
@@ -105,7 +105,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -	arch_spinlock_t *lock;
 +	lg_lock_ptr *lock;
  
- 	rwlock_release(&lg->lock_dep_map, 1, _RET_IP_);
+ 	lock_release(&lg->lock_dep_map, 1, _RET_IP_);
  	lock = this_cpu_ptr(lg->lock);
 -	arch_spin_unlock(lock);
 -	preempt_enable();
@@ -121,7 +121,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 -	preempt_disable();
 +	preempt_disable_nort();
- 	rwlock_acquire_read(&lg->lock_dep_map, 0, 0, _RET_IP_);
+ 	lock_acquire_shared(&lg->lock_dep_map, 0, 0, NULL, _RET_IP_);
  	lock = per_cpu_ptr(lg->lock, cpu);
 -	arch_spin_lock(lock);
 +	lg_do_lock(lock);
@@ -133,7 +133,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -	arch_spinlock_t *lock;
 +	lg_lock_ptr *lock;
  
- 	rwlock_release(&lg->lock_dep_map, 1, _RET_IP_);
+ 	lock_release(&lg->lock_dep_map, 1, _RET_IP_);
  	lock = per_cpu_ptr(lg->lock, cpu);
 -	arch_spin_unlock(lock);
 -	preempt_enable();
@@ -148,7 +148,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 -	preempt_disable();
 +	preempt_disable_nort();
- 	rwlock_acquire(&lg->lock_dep_map, 0, 0, _RET_IP_);
+ 	lock_acquire_exclusive(&lg->lock_dep_map, 0, 0, NULL, _RET_IP_);
  	for_each_possible_cpu(i) {
 -		arch_spinlock_t *lock;
 +		lg_lock_ptr *lock;
@@ -160,7 +160,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  EXPORT_SYMBOL(lg_global_lock);
 @@ -80,10 +98,10 @@ void lg_global_unlock(struct lglock *lg)
  
- 	rwlock_release(&lg->lock_dep_map, 1, _RET_IP_);
+ 	lock_release(&lg->lock_dep_map, 1, _RET_IP_);
  	for_each_possible_cpu(i) {
 -		arch_spinlock_t *lock;
 +		lg_lock_ptr *lock;

@@ -1,7 +1,7 @@
 Subject: softirq-disable-softirq-stacks-for-rt.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Mon, 18 Jul 2011 13:59:17 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -18,7 +18,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/arch/powerpc/kernel/irq.c
 +++ b/arch/powerpc/kernel/irq.c
-@@ -603,6 +603,7 @@ void irq_ctx_init(void)
+@@ -594,6 +594,7 @@ void irq_ctx_init(void)
  	}
  }
  
@@ -26,7 +26,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  static inline void do_softirq_onstack(void)
  {
  	struct thread_info *curtp, *irqtp;
-@@ -639,6 +640,7 @@ void do_softirq(void)
+@@ -626,6 +627,7 @@ void do_softirq(void)
  
  	local_irq_restore(flags);
  }
@@ -36,21 +36,21 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  {
 --- a/arch/powerpc/kernel/misc_32.S
 +++ b/arch/powerpc/kernel/misc_32.S
-@@ -36,6 +36,7 @@
- 
- 	.text
- 
+@@ -40,6 +40,7 @@
+  * We store the saved ksp_limit in the unused part
+  * of the STACK_FRAME_OVERHEAD
+  */
 +#ifndef CONFIG_PREEMPT_RT_FULL
  _GLOBAL(call_do_softirq)
  	mflr	r0
  	stw	r0,4(r1)
-@@ -46,6 +47,7 @@ _GLOBAL(call_do_softirq)
- 	lwz	r0,4(r1)
+@@ -56,6 +57,7 @@
+ 	stw	r10,THREAD+KSP_LIMIT(r2)
  	mtlr	r0
  	blr
 +#endif
  
- _GLOBAL(call_handle_irq)
+ _GLOBAL(call_do_irq)
  	mflr	r0
 --- a/arch/powerpc/kernel/misc_64.S
 +++ b/arch/powerpc/kernel/misc_64.S
@@ -62,14 +62,14 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  _GLOBAL(call_do_softirq)
  	mflr	r0
  	std	r0,16(r1)
-@@ -39,6 +40,7 @@ _GLOBAL(call_do_softirq)
+@@ -39,6 +40,7 @@
  	ld	r0,16(r1)
  	mtlr	r0
  	blr
 +#endif
  
- _GLOBAL(call_handle_irq)
- 	ld	r8,0(r6)
+ _GLOBAL(call_do_irq)
+ 	mflr	r0
 --- a/arch/sh/kernel/irq.c
 +++ b/arch/sh/kernel/irq.c
 @@ -149,6 +149,7 @@ void irq_ctx_exit(int cpu)
@@ -108,7 +108,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  void fixup_irqs(void)
 --- a/arch/x86/kernel/entry_64.S
 +++ b/arch/x86/kernel/entry_64.S
-@@ -1334,6 +1334,7 @@ bad_gs:
+@@ -1341,6 +1341,7 @@ END(native_load_gs_index)
  	jmp  2b
  	.previous
  
@@ -116,7 +116,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /* Call softirq on interrupt stack. Interrupts are off. */
  ENTRY(call_softirq)
  	CFI_STARTPROC
-@@ -1353,6 +1354,7 @@ ENTRY(call_softirq)
+@@ -1360,6 +1361,7 @@ ENTRY(call_softirq)
  	ret
  	CFI_ENDPROC
  END(call_softirq)
@@ -126,7 +126,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  zeroentry xen_hypervisor_callback xen_do_hypervisor_callback
 --- a/arch/x86/kernel/irq_32.c
 +++ b/arch/x86/kernel/irq_32.c
-@@ -149,6 +149,7 @@ void __cpuinit irq_ctx_init(int cpu)
+@@ -149,6 +149,7 @@ void irq_ctx_init(int cpu)
  	       cpu, per_cpu(hardirq_ctx, cpu),  per_cpu(softirq_ctx, cpu));
  }
  
@@ -160,7 +160,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#endif
 --- a/include/linux/interrupt.h
 +++ b/include/linux/interrupt.h
-@@ -446,10 +446,9 @@ struct softirq_action
+@@ -377,10 +377,9 @@ struct softirq_action
  	void	(*action)(struct softirq_action *);
  };
  

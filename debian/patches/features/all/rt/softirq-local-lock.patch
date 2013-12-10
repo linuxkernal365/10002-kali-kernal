@@ -1,62 +1,20 @@
 Subject: softirq-local-lock.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 28 Jun 2011 15:57:18 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- include/linux/hardirq.h   |   16 +++-
- include/linux/interrupt.h |   12 +++
- include/linux/sched.h     |    1 
- init/main.c               |    1 
- kernel/softirq.c          |  166 +++++++++++++++++++++++++++++++++++++++++++++-
+ include/linux/interrupt.h    |   12 +++
+ include/linux/preempt_mask.h |   15 +++
+ include/linux/sched.h        |    1 
+ init/main.c                  |    1 
+ kernel/softirq.c             |  167 ++++++++++++++++++++++++++++++++++++++++++-
  5 files changed, 191 insertions(+), 5 deletions(-)
 
---- a/include/linux/hardirq.h
-+++ b/include/linux/hardirq.h
-@@ -61,7 +61,11 @@
- #define HARDIRQ_OFFSET	(1UL << HARDIRQ_SHIFT)
- #define NMI_OFFSET	(1UL << NMI_SHIFT)
- 
--#define SOFTIRQ_DISABLE_OFFSET	(2 * SOFTIRQ_OFFSET)
-+#ifndef CONFIG_PREEMPT_RT_FULL
-+# define SOFTIRQ_DISABLE_OFFSET	(2 * SOFTIRQ_OFFSET)
-+#else
-+# define SOFTIRQ_DISABLE_OFFSET (0)
-+#endif
- 
- #ifndef PREEMPT_ACTIVE
- #define PREEMPT_ACTIVE_BITS	1
-@@ -74,10 +78,17 @@
- #endif
- 
- #define hardirq_count()	(preempt_count() & HARDIRQ_MASK)
--#define softirq_count()	(preempt_count() & SOFTIRQ_MASK)
- #define irq_count()	(preempt_count() & (HARDIRQ_MASK | SOFTIRQ_MASK \
- 				 | NMI_MASK))
- 
-+#ifndef CONFIG_PREEMPT_RT_FULL
-+# define softirq_count()	(preempt_count() & SOFTIRQ_MASK)
-+# define in_serving_softirq()	(softirq_count() & SOFTIRQ_OFFSET)
-+#else
-+# define softirq_count()	(0U)
-+extern int in_serving_softirq(void);
-+#endif
-+
- /*
-  * Are we doing bottom half or hardware interrupt processing?
-  * Are we in a softirq context? Interrupt context?
-@@ -87,7 +98,6 @@
- #define in_irq()		(hardirq_count())
- #define in_softirq()		(softirq_count())
- #define in_interrupt()		(irq_count())
--#define in_serving_softirq()	(softirq_count() & SOFTIRQ_OFFSET)
- 
- /*
-  * Are we in NMI context?
 --- a/include/linux/interrupt.h
 +++ b/include/linux/interrupt.h
-@@ -448,7 +448,13 @@ struct softirq_action
+@@ -379,7 +379,13 @@ struct softirq_action
  
  asmlinkage void do_softirq(void);
  asmlinkage void __do_softirq(void);
@@ -70,7 +28,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  extern void open_softirq(int nr, void (*action)(struct softirq_action *));
  extern void softirq_init(void);
  extern void __raise_softirq_irqoff(unsigned int nr);
-@@ -635,6 +641,12 @@ void tasklet_hrtimer_cancel(struct taskl
+@@ -566,6 +572,12 @@ void tasklet_hrtimer_cancel(struct taskl
  	tasklet_kill(&ttimer->tasklet);
  }
  
@@ -83,9 +41,49 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * Autoprobing for irqs:
   *
+--- a/include/linux/preempt_mask.h
++++ b/include/linux/preempt_mask.h
+@@ -58,7 +58,11 @@
+ #define HARDIRQ_OFFSET	(1UL << HARDIRQ_SHIFT)
+ #define NMI_OFFSET	(1UL << NMI_SHIFT)
+ 
+-#define SOFTIRQ_DISABLE_OFFSET	(2 * SOFTIRQ_OFFSET)
++#ifndef CONFIG_PREEMPT_RT_FULL
++# define SOFTIRQ_DISABLE_OFFSET	(2 * SOFTIRQ_OFFSET)
++#else
++# define SOFTIRQ_DISABLE_OFFSET (0)
++#endif
+ 
+ #ifndef PREEMPT_ACTIVE
+ #define PREEMPT_ACTIVE_BITS	1
+@@ -71,9 +75,15 @@
+ #endif
+ 
+ #define hardirq_count()	(preempt_count() & HARDIRQ_MASK)
+-#define softirq_count()	(preempt_count() & SOFTIRQ_MASK)
+ #define irq_count()	(preempt_count() & (HARDIRQ_MASK | SOFTIRQ_MASK \
+ 				 | NMI_MASK))
++#ifndef CONFIG_PREEMPT_RT_FULL
++# define softirq_count()	(preempt_count() & SOFTIRQ_MASK)
++# define in_serving_softirq()	(softirq_count() & SOFTIRQ_OFFSET)
++#else
++# define softirq_count()	(0UL)
++extern int in_serving_softirq(void);
++#endif
+ 
+ /*
+  * Are we doing bottom half or hardware interrupt processing?
+@@ -84,7 +94,6 @@
+ #define in_irq()		(hardirq_count())
+ #define in_softirq()		(softirq_count())
+ #define in_interrupt()		(irq_count())
+-#define in_serving_softirq()	(softirq_count() & SOFTIRQ_OFFSET)
+ 
+ /*
+  * Are we in NMI context?
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1448,6 +1448,7 @@ struct task_struct {
+@@ -1438,6 +1438,7 @@ struct task_struct {
  #endif
  #ifdef CONFIG_PREEMPT_RT_BASE
  	struct rcu_head put_rcu;
@@ -95,7 +93,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/init/main.c
 +++ b/init/main.c
-@@ -496,6 +496,7 @@ asmlinkage void __init start_kernel(void
+@@ -499,6 +499,7 @@ asmlinkage void __init start_kernel(void
   * Interrupts are still disabled. Do necessary setups, then
   * enable them
   */
@@ -121,7 +119,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * preempt_count and SOFTIRQ_OFFSET usage:
   * - preempt_count is changed by SOFTIRQ_OFFSET on entering or leaving
-@@ -368,6 +370,162 @@ asmlinkage void do_softirq(void)
+@@ -403,6 +405,163 @@ asmlinkage void do_softirq(void)
  
  #endif
  
@@ -194,6 +192,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	preempt_enable();
 +	return res;
 +}
++EXPORT_SYMBOL(in_serving_softirq);
 +
 +/*
 + * Called with bh and local interrupts disabled. For full RT cpu must
@@ -284,7 +283,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * Enter an interrupt context.
   */
-@@ -381,9 +539,9 @@ void irq_enter(void)
+@@ -416,9 +575,9 @@ void irq_enter(void)
  		 * Prevent raise_softirq from needlessly waking up ksoftirqd
  		 * here, as softirq will be serviced on return from interrupt.
  		 */
@@ -296,17 +295,20 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  
  	__irq_enter();
-@@ -391,10 +549,14 @@ void irq_enter(void)
+@@ -426,6 +585,7 @@ void irq_enter(void)
  
  static inline void invoke_softirq(void)
  {
 +#ifndef CONFIG_PREEMPT_RT_FULL
- 	if (!force_irqthreads)
- 		__do_softirq();
- 	else
+ 	if (!force_irqthreads) {
+ 		lockdep_softirq_from_hardirq();
+ 		/*
+@@ -440,6 +600,9 @@ static inline void invoke_softirq(void)
+ 	} else {
  		wakeup_softirqd();
+ 	}
 +#else
-+		wakeup_softirqd();
++	wakeup_softirqd();
 +#endif
  }
  

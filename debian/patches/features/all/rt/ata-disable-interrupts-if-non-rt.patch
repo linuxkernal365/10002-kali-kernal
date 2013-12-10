@@ -1,7 +1,7 @@
 From: Steven Rostedt <srostedt@redhat.com>
 Date: Fri, 3 Jul 2009 08:44:29 -0500
 Subject: ata: Do not disable interrupts in ide code for preempt-rt
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Use the local_irq_*_nort variants.
 
@@ -45,7 +45,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	} else {
  		buf = page_address(page);
  		ap->ops->sff_data_xfer(qc->dev, buf + offset, qc->sect_size,
-@@ -864,7 +864,7 @@ next_sg:
+@@ -864,7 +864,7 @@ static int __atapi_pio_bytes(struct ata_
  		unsigned long flags;
  
  		/* FIXME: use bounce buffer */
@@ -54,7 +54,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		buf = kmap_atomic(page);
  
  		/* do the actual data transfer */
-@@ -872,7 +872,7 @@ next_sg:
+@@ -872,7 +872,7 @@ static int __atapi_pio_bytes(struct ata_
  								count, rw);
  
  		kunmap_atomic(buf);

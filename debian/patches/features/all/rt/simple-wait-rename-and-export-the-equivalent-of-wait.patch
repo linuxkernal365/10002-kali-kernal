@@ -3,7 +3,7 @@ From: Paul Gortmaker <paul.gortmaker@windriver.com>
 Date: Tue, 27 Aug 2013 14:20:26 -0400
 Subject: [PATCH] simple-wait: rename and export the equivalent of
  waitqueue_active()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 The function "swait_head_has_waiters()" was internalized into
 wait-simple.c but it parallels the waitqueue_active of normal
@@ -53,7 +53,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  void __init_swait_head(struct swait_head *head, struct lock_class_key *key)
  {
  	raw_spin_lock_init(&head->lock);
-@@ -112,7 +104,7 @@ __swait_wake(struct swait_head *head, un
+@@ -112,7 +104,7 @@ unsigned int
  	unsigned long flags;
  	int woken;
  

@@ -190,7 +190,9 @@ static inline struct neighbour *__ipv6_neigh_lookup(struct net_device *dev, cons
 }
 
 extern int			ndisc_init(void);
+extern int			ndisc_late_init(void);
 
+extern void			ndisc_late_cleanup(void);
 extern void			ndisc_cleanup(void);
 
 extern int			ndisc_rcv(struct sk_buff *skb);
@@ -204,6 +206,11 @@ extern void			ndisc_send_ns(struct net_device *dev,
 extern void			ndisc_send_rs(struct net_device *dev,
 					      const struct in6_addr *saddr,
 					      const struct in6_addr *daddr);
+extern void			ndisc_send_na(struct net_device *dev, struct neighbour *neigh,
+					      const struct in6_addr *daddr,
+					      const struct in6_addr *solicited_addr,
+					      bool router, bool solicited, bool override,
+					      bool inc_opt);
 
 extern void			ndisc_send_redirect(struct sk_buff *skb,
 						    const struct in6_addr *target);
@@ -230,7 +237,7 @@ extern int 			ndisc_ifinfo_sysctl_change(struct ctl_table *ctl,
 							   void __user *buffer,
 							   size_t *lenp,
 							   loff_t *ppos);
-int ndisc_ifinfo_sysctl_strategy(ctl_table *ctl,
+int ndisc_ifinfo_sysctl_strategy(struct ctl_table *ctl,
 				 void __user *oldval, size_t __user *oldlenp,
 				 void __user *newval, size_t newlen);
 #endif

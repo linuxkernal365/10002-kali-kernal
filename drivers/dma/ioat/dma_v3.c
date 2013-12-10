@@ -87,13 +87,6 @@ static const u8 pq_idx_to_field[] = { 1, 4, 5, 0, 1, 2, 4, 5 };
 static const u8 pq16_idx_to_field[] = { 1, 4, 1, 2, 3, 4, 5, 6, 7,
 					0, 1, 2, 3, 4, 5, 6 };
 
-/*
- * technically sources 1 and 2 do not require SED, but the op will have
- * at least 9 descriptors so that's irrelevant.
- */
-static const u8 pq16_idx_to_sed[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				      1, 1, 1, 1, 1, 1, 1 };
-
 static void ioat3_eh(struct ioat2_dma_chan *ioat);
 
 static dma_addr_t xor_get_src(struct ioat_raw_descriptor *descs[2], int idx)
@@ -133,12 +126,6 @@ static void pq_set_src(struct ioat_raw_descriptor *descs[2],
 
 	raw->field[pq_idx_to_field[idx]] = addr + offset;
 	pq->coef[idx] = coef;
-}
-
-static int sed_get_pq16_pool_idx(int src_cnt)
-{
-
-	return pq16_idx_to_sed[src_cnt];
 }
 
 static bool is_jf_ioat(struct pci_dev *pdev)
@@ -251,7 +238,7 @@ static bool is_bwd_noraid(struct pci_dev *pdev)
 }
 
 static void pq16_set_src(struct ioat_raw_descriptor *desc[3],
-			dma_addr_t addr, u32 offset, u8 coef, int idx)
+			dma_addr_t addr, u32 offset, u8 coef, unsigned idx)
 {
 	struct ioat_pq_descriptor *pq = (struct ioat_pq_descriptor *)desc[0];
 	struct ioat_pq16a_descriptor *pq16 =
@@ -311,14 +298,6 @@ static void ioat3_dma_unmap(struct ioat2_dma_chan *ioat,
 		if (!desc->hw->ctl_f.null) /* skip 'interrupt' ops */
 			ioat_dma_unmap(chan, flags, len, desc->hw);
 		break;
-	case IOAT_OP_FILL: {
-		struct ioat_fill_descriptor *hw = desc->fill;
-
-		if (!(flags & DMA_COMPL_SKIP_DEST_UNMAP))
-			ioat_unmap(pdev, hw->dst_addr - offset, len,
-				   PCI_DMA_FROMDEVICE, flags, 1);
-		break;
-	}
 	case IOAT_OP_XOR_VAL:
 	case IOAT_OP_XOR: {
 		struct ioat_xor_descriptor *xor = desc->xor;
@@ -824,51 +803,6 @@ ioat3_tx_status(struct dma_chan *c, dma_cookie_t cookie,
 }
 
 static struct dma_async_tx_descriptor *
-ioat3_prep_memset_lock(struct dma_chan *c, dma_addr_t dest, int value,
-		       size_t len, unsigned long flags)
-{
-	struct ioat2_dma_chan *ioat = to_ioat2_chan(c);
-	struct ioat_ring_ent *desc;
-	size_t total_len = len;
-	struct ioat_fill_descriptor *fill;
-	u64 src_data = (0x0101010101010101ULL) * (value & 0xff);
-	int num_descs, idx, i;
-
-	num_descs = ioat2_xferlen_to_descs(ioat, len);
-	if (likely(num_descs) && ioat2_check_space_lock(ioat, num_descs) == 0)
-		idx = ioat->head;
-	else
-		return NULL;
-	i = 0;
-	do {
-		size_t xfer_size = min_t(size_t, len, 1 << ioat->xfercap_log);
-
-		desc = ioat2_get_ring_ent(ioat, idx + i);
-		fill = desc->fill;
-
-		fill->size = xfer_size;
-		fill->src_data = src_data;
-		fill->dst_addr = dest;
-		fill->ctl = 0;
-		fill->ctl_f.op = IOAT_OP_FILL;
-
-		len -= xfer_size;
-		dest += xfer_size;
-		dump_desc_dbg(ioat, desc);
-	} while (++i < num_descs);
-
-	desc->txd.flags = flags;
-	desc->len = total_len;
-	fill->ctl_f.int_en = !!(flags & DMA_PREP_INTERRUPT);
-	fill->ctl_f.fence = !!(flags & DMA_PREP_FENCE);
-	fill->ctl_f.compl_write = 1;
-	dump_desc_dbg(ioat, desc);
-
-	/* we leave the channel locked to ensure in order submission */
-	return &desc->txd;
-}
-
-static struct dma_async_tx_descriptor *
 __ioat3_prep_xor_lock(struct dma_chan *c, enum sum_check_flags *result,
 		      dma_addr_t dest, dma_addr_t *src, unsigned int src_cnt,
 		      size_t len, unsigned long flags)
@@ -1182,9 +1116,6 @@ __ioat3_prep_pq16_lock(struct dma_chan *c, enum sum_check_flags *result,
 	u8 op;
 	int i, s, idx, num_descs;
 
-	/* this function only handles src_cnt 9 - 16 */
-	BUG_ON(src_cnt < 9);
-
 	/* this function is only called with 9-16 sources */
 	op = result ? IOAT_OP_PQ_VAL_16S : IOAT_OP_PQ_16S;
 
@@ -1212,8 +1143,7 @@ __ioat3_prep_pq16_lock(struct dma_chan *c, enum sum_check_flags *result,
 
 		descs[0] = (struct ioat_raw_descriptor *) pq;
 
-		desc->sed = ioat3_alloc_sed(device,
-					    sed_get_pq16_pool_idx(src_cnt));
+		desc->sed = ioat3_alloc_sed(device, (src_cnt-2) >> 3);
 		if (!desc->sed) {
 			dev_err(to_dev(chan),
 				"%s: no free sed entries\n", __func__);
@@ -1271,13 +1201,21 @@ __ioat3_prep_pq16_lock(struct dma_chan *c, enum sum_check_flags *result,
 	return &desc->txd;
 }
 
+static int src_cnt_flags(unsigned int src_cnt, unsigned long flags)
+{
+	if (dmaf_p_disabled_continue(flags))
+		return src_cnt + 1;
+	else if (dmaf_continue(flags))
+		return src_cnt + 3;
+	else
+		return src_cnt;
+}
+
 static struct dma_async_tx_descriptor *
 ioat3_prep_pq(struct dma_chan *chan, dma_addr_t *dst, dma_addr_t *src,
 	      unsigned int src_cnt, const unsigned char *scf, size_t len,
 	      unsigned long flags)
 {
-	struct dma_device *dma = chan->device;
-
 	/* specify valid address for disabled result */
 	if (flags & DMA_PREP_PQ_DISABLE_P)
 		dst[0] = dst[1];
@@ -1297,7 +1235,7 @@ ioat3_prep_pq(struct dma_chan *chan, dma_addr_t *dst, dma_addr_t *src,
 		single_source_coef[0] = scf[0];
 		single_source_coef[1] = 0;
 
-		return (src_cnt > 8) && (dma->max_pq > 8) ?
+		return src_cnt_flags(src_cnt, flags) > 8 ?
 			__ioat3_prep_pq16_lock(chan, NULL, dst, single_source,
 					       2, single_source_coef, len,
 					       flags) :
@@ -1305,7 +1243,7 @@ ioat3_prep_pq(struct dma_chan *chan, dma_addr_t *dst, dma_addr_t *src,
 					     single_source_coef, len, flags);
 
 	} else {
-		return (src_cnt > 8) && (dma->max_pq > 8) ?
+		return src_cnt_flags(src_cnt, flags) > 8 ?
 			__ioat3_prep_pq16_lock(chan, NULL, dst, src, src_cnt,
 					       scf, len, flags) :
 			__ioat3_prep_pq_lock(chan, NULL, dst, src, src_cnt,
@@ -1318,8 +1256,6 @@ ioat3_prep_pq_val(struct dma_chan *chan, dma_addr_t *pq, dma_addr_t *src,
 		  unsigned int src_cnt, const unsigned char *scf, size_t len,
 		  enum sum_check_flags *pqres, unsigned long flags)
 {
-	struct dma_device *dma = chan->device;
-
 	/* specify valid address for disabled result */
 	if (flags & DMA_PREP_PQ_DISABLE_P)
 		pq[0] = pq[1];
@@ -1331,7 +1267,7 @@ ioat3_prep_pq_val(struct dma_chan *chan, dma_addr_t *pq, dma_addr_t *src,
 	 */
 	*pqres = 0;
 
-	return (src_cnt > 8) && (dma->max_pq > 8) ?
+	return src_cnt_flags(src_cnt, flags) > 8 ?
 		__ioat3_prep_pq16_lock(chan, pqres, pq, src, src_cnt, scf, len,
 				       flags) :
 		__ioat3_prep_pq_lock(chan, pqres, pq, src, src_cnt, scf, len,
@@ -1342,7 +1278,6 @@ static struct dma_async_tx_descriptor *
 ioat3_prep_pqxor(struct dma_chan *chan, dma_addr_t dst, dma_addr_t *src,
 		 unsigned int src_cnt, size_t len, unsigned long flags)
 {
-	struct dma_device *dma = chan->device;
 	unsigned char scf[src_cnt];
 	dma_addr_t pq[2];
 
@@ -1351,7 +1286,7 @@ ioat3_prep_pqxor(struct dma_chan *chan, dma_addr_t dst, dma_addr_t *src,
 	flags |= DMA_PREP_PQ_DISABLE_Q;
 	pq[1] = dst; /* specify valid address for disabled result */
 
-	return (src_cnt > 8) && (dma->max_pq > 8) ?
+	return src_cnt_flags(src_cnt, flags) > 8 ?
 		__ioat3_prep_pq16_lock(chan, NULL, pq, src, src_cnt, scf, len,
 				       flags) :
 		__ioat3_prep_pq_lock(chan, NULL, pq, src, src_cnt, scf, len,
@@ -1363,7 +1298,6 @@ ioat3_prep_pqxor_val(struct dma_chan *chan, dma_addr_t *src,
 		     unsigned int src_cnt, size_t len,
 		     enum sum_check_flags *result, unsigned long flags)
 {
-	struct dma_device *dma = chan->device;
 	unsigned char scf[src_cnt];
 	dma_addr_t pq[2];
 
@@ -1377,8 +1311,7 @@ ioat3_prep_pqxor_val(struct dma_chan *chan, dma_addr_t *src,
 	flags |= DMA_PREP_PQ_DISABLE_Q;
 	pq[1] = pq[0]; /* specify valid address for disabled result */
 
-
-	return (src_cnt > 8) && (dma->max_pq > 8) ?
+	return src_cnt_flags(src_cnt, flags) > 8 ?
 		__ioat3_prep_pq16_lock(chan, result, pq, &src[1], src_cnt - 1,
 				       scf, len, flags) :
 		__ioat3_prep_pq_lock(chan, result, pq, &src[1], src_cnt - 1,
@@ -1431,7 +1364,7 @@ static int ioat_xor_val_self_test(struct ioatdma_device *device)
 	struct page *xor_srcs[IOAT_NUM_SRC_TEST];
 	struct page *xor_val_srcs[IOAT_NUM_SRC_TEST + 1];
 	dma_addr_t dma_srcs[IOAT_NUM_SRC_TEST + 1];
-	dma_addr_t dma_addr, dest_dma;
+	dma_addr_t dest_dma;
 	struct dma_async_tx_descriptor *tx;
 	struct dma_chan *dma_chan;
 	dma_cookie_t cookie;
@@ -1598,55 +1531,7 @@ static int ioat_xor_val_self_test(struct ioatdma_device *device)
 		goto free_resources;
 	}
 
-	/* skip memset if the capability is not present */
-	if (!dma_has_cap(DMA_MEMSET, dma_chan->device->cap_mask))
-		goto free_resources;
-
-	/* test memset */
-	op = IOAT_OP_FILL;
-
-	dma_addr = dma_map_page(dev, dest, 0,
-			PAGE_SIZE, DMA_FROM_DEVICE);
-	tx = dma->device_prep_dma_memset(dma_chan, dma_addr, 0, PAGE_SIZE,
-					 DMA_PREP_INTERRUPT |
-					 DMA_COMPL_SKIP_SRC_UNMAP |
-					 DMA_COMPL_SKIP_DEST_UNMAP);
-	if (!tx) {
-		dev_err(dev, "Self-test memset prep failed\n");
-		err = -ENODEV;
-		goto dma_unmap;
-	}
-
-	async_tx_ack(tx);
-	init_completion(&cmp);
-	tx->callback = ioat3_dma_test_callback;
-	tx->callback_param = &cmp;
-	cookie = tx->tx_submit(tx);
-	if (cookie < 0) {
-		dev_err(dev, "Self-test memset setup failed\n");
-		err = -ENODEV;
-		goto dma_unmap;
-	}
-	dma->device_issue_pending(dma_chan);
-
-	tmo = wait_for_completion_timeout(&cmp, msecs_to_jiffies(3000));
-
-	if (dma->device_tx_status(dma_chan, cookie, NULL) != DMA_SUCCESS) {
-		dev_err(dev, "Self-test memset timed out\n");
-		err = -ENODEV;
-		goto dma_unmap;
-	}
-
-	dma_unmap_page(dev, dma_addr, PAGE_SIZE, DMA_FROM_DEVICE);
-
-	for (i = 0; i < PAGE_SIZE/sizeof(u32); i++) {
-		u32 *ptr = page_address(dest);
-		if (ptr[i]) {
-			dev_err(dev, "Self-test memset failed compare\n");
-			err = -ENODEV;
-			goto free_resources;
-		}
-	}
+	memset(page_address(dest), 0, PAGE_SIZE);
 
 	/* test for non-zero parity sum */
 	op = IOAT_OP_XOR_VAL;
@@ -1706,8 +1591,7 @@ dma_unmap:
 		for (i = 0; i < IOAT_NUM_SRC_TEST + 1; i++)
 			dma_unmap_page(dev, dma_srcs[i], PAGE_SIZE,
 				       DMA_TO_DEVICE);
-	} else if (op == IOAT_OP_FILL)
-		dma_unmap_page(dev, dma_addr, PAGE_SIZE, DMA_FROM_DEVICE);
+	}
 free_resources:
 	dma->device_free_chan_resources(dma_chan);
 out:
@@ -1879,15 +1763,12 @@ int ioat3_dma_probe(struct ioatdma_device *device, int dca)
 	dma->device_alloc_chan_resources = ioat2_alloc_chan_resources;
 	dma->device_free_chan_resources = ioat2_free_chan_resources;
 
-	if (is_xeon_cb32(pdev))
-		dma->copy_align = 6;
-
 	dma_cap_set(DMA_INTERRUPT, dma->cap_mask);
 	dma->device_prep_dma_interrupt = ioat3_prep_interrupt_lock;
 
 	device->cap = readl(device->reg_base + IOAT_DMA_CAP_OFFSET);
 
-	if (is_bwd_noraid(pdev))
+	if (is_xeon_cb32(pdev) || is_bwd_noraid(pdev))
 		device->cap &= ~(IOAT_CAP_XOR | IOAT_CAP_PQ | IOAT_CAP_RAID16SS);
 
 	/* dca is incompatible with raid operations */
@@ -1897,7 +1778,6 @@ int ioat3_dma_probe(struct ioatdma_device *device, int dca)
 	if (device->cap & IOAT_CAP_XOR) {
 		is_raid_device = true;
 		dma->max_xor = 8;
-		dma->xor_align = 6;
 
 		dma_cap_set(DMA_XOR, dma->cap_mask);
 		dma->device_prep_dma_xor = ioat3_prep_xor;
@@ -1916,13 +1796,8 @@ int ioat3_dma_probe(struct ioatdma_device *device, int dca)
 
 		if (device->cap & IOAT_CAP_RAID16SS) {
 			dma_set_maxpq(dma, 16, 0);
-			dma->pq_align = 0;
 		} else {
 			dma_set_maxpq(dma, 8, 0);
-			if (is_xeon_cb32(pdev))
-				dma->pq_align = 6;
-			else
-				dma->pq_align = 0;
 		}
 
 		if (!(device->cap & IOAT_CAP_XOR)) {
@@ -1933,34 +1808,15 @@ int ioat3_dma_probe(struct ioatdma_device *device, int dca)
 
 			if (device->cap & IOAT_CAP_RAID16SS) {
 				dma->max_xor = 16;
-				dma->xor_align = 0;
 			} else {
 				dma->max_xor = 8;
-				if (is_xeon_cb32(pdev))
-					dma->xor_align = 6;
-				else
-					dma->xor_align = 0;
 			}
 		}
 	}
 
-	if (is_raid_device && (device->cap & IOAT_CAP_FILL_BLOCK)) {
-		dma_cap_set(DMA_MEMSET, dma->cap_mask);
-		dma->device_prep_dma_memset = ioat3_prep_memset_lock;
-	}
-
-
 	dma->device_tx_status = ioat3_tx_status;
 	device->cleanup_fn = ioat3_cleanup_event;
 	device->timer_fn = ioat3_timer_event;
-
-	if (is_xeon_cb32(pdev)) {
-		dma_cap_clear(DMA_XOR_VAL, dma->cap_mask);
-		dma->device_prep_dma_xor_val = NULL;
-
-		dma_cap_clear(DMA_PQ_VAL, dma->cap_mask);
-		dma->device_prep_dma_pq_val = NULL;
-	}
 
 	/* starting with CB3.3 super extended descriptors are supported */
 	if (device->cap & IOAT_CAP_RAID16SS) {

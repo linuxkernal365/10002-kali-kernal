@@ -1,7 +1,7 @@
 Subject: softirq: Split softirq locks
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 04 Oct 2012 14:20:47 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 The 3.x RT series removed the split softirq implementation in favour
 of pushing softirq processing into the context of the thread which
@@ -26,12 +26,12 @@ threads.
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
  include/linux/sched.h |    1 
- kernel/softirq.c      |  305 ++++++++++++++++++++++++++++++--------------------
- 2 files changed, 185 insertions(+), 121 deletions(-)
+ kernel/softirq.c      |  307 ++++++++++++++++++++++++++++++--------------------
+ 2 files changed, 186 insertions(+), 122 deletions(-)
 
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1450,6 +1450,7 @@ struct task_struct {
+@@ -1440,6 +1440,7 @@ struct task_struct {
  #ifdef CONFIG_PREEMPT_RT_BASE
  	struct rcu_head put_rcu;
  	int softirq_nestcnt;
@@ -75,7 +75,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * preempt_count and SOFTIRQ_OFFSET usage:
   * - preempt_count is changed by SOFTIRQ_OFFSET on entering or leaving
-@@ -375,6 +393,32 @@ asmlinkage void do_softirq(void)
+@@ -410,6 +428,32 @@ asmlinkage void do_softirq(void)
  
  #endif
  
@@ -108,7 +108,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  static inline void local_bh_disable_nort(void) { local_bh_disable(); }
  static inline void _local_bh_enable_nort(void) { _local_bh_enable(); }
  static void ksoftirqd_set_sched_params(unsigned int cpu) { }
-@@ -383,20 +427,78 @@ static void ksoftirqd_clr_sched_params(u
+@@ -418,20 +462,78 @@ static void ksoftirqd_clr_sched_params(u
  #else /* !PREEMPT_RT_FULL */
  
  /*
@@ -117,17 +117,17 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
   */
 -static DEFINE_LOCAL_IRQ_LOCK(local_softirq_lock);
 +static DEFINE_PER_CPU(struct local_irq_lock [NR_SOFTIRQS], local_softirq_locks);
- 
--static void __do_softirq_common(int need_rcu_bh_qs);
++
 +void __init softirq_early_init(void)
 +{
 +	int i;
  
--void __do_softirq(void)
+-static void __do_softirq_common(int need_rcu_bh_qs);
 +	for (i = 0; i < NR_SOFTIRQS; i++)
 +		local_irq_lock_init(local_softirq_locks[i]);
 +}
-+
+ 
+-void __do_softirq(void)
 +static void lock_softirq(int which)
  {
 -	__do_softirq_common(0);
@@ -136,13 +136,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 -void __init softirq_early_init(void)
 +static void unlock_softirq(int which)
- {
--	local_irq_lock_init(local_softirq_lock);
++{
 +	__local_unlock(&__get_cpu_var(local_softirq_locks[which]));
 +}
 +
 +static void do_single_softirq(int which, int need_rcu_bh_qs)
-+{
+ {
+-	local_irq_lock_init(local_softirq_lock);
 +	unsigned long old_flags = current->flags;
 +
 +	current->flags &= ~PF_MEMALLOC;
@@ -194,7 +194,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  void local_bh_disable(void)
-@@ -411,17 +513,11 @@ void local_bh_enable(void)
+@@ -446,17 +548,11 @@ void local_bh_enable(void)
  	if (WARN_ON(current->softirq_nestcnt == 0))
  		return;
  
@@ -216,7 +216,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	current->softirq_nestcnt--;
  	migrate_enable();
  }
-@@ -446,86 +542,82 @@ int in_serving_softirq(void)
+@@ -481,86 +577,82 @@ int in_serving_softirq(void)
  }
  EXPORT_SYMBOL(in_serving_softirq);
  
@@ -262,7 +262,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 + * disabled. So the cpu can't go away under us.
 + */
 +void thread_do_softirq(void)
-+{
+ {
 +	if (!in_serving_softirq() && current->softirqs_raised) {
 +		current->softirq_nestcnt++;
 +		do_current_softirqs(0);
@@ -271,7 +271,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +}
 +
 +void __raise_softirq_irqoff(unsigned int nr)
- {
++{
 +	trace_softirq_raise(nr);
 +	or_softirq_pending(1UL << nr);
 +
@@ -361,7 +361,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static inline void local_bh_disable_nort(void) { }
-@@ -536,6 +628,10 @@ static inline void ksoftirqd_set_sched_p
+@@ -571,6 +663,10 @@ static inline void ksoftirqd_set_sched_p
  	struct sched_param param = { .sched_priority = 1 };
  
  	sched_setscheduler(current, SCHED_FIFO, &param);
@@ -372,24 +372,25 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static inline void ksoftirqd_clr_sched_params(unsigned int cpu, bool online)
-@@ -574,8 +670,14 @@ static inline void invoke_softirq(void)
- 		__do_softirq();
- 	else
+@@ -619,8 +715,14 @@ static inline void invoke_softirq(void)
+ 	} else {
  		wakeup_softirqd();
+ 	}
 -#else
+-	wakeup_softirqd();
 +#else /* PREEMPT_RT_FULL */
 +	unsigned long flags;
 +
 +	local_irq_save(flags);
 +	if (__this_cpu_read(ksoftirqd) &&
-+	    __this_cpu_read(ksoftirqd)->softirqs_raised)
- 		wakeup_softirqd();
++			__this_cpu_read(ksoftirqd)->softirqs_raised)
++		wakeup_softirqd();
 +	local_irq_restore(flags);
  #endif
  }
  
-@@ -613,26 +715,6 @@ void irq_exit(void)
- 	rcu_irq_exit();
+@@ -658,26 +760,6 @@ void irq_exit(void)
+ 	trace_hardirq_exit(); /* must be last! */
  }
  
 -/*
@@ -415,7 +416,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  void raise_softirq(unsigned int nr)
  {
  	unsigned long flags;
-@@ -642,12 +724,6 @@ void raise_softirq(unsigned int nr)
+@@ -687,12 +769,6 @@ void raise_softirq(unsigned int nr)
  	local_irq_restore(flags);
  }
  
@@ -428,7 +429,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  void open_softirq(int nr, void (*action)(struct softirq_action *))
  {
  	softirq_vec[nr].action = action;
-@@ -1091,20 +1167,7 @@ EXPORT_SYMBOL(tasklet_unlock_wait);
+@@ -1136,20 +1212,7 @@ EXPORT_SYMBOL(tasklet_unlock_wait);
  
  static int ksoftirqd_should_run(unsigned int cpu)
  {

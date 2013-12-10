@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri, 18 Mar 2011 09:18:52 +0100
 Subject: buffer_head: Replace bh_uptodate_lock for -rt
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Wrap the bit_spin_lock calls into a separate inline and add the RT
 replacements with a real spinlock.
@@ -15,7 +15,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/fs/buffer.c
 +++ b/fs/buffer.c
-@@ -288,8 +288,7 @@ static void end_buffer_async_read(struct
+@@ -322,8 +322,7 @@ static void end_buffer_async_read(struct
  	 * decide that the page is now completely done.
  	 */
  	first = page_buffers(page);
@@ -25,7 +25,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	clear_buffer_async_read(bh);
  	unlock_buffer(bh);
  	tmp = bh;
-@@ -302,8 +301,7 @@ static void end_buffer_async_read(struct
+@@ -336,8 +335,7 @@ static void end_buffer_async_read(struct
  		}
  		tmp = tmp->b_this_page;
  	} while (tmp != bh);
@@ -35,7 +35,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 * If none of the buffers had errors and they are all
-@@ -315,9 +313,7 @@ static void end_buffer_async_read(struct
+@@ -349,9 +347,7 @@ static void end_buffer_async_read(struct
  	return;
  
  still_busy:
@@ -46,7 +46,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  /*
-@@ -351,8 +347,7 @@ void end_buffer_async_write(struct buffe
+@@ -385,8 +381,7 @@ void end_buffer_async_write(struct buffe
  	}
  
  	first = page_buffers(page);
@@ -56,7 +56,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	clear_buffer_async_write(bh);
  	unlock_buffer(bh);
-@@ -364,15 +359,12 @@ void end_buffer_async_write(struct buffe
+@@ -398,15 +393,12 @@ void end_buffer_async_write(struct buffe
  		}
  		tmp = tmp->b_this_page;
  	}
@@ -74,7 +74,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  EXPORT_SYMBOL(end_buffer_async_write);
  
-@@ -3275,6 +3267,7 @@ struct buffer_head *alloc_buffer_head(gf
+@@ -3334,6 +3326,7 @@ struct buffer_head *alloc_buffer_head(gf
  	struct buffer_head *ret = kmem_cache_zalloc(bh_cachep, gfp_flags);
  	if (ret) {
  		INIT_LIST_HEAD(&ret->b_assoc_buffers);
@@ -117,7 +117,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /**
 --- a/include/linux/buffer_head.h
 +++ b/include/linux/buffer_head.h
-@@ -74,8 +74,42 @@ struct buffer_head {
+@@ -75,8 +75,42 @@ struct buffer_head {
  	struct address_space *b_assoc_map;	/* mapping this buffer is
  						   associated with */
  	atomic_t b_count;		/* users using this buffer_head */

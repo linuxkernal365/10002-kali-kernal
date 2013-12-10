@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sat, 20 Jun 2009 11:36:54 +0200
 Subject: drivers/net: fix livelock issues
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Preempt-RT runs into a live lock issue with the NETDEV_TX_LOCKED micro
 optimization. The reason is that the softirq thread is rescheduling
@@ -79,7 +79,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		if (__netif_subqueue_stopped(dev, fifo->fifo_no)) {
 --- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
 +++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-@@ -2109,10 +2109,8 @@ static int pch_gbe_xmit_frame(struct sk_
+@@ -2148,10 +2148,8 @@ static int pch_gbe_xmit_frame(struct sk_
  	struct pch_gbe_tx_ring *tx_ring = adapter->tx_ring;
  	unsigned long flags;
  

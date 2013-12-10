@@ -1,7 +1,7 @@
 Subject: cpu: Make hotplug.lock a "sleeping" spinlock on RT
 From: Steven Rostedt <rostedt@goodmis.org>
 Date: Fri, 02 Mar 2012 10:36:57 -0500
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Tasks can block on hotplug.lock in pin_current_cpu(), but their state
 might be != RUNNING. So the mutex wakeup will set the state
@@ -61,7 +61,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  struct hotplug_pcp {
  	struct task_struct *unplug;
  	int refcount;
-@@ -92,8 +109,8 @@ retry:
+@@ -92,8 +109,8 @@ void pin_current_cpu(void)
  		return;
  	}
  	preempt_enable();
@@ -101,7 +101,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  }
  EXPORT_SYMBOL_GPL(put_online_cpus);
-@@ -215,11 +232,11 @@ static void cpu_hotplug_begin(void)
+@@ -215,11 +232,11 @@ void cpu_hotplug_begin(void)
  	cpu_hotplug.active_writer = current;
  
  	for (;;) {
@@ -115,8 +115,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		schedule();
  	}
  }
-@@ -227,7 +244,7 @@ static void cpu_hotplug_begin(void)
- static void cpu_hotplug_done(void)
+@@ -227,7 +244,7 @@ void cpu_hotplug_begin(void)
+ void cpu_hotplug_done(void)
  {
  	cpu_hotplug.active_writer = NULL;
 -	mutex_unlock(&cpu_hotplug.lock);

@@ -3,6 +3,9 @@
 import sys
 sys.path.append("debian/lib/python")
 
+import codecs
+import errno
+import glob
 import os
 import os.path
 import subprocess
@@ -40,7 +43,10 @@ class Gencontrol(Base):
     }
 
     def __init__(self, config_dirs=["debian/config"], template_dirs=["debian/templates"]):
-        super(Gencontrol, self).__init__(config.ConfigCoreHierarchy(self.config_schema, config_dirs), Templates(template_dirs), VersionLinux)
+        super(Gencontrol, self).__init__(
+            config.ConfigCoreHierarchy(self.config_schema, config_dirs),
+            Templates(template_dirs),
+            VersionLinux)
         self.process_changelog()
         self.config_dirs = config_dirs
 
@@ -58,6 +64,18 @@ class Gencontrol(Base):
             'ABINAME_PART': self.abiname_part,
             'SOURCEVERSION': self.version.complete,
         })
+
+        # Prepare to generate template-substituted translations
+        try:
+            os.mkdir('debian/po')
+        except OSError:
+            pass
+        for path in glob.glob('debian/templates/po/*.po'):
+            target = 'debian/po/' + os.path.basename(path)
+            with open(target, 'w') as f:
+                f.write('# THIS IS A GENERATED FILE; DO NOT EDIT IT!\n'
+                        '# Translators should edit %s instead.\n'
+                        '#\n' % path)
 
     def do_main_makefile(self, makefile, makeflags, extra):
         fs_enabled = [featureset
@@ -98,6 +116,12 @@ class Gencontrol(Base):
 
     def do_arch_setup(self, vars, makeflags, arch, extra):
         config_base = self.config.merge('base', arch)
+
+        if config_base['kernel-arch'] in ['mips', 'parisc', 'powerpc']:
+            vars['image-stem'] = 'vmlinux'
+        else:
+            vars['image-stem'] = 'vmlinuz'
+
         self._setup_makeflags(self.arch_makeflags, makeflags, config_base)
 
     def do_arch_packages(self, packages, makefile, arch, vars, makeflags, extra):
@@ -107,10 +131,12 @@ class Gencontrol(Base):
 
         if self.version.linux_modifier is None:
             try:
-                vars['abiname'] = '-%s' % self.config['abi', arch]['abiname']
+                abiname_part = '-%s' % self.config['abi', arch]['abiname']
             except KeyError:
-                vars['abiname'] = self.abiname
-            makeflags['ABINAME'] = vars['abiname']
+                abiname_part = self.abiname_part
+            makeflags['ABINAME'] = vars['abiname'] = \
+                self.version.linux_upstream + abiname_part
+            makeflags['ABINAME_PART'] = abiname_part
 
         if foreign_kernel:
             packages_headers_arch = []
@@ -136,7 +162,10 @@ class Gencontrol(Base):
                      ["$(MAKE) -f debian/rules.real install-libc-dev_%s %s" %
                       (arch, makeflags)])
 
-        if os.getenv('DEBIAN_KERNEL_DISABLE_INSTALLER'):
+        if self.version.linux_revision_backports:
+            # Installer is not (currently) built from backports
+            pass
+        elif os.getenv('DEBIAN_KERNEL_DISABLE_INSTALLER'):
             if self.changelog[0].distribution == 'UNRELEASED':
                 import warnings
                 warnings.warn(u'Disable installer modules on request (DEBIAN_KERNEL_DISABLE_INSTALLER set)')
@@ -151,8 +180,7 @@ class Gencontrol(Base):
                 kw_env['KW_DEFCONFIG_DIR'] = installer_def_dir
                 kw_env['KW_CONFIG_DIR'] = installer_arch_dir
                 kw_proc = subprocess.Popen(
-                    ['kernel-wedge', 'gen-control',
-                     self.abiname],
+                    ['kernel-wedge', 'gen-control', vars['abiname']],
                     stdout=subprocess.PIPE,
                     env=kw_env)
                 udeb_packages = read_control(kw_proc.stdout)
@@ -196,7 +224,6 @@ class Gencontrol(Base):
 
     flavour_makeflags_image = (
         ('type', 'TYPE', False),
-        ('initramfs', 'INITRAMFS', True),
     )
 
     flavour_makeflags_other = (
@@ -216,6 +243,7 @@ class Gencontrol(Base):
         override_localversion = config_image.get('override-localversion', None)
         if override_localversion is not None:
             vars['localversion-image'] = vars['localversion_headers'] + '-' + override_localversion
+        vars['initramfs'] = 'YES' if config_image.get('initramfs', True) else ''
 
         self._setup_makeflags(self.flavour_makeflags_base, makeflags, config_base)
         self._setup_makeflags(self.flavour_makeflags_image, makeflags, config_image)
@@ -231,7 +259,11 @@ class Gencontrol(Base):
         config_entry_relations = self.config.merge('relations', arch, featureset, flavour)
 
         compiler = config_entry_base.get('compiler', 'gcc')
-        relations_compiler = PackageRelation(config_entry_relations[compiler])
+
+        relations_compiler_headers = PackageRelation(
+            config_entry_relations.get('headers%' + compiler) or
+            config_entry_relations.get(compiler))
+
         relations_compiler_build_dep = PackageRelation(config_entry_relations[compiler])
         for group in relations_compiler_build_dep:
             for item in group:
@@ -302,7 +334,7 @@ class Gencontrol(Base):
         if config_entry_build.get('modules', True):
             makeflags['MODULES'] = True
             package_headers = self.process_package(headers[0], vars)
-            package_headers['Depends'].extend(relations_compiler)
+            package_headers['Depends'].extend(relations_compiler_headers)
             packages_own.append(package_headers)
             extra['headers_arch_depends'].append('%s (= ${binary:Version})' % packages_own[-1]['Package'])
 
@@ -369,12 +401,37 @@ class Gencontrol(Base):
 
         cmds_binary_arch = ["$(MAKE) -f debian/rules.real binary-arch-flavour %s" % makeflags]
         if packages_dummy:
-            cmds_binary_arch.append("$(MAKE) -f debian/rules.real install-dummy DH_OPTIONS='%s' %s" % (' '.join(["-p%s" % i['Package'] for i in packages_dummy]), makeflags))
+            cmds_binary_arch.append(
+                "$(MAKE) -f debian/rules.real install-dummy DH_OPTIONS='%s' %s"
+                % (' '.join("-p%s" % i['Package'] for i in packages_dummy), makeflags))
         cmds_build = ["$(MAKE) -f debian/rules.real build-arch %s" % makeflags]
         cmds_setup = ["$(MAKE) -f debian/rules.real setup-flavour %s" % makeflags]
         makefile.add('binary-arch_%s_%s_%s_real' % (arch, featureset, flavour), cmds=cmds_binary_arch)
         makefile.add('build-arch_%s_%s_%s_real' % (arch, featureset, flavour), cmds=cmds_build)
         makefile.add('setup_%s_%s_%s_real' % (arch, featureset, flavour), cmds=cmds_setup)
+
+        # Substitute kernel version etc. into maintainer scripts,
+        # translations and lintian overrides
+        def substitute_file(template, target, append=False):
+            with codecs.open(target, 'a' if append else 'w',
+                             'utf-8') as f:
+                f.write(self.substitute(self.templates[template], vars))
+        if config_entry_image['type'] == 'plain':
+            substitute_file('headers.plain.postinst',
+                            'debian/linux-headers-%s%s.postinst' %
+                            (vars['abiname'], vars['localversion']))
+            for name in ['postinst', 'postrm', 'preinst', 'prerm', 'templates']:
+                substitute_file('image.plain.%s' % name,
+                                'debian/linux-image-%s%s.%s' %
+                                (vars['abiname'], vars['localversion'], name))
+            for path in glob.glob('debian/templates/po/*.po'):
+                substitute_file('po/' + os.path.basename(path),
+                                'debian/po/' + os.path.basename(path),
+                                append=True)
+        if build_debug:
+            substitute_file('image-dbg.lintian-override',
+                            'debian/linux-image-%s%s-dbg.lintian-overrides' %
+                            (vars['abiname'], vars['localversion']))
 
     def merge_packages(self, packages, new, arch):
         for new_package in new:
@@ -416,18 +473,22 @@ class Gencontrol(Base):
             'source_package': self.changelog[0].source,
             'abiname': self.abiname,
         }
-        self.config['version', ] = {'source': self.version.complete, 'abiname': self.abiname}
+        self.config['version', ] = {'source': self.version.complete,
+                                    'upstream': self.version.linux_upstream,
+                                    'abiname': self.abiname}
 
         distribution = self.changelog[0].distribution
         if distribution in ('unstable', ):
             if (version.linux_revision_experimental or
-                    version.linux_revision_other):
-                raise RuntimeError("Can't upload to %s with a version of %s" %
-                        (distribution, version))
+                version.linux_revision_backports or
+                version.linux_revision_other):
+                raise RuntimeError("Can't upload to %s with a version of %s" % (distribution, version))
         if distribution in ('experimental', ):
             if not version.linux_revision_experimental:
-                raise RuntimeError("Can't upload to %s with a version of %s" %
-                        (distribution, version))
+                raise RuntimeError("Can't upload to %s with a version of %s" % (distribution, version))
+        if distribution.endswith('-backports'):
+            if not version.linux_revision_backports:
+                raise RuntimeError("Can't upload to %s with a version of %s" % (distribution, version))
 
     def process_real_image(self, entry, fields, vars):
         entry = self.process_package(entry, vars)

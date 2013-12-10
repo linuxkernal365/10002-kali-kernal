@@ -1,19 +1,19 @@
 Subject: arm-enable-highmem-for-rt.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 13 Feb 2013 11:03:11 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
  arch/arm/Kconfig                 |    2 -
- arch/arm/include/asm/switch_to.h |    9 ++++++++
+ arch/arm/include/asm/switch_to.h |    8 +++++++
  arch/arm/mm/highmem.c            |   41 +++++++++++++++++++++++++++++++++++++--
  include/linux/highmem.h          |    1 
- 4 files changed, 50 insertions(+), 3 deletions(-)
+ 4 files changed, 49 insertions(+), 3 deletions(-)
 
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -1705,7 +1705,7 @@ config HAVE_ARCH_PFN_VALID
+@@ -1759,7 +1759,7 @@ config HAVE_ARCH_PFN_VALID
  
  config HIGHMEM
  	bool "High Memory Support"
@@ -24,7 +24,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	  and it has to accommodate user address space, kernel address
 --- a/arch/arm/include/asm/switch_to.h
 +++ b/arch/arm/include/asm/switch_to.h
-@@ -3,6 +3,14 @@
+@@ -3,6 +3,13 @@
  
  #include <linux/thread_info.h>
  
@@ -35,11 +35,10 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +switch_kmaps(struct task_struct *prev_p, struct task_struct *next_p) { }
 +#endif
 +
-+
  /*
-  * switch_to(prev, next) should switch from task `prev' to `next'
-  * `prev' will never be the same as `next'.  schedule() itself
-@@ -12,6 +20,7 @@ extern struct task_struct *__switch_to(s
+  * For v7 SMP cores running a preemptible kernel we may be pre-empted
+  * during a TLB maintenance operation, so execute an inner-shareable dsb
+@@ -22,6 +29,7 @@ extern struct task_struct *__switch_to(s
  
  #define switch_to(prev,next,last)					\
  do {									\

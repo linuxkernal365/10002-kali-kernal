@@ -158,6 +158,7 @@ enum {
 	STAC_D965_VERBS,
 	STAC_DELL_3ST,
 	STAC_DELL_BIOS,
+	STAC_DELL_BIOS_AMIC,
 	STAC_DELL_BIOS_SPDIF,
 	STAC_927X_DELL_DMIC,
 	STAC_927X_VOLKNOB,
@@ -2235,6 +2236,10 @@ static const struct snd_pci_quirk stac92hd83xxx_fixup_tbl[] = {
 			  "HP Folio", STAC_92HD83XXX_HP_MIC_LED),
 	SND_PCI_QUIRK_MASK(PCI_VENDOR_ID_HP, 0xff00, 0x1900,
 			  "HP", STAC_92HD83XXX_HP_MIC_LED),
+	SND_PCI_QUIRK_MASK(PCI_VENDOR_ID_HP, 0xff00, 0x2000,
+			  "HP", STAC_92HD83XXX_HP_MIC_LED),
+	SND_PCI_QUIRK_MASK(PCI_VENDOR_ID_HP, 0xff00, 0x2100,
+			  "HP", STAC_92HD83XXX_HP_MIC_LED),
 	SND_PCI_QUIRK(PCI_VENDOR_ID_HP, 0x3388,
 			  "HP", STAC_92HD83XXX_HP_cNB11_INTQUAD),
 	SND_PCI_QUIRK(PCI_VENDOR_ID_HP, 0x3389,
@@ -3227,8 +3232,6 @@ static const struct hda_fixup stac927x_fixups[] = {
 	[STAC_DELL_BIOS] = {
 		.type = HDA_FIXUP_PINS,
 		.v.pins = (const struct hda_pintbl[]) {
-			/* configure the analog microphone on some laptops */
-			{ 0x0c, 0x90a79130 },
 			/* correct the front output jack as a hp out */
 			{ 0x0f, 0x0221101f },
 			/* correct the front input jack as a mic */
@@ -3237,6 +3240,16 @@ static const struct hda_fixup stac927x_fixups[] = {
 		},
 		.chained = true,
 		.chain_id = STAC_927X_DELL_DMIC,
+	},
+	[STAC_DELL_BIOS_AMIC] = {
+		.type = HDA_FIXUP_PINS,
+		.v.pins = (const struct hda_pintbl[]) {
+			/* configure the analog microphone on some laptops */
+			{ 0x0c, 0x90a79130 },
+			{}
+		},
+		.chained = true,
+		.chain_id = STAC_DELL_BIOS,
 	},
 	[STAC_DELL_BIOS_SPDIF] = {
 		.type = HDA_FIXUP_PINS,
@@ -3266,6 +3279,7 @@ static const struct hda_model_fixup stac927x_models[] = {
 	{ .id = STAC_D965_5ST_NO_FP, .name = "5stack-no-fp" },
 	{ .id = STAC_DELL_3ST, .name = "dell-3stack" },
 	{ .id = STAC_DELL_BIOS, .name = "dell-bios" },
+	{ .id = STAC_DELL_BIOS_AMIC, .name = "dell-bios-amic" },
 	{ .id = STAC_927X_VOLKNOB, .name = "volknob" },
 	{}
 };
@@ -3708,14 +3722,6 @@ static void stac927x_proc_hook(struct snd_info_buffer *buffer,
 #endif
 
 #ifdef CONFIG_PM
-static int stac_resume(struct hda_codec *codec)
-{
-	codec->patch_ops.init(codec);
-	snd_hda_codec_resume_amp(codec);
-	snd_hda_codec_resume_cache(codec);
-	return 0;
-}
-
 static int stac_suspend(struct hda_codec *codec)
 {
 	stac_shutup(codec);
@@ -3744,7 +3750,6 @@ static void stac_set_power_state(struct hda_codec *codec, hda_nid_t fg,
 }
 #else
 #define stac_suspend		NULL
-#define stac_resume		NULL
 #define stac_set_power_state	NULL
 #endif /* CONFIG_PM */
 
@@ -3756,7 +3761,6 @@ static const struct hda_codec_ops stac_patch_ops = {
 	.unsol_event = snd_hda_jack_unsol_event,
 #ifdef CONFIG_PM
 	.suspend = stac_suspend,
-	.resume = stac_resume,
 #endif
 	.reboot_notify = stac_shutup,
 };

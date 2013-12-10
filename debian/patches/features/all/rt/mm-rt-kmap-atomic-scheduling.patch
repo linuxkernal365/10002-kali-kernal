@@ -1,7 +1,7 @@
 Subject: mm, rt: kmap_atomic scheduling
 From: Peter Zijlstra <peterz@infradead.org>
 Date: Thu, 28 Jul 2011 10:43:51 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 In fact, with migrate_disable() existing one could play games with
 kmap_atomic. You could save/restore the kmap_atomic slots on context
@@ -39,7 +39,7 @@ Link: http://lkml.kernel.org/r/1311842631.5890.208.camel@twins
  
  #include <asm/pgtable.h>
  #include <asm/ldt.h>
-@@ -214,6 +215,35 @@ start_thread(struct pt_regs *regs, unsig
+@@ -219,6 +220,35 @@ start_thread(struct pt_regs *regs, unsig
  }
  EXPORT_SYMBOL_GPL(start_thread);
  
@@ -75,7 +75,7 @@ Link: http://lkml.kernel.org/r/1311842631.5890.208.camel@twins
  
  /*
   *	switch_to(x,y) should switch tasks from x to y.
-@@ -293,6 +323,8 @@ __switch_to(struct task_struct *prev_p,
+@@ -298,6 +328,8 @@ EXPORT_SYMBOL_GPL(start_thread);
  		     task_thread_info(next_p)->flags & _TIF_WORK_CTXSW_NEXT))
  		__switch_to_xtra(prev_p, next_p, tss);
  
@@ -86,7 +86,7 @@ Link: http://lkml.kernel.org/r/1311842631.5890.208.camel@twins
  	 * This must be done before restoring TLS segments so
 --- a/arch/x86/mm/highmem_32.c
 +++ b/arch/x86/mm/highmem_32.c
-@@ -31,6 +31,7 @@ EXPORT_SYMBOL(kunmap);
+@@ -32,6 +32,7 @@ EXPORT_SYMBOL(kunmap);
   */
  void *kmap_atomic_prot(struct page *page, pgprot_t prot)
  {
@@ -94,7 +94,7 @@ Link: http://lkml.kernel.org/r/1311842631.5890.208.camel@twins
  	unsigned long vaddr;
  	int idx, type;
  
-@@ -44,7 +45,10 @@ void *kmap_atomic_prot(struct page *page
+@@ -45,7 +46,10 @@ void *kmap_atomic_prot(struct page *page
  	idx = type + KM_TYPE_NR*smp_processor_id();
  	vaddr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
  	BUG_ON(!pte_none(*(kmap_pte-idx)));
@@ -106,7 +106,7 @@ Link: http://lkml.kernel.org/r/1311842631.5890.208.camel@twins
  	arch_flush_lazy_mmu_mode();
  
  	return (void *)vaddr;
-@@ -87,6 +91,9 @@ void __kunmap_atomic(void *kvaddr)
+@@ -88,6 +92,9 @@ void __kunmap_atomic(void *kvaddr)
  		 * is a bad idea also, in case the page changes cacheability
  		 * attributes or becomes a protected page in a hypervisor.
  		 */
@@ -216,7 +216,7 @@ Link: http://lkml.kernel.org/r/1311842631.5890.208.camel@twins
  #include <asm/page.h>
  #include <asm/ptrace.h>
  #include <asm/cputime.h>
-@@ -1450,6 +1451,12 @@ struct task_struct {
+@@ -1440,6 +1441,12 @@ struct task_struct {
  	struct rcu_head put_rcu;
  	int softirq_nestcnt;
  #endif
@@ -257,7 +257,7 @@ Link: http://lkml.kernel.org/r/1311842631.5890.208.camel@twins
  {
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -3760,6 +3760,7 @@ unlock:
+@@ -3745,6 +3745,7 @@ static int handle_pte_fault(struct mm_st
  #ifdef CONFIG_PREEMPT_RT_FULL
  void pagefault_disable(void)
  {
@@ -265,7 +265,7 @@ Link: http://lkml.kernel.org/r/1311842631.5890.208.camel@twins
  	current->pagefault_disabled++;
  	/*
  	 * make sure to have issued the store before a pagefault
-@@ -3777,6 +3778,7 @@ void pagefault_enable(void)
+@@ -3762,6 +3763,7 @@ void pagefault_enable(void)
  	 */
  	barrier();
  	current->pagefault_disabled--;

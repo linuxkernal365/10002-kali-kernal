@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri, 3 Jul 2009 08:44:44 -0500
 Subject: posix-timers: Avoid wakeups when no timers are active
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Waking the thread even when no timers are scheduled is useless.
 
@@ -13,7 +13,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/kernel/posix-cpu-timers.c
 +++ b/kernel/posix-cpu-timers.c
-@@ -1446,6 +1446,21 @@ wait_to_die:
+@@ -1331,6 +1331,21 @@ static int posix_cpu_timers_thread(void
  	return 0;
  }
  
@@ -35,7 +35,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  void run_posix_cpu_timers(struct task_struct *tsk)
  {
  	unsigned long cpu = smp_processor_id();
-@@ -1458,7 +1473,7 @@ void run_posix_cpu_timers(struct task_st
+@@ -1343,7 +1358,7 @@ void run_posix_cpu_timers(struct task_st
  	tasklist = per_cpu(posix_timer_tasklist, cpu);
  
  	/* check to see if we're already queued */
@@ -44,7 +44,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		get_task_struct(tsk);
  		if (tasklist) {
  			tsk->posix_timer_list = tasklist;
-@@ -1470,9 +1485,9 @@ void run_posix_cpu_timers(struct task_st
+@@ -1355,9 +1370,9 @@ void run_posix_cpu_timers(struct task_st
  			tsk->posix_timer_list = tsk;
  		}
  		per_cpu(posix_timer_tasklist, cpu) = tsk;

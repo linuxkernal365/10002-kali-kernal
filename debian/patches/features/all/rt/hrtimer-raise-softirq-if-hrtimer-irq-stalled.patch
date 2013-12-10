@@ -1,7 +1,7 @@
 Subject: hrtimer: Raise softirq if hrtimer irq stalled
 From: Watanabe <shunsuke.watanabe@tel.com>
 Date: Sun, 28 Oct 2012 11:13:44 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 When the hrtimer stall detection hits the softirq is not raised.
 
@@ -13,7 +13,7 @@ Cc: stable-rt@vger.kernel.org
 
 --- a/kernel/hrtimer.c
 +++ b/kernel/hrtimer.c
-@@ -1556,11 +1556,7 @@ retry:
+@@ -1559,11 +1559,7 @@ void hrtimer_interrupt(struct clock_even
  	if (expires_next.tv64 == KTIME_MAX ||
  	    !tick_program_event(expires_next, 0)) {
  		cpu_base->hang_detected = 0;
@@ -26,7 +26,7 @@ Cc: stable-rt@vger.kernel.org
  	}
  
  	/*
-@@ -1604,6 +1600,9 @@ retry:
+@@ -1607,6 +1603,9 @@ void hrtimer_interrupt(struct clock_even
  	tick_program_event(expires_next, 1);
  	printk_once(KERN_WARNING "hrtimer: interrupt took %llu ns\n",
  		    ktime_to_ns(delta));

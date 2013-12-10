@@ -1,7 +1,7 @@
 Subject: cond-resched-softirq-fix.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 14 Jul 2011 09:56:44 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -11,7 +11,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -2498,12 +2498,16 @@ extern int __cond_resched_lock(spinlock_
+@@ -2493,12 +2493,16 @@ extern int __cond_resched_lock(spinlock_
  	__cond_resched_lock(lock);				\
  })
  
@@ -26,11 +26,11 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +# define cond_resched_softirq()		cond_resched()
 +#endif
  
- /*
-  * Does a critical section need to be broken due to another
+ static inline void cond_resched_rcu(void)
+ {
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -4485,6 +4485,7 @@ int __cond_resched_lock(spinlock_t *lock
+@@ -3941,6 +3941,7 @@ int __cond_resched_lock(spinlock_t *lock
  }
  EXPORT_SYMBOL(__cond_resched_lock);
  
@@ -38,7 +38,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  int __sched __cond_resched_softirq(void)
  {
  	BUG_ON(!in_softirq());
-@@ -4498,6 +4499,7 @@ int __sched __cond_resched_softirq(void)
+@@ -3954,6 +3955,7 @@ int __sched __cond_resched_softirq(void)
  	return 0;
  }
  EXPORT_SYMBOL(__cond_resched_softirq);

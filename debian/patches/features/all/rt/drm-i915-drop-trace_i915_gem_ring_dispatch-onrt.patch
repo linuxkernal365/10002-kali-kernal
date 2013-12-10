@@ -2,7 +2,7 @@ From d841118ac80c5bfb18f47984bc40687eed08b714 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 25 Apr 2013 18:12:52 +0200
 Subject: [PATCH] drm/i915: drop trace_i915_gem_ring_dispatch on rt
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 This tracepoint is responsible for:
 
@@ -48,7 +48,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/drivers/gpu/drm/i915/i915_gem_execbuffer.c
 +++ b/drivers/gpu/drm/i915/i915_gem_execbuffer.c
-@@ -1071,7 +1071,9 @@ i915_gem_do_execbuffer(struct drm_device
+@@ -1129,7 +1129,9 @@ i915_gem_do_execbuffer(struct drm_device
  			goto err;
  	}
  
@@ -56,5 +56,5 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	trace_i915_gem_ring_dispatch(ring, intel_ring_get_seqno(ring), flags);
 +#endif
  
- 	i915_gem_execbuffer_move_to_active(&eb->objects, ring);
- 	i915_gem_execbuffer_retire_commands(dev, file, ring);
+ 	i915_gem_execbuffer_move_to_active(&eb->objects, vm, ring);
+ 	i915_gem_execbuffer_retire_commands(dev, file, ring, batch_obj);

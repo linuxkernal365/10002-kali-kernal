@@ -1,7 +1,7 @@
 From: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Date: Fri, 3 Jul 2009 08:44:37 -0500
 Subject: mm: page_alloc reduce lock sections further
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Split out the pages which are to be freed into a separate list and
 call free_pages_bulk() outside of the percpu page allocator locks.
@@ -9,12 +9,12 @@ call free_pages_bulk() outside of the percpu page allocator locks.
 Signed-off-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- mm/page_alloc.c |   98 +++++++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 69 insertions(+), 29 deletions(-)
+ mm/page_alloc.c |   86 +++++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 61 insertions(+), 25 deletions(-)
 
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -634,7 +634,7 @@ static inline int free_pages_check(struc
+@@ -646,7 +646,7 @@ static inline int free_pages_check(struc
  }
  
  /*
@@ -23,12 +23,12 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
   * Assumes all pages on list are in same zone, and of same order.
   * count is the number of pages to free.
   *
-@@ -645,16 +645,50 @@ static inline int free_pages_check(struc
+@@ -657,15 +657,49 @@ static inline int free_pages_check(struc
   * pinned" detection logic.
   */
  static void free_pcppages_bulk(struct zone *zone, int count,
 -					struct per_cpu_pages *pcp)
-+			       struct list_head *list)
++					struct list_head *list)
  {
 -	int migratetype = 0;
 -	int batch_free = 0;
@@ -37,12 +37,11 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 -	spin_lock(&zone->lock);
 +	spin_lock_irqsave(&zone->lock, flags);
- 	zone->all_unreclaimable = 0;
  	zone->pages_scanned = 0;
  
 +	while (!list_empty(list)) {
 +		struct page *page = list_first_entry(list, struct page, lru);
-+		int mt;	/* migratetype of the to-be-freed page */
++		int mt; /* migratetype of the to-be-freed page */
 +
 +		/* must delete as __free_one_page list manipulates */
 +		list_del(&page->lru);
@@ -71,14 +70,14 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 + * count is the number of pages to free.
 + */
 +static void isolate_pcp_pages(int to_free, struct per_cpu_pages *src,
-+			      struct list_head *dst)
++		struct list_head *dst)
 +{
 +	int migratetype = 0, batch_free = 0;
 +
  	while (to_free) {
  		struct page *page;
  		struct list_head *list;
-@@ -670,7 +704,7 @@ static void free_pcppages_bulk(struct zo
+@@ -681,7 +715,7 @@ static void free_pcppages_bulk(struct zo
  			batch_free++;
  			if (++migratetype == MIGRATE_PCPTYPES)
  				migratetype = 0;
@@ -87,7 +86,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		} while (list_empty(list));
  
  		/* This is the only non-empty list. Free them all. */
-@@ -678,36 +712,26 @@ static void free_pcppages_bulk(struct zo
+@@ -689,35 +723,25 @@ static void free_pcppages_bulk(struct zo
  			batch_free = to_free;
  
  		do {
@@ -118,7 +117,6 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	unsigned long flags;
 +
 +	spin_lock_irqsave(&zone->lock, flags);
- 	zone->all_unreclaimable = 0;
  	zone->pages_scanned = 0;
  
  	__free_one_page(page, zone, order, migratetype);
@@ -129,15 +127,15 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static bool free_pages_prepare(struct page *page, unsigned int order)
-@@ -1191,6 +1215,7 @@ static int rmqueue_bulk(struct zone *zon
+@@ -1215,6 +1239,7 @@ static int rmqueue_bulk(struct zone *zon
  void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
  {
  	unsigned long flags;
 +	LIST_HEAD(dst);
  	int to_drain;
+ 	unsigned long batch;
  
- 	local_lock_irqsave(pa_lock, flags);
-@@ -1199,10 +1224,11 @@ void drain_zone_pages(struct zone *zone,
+@@ -1225,10 +1250,11 @@ void drain_zone_pages(struct zone *zone,
  	else
  		to_drain = pcp->count;
  	if (to_drain > 0) {
@@ -150,7 +148,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  #endif
  
-@@ -1221,16 +1247,21 @@ static void drain_pages(unsigned int cpu
+@@ -1247,16 +1273,21 @@ static void drain_pages(unsigned int cpu
  	for_each_populated_zone(zone) {
  		struct per_cpu_pageset *pset;
  		struct per_cpu_pages *pcp;
@@ -174,47 +172,18 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  }
  
-@@ -1368,8 +1399,15 @@ void free_hot_cold_page(struct page *pag
- 		list_add(&page->lru, &pcp->lists[migratetype]);
+@@ -1395,8 +1426,13 @@ void free_hot_cold_page(struct page *pag
  	pcp->count++;
  	if (pcp->count >= pcp->high) {
--		free_pcppages_bulk(zone, pcp->batch, pcp);
+ 		unsigned long batch = ACCESS_ONCE(pcp->batch);
+-		free_pcppages_bulk(zone, batch, pcp);
 +		LIST_HEAD(dst);
-+		int count;
 +
-+		isolate_pcp_pages(pcp->batch, pcp, &dst);
- 		pcp->count -= pcp->batch;
-+		count = pcp->batch;
++		isolate_pcp_pages(batch, pcp, &dst);
+ 		pcp->count -= batch;
 +		local_unlock_irqrestore(pa_lock, flags);
-+		free_pcppages_bulk(zone, count, &dst);
++		free_pcppages_bulk(zone, batch, &dst);
 +		return;
  	}
  
  out:
-@@ -6072,20 +6110,22 @@ static int __meminit __zone_pcp_update(v
- {
- 	struct zone *zone = data;
- 	int cpu;
--	unsigned long batch = zone_batchsize(zone), flags;
-+	unsigned long flags;
- 
- 	for_each_possible_cpu(cpu) {
- 		struct per_cpu_pageset *pset;
- 		struct per_cpu_pages *pcp;
-+		LIST_HEAD(dst);
- 
- 		pset = per_cpu_ptr(zone->pageset, cpu);
- 		pcp = &pset->pcp;
- 
- 		cpu_lock_irqsave(cpu, flags);
--		if (pcp->count > 0)
--			free_pcppages_bulk(zone, pcp->count, pcp);
-+		if (pcp->count > 0) {
-+			isolate_pcp_pages(pcp->count, pcp, &dst);
-+			free_pcppages_bulk(zone, pcp->count, &dst);
-+		}
- 		drain_zonestat(zone, pset);
--		setup_pageset(pset, batch);
- 		cpu_unlock_irqrestore(cpu, flags);
- 	}
- 	return 0;

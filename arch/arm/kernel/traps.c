@@ -497,28 +497,64 @@ static int bad_syscall(int n, struct pt_regs *regs)
 	return regs->ARM_r0;
 }
 
+static long do_cache_op_restart(struct restart_block *);
+
+static inline int
+__do_cache_op(unsigned long start, unsigned long end)
+{
+	int ret;
+	unsigned long chunk = PAGE_SIZE;
+
+	do {
+		if (signal_pending(current)) {
+			struct thread_info *ti = current_thread_info();
+
+			ti->restart_block = (struct restart_block) {
+				.fn	= do_cache_op_restart,
+			};
+
+			ti->arm_restart_block = (struct arm_restart_block) {
+				{
+					.cache = {
+						.start	= start,
+						.end	= end,
+					},
+				},
+			};
+
+			return -ERESTART_RESTARTBLOCK;
+		}
+
+		ret = flush_cache_user_range(start, start + chunk);
+		if (ret)
+			return ret;
+
+		cond_resched();
+		start += chunk;
+	} while (start < end);
+
+	return 0;
+}
+
+static long do_cache_op_restart(struct restart_block *unused)
+{
+	struct arm_restart_block *restart_block;
+
+	restart_block = &current_thread_info()->arm_restart_block;
+	return __do_cache_op(restart_block->cache.start,
+			     restart_block->cache.end);
+}
+
 static inline int
 do_cache_op(unsigned long start, unsigned long end, int flags)
 {
-	struct mm_struct *mm = current->active_mm;
-	struct vm_area_struct *vma;
-
 	if (end < start || flags)
 		return -EINVAL;
 
-	down_read(&mm->mmap_sem);
-	vma = find_vma(mm, start);
-	if (vma && vma->vm_start < end) {
-		if (start < vma->vm_start)
-			start = vma->vm_start;
-		if (end > vma->vm_end)
-			end = vma->vm_end;
+	if (!access_ok(VERIFY_READ, start, end - start))
+		return -EFAULT;
 
-		up_read(&mm->mmap_sem);
-		return flush_cache_user_range(start, end);
-	}
-	up_read(&mm->mmap_sem);
-	return -EINVAL;
+	return __do_cache_op(start, end);
 }
 
 /*
@@ -579,7 +615,7 @@ asmlinkage int arm_syscall(int no, struct pt_regs *regs)
 		return regs->ARM_r0;
 
 	case NR(set_tls):
-		thread->tp_value = regs->ARM_r0;
+		thread->tp_value[0] = regs->ARM_r0;
 		if (tls_emu)
 			return 0;
 		if (has_tls_reg) {
@@ -697,7 +733,7 @@ static int get_tp_trap(struct pt_regs *regs, unsigned int instr)
 	int reg = (instr >> 12) & 15;
 	if (reg == 15)
 		return 1;
-	regs->uregs[reg] = current_thread_info()->tp_value;
+	regs->uregs[reg] = current_thread_info()->tp_value[0];
 	regs->ARM_pc += 4;
 	return 0;
 }
@@ -821,6 +857,7 @@ static void __init kuser_init(void *vectors)
 
 void __init early_trap_init(void *vectors_base)
 {
+#ifndef CONFIG_CPU_V7M
 	unsigned long vectors = (unsigned long)vectors_base;
 	extern char __stubs_start[], __stubs_end[];
 	extern char __vectors_start[], __vectors_end[];
@@ -849,4 +886,11 @@ void __init early_trap_init(void *vectors_base)
 
 	flush_icache_range(vectors, vectors + PAGE_SIZE * 2);
 	modify_domain(DOMAIN_USER, DOMAIN_CLIENT);
+#else /* ifndef CONFIG_CPU_V7M */
+	/*
+	 * on V7-M there is no need to copy the vector table to a dedicated
+	 * memory area. The address is configurable and so a table in the kernel
+	 * image can be used.
+	 */
+#endif
 }

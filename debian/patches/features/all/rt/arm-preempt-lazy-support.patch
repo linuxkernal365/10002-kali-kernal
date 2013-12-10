@@ -1,7 +1,7 @@
 Subject: arm-preempt-lazy-support.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 31 Oct 2012 12:04:11 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -14,8 +14,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -48,6 +48,7 @@ config ARM
- 	select HAVE_MEMBLOCK
+@@ -51,6 +51,7 @@ config ARM
+ 	select HAVE_MOD_ARCH_SPECIFIC if ARM_UNWIND
  	select HAVE_OPROFILE if (HAVE_PERF_EVENTS)
  	select HAVE_PERF_EVENTS
 +	select HAVE_PREEMPT_LAZY
@@ -24,7 +24,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	select HAVE_UID16
 --- a/arch/arm/include/asm/thread_info.h
 +++ b/arch/arm/include/asm/thread_info.h
-@@ -50,6 +50,7 @@ struct cpu_context_save {
+@@ -60,6 +60,7 @@ struct arm_restart_block {
  struct thread_info {
  	unsigned long		flags;		/* low level flags */
  	int			preempt_count;	/* 0 => preemptable, <0 => bug */
@@ -32,7 +32,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	mm_segment_t		addr_limit;	/* address limit */
  	struct task_struct	*task;		/* main task structure */
  	struct exec_domain	*exec_domain;	/* execution domain */
-@@ -148,6 +149,7 @@ extern int vfp_restore_user_hwstate(stru
+@@ -159,6 +160,7 @@ extern int vfp_restore_user_hwstate(stru
  #define TIF_SIGPENDING		0
  #define TIF_NEED_RESCHED	1
  #define TIF_NOTIFY_RESUME	2	/* callback before returning to user */
@@ -40,7 +40,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define TIF_SYSCALL_TRACE	8
  #define TIF_SYSCALL_AUDIT	9
  #define TIF_SYSCALL_TRACEPOINT	10
-@@ -160,6 +162,7 @@ extern int vfp_restore_user_hwstate(stru
+@@ -171,6 +173,7 @@ extern int vfp_restore_user_hwstate(stru
  #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
  #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
  #define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
@@ -50,7 +50,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define _TIF_SYSCALL_TRACEPOINT	(1 << TIF_SYSCALL_TRACEPOINT)
 --- a/arch/arm/kernel/asm-offsets.c
 +++ b/arch/arm/kernel/asm-offsets.c
-@@ -53,6 +53,7 @@ int main(void)
+@@ -54,6 +54,7 @@ int main(void)
    BLANK();
    DEFINE(TI_FLAGS,		offsetof(struct thread_info, flags));
    DEFINE(TI_PREEMPT,		offsetof(struct thread_info, preempt_count));
@@ -60,7 +60,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
    DEFINE(TI_EXEC_DOMAIN,	offsetof(struct thread_info, exec_domain));
 --- a/arch/arm/kernel/entry-armv.S
 +++ b/arch/arm/kernel/entry-armv.S
-@@ -204,11 +204,18 @@ __irq_svc:
+@@ -204,11 +204,18 @@ ENDPROC(__dabt_svc)
  #ifdef CONFIG_PREEMPT
  	get_thread_info tsk
  	ldr	r8, [tsk, #TI_PREEMPT]		@ get preempt count
@@ -81,7 +81,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif
  
  	svc_exit r5, irq = 1			@ return from exception
-@@ -223,6 +230,8 @@ svc_preempt:
+@@ -223,6 +230,8 @@ ENDPROC(__irq_svc)
  1:	bl	preempt_schedule_irq		@ irq en/disable is done inside
  	ldr	r0, [tsk, #TI_FLAGS]		@ get new tasks TI_FLAGS
  	tst	r0, #_TIF_NEED_RESCHED
@@ -92,7 +92,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif
 --- a/arch/arm/kernel/signal.c
 +++ b/arch/arm/kernel/signal.c
-@@ -584,7 +584,8 @@ asmlinkage int
+@@ -589,7 +589,8 @@ asmlinkage int
  do_work_pending(struct pt_regs *regs, unsigned int thread_flags, int syscall)
  {
  	do {

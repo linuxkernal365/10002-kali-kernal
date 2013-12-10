@@ -1,7 +1,7 @@
 From: Ingo Molnar <mingo@elte.hu>
 Date: Fri, 3 Jul 2009 08:30:13 -0500
 Subject: [PATCH] mm: make vmstat -rt aware
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Ingo Molnar <mingo@elte.hu>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
@@ -35,7 +35,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  static inline void count_vm_events(enum vm_event_item item, long delta)
 --- a/mm/vmstat.c
 +++ b/mm/vmstat.c
-@@ -214,6 +214,7 @@ void __mod_zone_page_state(struct zone *
+@@ -217,6 +217,7 @@ void __mod_zone_page_state(struct zone *
  	long x;
  	long t;
  
@@ -43,7 +43,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	x = delta + __this_cpu_read(*p);
  
  	t = __this_cpu_read(pcp->stat_threshold);
-@@ -223,6 +224,7 @@ void __mod_zone_page_state(struct zone *
+@@ -226,6 +227,7 @@ void __mod_zone_page_state(struct zone *
  		x = 0;
  	}
  	__this_cpu_write(*p, x);
@@ -51,7 +51,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  EXPORT_SYMBOL(__mod_zone_page_state);
  
-@@ -255,6 +257,7 @@ void __inc_zone_state(struct zone *zone,
+@@ -258,6 +260,7 @@ void __inc_zone_state(struct zone *zone,
  	s8 __percpu *p = pcp->vm_stat_diff + item;
  	s8 v, t;
  
@@ -59,7 +59,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	v = __this_cpu_inc_return(*p);
  	t = __this_cpu_read(pcp->stat_threshold);
  	if (unlikely(v > t)) {
-@@ -263,6 +266,7 @@ void __inc_zone_state(struct zone *zone,
+@@ -266,6 +269,7 @@ void __inc_zone_state(struct zone *zone,
  		zone_page_state_add(v + overstep, zone, item);
  		__this_cpu_write(*p, -overstep);
  	}
@@ -67,7 +67,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  void __inc_zone_page_state(struct page *page, enum zone_stat_item item)
-@@ -277,6 +281,7 @@ void __dec_zone_state(struct zone *zone,
+@@ -280,6 +284,7 @@ void __dec_zone_state(struct zone *zone,
  	s8 __percpu *p = pcp->vm_stat_diff + item;
  	s8 v, t;
  
@@ -75,7 +75,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	v = __this_cpu_dec_return(*p);
  	t = __this_cpu_read(pcp->stat_threshold);
  	if (unlikely(v < - t)) {
-@@ -285,6 +290,7 @@ void __dec_zone_state(struct zone *zone,
+@@ -288,6 +293,7 @@ void __dec_zone_state(struct zone *zone,
  		zone_page_state_add(v - overstep, zone, item);
  		__this_cpu_write(*p, overstep);
  	}

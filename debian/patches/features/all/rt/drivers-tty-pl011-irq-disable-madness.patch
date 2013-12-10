@@ -1,7 +1,7 @@
 Subject: drivers-tty-pl011-irq-disable-madness.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 08 Jan 2013 21:36:51 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/drivers/tty/serial/amba-pl011.c
 +++ b/drivers/tty/serial/amba-pl011.c
-@@ -1923,13 +1923,19 @@ pl011_console_write(struct console *co,
+@@ -1910,13 +1910,19 @@ pl011_console_write(struct console *co,
  
  	clk_enable(uap->clk);
  
@@ -33,7 +33,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 *	First save the CR then disable the interrupts
-@@ -1951,8 +1957,7 @@ pl011_console_write(struct console *co,
+@@ -1938,8 +1944,7 @@ pl011_console_write(struct console *co,
  	writew(old_cr, uap->port.membase + UART011_CR);
  
  	if (locked)

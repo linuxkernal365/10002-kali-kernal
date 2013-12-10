@@ -1,7 +1,7 @@
 Subject: hotplug: Lightweight get online cpus
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 15 Jun 2011 12:36:06 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/patches-3.10.10-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.1-rt4.tar.xz
 
 get_online_cpus() is a heavy weight function which involves a global
 mutex. migrate_disable() wants a simpler construct which prevents only
@@ -13,33 +13,13 @@ tasks on the cpu which should be brought down.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- include/linux/cpu.h |   12 +++-
+ include/linux/cpu.h |    4 +
  kernel/cpu.c        |  126 ++++++++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 131 insertions(+), 7 deletions(-)
+ 2 files changed, 127 insertions(+), 3 deletions(-)
 
 --- a/include/linux/cpu.h
 +++ b/include/linux/cpu.h
-@@ -1,15 +1,15 @@
- /*
-  * include/linux/cpu.h - generic cpu definition
-  *
-- * This is mainly for topological representation. We define the 
-- * basic 'struct cpu' here, which can be embedded in per-arch 
-+ * This is mainly for topological representation. We define the
-+ * basic 'struct cpu' here, which can be embedded in per-arch
-  * definitions of processors.
-  *
-  * Basic handling of the devices is done in drivers/base/cpu.c
-- * and system devices are handled in drivers/base/sys.c. 
-+ * and system devices are handled in drivers/base/sys.c.
-  *
-  * CPUs are exported via sysfs in the class/cpu/devices/
-- * directory. 
-+ * directory.
-  */
- #ifndef _LINUX_CPU_H_
- #define _LINUX_CPU_H_
-@@ -177,6 +177,8 @@ extern void get_online_cpus(void);
+@@ -179,6 +179,8 @@ extern void get_online_cpus(void);
  extern void put_online_cpus(void);
  extern void cpu_hotplug_disable(void);
  extern void cpu_hotplug_enable(void);
@@ -48,7 +28,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define hotcpu_notifier(fn, pri)	cpu_notifier(fn, pri)
  #define register_hotcpu_notifier(nb)	register_cpu_notifier(nb)
  #define unregister_hotcpu_notifier(nb)	unregister_cpu_notifier(nb)
-@@ -202,6 +204,8 @@ static inline void cpu_hotplug_driver_un
+@@ -206,6 +208,8 @@ static inline void cpu_hotplug_done(void
  #define put_online_cpus()	do { } while (0)
  #define cpu_hotplug_disable()	do { } while (0)
  #define cpu_hotplug_enable()	do { } while (0)
@@ -161,7 +141,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  void get_online_cpus(void)
  {
  	might_sleep();
-@@ -285,13 +380,14 @@ static int __ref take_cpu_down(void *_pa
+@@ -282,13 +377,14 @@ static int __ref take_cpu_down(void *_pa
  /* Requires cpu_add_remove_lock to be held */
  static int __ref _cpu_down(unsigned int cpu, int tasks_frozen)
  {
@@ -177,7 +157,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	if (num_online_cpus() == 1)
  		return -EBUSY;
-@@ -299,7 +395,20 @@ static int __ref _cpu_down(unsigned int
+@@ -296,7 +392,20 @@ static int __ref _cpu_down(unsigned int
  	if (!cpu_online(cpu))
  		return -EINVAL;
  
@@ -199,7 +179,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	err = __cpu_notify(CPU_DOWN_PREPARE | mod, hcpu, -1, &nr_calls);
  	if (err) {
-@@ -307,7 +416,16 @@ static int __ref _cpu_down(unsigned int
+@@ -304,7 +413,16 @@ static int __ref _cpu_down(unsigned int
  		__cpu_notify(CPU_DOWN_FAILED | mod, hcpu, nr_calls, NULL);
  		printk("%s: attempt to take down CPU %u failed\n",
  				__func__, cpu);
@@ -217,7 +197,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  	smpboot_park_threads(cpu);
  
-@@ -339,6 +457,8 @@ static int __ref _cpu_down(unsigned int
+@@ -336,6 +454,8 @@ static int __ref _cpu_down(unsigned int
  	check_for_tasks(cpu);
  
  out_release:

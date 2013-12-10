@@ -5,7 +5,7 @@
 ############################################################
 # UPSTREAM changes queued
 ############################################################
-features/all/rt/hpsa-fix-warning-with-smp_processor_id-in-preemptibl.patch
+features/all/rt/lockdep-Correctly-annotate-hardirq-context-in-irq_ex.patch
 
 ############################################################
 # UPSTREAM FIXES, patches pending
@@ -31,6 +31,7 @@ features/all/rt/hpsa-fix-warning-with-smp_processor_id-in-preemptibl.patch
 
 # SPARC part of erly printk consolidation
 features/all/rt/early-printk-consolidate.patch
+features/all/rt/sparc-provide-EARLY_PRINTK-for-SPARC.patch
 
 # SRCU
 features/all/rt/0002-kernel-SRCU-provide-a-static-initializer.patch
@@ -42,14 +43,11 @@ features/all/rt/0002-kernel-SRCU-provide-a-static-initializer.patch
 ############################################################
 # Submitted to ARM ML
 ############################################################
-features/all/rt/arm-mark-pmu-interupt-no-thread.patch
-features/all/rt/arm-allow-irq-threading.patch
 
 ############################################################
 # Submitted to PPC ML
 ############################################################
-features/all/rt/ppc-mark-low-level-handlers-no-thread.patch
-features/all/rt/powerpc-52xx-provide-a-default-in-mpc52xx_irqhost_ma.patch
+features/all/rt/Kind-of-revert-powerpc-52xx-provide-a-default-in-mpc.patch
 
 ############################################################
 # Submitted on LKML
@@ -58,8 +56,6 @@ features/all/rt/powerpc-52xx-provide-a-default-in-mpc52xx_irqhost_ma.patch
 ############################################################
 # Submitted to net-dev
 ############################################################
-
-features/all/rt/net-dev-make-devnet-rename-seq-static.patch
 
 # Check again
 # no interrupt on nfsboot, interrupt storm on boot from ramdisk
@@ -140,7 +136,6 @@ features/all/rt/suspend-prevernt-might-sleep-splats.patch
 # MM/LISTS
 features/all/rt/list-add-list-last-entry.patch
 features/all/rt/mm-page-alloc-use-list-last-entry.patch
-features/all/rt/mm-slab-move-debug-out.patch
 
 # INCLUDE MESS
 features/all/rt/pid-h-include-atomic-h.patch
@@ -183,6 +178,7 @@ features/all/rt/hwlatdetect.patch
 features/all/rt/hwlat-detector-Update-hwlat_detector-to-add-outer-lo.patch
 features/all/rt/hwlat-detector-Use-trace_clock_local-if-available.patch
 features/all/rt/hwlat-detector-Use-thread-instead-of-stop-machine.patch
+features/all/rt/hwlat-detector-Don-t-ignore-threshold-module-paramet.patch
 
 ##################################################
 # REAL RT STUFF starts here
@@ -195,8 +191,10 @@ features/all/rt/localversion.patch
 features/all/rt/printk-kill.patch
 features/all/rt/printk-27force_early_printk-27-boot-param-to-help-with-debugging.patch
 
-# BASE RT CONFIG
+# Enable RT CONFIG
 features/all/rt/rt-preempt-base-config.patch
+features/all/rt/kconfig-disable-a-few-options-rt.patch
+features/all/rt/kconfig-preempt-rt-full.patch
 
 # WARN/BUG_ON_RT
 features/all/rt/bug-rt-dependend-variants.patch
@@ -216,6 +214,7 @@ features/all/rt/inpt-gameport-use-local-irq-nort.patch
 features/all/rt/user-use-local-irq-nort.patch
 features/all/rt/resource-counters-use-localirq-nort.patch
 features/all/rt/usb-hcd-use-local-irq-nort.patch
+features/all/rt/usb-use-_nort-in-giveback.patch
 features/all/rt/mm-scatterlist-dont-disable-irqs-on-RT.patch
 
 # Sigh
@@ -250,10 +249,6 @@ features/all/rt/local-var.patch
 features/all/rt/rt-local-irq-lock.patch
 features/all/rt/cpu-rt-variants.patch
 
-# MM SLAB
-features/all/rt/mm-slab-wrap-functions.patch
-features/all/rt/mm-slab-more-lock-breaks.patch
-
 # MM PAGE_ALLOC
 features/all/rt/mm-page_alloc-rt-friendly-per-cpu-pages.patch
 features/all/rt/mm-page_alloc-reduce-lock-sections-further.patch
@@ -273,22 +268,19 @@ features/all/rt/re-preempt_rt_full-arm-coredump-fails-for-cpu-3e-3d-4.patch
 # MM bounce
 features/all/rt/mm-bounce-local-irq-save-nort.patch
 
-# MM SLAB only
-features/all/rt/mm-allow-slab-rt.patch
 
-# MM SLUB
+# MM SLxB
+features/all/rt/mm-disable-sloub-rt.patch
 features/all/rt/mm-enable-slub.patch
 features/all/rt/slub-enable-irqs-for-no-wait.patch
 features/all/rt/slub_delay_ctor_on_rt.patch
-
-# MM disable slab
-features/all/rt/mm-disable-slab-on-rt.patch
 
 # Revisit for avr/frv/ia64/mn10300/sh/sparc ...
 #mm-quicklists-percpu-locked.patch
 
 # MM
 features/all/rt/mm-page-alloc-use-local-lock-on-target-cpu.patch
+features/all/rt/mm-memcontrol-Don-t-call-schedule_work_on-in-preempt.patch
 
 # RADIX TREE
 features/all/rt/radix-tree-rt-aware.patch
@@ -323,6 +315,7 @@ features/all/rt/hrtimers-prepare-full-preemption.patch
 features/all/rt/hrtimer-fixup-hrtimer-callback-changes-for-preempt-r.patch
 features/all/rt/timer-fd-avoid-live-lock.patch
 features/all/rt/hrtimer-raise-softirq-if-hrtimer-irq-stalled.patch
+features/all/rt/hrtimer-Move-schedule_work-call-to-helper-thread.patch
 
 # POSIX-CPU-TIMERS
 features/all/rt/posix-timers-thread-posix-cpu-timers-on-rt.patch
@@ -367,6 +360,7 @@ features/all/rt/peter_zijlstra-frob-migrate_disable-2.patch
 features/all/rt/sched-rt-fix-migrate_enable-thinko.patch
 features/all/rt/sched-teach-migrate_disable-about-atomic-contexts.patch
 features/all/rt/rt-sched-postpone-actual-migration-disalbe-to-schedule.patch
+features/all/rt/allow-preemption-in-recursive-migrate_disable-call.patch
 features/all/rt/rt-sched-do-not-compare-cpu-masks-in-scheduler.patch
 features/all/rt/rt-sched-have-migrate_disable-ignore-bounded-threads.patch
 features/all/rt/sched-clear-pf-thread-bound-on-fallback-rq.patch
@@ -388,8 +382,6 @@ features/all/rt/lockdep-no-softirq-accounting-on-rt.patch
 # SOFTIRQ local lock
 features/all/rt/mutex-no-spin-on-rt.patch
 features/all/rt/softirq-local-lock.patch
-features/all/rt/softirq-export-in-serving-softirq.patch
-features/all/rt/harirq-h-define-softirq_count-as-oul-to-kill-build-warning.patch
 # XXX checkme softirq-fix-unplug-deadlock.patch
 features/all/rt/softirq-disable-softirq-stacks-for-rt.patch
 features/all/rt/softirq-make-fifo.patch
@@ -416,13 +408,16 @@ features/all/rt/rt-add-rt-spinlock-to-headers.patch
 features/all/rt/rt-add-rt-to-mutex-headers.patch
 features/all/rt/rwsem-add-rt-variant.patch
 features/all/rt/rt-add-rt-locks.patch
+features/all/rt/condition-migration_disable-on-lock-acquisition.patch
 features/all/rt/percpu-rwsem-compilefix.patch
+features/all/rt/rtmutex-add-a-first-shot-of-ww_mutex.patch
 
 # RTMUTEX Fallout
 features/all/rt/tasklist-lock-fix-section-conflict.patch
 
 # NOHZ/RTMUTEX
 features/all/rt/timer-handle-idle-trylock-in-get-next-timer-irq.patch
+features/all/rt/rtmutex-use-a-trylock-for-waiter-lock-in-trylock.patch
 
 # RCU
 features/all/rt/peter_zijlstra-frob-rcu.patch
@@ -446,7 +441,7 @@ features/all/rt/mm-protect-activate-switch-mm.patch
 features/all/rt/fs-block-rt-support.patch
 features/all/rt/fs-ntfs-disable-interrupt-non-rt.patch
 features/all/rt/fs-jbd-pull-plug-when-waiting-for-space.patch
-features/all/rt/fs-fscache-remove-spin_lock-from-the-condition-in-wh.patch
+features/all/rt/lockref-disable-64bit-cmpxchg-optimization-on-RT.patch
 
 # X86
 features/all/rt/x86-mce-timer-hrtimer.patch
@@ -561,6 +556,7 @@ features/all/rt/cpu-rt-make-hotplug-lock-a-sleeping-spinlock-on-rt.patch
 features/all/rt/cpu-rt-rework-cpu-down.patch
 features/all/rt/kernel-cpu-fix-cpu-down-problem-if-kthread-s-cpu-is-.patch
 features/all/rt/kernel-hotplug-restore-original-cpu-mask-oncpu-down.patch
+features/all/rt/cpu_down_move_migrate_enable_back.patch
 
 # SCSCI QLA2xxx
 features/all/rt/scsi-qla2xxx-fix-bug-sleeping-function-called-from-invalid-context.patch
@@ -592,7 +588,6 @@ features/all/rt/softirq-split-locks.patch
 features/all/rt/softirq-adapt-nohz-pending-debug-code-to-new-scheme.patch
 
 # RCU
-features/all/rt/rcu-tiny-solve-rt-mistery.patch
 features/all/rt/rcu-disable-rcu-fast-no-hz-on-rt.patch
 
 # PREEMPT LAZY
@@ -604,22 +599,24 @@ features/all/rt/powerpc-preempt-lazy-support.patch
 # DRIVERS
 features/all/rt/i2c-omap-drop-the-lock-hard-irq-context.patch
 features/all/rt/mmci-remove-bogus-irq-save.patch
+features/all/rt/net-iwlwifi-request-only-a-threaded-handler-for-inte.patch
 
 # I915 
+features/all/rt/drm-remove-preempt_disable-from-drm_calc_vbltimestam.patch
 features/all/rt/i915_compile_fix.patch
-features/all/rt/gpu-i915-allow-the-user-not-to-do-the-wbinvd.patch
 features/all/rt/drm-i915-drop-trace_i915_gem_ring_dispatch-onrt.patch
 
 # SIMPLE WAITQUEUE
+features/all/rt/wait.h-include-atomic.h.patch
 features/all/rt/wait-simple-implementation.patch
 features/all/rt/wait-simple-rework-for-completions.patch
 features/all/rt/simple-wait-rename-and-export-the-equivalent-of-wait.patch
 
-features/all/rt/rcutiny-use-simple-waitqueue.patch
 features/all/rt/treercu-use-simple-waitqueue.patch
 features/all/rt/rcu-more-swait-conversions.patch
 
 features/all/rt/completion-use-simple-wait-queues.patch
+features/all/rt/fixup_opencoded_completions.patch
 
 # New stuff 
 # Revisit: We need this in other places as well
@@ -627,7 +624,3 @@ features/all/rt/move_sched_delayed_work_to_helper.patch
 
 # bcache disabled
 features/all/rt/md-disable-bcache.patch
-
-# Enable full RT
-features/all/rt/kconfig-disable-a-few-options-rt.patch
-features/all/rt/kconfig-preempt-rt-full.patch
