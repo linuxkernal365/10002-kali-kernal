@@ -18,7 +18,7 @@ cd9ca0eea6dab4d1507e3105a75052eb  debian/templates/image.plain.postrm.in
 6788535419ff3671086ec3536817c67c  debian/templates/image.plain.preinst.in
 82298451656f1c326115f90031f351cf  debian/templates/image.plain.prerm.in
 6d8ccc8d2ca7e951fe89dddb2ff91c88  debian/templates/image.plain.templates.in
-cfb82feac8e46f5b41dd8898a1ced3a0  debian/config/defines
+eccc5f47a1b0366697042fb755e4b296  debian/config/defines
 7805244237b17ec0c1e068c364136ee1  debian/config/alpha/defines
 d6c54f8d0c8eb146631bda09d4c1d2cc  debian/config/amd64/defines
 7b5301ed4f4e11622f429c63cca7d9f2  debian/config/arm64/defines
