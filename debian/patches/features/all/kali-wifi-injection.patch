@@ -1,6 +1,5 @@
-diff -rupN linux-3.12.3-orig/drivers/net/wireless/rtl818x/rtl8187/dev.c linux-3.12.3/drivers/net/wireless/rtl818x/rtl8187/dev.c
---- linux-3.12.3-orig/drivers/net/wireless/rtl818x/rtl8187/dev.c	2013-12-10 08:26:46.862442766 -0500
-+++ linux-3.12.3/drivers/net/wireless/rtl818x/rtl8187/dev.c	2013-12-10 08:27:45.073483723 -0500
+--- a/drivers/net/wireless/rtl818x/rtl8187/dev.c
++++ b/drivers/net/wireless/rtl818x/rtl8187/dev.c
 @@ -252,8 +252,18 @@ static void rtl8187_tx(struct ieee80211_
  	flags |= RTL818X_TX_DESC_FLAG_NO_ENC;
  
@@ -21,9 +20,8 @@ diff -rupN linux-3.12.3-orig/drivers/net/wireless/rtl818x/rtl8187/dev.c linux-3.
  	if (info->control.rates[0].flags & IEEE80211_TX_RC_USE_RTS_CTS) {
  		flags |= RTL818X_TX_DESC_FLAG_RTS;
  		flags |= ieee80211_get_rts_cts_rate(dev, info)->hw_value << 19;
-diff -rupN linux-3.12.3-orig/net/mac80211/cfg.c linux-3.12.3/net/mac80211/cfg.c
---- linux-3.12.3-orig/net/mac80211/cfg.c	2013-12-10 08:26:45.406588392 -0500
-+++ linux-3.12.3/net/mac80211/cfg.c	2013-12-10 08:32:08.643478603 -0500
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
 @@ -826,7 +826,8 @@ static int ieee80211_set_monitor_channel
  			ret = ieee80211_vif_use_channel(sdata, chandef,
  					IEEE80211_CHANCTX_EXCLUSIVE);
@@ -34,9 +32,8 @@ diff -rupN linux-3.12.3-orig/net/mac80211/cfg.c linux-3.12.3/net/mac80211/cfg.c
  		local->_oper_chandef = *chandef;
  		ieee80211_hw_config(local, 0);
  	}
-diff -rupN linux-3.12.3-orig/net/mac80211/tx.c linux-3.12.3/net/mac80211/tx.c
---- linux-3.12.3-orig/net/mac80211/tx.c	2013-12-10 08:26:45.406588392 -0500
-+++ linux-3.12.3/net/mac80211/tx.c	2013-12-10 08:39:13.998832930 -0500
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
 @@ -763,11 +763,19 @@ ieee80211_tx_h_sequence(struct ieee80211
  
  	/*
@@ -72,9 +69,8 @@ diff -rupN linux-3.12.3-orig/net/mac80211/tx.c linux-3.12.3/net/mac80211/tx.c
  	ieee80211_tx(sdata, skb, false, band);
  }
  
-diff -rupN linux-3.12.3-orig/net/wireless/chan.c linux-3.12.3/net/wireless/chan.c
---- linux-3.12.3-orig/net/wireless/chan.c	2013-12-10 08:26:45.418587192 -0500
-+++ linux-3.12.3/net/wireless/chan.c	2013-12-10 08:27:45.077483723 -0500
+--- a/net/wireless/chan.c
++++ b/net/wireless/chan.c
 @@ -480,8 +480,10 @@ int cfg80211_set_monitor_channel(struct
  {
  	if (!rdev->ops->set_monitor_channel)
