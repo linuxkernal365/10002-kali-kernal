@@ -43,11 +43,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-alpha-generic/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-alpha-generic/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-alpha-generic/modules.dep não será removido, embora possa ser "
+"3.12-kali1-alpha-generic/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -144,11 +144,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-alpha-smp/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-alpha-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-alpha-smp/modules.dep não será removido, embora possa ser "
+"3.12-kali1-alpha-smp/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -245,11 +245,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-alpha-legacy/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-alpha-legacy/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-alpha-legacy/modules.dep não será removido, embora possa ser "
+"3.12-kali1-alpha-legacy/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -346,11 +346,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-amd64/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-amd64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-amd64/modules.dep não será removido, embora possa ser "
+"3.12-kali1-amd64/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -447,11 +447,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-rt-amd64/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-rt-amd64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-rt-amd64/modules.dep não será removido, embora possa ser "
+"3.12-kali1-rt-amd64/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -548,11 +548,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-iop32x/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-iop32x/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-iop32x/modules.dep não será removido, embora possa ser "
+"3.12-kali1-iop32x/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -649,11 +649,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-ixp4xx/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-ixp4xx/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-ixp4xx/modules.dep não será removido, embora possa ser "
+"3.12-kali1-ixp4xx/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -750,11 +750,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-kirkwood/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-kirkwood/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-kirkwood/modules.dep não será removido, embora possa ser "
+"3.12-kali1-kirkwood/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -851,11 +851,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-mv78xx0/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-mv78xx0/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-mv78xx0/modules.dep não será removido, embora possa ser "
+"3.12-kali1-mv78xx0/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -952,11 +952,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-orion5x/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-orion5x/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-orion5x/modules.dep não será removido, embora possa ser "
+"3.12-kali1-orion5x/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -1053,11 +1053,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-versatile/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-versatile/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-versatile/modules.dep não será removido, embora possa ser "
+"3.12-kali1-versatile/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -1154,11 +1154,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-armmp/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-armmp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-armmp/modules.dep não será removido, embora possa ser "
+"3.12-kali1-armmp/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -1255,11 +1255,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-armmp-lpae/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-armmp-lpae/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-armmp-lpae/modules.dep não será removido, embora possa ser "
+"3.12-kali1-armmp-lpae/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -1356,11 +1356,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-parisc/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-parisc/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-parisc/modules.dep não será removido, embora possa ser "
+"3.12-kali1-parisc/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -1457,11 +1457,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-parisc-smp/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-parisc-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-parisc-smp/modules.dep não será removido, embora possa ser "
+"3.12-kali1-parisc-smp/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -1558,11 +1558,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-parisc64/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-parisc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-parisc64/modules.dep não será removido, embora possa ser "
+"3.12-kali1-parisc64/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -1659,11 +1659,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-parisc64-smp/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-parisc64-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-parisc64-smp/modules.dep não será removido, embora possa ser "
+"3.12-kali1-parisc64-smp/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -1760,11 +1760,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-486/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-486/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-486/modules.dep não será removido, embora possa ser "
+"3.12-kali1-486/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -1861,11 +1861,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-686-pae/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-686-pae/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-686-pae/modules.dep não será removido, embora possa ser "
+"3.12-kali1-686-pae/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -1962,11 +1962,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-amd64/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-amd64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-amd64/modules.dep não será removido, embora possa ser "
+"3.12-kali1-amd64/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -2063,11 +2063,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-rt-686-pae/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-rt-686-pae/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-rt-686-pae/modules.dep não será removido, embora possa ser "
+"3.12-kali1-rt-686-pae/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -2164,11 +2164,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-itanium/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-itanium/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-itanium/modules.dep não será removido, embora possa ser "
+"3.12-kali1-itanium/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -2265,11 +2265,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-mckinley/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-mckinley/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-mckinley/modules.dep não será removido, embora possa ser "
+"3.12-kali1-mckinley/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -2366,11 +2366,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-m68k/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-m68k/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-m68k/modules.dep não será removido, embora possa ser "
+"3.12-kali1-m68k/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -2467,11 +2467,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-r4k-ip22/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-r4k-ip22/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-r4k-ip22/modules.dep não será removido, embora possa ser "
+"3.12-kali1-r4k-ip22/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -2568,11 +2568,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-r5k-ip32/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-r5k-ip32/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-r5k-ip32/modules.dep não será removido, embora possa ser "
+"3.12-kali1-r5k-ip32/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -2669,11 +2669,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-sb1-bcm91250a/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-sb1-bcm91250a/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-sb1-bcm91250a/modules.dep não será removido, embora possa ser "
+"3.12-kali1-sb1-bcm91250a/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -2770,11 +2770,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-sb1a-bcm91480b/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-sb1a-bcm91480b/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-sb1a-bcm91480b/modules.dep não será removido, embora possa ser "
+"3.12-kali1-sb1a-bcm91480b/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -2871,11 +2871,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-4kc-malta/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-4kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-4kc-malta/modules.dep não será removido, embora possa ser "
+"3.12-kali1-4kc-malta/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -2972,11 +2972,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-5kc-malta/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-5kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-5kc-malta/modules.dep não será removido, embora possa ser "
+"3.12-kali1-5kc-malta/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -3073,11 +3073,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-octeon/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-octeon/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-octeon/modules.dep não será removido, embora possa ser "
+"3.12-kali1-octeon/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -3174,11 +3174,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-r5k-cobalt/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-r5k-cobalt/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-r5k-cobalt/modules.dep não será removido, embora possa ser "
+"3.12-kali1-r5k-cobalt/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -3275,11 +3275,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-sb1-bcm91250a/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-sb1-bcm91250a/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-sb1-bcm91250a/modules.dep não será removido, embora possa ser "
+"3.12-kali1-sb1-bcm91250a/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -3376,11 +3376,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-sb1a-bcm91480b/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-sb1a-bcm91480b/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-sb1a-bcm91480b/modules.dep não será removido, embora possa ser "
+"3.12-kali1-sb1a-bcm91480b/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -3477,11 +3477,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-4kc-malta/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-4kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-4kc-malta/modules.dep não será removido, embora possa ser "
+"3.12-kali1-4kc-malta/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -3578,11 +3578,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-5kc-malta/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-5kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-5kc-malta/modules.dep não será removido, embora possa ser "
+"3.12-kali1-5kc-malta/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -3679,11 +3679,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-loongson-2e/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-loongson-2e/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-loongson-2e/modules.dep não será removido, embora possa ser "
+"3.12-kali1-loongson-2e/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -3780,11 +3780,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-loongson-2f/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-loongson-2f/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-loongson-2f/modules.dep não será removido, embora possa ser "
+"3.12-kali1-loongson-2f/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -3881,11 +3881,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-powerpc/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-powerpc/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-powerpc/modules.dep não será removido, embora possa ser "
+"3.12-kali1-powerpc/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -3982,11 +3982,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-powerpc-smp/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-powerpc-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-powerpc-smp/modules.dep não será removido, embora possa ser "
+"3.12-kali1-powerpc-smp/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -4083,11 +4083,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-powerpc64/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-powerpc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-powerpc64/modules.dep não será removido, embora possa ser "
+"3.12-kali1-powerpc64/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -4184,11 +4184,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-powerpcspe/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-powerpcspe/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-powerpcspe/modules.dep não será removido, embora possa ser "
+"3.12-kali1-powerpcspe/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -4285,11 +4285,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-powerpc64/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-powerpc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-powerpc64/modules.dep não será removido, embora possa ser "
+"3.12-kali1-powerpc64/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -4386,11 +4386,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-s390x/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-s390x/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-s390x/modules.dep não será removido, embora possa ser "
+"3.12-kali1-s390x/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -4487,11 +4487,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-s390x/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-s390x/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-s390x/modules.dep não será removido, embora possa ser "
+"3.12-kali1-s390x/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -4588,11 +4588,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-sh7751r/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-sh7751r/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-sh7751r/modules.dep não será removido, embora possa ser "
+"3.12-kali1-sh7751r/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -4689,11 +4689,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-sh7785lcr/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-sh7785lcr/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-sh7785lcr/modules.dep não será removido, embora possa ser "
+"3.12-kali1-sh7785lcr/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -4790,11 +4790,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-sparc64/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-sparc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-sparc64/modules.dep não será removido, embora possa ser "
+"3.12-kali1-sparc64/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -4891,11 +4891,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-sparc64-smp/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-sparc64-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-sparc64-smp/modules.dep não será removido, embora possa ser "
+"3.12-kali1-sparc64-smp/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -4992,11 +4992,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-sparc64/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-sparc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-sparc64/modules.dep não será removido, embora possa ser "
+"3.12-kali1-sparc64/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean
@@ -5093,11 +5093,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.12-trunk-sparc64-smp/"
+"Since this image uses initrd, the ${modules_base}/3.12-kali1-sparc64-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Uma vez que esta imagem usa o initrd, o arquivo ${modules_base}/"
-"3.12-trunk-sparc64-smp/modules.dep não será removido, embora possa ser "
+"3.12-kali1-sparc64-smp/modules.dep não será removido, embora possa ser "
 "considerado inválido."
 
 #. Type: boolean

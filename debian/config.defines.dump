@@ -137,11 +137,11 @@ tp78
 (dp79
 S'abiname'
 p80
-S'3.12-trunk'
+S'3.12-kali1'
 p81
 sS'source'
 p82
-V3.12.3-1~kali1
+V3.12.3-1~kali2
 p83
 sS'upstream'
 p84
@@ -1900,7 +1900,7 @@ tp1017
 (dp1018
 S'abiname'
 p1019
-S'trunk'
+S'kali1'
 p1020
 ss(S'description'
 p1021
