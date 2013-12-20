@@ -3,6 +3,7 @@ linux-kali (3.12.3-1~kali2) kali-dev; urgency=medium
   * debina/rules.real: add kali-dev to the list of distributions built
     with non-fatal kernel-wedge checks.
   * udeb: Add ohci-pci to usb-modules (Closes: #730789)
+  * Change abiname to "kali1" to differentiate from Debian.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Fri, 20 Dec 2013 09:03:25 +0100
 
