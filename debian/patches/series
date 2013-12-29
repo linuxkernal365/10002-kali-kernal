@@ -13,6 +13,8 @@ features/all/Kbuild-kconfig-Verbose-version-of-listnewconfig.patch
 features/all/drivers-media-dvb-usb-af9005-request_firmware.patch
 features/all/sound-pci-cs46xx-request_firmware.patch
 debian/iwlwifi-do-not-request-unreleased-firmware.patch
+bugfix/all/firmware_class-fix-read-size-check.patch
+bugfix/all/firmware_class-return-specific-errors-from-file-read.patch
 bugfix/all/firmware_class-log-every-success-and-failure.patch
 bugfix/all/firmware-remove-redundant-log-messages-from-drivers.patch
 bugfix/all/radeon-firmware-is-required-for-drm-and-kms-on-r600-onward.patch
@@ -74,9 +76,8 @@ features/all/mvsas-Recognise-device-subsystem-9485-9485-as-88SE94.patch
 bugfix/all/kbuild-use-nostdinc-in-compile-tests.patch
 debian/add-sysctl-to-disallow-unprivileged-CLONE_NEWUSER-by-default.patch
 bugfix/all/UAPI-include-asm-byteorder.h-in-linux-raid-md_p.h.patch
-bugfix/all/net-clamp-msg_namelen-instead-of-returning-an-error.patch
-bugfix/all/tcp-tsq-restore-minimal-amount-of-queueing.patch
 bugfix/all/rds-prevent-bug_on-triggered-by-congestion-update-to-loopback.patch
-bugfix/all/ipv6-fix-headroom-calculation-in-udp6_ufo_fragment.patch
-bugfix/all/xfs-underflow-bug-in-xfs_attrlist_by_handle.patch
 bugfix/arm/ahci-imx-Explicitly-clear-IMX6Q_GPR13_SATA_MPLL_CLK_.patch
+bugfix/all/disable-some-marvell-phys.patch
+features/all/media-az6007-support-Technisat-Cablestar-Combo-HDCI-.patch
+bugfix/all/alpha-Prevent-a-NULL-ptr-dereference-in-csum_partial.patch
