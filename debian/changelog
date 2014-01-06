@@ -1,3 +1,11 @@
+linux (3.12.6-2kali1) kali; urgency=medium
+
+  * Merge to Kali.
+  * Drop linux-kali source package in favor of regular fork of linux.
+  * Use our own "kali1" ABI version for clarity.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Mon, 06 Jan 2014 16:34:27 +0100
+
 linux (3.12.6-2) unstable; urgency=medium
 
   [ Bastian Blank ]
