@@ -1,5 +1,5 @@
 167d7fb9f81877d3d2797de3c40ce3ce  debian/bin/gencontrol.py
-c34caca9e749ca24616caf75cda3b430  debian/changelog
+d66ad9b9e0e081545366b22faccdcfd9  debian/changelog
 8991a0797a881ca5fb5e2ec5b36a718b  debian/templates/control.extra.in
 d253b8a3cc1ffc2054b1d485facc490a  debian/templates/control.headers.arch.in
 d60e1ee86882c530ea74bfbb684a506e  debian/templates/control.headers.featureset.in
@@ -13,12 +13,12 @@ e5ddc3049729f85653d62f41764edd4e  debian/templates/control.libc-dev.in
 36c07550110e8dcb3803f61e60984cf0  debian/templates/control.xen-linux-system.in
 fa333289fdfdfca8cc461bed235935c5  debian/templates/headers.plain.postinst.in
 1d1f3a359852289a620e328d676aad72  debian/templates/image-dbg.lintian-override.in
-feafd5ecf76d866f8f7447bc029d456a  debian/templates/image.plain.postinst.in
-cd9ca0eea6dab4d1507e3105a75052eb  debian/templates/image.plain.postrm.in
-6788535419ff3671086ec3536817c67c  debian/templates/image.plain.preinst.in
-82298451656f1c326115f90031f351cf  debian/templates/image.plain.prerm.in
+314ad8146c33bcdd8a3cd11303197893  debian/templates/image.plain.postinst.in
+3ca54864867a1d3995b5355911212eac  debian/templates/image.plain.postrm.in
+3e2fde720ec84a08dab1cca4224521e2  debian/templates/image.plain.preinst.in
+4c5446e06f8220c5064d4810073445a4  debian/templates/image.plain.prerm.in
 6d8ccc8d2ca7e951fe89dddb2ff91c88  debian/templates/image.plain.templates.in
-49996300edeadcf9b236d5e3527707db  debian/config/defines
+7fcf56cfa1f1dfe18c5136273a7c891d  debian/config/defines
 7805244237b17ec0c1e068c364136ee1  debian/config/alpha/defines
 d6c54f8d0c8eb146631bda09d4c1d2cc  debian/config/amd64/defines
 7b5301ed4f4e11622f429c63cca7d9f2  debian/config/arm64/defines
@@ -47,7 +47,7 @@ b3bfd119f5080ee2c841c5c7e9954c72  debian/config/i386/none/defines
 7ecaa8334419297fe6715afadae794c6  debian/installer/amd64/kernel-versions
 07c9cbe632c22b1a4d696e305a43dd79  debian/installer/armel/kernel-versions
 970c9fb261a412d414470acb0ba9bc92  debian/installer/armhf/kernel-versions
-fb5fd18c89403e59d2df08c6b261ba87  debian/installer/hppa/kernel-versions
+8512485f3a856fe5225fa9c74ea32d5a  debian/installer/hppa/kernel-versions
 967797430d58c1aeecac819cd6c23bd8  debian/installer/i386/kernel-versions
 3003a272236f91494508a5f7e9c9b467  debian/installer/ia64/kernel-versions
 8aba4204e5bc4edcfd9790294b8808ec  debian/installer/m68k/kernel-versions

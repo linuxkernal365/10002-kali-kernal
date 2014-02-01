@@ -3154,7 +3154,7 @@ Description: FUSE modules
 Kernel-Version: 3.12-1-parisc
 Package-Type: udeb
 
-Package: kernel-image-3.12-1-parisc64-di
+Package: kernel-image-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
@@ -3163,242 +3163,242 @@ Description: Linux kernel binary image for the Debian installer
  This package contains the kernel image for the Debian installer boot
  images.  It does _not_ provide a usable kernel for your full Debian
  system.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: nic-modules-3.12-1-parisc64-di
+Package: nic-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-3.12-1-parisc64-di, core-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, core-modules-3.12-1-parisc64-smp-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: ppp-modules-3.12-1-parisc64-di
+Package: ppp-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: optional
 Provides: ppp-modules
-Depends: kernel-image-3.12-1-parisc64-di, zlib-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, zlib-modules-3.12-1-parisc64-smp-di
 Description: PPP drivers
  This package contains PPP drivers for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: pata-modules-3.12-1-parisc64-di
+Package: pata-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: pata-modules
-Depends: kernel-image-3.12-1-parisc64-di, scsi-core-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, scsi-core-modules-3.12-1-parisc64-smp-di
 Description: PATA drivers
  This package contains PATA drivers for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: cdrom-core-modules-3.12-1-parisc64-di
+Package: cdrom-core-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: cdrom-core-modules
-Depends: kernel-image-3.12-1-parisc64-di, scsi-core-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, scsi-core-modules-3.12-1-parisc64-smp-di
 Description: CDROM support
  This package contains core CDROM support for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: scsi-core-modules-3.12-1-parisc64-di
+Package: scsi-core-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: scsi-core-modules
-Depends: kernel-image-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di
 Description: Core SCSI subsystem
  This package contains the core SCSI subsystem for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: scsi-modules-3.12-1-parisc64-di
+Package: scsi-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-3.12-1-parisc64-di, scsi-core-modules-3.12-1-parisc64-di, cdrom-core-modules-3.12-1-parisc64-di, core-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, scsi-core-modules-3.12-1-parisc64-smp-di, cdrom-core-modules-3.12-1-parisc64-smp-di, core-modules-3.12-1-parisc64-smp-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: loop-modules-3.12-1-parisc64-di
+Package: loop-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: loop-modules
-Depends: kernel-image-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di
 Description: Loopback filesystem support
  This package contains loopback filesystem support for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: btrfs-modules-3.12-1-parisc64-di
+Package: btrfs-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-3.12-1-parisc64-di, core-modules-3.12-1-parisc64-di, zlib-modules-3.12-1-parisc64-di, md-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, core-modules-3.12-1-parisc64-smp-di, zlib-modules-3.12-1-parisc64-smp-di, md-modules-3.12-1-parisc64-smp-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: ext4-modules-3.12-1-parisc64-di
+Package: ext4-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-3.12-1-parisc64-di, core-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, core-modules-3.12-1-parisc64-smp-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: fat-modules-3.12-1-parisc64-di
+Package: fat-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: fat-modules
-Depends: kernel-image-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di
 Description: FAT filesystem support
  This package contains the FAT and VFAT filesystem modules for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: md-modules-3.12-1-parisc64-di
+Package: md-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: md-modules
-Depends: kernel-image-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di
 Description: RAID and LVM support
  This package contains RAID and LVM modules for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: multipath-modules-3.12-1-parisc64-di
+Package: multipath-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: multipath-modules
-Depends: kernel-image-3.12-1-parisc64-di, md-modules-3.12-1-parisc64-di, scsi-core-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, md-modules-3.12-1-parisc64-smp-di, scsi-core-modules-3.12-1-parisc64-smp-di
 Description: Multipath support
  This package contains DM-Multipath modules for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: usb-modules-3.12-1-parisc64-di
+Package: usb-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di
 Description: USB support
  This package contains core USB drivers for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: usb-storage-modules-3.12-1-parisc64-di
+Package: usb-storage-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: usb-storage-modules
-Depends: kernel-image-3.12-1-parisc64-di, scsi-modules-3.12-1-parisc64-di, usb-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, scsi-modules-3.12-1-parisc64-smp-di, usb-modules-3.12-1-parisc64-smp-di
 Description: USB storage support
  This package contains the USB storage driver for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: input-modules-3.12-1-parisc64-di
+Package: input-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: input-modules
-Depends: kernel-image-3.12-1-parisc64-di, usb-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, usb-modules-3.12-1-parisc64-smp-di
 Description: Input devices support
  This package contains input device drivers for the kernel.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: core-modules-3.12-1-parisc64-di
+Package: core-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: core-modules
-Depends: kernel-image-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di
 Description: Core modules
  This package contains core modules for the kernel, that will almost
  always be needed.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: crypto-modules-3.12-1-parisc64-di
+Package: crypto-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: crypto-modules
-Depends: kernel-image-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di
 Description: crypto modules
  This package contains crypto modules.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: crypto-dm-modules-3.12-1-parisc64-di
+Package: crypto-dm-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: crypto-dm-modules
-Depends: kernel-image-3.12-1-parisc64-di, md-modules-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di, md-modules-3.12-1-parisc64-smp-di
 Description: devicemapper crypto module
  This package contains the devicemapper crypto (dm-crypt) module.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: nbd-modules-3.12-1-parisc64-di
+Package: nbd-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: nbd-modules
-Depends: kernel-image-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di
 Description: Network Block Device modules
  This package contains the modules required for support of the Network
  Block Device
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: zlib-modules-3.12-1-parisc64-di
+Package: zlib-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: zlib-modules
-Depends: kernel-image-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di
 Description: zlib modules
  This package contains zlib modules.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
-Package: fuse-modules-3.12-1-parisc64-di
+Package: fuse-modules-3.12-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: fuse-modules
-Depends: kernel-image-3.12-1-parisc64-di
+Depends: kernel-image-3.12-1-parisc64-smp-di
 Description: FUSE modules
  This package contains the Filesystem in Userspace (FUSE) module.
-Kernel-Version: 3.12-1-parisc64
+Kernel-Version: 3.12-1-parisc64-smp
 Package-Type: udeb
 
 Package: linux-image-3.12-1-parisc
