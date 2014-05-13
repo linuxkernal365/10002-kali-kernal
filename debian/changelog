@@ -1,3 +1,9 @@
+linux (3.12.9-1kali1) kali; urgency=medium
+
+  * Merge into Kali.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Tue, 13 May 2014 16:40:15 +0200
+
 linux (3.12.9-1) unstable; urgency=high
 
   * New upstream stable update:
