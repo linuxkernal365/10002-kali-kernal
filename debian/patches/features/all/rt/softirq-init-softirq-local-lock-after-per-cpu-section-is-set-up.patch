@@ -1,7 +1,7 @@
 Subject: softirq: Init softirq local lock after per cpu section is set up
 From: Steven Rostedt <rostedt@goodmis.org>
 Date: Thu, 04 Oct 2012 11:02:04 -0400
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 I discovered this bug when booting 3.4-rt on my powerpc box. It crashed
 with the following report:
@@ -116,7 +116,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/init/main.c
 +++ b/init/main.c
-@@ -499,7 +499,6 @@ asmlinkage void __init start_kernel(void
+@@ -504,7 +504,6 @@ asmlinkage void __init start_kernel(void
   * Interrupts are still disabled. Do necessary setups, then
   * enable them
   */
@@ -124,7 +124,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	boot_cpu_init();
  	page_address_init();
  	pr_notice("%s", linux_banner);
-@@ -509,6 +508,7 @@ asmlinkage void __init start_kernel(void
+@@ -514,6 +513,7 @@ asmlinkage void __init start_kernel(void
  	setup_command_line(command_line);
  	setup_nr_cpu_ids();
  	setup_per_cpu_areas();

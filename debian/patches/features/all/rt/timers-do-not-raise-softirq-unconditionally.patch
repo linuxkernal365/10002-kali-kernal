@@ -2,7 +2,7 @@ From 35b6173e6176fc978c635f9e07f1778eff7b76e7 Mon Sep 17 00:00:00 2001
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 7 Nov 2013 12:21:11 +0100
 Subject: [PATCH] timers: do not raise softirq unconditionally
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Mike,
 
@@ -52,8 +52,8 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
  include/linux/hrtimer.h |    3 +--
  kernel/hrtimer.c        |   31 +++++++------------------------
- kernel/timer.c          |   23 ++++++++++++++++++++---
- 3 files changed, 28 insertions(+), 29 deletions(-)
+ kernel/timer.c          |   28 +++++++++++++++++++++++++---
+ 3 files changed, 33 insertions(+), 29 deletions(-)
 
 --- a/include/linux/hrtimer.h
 +++ b/include/linux/hrtimer.h
@@ -70,7 +70,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  extern void __init hrtimers_init(void);
 --- a/kernel/hrtimer.c
 +++ b/kernel/hrtimer.c
-@@ -1694,30 +1694,6 @@ static void run_hrtimer_softirq(struct s
+@@ -1695,30 +1695,6 @@ static void run_hrtimer_softirq(struct s
  }
  
  /*
@@ -101,7 +101,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
   * Called from hardirq context every jiffy
   */
  void hrtimer_run_queues(void)
-@@ -1730,6 +1706,13 @@ void hrtimer_run_queues(void)
+@@ -1731,6 +1707,13 @@ void hrtimer_run_queues(void)
  	if (hrtimer_hres_active())
  		return;
  
@@ -126,7 +126,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	if (time_after_eq(jiffies, base->timer_jiffies))
  		__run_timers(base);
  }
-@@ -1450,8 +1448,27 @@ static void run_timer_softirq(struct sof
+@@ -1450,8 +1448,32 @@ static void run_timer_softirq(struct sof
   */
  void run_local_timers(void)
  {
@@ -139,10 +139,12 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 +	 * interrupt. If there are no timers queued, nothing to do in
 +	 * the timer softirq.
 +	 */
++#ifdef CONFIG_PREEMPT_RT_FULL
 +	if (!spin_do_trylock(&base->lock)) {
 +		raise_softirq(TIMER_SOFTIRQ);
 +		return;
 +	}
++#endif
 +	if (!base->active_timers)
 +		goto out;
 +
@@ -150,8 +152,11 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 +	if (time_before_eq(base->next_timer, jiffies))
 +		raise_softirq(TIMER_SOFTIRQ);
 +out:
++#ifdef CONFIG_PREEMPT_RT_FULL
 +	rt_spin_unlock_after_trylock_in_irq(&base->lock);
-+
++#endif
++	/* The ; ensures that gcc won't complain in the !RT case */
++	;
  }
  
  #ifdef __ARCH_WANT_SYS_ALARM

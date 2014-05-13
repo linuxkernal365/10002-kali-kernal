@@ -1,7 +1,7 @@
 Subject: hotplug-use-migrate-disable.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 17 Jul 2011 19:35:29 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -25,9 +25,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
 -	preempt_enable();
  
- 	err = __cpu_notify(CPU_DOWN_PREPARE | mod, hcpu, -1, &nr_calls);
- 	if (err) {
-@@ -458,6 +457,7 @@ static int __ref _cpu_down(unsigned int
+ 	cpu_hotplug_begin();
+ 	err = cpu_unplug_begin(cpu);
+@@ -476,6 +475,7 @@ static int __ref _cpu_down(unsigned int
  out_release:
  	cpu_unplug_done(cpu);
  out_cancel:

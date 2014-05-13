@@ -6,9 +6,9 @@ rm firmware
 
 rm arch/powerpc/sysdev/micropatch.c
 
-rm drivers/media/dvb/dvb-usb/af9005-script.h
+rm drivers/media/usb/dvb-usb/af9005-script.h
 
-rm drivers/media/video/vs6624.c
+rm drivers/media/i2c/vs6624.c
 
 rm drivers/net/appletalk/cops.c
 rm drivers/net/appletalk/cops.h
@@ -20,8 +20,6 @@ rm drivers/staging/ft1000/ft1000-*/*.img
 
 rm drivers/staging/keucr/init.h
 
-rm drivers/staging/rtl8188eu/hal/Hal8188EFWImg_CE.c
-
 unifdef drivers/staging/rtl8192e/rtl8192e/r8192E_hwimg.c -UREMOVE_DFSG 
 
 rm drivers/staging/wlags49_h2/ap_*.c
@@ -30,6 +28,3 @@ rm drivers/staging/wlags49_h2/sta_*.c
 # These include apparently obfuscated code
 rm drivers/video/nvidia/
 rm drivers/video/riva/
-
-rm sound/pci/cs46xx/cs46xx_image.h
-rm sound/pci/cs46xx/imgs

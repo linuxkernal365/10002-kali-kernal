@@ -1,7 +1,7 @@
 From: Benedikt Spranger <b.spranger@linutronix.de>
 Date: Mon, 8 Mar 2010 18:57:04 +0100
 Subject: clocksource: TCLIB: Allow higher clock rates for clock events
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 As default the TCLIB uses the 32KiHz base clock rate for clock events.
 Add a compile time selection to allow higher clock resulution.
@@ -11,9 +11,9 @@ Add a compile time selection to allow higher clock resulution.
 Signed-off-by: Benedikt Spranger <b.spranger@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- drivers/clocksource/tcb_clksrc.c |   38 ++++++++++++++++++++++----------------
+ drivers/clocksource/tcb_clksrc.c |   37 ++++++++++++++++++++++---------------
  drivers/misc/Kconfig             |   12 ++++++++++--
- 2 files changed, 32 insertions(+), 18 deletions(-)
+ 2 files changed, 32 insertions(+), 17 deletions(-)
 
 --- a/drivers/clocksource/tcb_clksrc.c
 +++ b/drivers/clocksource/tcb_clksrc.c
@@ -51,7 +51,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  static void tc_mode(enum clock_event_mode m, struct clock_event_device *d)
 @@ -111,11 +104,12 @@ static void tc_mode(enum clock_event_mod
  	case CLOCK_EVT_MODE_PERIODIC:
- 		clk_enable(tcd->clk);
+ 		clk_prepare_enable(tcd->clk);
  
 -		/* slow clock, count up to RC, then irq and restart */
 +		/* count up to RC, then irq and restart */
@@ -60,13 +60,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  				regs + ATMEL_TC_REG(2, CMR));
 -		__raw_writel((32768 + HZ/2) / HZ, tcaddr + ATMEL_TC_REG(2, RC));
 +		__raw_writel((tcd->freq + HZ/2)/HZ,
-+			     tcaddr + ATMEL_TC_REG(2, RC));
++				tcaddr + ATMEL_TC_REG(2, RC));
  
  		/* Enable clock and interrupts on RC compare */
  		__raw_writel(ATMEL_TC_CPCS, regs + ATMEL_TC_REG(2, IER));
 @@ -128,7 +122,7 @@ static void tc_mode(enum clock_event_mod
  	case CLOCK_EVT_MODE_ONESHOT:
- 		clk_enable(tcd->clk);
+ 		clk_prepare_enable(tcd->clk);
  
 -		/* slow clock, count up to RC, then irq and stop */
 +		/* count up to RC, then irq and stop */
@@ -90,14 +90,14 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	.handler	= ch2_irq,
  };
  
--static void __init setup_clkevents(struct atmel_tc *tc, int clk32k_divisor_idx)
-+static void __init setup_clkevents(struct atmel_tc *tc, int divisor_idx)
+-static int __init setup_clkevents(struct atmel_tc *tc, int clk32k_divisor_idx)
++static int __init setup_clkevents(struct atmel_tc *tc, int divisor_idx)
  {
 +	unsigned divisor = atmel_tc_divisors[divisor_idx];
+ 	int ret;
  	struct clk *t2_clk = tc->clk[2];
  	int irq = tc->irq[2];
- 
-@@ -193,11 +192,15 @@ static void __init setup_clkevents(struc
+@@ -200,7 +199,11 @@ static int __init setup_clkevents(struct
  	clkevt.clk = t2_clk;
  	tc_irqaction.dev_id = &clkevt;
  
@@ -110,24 +110,27 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	clkevt.clkevt.cpumask = cpumask_of(0);
  
+@@ -208,7 +211,7 @@ static int __init setup_clkevents(struct
+ 	if (ret)
+ 		return ret;
+ 
 -	clockevents_config_and_register(&clkevt.clkevt, 32768, 1, 0xffff);
 +	clockevents_config_and_register(&clkevt.clkevt, clkevt.freq, 1, 0xffff);
  
- 	setup_irq(irq, &tc_irqaction);
+ 	return ret;
  }
-@@ -322,8 +325,11 @@ static int __init tcb_clksrc_init(void)
- 	clocksource_register_hz(&clksrc, divided_rate);
+@@ -345,7 +348,11 @@ static int __init tcb_clksrc_init(void)
+ 		goto err_disable_t1;
  
  	/* channel 2:  periodic and oneshot timer support */
 +#ifdef CONFIG_ATMEL_TCB_CLKSRC_USE_SLOW_CLOCK
- 	setup_clkevents(tc, clk32k_divisor_idx);
--
+ 	ret = setup_clkevents(tc, clk32k_divisor_idx);
 +#else
-+	setup_clkevents(tc, best_divisor_idx);
++	ret = setup_clkevents(tc, best_divisor_idx);
 +#endif
- 	return 0;
- }
- arch_initcall(tcb_clksrc_init);
+ 	if (ret)
+ 		goto err_unregister_clksrc;
+ 
 --- a/drivers/misc/Kconfig
 +++ b/drivers/misc/Kconfig
 @@ -78,8 +78,7 @@ config ATMEL_TCB_CLKSRC

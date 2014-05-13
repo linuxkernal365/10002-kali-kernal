@@ -2,7 +2,7 @@ From 1bd263cbd3951f8f36ee6dcfe9160dafcfdd91fe Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 29 Aug 2013 18:21:04 +0200
 Subject: [PATCH] ptrace: fix ptrace vs tasklist_lock race
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 As explained by Alexander Fyodorov <halcy@yandex.ru>:
 
@@ -32,20 +32,19 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -165,11 +165,8 @@ extern char ___assert_task_state[1 - 2*!
+@@ -232,10 +232,7 @@ extern char ___assert_task_state[1 - 2*!
  				 TASK_UNINTERRUPTIBLE | __TASK_STOPPED | \
- 				 __TASK_TRACED)
+ 				 __TASK_TRACED | EXIT_ZOMBIE | EXIT_DEAD)
  
 -#define task_is_traced(task)	((task->state & __TASK_TRACED) != 0)
  #define task_is_stopped(task)	((task->state & __TASK_STOPPED) != 0)
- #define task_is_dead(task)	((task)->exit_state != 0)
 -#define task_is_stopped_or_traced(task)	\
 -			((task->state & (__TASK_STOPPED | __TASK_TRACED)) != 0)
  #define task_contributes_to_load(task)	\
  				((task->state & TASK_UNINTERRUPTIBLE) != 0 && \
  				 (task->flags & PF_FROZEN) == 0)
-@@ -2414,6 +2411,51 @@ static inline int need_resched(void)
- 	return unlikely(test_thread_flag(TIF_NEED_RESCHED));
+@@ -2608,6 +2605,51 @@ static inline int signal_pending_state(l
+ 	return (state & TASK_INTERRUPTIBLE) || __fatal_signal_pending(p);
  }
  
 +static inline bool __task_is_stopped_or_traced(struct task_struct *task)
@@ -114,7 +113,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	spin_unlock_irq(&task->sighand->siglock);
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -1024,6 +1024,18 @@ struct migration_arg {
+@@ -1122,6 +1122,18 @@ struct migration_arg {
  
  static int migration_cpu_stop(void *data);
  
@@ -133,7 +132,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  /*
   * wait_task_inactive - wait for a thread to unschedule.
   *
-@@ -1068,7 +1080,7 @@ unsigned long wait_task_inactive(struct
+@@ -1166,7 +1178,7 @@ unsigned long wait_task_inactive(struct
  		 * is actually now running somewhere else!
  		 */
  		while (task_running(rq, p)) {
@@ -142,7 +141,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  				return 0;
  			cpu_relax();
  		}
-@@ -1083,7 +1095,8 @@ unsigned long wait_task_inactive(struct
+@@ -1181,7 +1193,8 @@ unsigned long wait_task_inactive(struct
  		running = task_running(rq, p);
  		on_rq = p->on_rq;
  		ncsw = 0;
@@ -152,7 +151,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  			ncsw = p->nvcsw | LONG_MIN; /* sets MSB */
  		task_rq_unlock(rq, p, &flags);
  
-@@ -1579,7 +1592,7 @@ static void try_to_wake_up_local(struct
+@@ -1685,7 +1698,7 @@ static void try_to_wake_up_local(struct
   */
  int wake_up_process(struct task_struct *p)
  {

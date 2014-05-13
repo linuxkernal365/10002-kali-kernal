@@ -1,7 +1,7 @@
 Subject: arm-disable-highmem-on-rt.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Mon, 18 Jul 2011 17:09:28 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -1759,7 +1759,7 @@ config HAVE_ARCH_PFN_VALID
+@@ -1789,7 +1789,7 @@ config HAVE_ARCH_PFN_VALID
  
  config HIGHMEM
  	bool "High Memory Support"

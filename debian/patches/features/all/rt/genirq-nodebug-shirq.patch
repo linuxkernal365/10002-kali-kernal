@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 18 Mar 2011 10:22:04 +0100
 Subject: genirq: Disable DEBUG_SHIRQ for rt
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/lib/Kconfig.debug
 +++ b/lib/Kconfig.debug
-@@ -597,7 +597,7 @@ endmenu # "Memory Debugging"
+@@ -606,7 +606,7 @@ endmenu # "Memory Debugging"
  
  config DEBUG_SHIRQ
  	bool "Debug shared IRQ handlers"

@@ -2,7 +2,7 @@ From 53a9508f5983092928b0e6e12f400b686e1f04b1 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Mon, 28 Oct 2013 11:50:06 +0100
 Subject: [PATCH] a few open coded completions
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
@@ -13,7 +13,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/drivers/net/wireless/orinoco/orinoco_usb.c
 +++ b/drivers/net/wireless/orinoco/orinoco_usb.c
-@@ -714,7 +714,7 @@ static void ezusb_req_ctx_wait(struct ez
+@@ -713,7 +713,7 @@ static void ezusb_req_ctx_wait(struct ez
  			while (!ctx->done.done && msecs--)
  				udelay(1000);
  		} else {
@@ -24,7 +24,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		break;
 --- a/drivers/usb/gadget/f_fs.c
 +++ b/drivers/usb/gadget/f_fs.c
-@@ -1282,7 +1282,7 @@ static void ffs_data_put(struct ffs_data
+@@ -1120,7 +1120,7 @@ static void ffs_data_put(struct ffs_data
  		pr_info("%s(): freeing\n", __func__);
  		ffs_data_clear(ffs);
  		BUG_ON(waitqueue_active(&ffs->ev.waitq) ||

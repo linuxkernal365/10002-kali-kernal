@@ -1,7 +1,7 @@
 Subject: timekeeping-split-jiffies-lock.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 14 Feb 2013 22:36:59 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -14,7 +14,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/kernel/time/jiffies.c
 +++ b/kernel/time/jiffies.c
-@@ -67,7 +67,8 @@ static struct clocksource clocksource_ji
+@@ -73,7 +73,8 @@ static struct clocksource clocksource_ji
  	.shift		= JIFFIES_SHIFT,
  };
  
@@ -24,7 +24,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  #if (BITS_PER_LONG < 64)
  u64 get_jiffies_64(void)
-@@ -76,9 +77,9 @@ u64 get_jiffies_64(void)
+@@ -82,9 +83,9 @@ u64 get_jiffies_64(void)
  	u64 ret;
  
  	do {
@@ -38,7 +38,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  EXPORT_SYMBOL(get_jiffies_64);
 --- a/kernel/time/tick-common.c
 +++ b/kernel/time/tick-common.c
-@@ -63,13 +63,15 @@ int tick_is_oneshot_available(void)
+@@ -78,13 +78,15 @@ int tick_is_oneshot_available(void)
  static void tick_periodic(int cpu)
  {
  	if (tick_do_timer_cpu == cpu) {
@@ -53,10 +53,10 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -		write_sequnlock(&jiffies_lock);
 +		write_seqcount_end(&jiffies_seq);
 +		raw_spin_unlock(&jiffies_lock);
+ 		update_wall_time();
  	}
  
- 	update_process_times(user_mode(get_irq_regs()));
-@@ -130,9 +132,9 @@ void tick_setup_periodic(struct clock_ev
+@@ -146,9 +148,9 @@ void tick_setup_periodic(struct clock_ev
  		ktime_t next;
  
  		do {
@@ -99,10 +99,10 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -	write_sequnlock(&jiffies_lock);
 +	write_seqcount_end(&jiffies_seq);
 +	raw_spin_unlock(&jiffies_lock);
+ 	update_wall_time();
  }
  
- /*
-@@ -95,12 +97,14 @@ static ktime_t tick_init_jiffy_update(vo
+@@ -96,12 +98,14 @@ static ktime_t tick_init_jiffy_update(vo
  {
  	ktime_t period;
  
@@ -119,7 +119,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	return period;
  }
  
-@@ -538,11 +542,11 @@ static ktime_t tick_nohz_stop_sched_tick
+@@ -537,10 +541,10 @@ static ktime_t tick_nohz_stop_sched_tick
  
  	/* Read jiffies and the time when jiffies were updated last */
  	do {
@@ -127,7 +127,6 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +		seq = read_seqcount_begin(&jiffies_seq);
  		last_update = last_jiffies_update;
  		last_jiffies = jiffies;
- 		time_delta = timekeeping_max_deferment();
 -	} while (read_seqretry(&jiffies_lock, seq));
 +	} while (read_seqcount_retry(&jiffies_seq, seq));
  
@@ -135,7 +134,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	    arch_needs_cpu(cpu) || irq_work_needs_cpu()) {
 --- a/kernel/time/timekeeping.c
 +++ b/kernel/time/timekeeping.c
-@@ -1735,7 +1735,9 @@ EXPORT_SYMBOL(hardpps);
+@@ -1735,8 +1735,10 @@ EXPORT_SYMBOL(hardpps);
   */
  void xtime_update(unsigned long ticks)
  {
@@ -146,4 +145,5 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -	write_sequnlock(&jiffies_lock);
 +	write_seqcount_end(&jiffies_seq);
 +	raw_spin_unlock(&jiffies_lock);
+ 	update_wall_time();
  }

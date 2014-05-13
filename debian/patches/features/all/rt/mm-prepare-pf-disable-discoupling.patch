@@ -1,7 +1,7 @@
 From: Ingo Molnar <mingo@elte.hu>
 Date: Fri, 3 Jul 2009 08:30:37 -0500
 Subject: mm: Prepare decoupling the page fault disabling logic
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Add a pagefault_disabled variable to task_struct to allow decoupling
 the pagefault-disabled logic from the preempt count.
@@ -11,14 +11,14 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 ---
  include/linux/sched.h   |    1 +
- include/linux/uaccess.h |   33 +++------------------------------
+ include/linux/uaccess.h |   32 +++-----------------------------
  kernel/fork.c           |    1 +
- mm/memory.c             |   29 +++++++++++++++++++++++++++++
- 4 files changed, 34 insertions(+), 30 deletions(-)
+ mm/memory.c             |   30 ++++++++++++++++++++++++++++++
+ 4 files changed, 35 insertions(+), 29 deletions(-)
 
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1249,6 +1249,7 @@ struct task_struct {
+@@ -1388,6 +1388,7 @@ struct task_struct {
  	/* mutex deadlock detection */
  	struct mutex_waiter *blocked_on;
  #endif
@@ -28,7 +28,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	unsigned long hardirq_enable_ip;
 --- a/include/linux/uaccess.h
 +++ b/include/linux/uaccess.h
-@@ -6,37 +6,10 @@
+@@ -6,36 +6,10 @@
  
  /*
   * These routines enable/disable the pagefault handler in that
@@ -42,7 +42,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
   */
 -static inline void pagefault_disable(void)
 -{
--	inc_preempt_count();
+-	preempt_count_inc();
 -	/*
 -	 * make sure to have issued the store before a pagefault
 -	 * can hit.
@@ -52,17 +52,16 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -
 -static inline void pagefault_enable(void)
 -{
+-#ifndef CONFIG_PREEMPT
 -	/*
 -	 * make sure to issue those last loads/stores before enabling
 -	 * the pagefault handler again.
 -	 */
 -	barrier();
--	dec_preempt_count();
--	/*
--	 * make sure we do..
--	 */
--	barrier();
--	preempt_check_resched();
+-	preempt_count_dec();
+-#else
+-	preempt_enable();
+-#endif
 -}
 +extern void pagefault_disable(void);
 +extern void pagefault_enable(void);
@@ -71,7 +70,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -1296,6 +1296,7 @@ static struct task_struct *copy_process(
+@@ -1298,6 +1298,7 @@ static struct task_struct *copy_process(
  	p->hardirq_context = 0;
  	p->softirq_context = 0;
  #endif
@@ -81,13 +80,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	p->curr_chain_key = 0;
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -3742,6 +3742,35 @@ static int handle_pte_fault(struct mm_st
+@@ -3690,6 +3690,36 @@ static int handle_pte_fault(struct mm_st
  	return 0;
  }
  
 +void pagefault_disable(void)
 +{
-+	inc_preempt_count();
++	preempt_count_inc();
 +	current->pagefault_disabled++;
 +	/*
 +	 * make sure to have issued the store before a pagefault
@@ -99,18 +98,19 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +
 +void pagefault_enable(void)
 +{
++#ifndef CONFIG_PREEMPT
 +	/*
 +	 * make sure to issue those last loads/stores before enabling
 +	 * the pagefault handler again.
 +	 */
 +	barrier();
 +	current->pagefault_disabled--;
-+	dec_preempt_count();
-+	/*
-+	 * make sure we do..
-+	 */
++	preempt_count_dec();
++#else
 +	barrier();
-+	preempt_check_resched();
++	current->pagefault_disabled--;
++	preempt_enable();
++#endif
 +}
 +EXPORT_SYMBOL(pagefault_enable);
 +

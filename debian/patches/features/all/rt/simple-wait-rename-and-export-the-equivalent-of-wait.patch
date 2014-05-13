@@ -3,7 +3,7 @@ From: Paul Gortmaker <paul.gortmaker@windriver.com>
 Date: Tue, 27 Aug 2013 14:20:26 -0400
 Subject: [PATCH] simple-wait: rename and export the equivalent of
  waitqueue_active()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 The function "swait_head_has_waiters()" was internalized into
 wait-simple.c but it parallels the waitqueue_active of normal
@@ -16,7 +16,7 @@ Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
  include/linux/wait-simple.h |    8 ++++++++
- kernel/wait-simple.c        |   10 +---------
+ kernel/sched/wait-simple.c  |   10 +---------
  2 files changed, 9 insertions(+), 9 deletions(-)
 
 --- a/include/linux/wait-simple.h
@@ -36,8 +36,8 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  /*
   * Wakeup functions
   */
---- a/kernel/wait-simple.c
-+++ b/kernel/wait-simple.c
+--- a/kernel/sched/wait-simple.c
++++ b/kernel/sched/wait-simple.c
 @@ -26,14 +26,6 @@ static inline void __swait_dequeue(struc
  	list_del_init(&w->node);
  }

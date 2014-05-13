@@ -1,34 +1,60 @@
 Subject: softirq-local-lock.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 28 Jun 2011 15:57:18 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- include/linux/interrupt.h    |   12 +++
- include/linux/preempt_mask.h |   15 +++
+ include/linux/bottom_half.h  |   12 ++
+ include/linux/interrupt.h    |   10 ++
+ include/linux/preempt_mask.h |   15 ++-
  include/linux/sched.h        |    1 
  init/main.c                  |    1 
- kernel/softirq.c             |  167 ++++++++++++++++++++++++++++++++++++++++++-
- 5 files changed, 191 insertions(+), 5 deletions(-)
+ kernel/softirq.c             |  186 ++++++++++++++++++++++++++++++++++++++++++-
+ 6 files changed, 220 insertions(+), 5 deletions(-)
 
+--- a/include/linux/bottom_half.h
++++ b/include/linux/bottom_half.h
+@@ -4,6 +4,17 @@
+ #include <linux/preempt.h>
+ #include <linux/preempt_mask.h>
+ 
++#ifdef CONFIG_PREEMPT_RT_FULL
++
++extern void local_bh_disable(void);
++extern void _local_bh_enable(void);
++extern void local_bh_enable(void);
++extern void local_bh_enable_ip(unsigned long ip);
++extern void __local_bh_disable_ip(unsigned long ip, unsigned int cnt);
++extern void __local_bh_enable_ip(unsigned long ip, unsigned int cnt);
++
++#else
++
+ #ifdef CONFIG_TRACE_IRQFLAGS
+ extern void __local_bh_disable_ip(unsigned long ip, unsigned int cnt);
+ #else
+@@ -31,5 +42,6 @@ static inline void local_bh_enable(void)
+ {
+ 	__local_bh_enable_ip(_THIS_IP_, SOFTIRQ_DISABLE_OFFSET);
+ }
++#endif
+ 
+ #endif /* _LINUX_BH_H */
 --- a/include/linux/interrupt.h
 +++ b/include/linux/interrupt.h
-@@ -379,7 +379,13 @@ struct softirq_action
+@@ -383,7 +383,11 @@ struct softirq_action
  
  asmlinkage void do_softirq(void);
  asmlinkage void __do_softirq(void);
-+
 +#ifndef CONFIG_PREEMPT_RT_FULL
  static inline void thread_do_softirq(void) { do_softirq(); }
 +#else
 +extern void thread_do_softirq(void);
 +#endif
-+
- extern void open_softirq(int nr, void (*action)(struct softirq_action *));
- extern void softirq_init(void);
- extern void __raise_softirq_irqoff(unsigned int nr);
-@@ -566,6 +572,12 @@ void tasklet_hrtimer_cancel(struct taskl
+ #ifdef __ARCH_HAS_DO_SOFTIRQ
+ void do_softirq_own_stack(void);
+ #else
+@@ -558,6 +562,12 @@ void tasklet_hrtimer_cancel(struct taskl
  	tasklet_kill(&ttimer->tasklet);
  }
  
@@ -43,7 +69,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
   *
 --- a/include/linux/preempt_mask.h
 +++ b/include/linux/preempt_mask.h
-@@ -58,7 +58,11 @@
+@@ -44,16 +44,26 @@
  #define HARDIRQ_OFFSET	(1UL << HARDIRQ_SHIFT)
  #define NMI_OFFSET	(1UL << NMI_SHIFT)
  
@@ -51,13 +77,12 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#ifndef CONFIG_PREEMPT_RT_FULL
 +# define SOFTIRQ_DISABLE_OFFSET	(2 * SOFTIRQ_OFFSET)
 +#else
-+# define SOFTIRQ_DISABLE_OFFSET (0)
++# define SOFTIRQ_DISABLE_OFFSET	(0)
 +#endif
  
- #ifndef PREEMPT_ACTIVE
  #define PREEMPT_ACTIVE_BITS	1
-@@ -71,9 +75,15 @@
- #endif
+ #define PREEMPT_ACTIVE_SHIFT	(NMI_SHIFT + NMI_BITS)
+ #define PREEMPT_ACTIVE	(__IRQ_MASK(PREEMPT_ACTIVE_BITS) << PREEMPT_ACTIVE_SHIFT)
  
  #define hardirq_count()	(preempt_count() & HARDIRQ_MASK)
 -#define softirq_count()	(preempt_count() & SOFTIRQ_MASK)
@@ -73,7 +98,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  /*
   * Are we doing bottom half or hardware interrupt processing?
-@@ -84,7 +94,6 @@
+@@ -64,7 +74,6 @@
  #define in_irq()		(hardirq_count())
  #define in_softirq()		(softirq_count())
  #define in_interrupt()		(irq_count())
@@ -83,7 +108,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
   * Are we in NMI context?
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1439,6 +1439,7 @@ struct task_struct {
+@@ -1609,6 +1609,7 @@ struct task_struct {
  #endif
  #ifdef CONFIG_PREEMPT_RT_BASE
  	struct rcu_head put_rcu;
@@ -93,7 +118,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/init/main.c
 +++ b/init/main.c
-@@ -499,6 +499,7 @@ asmlinkage void __init start_kernel(void
+@@ -504,6 +504,7 @@ asmlinkage void __init start_kernel(void
   * Interrupts are still disabled. Do necessary setups, then
   * enable them
   */
@@ -111,7 +136,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  #define CREATE_TRACE_POINTS
  #include <trace/events/irq.h>
-@@ -168,6 +169,7 @@ static void handle_pending_softirqs(u32
+@@ -173,6 +174,7 @@ static void handle_pending_softirqs(u32
  	local_irq_disable();
  }
  
@@ -119,9 +144,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * preempt_count and SOFTIRQ_OFFSET usage:
   * - preempt_count is changed by SOFTIRQ_OFFSET on entering or leaving
-@@ -403,6 +405,163 @@ asmlinkage void do_softirq(void)
- 
- #endif
+@@ -382,6 +384,182 @@ asmlinkage void do_softirq(void)
+ 	local_irq_restore(flags);
+ }
  
 +static inline void local_bh_disable_nort(void) { local_bh_disable(); }
 +static inline void _local_bh_enable_nort(void) { _local_bh_enable(); }
@@ -134,21 +159,33 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +static DEFINE_LOCAL_IRQ_LOCK(local_softirq_lock);
 +static DEFINE_PER_CPU(struct task_struct *, local_softirq_runner);
 +
-+static void __do_softirq(void);
++asmlinkage void __do_softirq(void);
 +
 +void __init softirq_early_init(void)
 +{
 +	local_irq_lock_init(local_softirq_lock);
 +}
 +
-+void local_bh_disable(void)
++static void __local_bh_disable(void)
 +{
 +	migrate_disable();
 +	current->softirq_nestcnt++;
 +}
++
++void local_bh_disable(void)
++{
++	__local_bh_disable();
++}
 +EXPORT_SYMBOL(local_bh_disable);
 +
-+void local_bh_enable(void)
++void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
++{
++	__local_bh_disable();
++	if (cnt & PREEMPT_CHECK_OFFSET)
++		preempt_disable();
++}
++
++static void __local_bh_enable(void)
 +{
 +	if (WARN_ON(current->softirq_nestcnt == 0))
 +		return;
@@ -167,7 +204,19 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	current->softirq_nestcnt--;
 +	migrate_enable();
 +}
++
++void local_bh_enable(void)
++{
++	__local_bh_enable();
++}
 +EXPORT_SYMBOL(local_bh_enable);
++
++extern void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
++{
++	__local_bh_enable();
++	if (cnt & PREEMPT_CHECK_OFFSET)
++		preempt_enable();
++}
 +
 +void local_bh_enable_ip(unsigned long ip)
 +{
@@ -198,7 +247,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 + * Called with bh and local interrupts disabled. For full RT cpu must
 + * be pinned.
 + */
-+static void __do_softirq(void)
++asmlinkage void __do_softirq(void)
 +{
 +	u32 pending = local_softirq_pending();
 +	int cpu = smp_processor_id();
@@ -271,11 +320,6 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	}
 +}
 +
-+static int ksoftirqd_do_softirq(int cpu)
-+{
-+	return __thread_do_softirq(cpu);
-+}
-+
 +static inline void local_bh_disable_nort(void) { }
 +static inline void _local_bh_enable_nort(void) { }
 +
@@ -283,27 +327,27 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * Enter an interrupt context.
   */
-@@ -416,9 +575,9 @@ void irq_enter(void)
+@@ -393,9 +571,9 @@ void irq_enter(void)
  		 * Prevent raise_softirq from needlessly waking up ksoftirqd
  		 * here, as softirq will be serviced on return from interrupt.
  		 */
 -		local_bh_disable();
 +		local_bh_disable_nort();
- 		tick_check_idle(cpu);
+ 		tick_irq_enter();
 -		_local_bh_enable();
 +		_local_bh_enable_nort();
  	}
  
  	__irq_enter();
-@@ -426,6 +585,7 @@ void irq_enter(void)
+@@ -403,6 +581,7 @@ void irq_enter(void)
  
  static inline void invoke_softirq(void)
  {
 +#ifndef CONFIG_PREEMPT_RT_FULL
  	if (!force_irqthreads) {
- 		lockdep_softirq_from_hardirq();
+ #ifdef CONFIG_HAVE_IRQ_EXIT_ON_IRQ_STACK
  		/*
-@@ -440,6 +600,9 @@ static inline void invoke_softirq(void)
+@@ -422,6 +601,9 @@ static inline void invoke_softirq(void)
  	} else {
  		wakeup_softirqd();
  	}

@@ -169,6 +169,7 @@ MODULE_SUPPORTED_DEVICE("{{Intel, ICH6},"
 			 "{Intel, PPT},"
 			 "{Intel, LPT},"
 			 "{Intel, LPT_LP},"
+			 "{Intel, WPT_LP},"
 			 "{Intel, HPT},"
 			 "{Intel, PBG},"
 			 "{Intel, SCH},"
@@ -197,7 +198,7 @@ MODULE_DESCRIPTION("Intel HDA driver");
 #endif
 
 #if defined(CONFIG_PM) && defined(CONFIG_VGA_SWITCHEROO)
-#ifdef CONFIG_SND_HDA_CODEC_HDMI
+#if IS_ENABLED(CONFIG_SND_HDA_CODEC_HDMI)
 #define SUPPORT_VGA_SWITCHEROO
 #endif
 #endif
@@ -430,6 +431,8 @@ struct azx_dev {
 	struct timecounter  azx_tc;
 	struct cyclecounter azx_cc;
 
+	int delay_negative_threshold;
+
 #ifdef CONFIG_SND_HDA_DSP_LOADER
 	struct mutex dsp_mutex;
 #endif
@@ -542,9 +545,7 @@ struct azx {
 	/* for pending irqs */
 	struct work_struct irq_pending_work;
 
-#ifdef CONFIG_SND_HDA_I915
 	struct work_struct probe_work;
-#endif
 
 	/* reboot notifier (for mysterious hangup problem at power-down) */
 	struct notifier_block reboot_notifier;
@@ -568,6 +569,7 @@ enum {
 	AZX_DRIVER_ICH,
 	AZX_DRIVER_PCH,
 	AZX_DRIVER_SCH,
+	AZX_DRIVER_HDMI,
 	AZX_DRIVER_ATI,
 	AZX_DRIVER_ATIHDMI,
 	AZX_DRIVER_ATIHDMI_NS,
@@ -647,6 +649,7 @@ static char *driver_short_names[] = {
 	[AZX_DRIVER_ICH] = "HDA Intel",
 	[AZX_DRIVER_PCH] = "HDA Intel PCH",
 	[AZX_DRIVER_SCH] = "HDA Intel MID",
+	[AZX_DRIVER_HDMI] = "HDA Intel HDMI",
 	[AZX_DRIVER_ATI] = "HDA ATI SB",
 	[AZX_DRIVER_ATIHDMI] = "HDA ATI HDMI",
 	[AZX_DRIVER_ATIHDMI_NS] = "HDA ATI HDMI",
@@ -911,12 +914,12 @@ static void azx_update_rirb(struct azx *chip)
 			chip->rirb.res[addr] = res;
 			smp_wmb();
 			chip->rirb.cmds[addr]--;
-		} else
-			snd_printk(KERN_ERR SFX "%s: spurious response %#x:%#x, "
-				   "last cmd=%#08x\n",
+		} else if (printk_ratelimit()) {
+			snd_printk(KERN_ERR SFX "%s: spurious response %#x:%#x, last cmd=%#08x\n",
 				   pci_name(chip->pci),
 				   res, res_ex,
 				   chip->last_cmd[addr]);
+		}
 	}
 }
 
@@ -2194,6 +2197,15 @@ static int azx_pcm_prepare(struct snd_pcm_substream *substream)
 			goto unlock;
 	}
 
+	/* when LPIB delay correction gives a small negative value,
+	 * we ignore it; currently set the threshold statically to
+	 * 64 frames
+	 */
+	if (runtime->period_size > 64)
+		azx_dev->delay_negative_threshold = -frames_to_bytes(runtime, 64);
+	else
+		azx_dev->delay_negative_threshold = 0;
+
 	/* wallclk has 24Mhz clock source */
 	azx_dev->period_wallclk = (((runtime->period_size * 24000) /
 						runtime->rate) * 1000);
@@ -2446,8 +2458,12 @@ static unsigned int azx_get_position(struct azx *chip,
 			delay = pos - lpib_pos;
 		else
 			delay = lpib_pos - pos;
-		if (delay < 0)
-			delay += azx_dev->bufsize;
+		if (delay < 0) {
+			if (delay >= azx_dev->delay_negative_threshold)
+				delay = 0;
+			else
+				delay += azx_dev->bufsize;
+		}
 		if (delay >= azx_dev->period_bytes) {
 			snd_printk(KERN_WARNING SFX
 				   "%s: Unstable LPIB (%d >= %d); "
@@ -3501,12 +3517,10 @@ static void azx_check_snoop_available(struct azx *chip)
 	}
 }
 
-#ifdef CONFIG_SND_HDA_I915
 static void azx_probe_work(struct work_struct *work)
 {
 	azx_probe_continue(container_of(work, struct azx, probe_work));
 }
-#endif
 
 /*
  * constructor
@@ -3583,10 +3597,8 @@ static int azx_create(struct snd_card *card, struct pci_dev *pci,
 		return err;
 	}
 
-#ifdef CONFIG_SND_HDA_I915
 	/* continue probing in work context as may trigger request module */
 	INIT_WORK(&chip->probe_work, azx_probe_work);
-#endif
 
 	*rchip = chip;
 
@@ -3806,7 +3818,7 @@ static int azx_probe(struct pci_dev *pci,
 	static int dev;
 	struct snd_card *card;
 	struct azx *chip;
-	bool probe_now;
+	bool schedule_probe;
 	int err;
 
 	if (dev >= SNDRV_CARDS)
@@ -3845,7 +3857,7 @@ static int azx_probe(struct pci_dev *pci,
 		chip->disabled = true;
 	}
 
-	probe_now = !chip->disabled;
+	schedule_probe = !chip->disabled;
 
 #ifdef CONFIG_SND_HDA_PATCH_LOADER
 	if (patch[dev] && *patch[dev]) {
@@ -3856,28 +3868,21 @@ static int azx_probe(struct pci_dev *pci,
 					      azx_firmware_cb);
 		if (err < 0)
 			goto out_free;
-		probe_now = false; /* continued in azx_firmware_cb() */
+		schedule_probe = false; /* continued in azx_firmware_cb() */
 	}
 #endif /* CONFIG_SND_HDA_PATCH_LOADER */
 
-	/* continue probing in work context, avoid request_module deadlock */
-	if (probe_now && (chip->driver_caps & AZX_DCAPS_I915_POWERWELL)) {
-#ifdef CONFIG_SND_HDA_I915
-		probe_now = false;
-		schedule_work(&chip->probe_work);
-#else
+#ifndef CONFIG_SND_HDA_I915
+	if (chip->driver_caps & AZX_DCAPS_I915_POWERWELL)
 		snd_printk(KERN_ERR SFX "Haswell must build in CONFIG_SND_HDA_I915\n");
 #endif
-	}
 
-	if (probe_now) {
-		err = azx_probe_continue(chip);
-		if (err < 0)
-			goto out_free;
-	}
+	if (schedule_probe)
+		schedule_work(&chip->probe_work);
 
 	dev++;
-	complete_all(&chip->probe_wait);
+	if (chip->disabled)
+		complete_all(&chip->probe_wait);
 	return 0;
 
 out_free:
@@ -3954,10 +3959,10 @@ static int azx_probe_continue(struct azx *chip)
 	if ((chip->driver_caps & AZX_DCAPS_PM_RUNTIME) || chip->use_vga_switcheroo)
 		pm_runtime_put_noidle(&pci->dev);
 
-	return 0;
-
 out_free:
-	chip->init_failed = 1;
+	if (err < 0)
+		chip->init_failed = 1;
+	complete_all(&chip->probe_wait);
 	return err;
 }
 
@@ -3979,7 +3984,7 @@ static DEFINE_PCI_DEVICE_TABLE(azx_ids) = {
 	  .driver_data = AZX_DRIVER_PCH | AZX_DCAPS_INTEL_PCH_NOPM },
 	/* Panther Point */
 	{ PCI_DEVICE(0x8086, 0x1e20),
-	  .driver_data = AZX_DRIVER_PCH | AZX_DCAPS_INTEL_PCH_NOPM },
+	  .driver_data = AZX_DRIVER_PCH | AZX_DCAPS_INTEL_PCH },
 	/* Lynx Point */
 	{ PCI_DEVICE(0x8086, 0x8c20),
 	  .driver_data = AZX_DRIVER_PCH | AZX_DCAPS_INTEL_PCH },
@@ -3994,13 +3999,19 @@ static DEFINE_PCI_DEVICE_TABLE(azx_ids) = {
 	/* Lynx Point-LP */
 	{ PCI_DEVICE(0x8086, 0x9c21),
 	  .driver_data = AZX_DRIVER_PCH | AZX_DCAPS_INTEL_PCH },
+	/* Wildcat Point-LP */
+	{ PCI_DEVICE(0x8086, 0x9ca0),
+	  .driver_data = AZX_DRIVER_PCH | AZX_DCAPS_INTEL_PCH },
 	/* Haswell */
 	{ PCI_DEVICE(0x8086, 0x0a0c),
-	  .driver_data = AZX_DRIVER_SCH | AZX_DCAPS_INTEL_HASWELL },
+	  .driver_data = AZX_DRIVER_HDMI | AZX_DCAPS_INTEL_HASWELL },
 	{ PCI_DEVICE(0x8086, 0x0c0c),
-	  .driver_data = AZX_DRIVER_SCH | AZX_DCAPS_INTEL_HASWELL },
+	  .driver_data = AZX_DRIVER_HDMI | AZX_DCAPS_INTEL_HASWELL },
 	{ PCI_DEVICE(0x8086, 0x0d0c),
-	  .driver_data = AZX_DRIVER_SCH | AZX_DCAPS_INTEL_HASWELL },
+	  .driver_data = AZX_DRIVER_HDMI | AZX_DCAPS_INTEL_HASWELL },
+	/* Broadwell */
+	{ PCI_DEVICE(0x8086, 0x160c),
+	  .driver_data = AZX_DRIVER_HDMI | AZX_DCAPS_INTEL_HASWELL },
 	/* 5 Series/3400 */
 	{ PCI_DEVICE(0x8086, 0x3b56),
 	  .driver_data = AZX_DRIVER_SCH | AZX_DCAPS_INTEL_PCH_NOPM },
@@ -4079,6 +4090,22 @@ static DEFINE_PCI_DEVICE_TABLE(azx_ids) = {
 	{ PCI_DEVICE(0x1002, 0xaa40),
 	  .driver_data = AZX_DRIVER_ATIHDMI | AZX_DCAPS_PRESET_ATI_HDMI },
 	{ PCI_DEVICE(0x1002, 0xaa48),
+	  .driver_data = AZX_DRIVER_ATIHDMI | AZX_DCAPS_PRESET_ATI_HDMI },
+	{ PCI_DEVICE(0x1002, 0xaa50),
+	  .driver_data = AZX_DRIVER_ATIHDMI | AZX_DCAPS_PRESET_ATI_HDMI },
+	{ PCI_DEVICE(0x1002, 0xaa58),
+	  .driver_data = AZX_DRIVER_ATIHDMI | AZX_DCAPS_PRESET_ATI_HDMI },
+	{ PCI_DEVICE(0x1002, 0xaa60),
+	  .driver_data = AZX_DRIVER_ATIHDMI | AZX_DCAPS_PRESET_ATI_HDMI },
+	{ PCI_DEVICE(0x1002, 0xaa68),
+	  .driver_data = AZX_DRIVER_ATIHDMI | AZX_DCAPS_PRESET_ATI_HDMI },
+	{ PCI_DEVICE(0x1002, 0xaa80),
+	  .driver_data = AZX_DRIVER_ATIHDMI | AZX_DCAPS_PRESET_ATI_HDMI },
+	{ PCI_DEVICE(0x1002, 0xaa88),
+	  .driver_data = AZX_DRIVER_ATIHDMI | AZX_DCAPS_PRESET_ATI_HDMI },
+	{ PCI_DEVICE(0x1002, 0xaa90),
+	  .driver_data = AZX_DRIVER_ATIHDMI | AZX_DCAPS_PRESET_ATI_HDMI },
+	{ PCI_DEVICE(0x1002, 0xaa98),
 	  .driver_data = AZX_DRIVER_ATIHDMI | AZX_DCAPS_PRESET_ATI_HDMI },
 	{ PCI_DEVICE(0x1002, 0x9902),
 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI },

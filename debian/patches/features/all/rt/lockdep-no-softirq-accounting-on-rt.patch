@@ -1,12 +1,12 @@
 Subject: lockdep-rt.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 17 Jul 2011 18:51:23 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
  include/linux/irqflags.h |   10 +++++++---
- kernel/lockdep.c         |    2 ++
+ kernel/locking/lockdep.c |    2 ++
  2 files changed, 9 insertions(+), 3 deletions(-)
 
 --- a/include/linux/irqflags.h
@@ -37,9 +37,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif
  
  #if defined(CONFIG_IRQSOFF_TRACER) || \
---- a/kernel/lockdep.c
-+++ b/kernel/lockdep.c
-@@ -3541,6 +3541,7 @@ static void check_flags(unsigned long fl
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -3543,6 +3543,7 @@ static void check_flags(unsigned long fl
  		}
  	}
  
@@ -47,7 +47,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	/*
  	 * We dont accurately track softirq state in e.g.
  	 * hardirq contexts (such as on 4KSTACKS), so only
-@@ -3555,6 +3556,7 @@ static void check_flags(unsigned long fl
+@@ -3557,6 +3558,7 @@ static void check_flags(unsigned long fl
  			DEBUG_LOCKS_WARN_ON(!current->softirqs_enabled);
  		}
  	}

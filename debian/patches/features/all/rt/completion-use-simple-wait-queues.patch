@@ -1,7 +1,7 @@
 Subject: completion: Use simple wait queues
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri, 11 Jan 2013 11:23:51 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Completions have no long lasting callbacks and therefor do not need
 the complex waitqueue variant. Use simple waitqueues which reduces the
@@ -9,23 +9,25 @@ contention on the waitqueue lock.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- include/linux/completion.h |    8 ++++----
+ include/linux/completion.h |    9 ++++-----
  include/linux/uprobes.h    |    1 +
- kernel/sched/core.c        |   44 +++++++++++++++++++++++++-------------------
- 3 files changed, 30 insertions(+), 23 deletions(-)
+ kernel/sched/completion.c  |   34 +++++++++++++++++-----------------
+ kernel/sched/core.c        |   10 ++++++++--
+ 4 files changed, 30 insertions(+), 24 deletions(-)
 
 --- a/include/linux/completion.h
 +++ b/include/linux/completion.h
-@@ -8,7 +8,7 @@
-  * See kernel/sched/core.c for details.
+@@ -7,8 +7,7 @@
+  * Atomic wait-for-completion handler data structures.
+  * See kernel/sched/completion.c for details.
   */
- 
+-
 -#include <linux/wait.h>
 +#include <linux/wait-simple.h>
  
  /*
   * struct completion - structure used to maintain state for a "completion"
-@@ -24,11 +24,11 @@
+@@ -24,11 +23,11 @@
   */
  struct completion {
  	unsigned int done;
@@ -39,7 +41,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  #define COMPLETION_INITIALIZER_ONSTACK(work) \
  	({ init_completion(&work); work; })
-@@ -73,7 +73,7 @@ struct completion {
+@@ -73,7 +72,7 @@ struct completion {
  static inline void init_completion(struct completion *x)
  {
  	x->done = 0;
@@ -47,72 +49,48 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	init_swait_head(&x->wait);
  }
  
- extern void wait_for_completion(struct completion *);
+ /**
 --- a/include/linux/uprobes.h
 +++ b/include/linux/uprobes.h
-@@ -26,6 +26,7 @@
- 
+@@ -27,6 +27,7 @@
  #include <linux/errno.h>
  #include <linux/rbtree.h>
+ #include <linux/types.h>
 +#include <linux/wait.h>
  
  struct vm_area_struct;
  struct mm_struct;
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -2423,7 +2423,10 @@ void migrate_disable(void)
- 	}
- 
- #ifdef CONFIG_SCHED_DEBUG
--	WARN_ON_ONCE(p->migrate_disable_atomic);
-+	if (unlikely(p->migrate_disable_atomic)) {
-+		tracing_off();
-+		WARN_ON_ONCE(1);
-+	}
- #endif
- 
- 	if (p->migrate_disable) {
-@@ -2454,7 +2457,10 @@ void migrate_enable(void)
- 	}
- 
- #ifdef CONFIG_SCHED_DEBUG
--	WARN_ON_ONCE(p->migrate_disable_atomic);
-+	if (unlikely(p->migrate_disable_atomic)) {
-+		tracing_off();
-+		WARN_ON_ONCE(1);
-+	}
- #endif
- 	WARN_ON_ONCE(p->migrate_disable <= 0);
- 
-@@ -2912,10 +2918,10 @@ void complete(struct completion *x)
+--- a/kernel/sched/completion.c
++++ b/kernel/sched/completion.c
+@@ -30,10 +30,10 @@ void complete(struct completion *x)
  {
  	unsigned long flags;
  
 -	spin_lock_irqsave(&x->wait.lock, flags);
 +	raw_spin_lock_irqsave(&x->wait.lock, flags);
  	x->done++;
--	__wake_up_common(&x->wait, TASK_NORMAL, 1, 0, NULL);
+-	__wake_up_locked(&x->wait, TASK_NORMAL, 1);
 -	spin_unlock_irqrestore(&x->wait.lock, flags);
 +	__swait_wake_locked(&x->wait, TASK_NORMAL, 1);
 +	raw_spin_unlock_irqrestore(&x->wait.lock, flags);
  }
  EXPORT_SYMBOL(complete);
  
-@@ -2932,10 +2938,10 @@ void complete_all(struct completion *x)
+@@ -50,10 +50,10 @@ void complete_all(struct completion *x)
  {
  	unsigned long flags;
  
 -	spin_lock_irqsave(&x->wait.lock, flags);
 +	raw_spin_lock_irqsave(&x->wait.lock, flags);
  	x->done += UINT_MAX/2;
--	__wake_up_common(&x->wait, TASK_NORMAL, 0, 0, NULL);
+-	__wake_up_locked(&x->wait, TASK_NORMAL, 0);
 -	spin_unlock_irqrestore(&x->wait.lock, flags);
 +	__swait_wake_locked(&x->wait, TASK_NORMAL, 0);
 +	raw_spin_unlock_irqrestore(&x->wait.lock, flags);
  }
  EXPORT_SYMBOL(complete_all);
  
-@@ -2944,20 +2950,20 @@ do_wait_for_common(struct completion *x,
+@@ -62,20 +62,20 @@ do_wait_for_common(struct completion *x,
  		   long (*action)(long), long timeout, int state)
  {
  	if (!x->done) {
@@ -138,7 +116,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		if (!x->done)
  			return timeout;
  	}
-@@ -2971,9 +2977,9 @@ static inline long __sched
+@@ -89,9 +89,9 @@ static inline long __sched
  {
  	might_sleep();
  
@@ -150,7 +128,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	return timeout;
  }
  
-@@ -3149,12 +3155,12 @@ bool try_wait_for_completion(struct comp
+@@ -267,12 +267,12 @@ bool try_wait_for_completion(struct comp
  	unsigned long flags;
  	int ret = 1;
  
@@ -165,7 +143,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	return ret;
  }
  EXPORT_SYMBOL(try_wait_for_completion);
-@@ -3172,10 +3178,10 @@ bool completion_done(struct completion *
+@@ -290,10 +290,10 @@ bool completion_done(struct completion *
  	unsigned long flags;
  	int ret = 1;
  
@@ -178,3 +156,29 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	return ret;
  }
  EXPORT_SYMBOL(completion_done);
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2689,7 +2689,10 @@ void migrate_disable(void)
+ 	}
+ 
+ #ifdef CONFIG_SCHED_DEBUG
+-	WARN_ON_ONCE(p->migrate_disable_atomic);
++	if (unlikely(p->migrate_disable_atomic)) {
++		tracing_off();
++		WARN_ON_ONCE(1);
++	}
+ #endif
+ 
+ 	if (p->migrate_disable) {
+@@ -2720,7 +2723,10 @@ void migrate_enable(void)
+ 	}
+ 
+ #ifdef CONFIG_SCHED_DEBUG
+-	WARN_ON_ONCE(p->migrate_disable_atomic);
++	if (unlikely(p->migrate_disable_atomic)) {
++		tracing_off();
++		WARN_ON_ONCE(1);
++	}
+ #endif
+ 	WARN_ON_ONCE(p->migrate_disable <= 0);
+ 

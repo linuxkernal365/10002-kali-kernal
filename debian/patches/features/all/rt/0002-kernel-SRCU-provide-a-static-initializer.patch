@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 19 Mar 2013 14:44:30 +0100
 Subject: [PATCH] kernel/SRCU: provide a static initializer
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 There are macros for static initializer for the three out of four
 possible notifier types, that are:
@@ -15,8 +15,8 @@ complete.
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
  include/linux/notifier.h |   34 +++++++++++++++++++++++++---------
- include/linux/srcu.h     |    8 ++++----
- 2 files changed, 29 insertions(+), 13 deletions(-)
+ include/linux/srcu.h     |    9 +++++----
+ 2 files changed, 30 insertions(+), 13 deletions(-)
 
 --- a/include/linux/notifier.h
 +++ b/include/linux/notifier.h
@@ -114,7 +114,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		.queue_lock = __SPIN_LOCK_UNLOCKED(name.queue_lock),	\
  		.running = false,					\
  		.batch_queue = RCU_BATCH_INIT(name.batch_queue),	\
-@@ -104,11 +104,11 @@ void process_srcu(struct work_struct *wo
+@@ -104,11 +104,12 @@ void process_srcu(struct work_struct *wo
   */
  #define DEFINE_SRCU(name)						\
  	static DEFINE_PER_CPU(struct srcu_struct_array, name##_srcu_array);\
@@ -124,7 +124,8 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  #define DEFINE_STATIC_SRCU(name)					\
  	static DEFINE_PER_CPU(struct srcu_struct_array, name##_srcu_array);\
 -	static struct srcu_struct name = __SRCU_STRUCT_INIT(name);
-+	static struct srcu_struct name = __SRCU_STRUCT_INIT(name, name##_srcu_array);
++	static struct srcu_struct name = __SRCU_STRUCT_INIT(\
++		name, name##_srcu_array);
  
  /**
   * call_srcu() - Queue a callback for invocation after an SRCU grace period

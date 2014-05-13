@@ -1,16 +1,16 @@
 Subject: stomp-machine-raw-lock.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 29 Jun 2011 11:01:51 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- kernel/stop_machine.c |   62 ++++++++++++++++++++++++++++++++++----------------
- 1 file changed, 43 insertions(+), 19 deletions(-)
+ kernel/stop_machine.c |   64 ++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 44 insertions(+), 20 deletions(-)
 
 --- a/kernel/stop_machine.c
 +++ b/kernel/stop_machine.c
-@@ -29,12 +29,12 @@ struct cpu_stop_done {
+@@ -30,12 +30,12 @@ struct cpu_stop_done {
  	atomic_t		nr_todo;	/* nr left to execute */
  	bool			executed;	/* actually executed? */
  	int			ret;		/* collected return value */
@@ -25,7 +25,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	bool			enabled;	/* is this stopper enabled? */
  	struct list_head	works;		/* list of pending works */
  };
-@@ -47,7 +47,7 @@ static void cpu_stop_init_done(struct cp
+@@ -56,7 +56,7 @@ static void cpu_stop_init_done(struct cp
  {
  	memset(done, 0, sizeof(*done));
  	atomic_set(&done->nr_todo, nr_todo);
@@ -34,7 +34,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  /* signal completion unless @done is NULL */
-@@ -56,8 +56,10 @@ static void cpu_stop_signal_done(struct
+@@ -65,8 +65,10 @@ static void cpu_stop_signal_done(struct
  	if (done) {
  		if (executed)
  			done->executed = true;
@@ -47,7 +47,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  }
  
-@@ -69,7 +71,7 @@ static void cpu_stop_queue_work(unsigned
+@@ -78,7 +80,7 @@ static void cpu_stop_queue_work(unsigned
  
  	unsigned long flags;
  
@@ -56,7 +56,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	if (stopper->enabled) {
  		list_add_tail(&work->list, &stopper->works);
-@@ -77,7 +79,23 @@ static void cpu_stop_queue_work(unsigned
+@@ -86,7 +88,23 @@ static void cpu_stop_queue_work(unsigned
  	} else
  		cpu_stop_signal_done(work->done, false);
  
@@ -81,7 +81,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  /**
-@@ -111,7 +129,7 @@ int stop_one_cpu(unsigned int cpu, cpu_s
+@@ -120,7 +138,7 @@ int stop_one_cpu(unsigned int cpu, cpu_s
  
  	cpu_stop_init_done(&done, 1);
  	cpu_stop_queue_work(cpu, &work);
@@ -90,7 +90,16 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	return done.executed ? done.ret : -ENOENT;
  }
  
-@@ -172,7 +190,7 @@ static int __stop_cpus(const struct cpum
+@@ -297,7 +315,7 @@ int stop_two_cpus(unsigned int cpu1, uns
+ 	lg_local_unlock(&stop_cpus_lock);
+ 	preempt_enable();
+ 
+-	wait_for_completion(&done.completion);
++	wait_for_stop_done(&done);
+ 
+ 	return done.executed ? done.ret : -ENOENT;
+ }
+@@ -359,7 +377,7 @@ static int __stop_cpus(const struct cpum
  
  	cpu_stop_init_done(&done, cpumask_weight(cpumask));
  	queue_stop_cpus_work(cpumask, fn, arg, &done);
@@ -99,7 +108,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	return done.executed ? done.ret : -ENOENT;
  }
  
-@@ -251,9 +269,9 @@ static int cpu_stop_should_run(unsigned
+@@ -438,9 +456,9 @@ static int cpu_stop_should_run(unsigned
  	unsigned long flags;
  	int run;
  
@@ -111,7 +120,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	return run;
  }
  
-@@ -265,13 +283,13 @@ static void cpu_stopper_thread(unsigned
+@@ -452,13 +470,13 @@ static void cpu_stopper_thread(unsigned
  
  repeat:
  	work = NULL;
@@ -127,7 +136,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	if (work) {
  		cpu_stop_fn_t fn = work->fn;
-@@ -303,7 +321,13 @@ static void cpu_stopper_thread(unsigned
+@@ -490,7 +508,13 @@ static void cpu_stopper_thread(unsigned
  			  kallsyms_lookup((unsigned long)fn, NULL, NULL, NULL,
  					  ksym_buf), arg);
  
@@ -141,7 +150,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		goto repeat;
  	}
  }
-@@ -322,20 +346,20 @@ static void cpu_stop_park(unsigned int c
+@@ -509,20 +533,20 @@ static void cpu_stop_park(unsigned int c
  	unsigned long flags;
  
  	/* drain remaining works */
@@ -166,7 +175,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static struct smp_hotplug_thread cpu_stop_threads = {
-@@ -357,7 +381,7 @@ static int __init cpu_stop_init(void)
+@@ -544,7 +568,7 @@ static int __init cpu_stop_init(void)
  	for_each_possible_cpu(cpu) {
  		struct cpu_stopper *stopper = &per_cpu(cpu_stopper, cpu);
  
@@ -175,8 +184,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		INIT_LIST_HEAD(&stopper->works);
  	}
  
-@@ -544,7 +568,7 @@ int stop_machine_from_inactive_cpu(int (
- 	ret = stop_machine_cpu_stop(&smdata);
+@@ -647,7 +671,7 @@ int stop_machine_from_inactive_cpu(int (
+ 	ret = multi_cpu_stop(&msdata);
  
  	/* Busy wait for completion. */
 -	while (!completion_done(&done.completion))

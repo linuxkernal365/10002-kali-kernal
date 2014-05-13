@@ -1,7 +1,7 @@
 Subject: hotplug: Lightweight get online cpus
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 15 Jun 2011 12:36:06 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 get_online_cpus() is a heavy weight function which involves a global
 mutex. migrate_disable() wants a simpler construct which prevents only
@@ -14,12 +14,12 @@ tasks on the cpu which should be brought down.
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
  include/linux/cpu.h |    4 +
- kernel/cpu.c        |  126 ++++++++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 127 insertions(+), 3 deletions(-)
+ kernel/cpu.c        |  120 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 123 insertions(+), 1 deletion(-)
 
 --- a/include/linux/cpu.h
 +++ b/include/linux/cpu.h
-@@ -179,6 +179,8 @@ extern void get_online_cpus(void);
+@@ -182,6 +182,8 @@ extern void get_online_cpus(void);
  extern void put_online_cpus(void);
  extern void cpu_hotplug_disable(void);
  extern void cpu_hotplug_enable(void);
@@ -28,7 +28,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define hotcpu_notifier(fn, pri)	cpu_notifier(fn, pri)
  #define register_hotcpu_notifier(nb)	register_cpu_notifier(nb)
  #define unregister_hotcpu_notifier(nb)	unregister_cpu_notifier(nb)
-@@ -206,6 +208,8 @@ static inline void cpu_hotplug_done(void
+@@ -196,6 +198,8 @@ static inline void cpu_hotplug_done(void
  #define put_online_cpus()	do { } while (0)
  #define cpu_hotplug_disable()	do { } while (0)
  #define cpu_hotplug_enable()	do { } while (0)
@@ -157,11 +157,10 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	if (num_online_cpus() == 1)
  		return -EBUSY;
-@@ -296,7 +392,20 @@ static int __ref _cpu_down(unsigned int
+@@ -296,7 +392,27 @@ static int __ref _cpu_down(unsigned int
  	if (!cpu_online(cpu))
  		return -EINVAL;
  
--	cpu_hotplug_begin();
 +	/* Move the downtaker off the unplug cpu */
 +	if (!alloc_cpumask_var(&cpumask, GFP_KERNEL))
 +		return -ENOMEM;
@@ -176,28 +175,17 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +		return -EBUSY;
 +	}
 +	preempt_enable();
++
+ 	cpu_hotplug_begin();
++	err = cpu_unplug_begin(cpu);
++	if (err) {
++		printk("cpu_unplug_begin(%d) failed\n", cpu);
++		goto out_cancel;
++	}
  
  	err = __cpu_notify(CPU_DOWN_PREPARE | mod, hcpu, -1, &nr_calls);
  	if (err) {
-@@ -304,7 +413,16 @@ static int __ref _cpu_down(unsigned int
- 		__cpu_notify(CPU_DOWN_FAILED | mod, hcpu, nr_calls, NULL);
- 		printk("%s: attempt to take down CPU %u failed\n",
- 				__func__, cpu);
--		goto out_release;
-+		goto out_cancel;
-+	}
-+
-+	cpu_hotplug_begin();
-+	err = cpu_unplug_begin(cpu);
-+	if (err) {
-+		nr_calls--;
-+		__cpu_notify(CPU_DOWN_FAILED | mod, hcpu, nr_calls, NULL);
-+		printk("cpu_unplug_begin(%d) failed\n", cpu);
-+		goto out_cancel;
- 	}
- 	smpboot_park_threads(cpu);
- 
-@@ -336,6 +454,8 @@ static int __ref _cpu_down(unsigned int
+@@ -356,6 +472,8 @@ static int __ref _cpu_down(unsigned int
  	check_for_tasks(cpu);
  
  out_release:

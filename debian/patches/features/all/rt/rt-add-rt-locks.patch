@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 26 Jul 2009 19:39:56 +0200
 Subject: rt: Add the preempt-rt lock replacement APIs
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Map spinlocks, rwlocks, rw_semaphores and semaphores to the rt_mutex
 based locking functions for preempt-rt.
@@ -9,16 +9,35 @@ based locking functions for preempt-rt.
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 ---
+ include/linux/locallock.h        |    6 
  include/linux/rwlock_rt.h        |  123 ++++++++++
  include/linux/spinlock.h         |   12 -
  include/linux/spinlock_api_smp.h |    4 
- include/linux/spinlock_rt.h      |  158 +++++++++++++
- kernel/Makefile                  |    9 
- kernel/rt.c                      |  442 +++++++++++++++++++++++++++++++++++++++
- kernel/spinlock.c                |    7 
- lib/spinlock_debug.c             |    5 
- 8 files changed, 756 insertions(+), 4 deletions(-)
+ include/linux/spinlock_rt.h      |  155 +++++++++++++
+ kernel/locking/Makefile          |    7 
+ kernel/locking/rt.c              |  442 +++++++++++++++++++++++++++++++++++++++
+ kernel/locking/spinlock.c        |    7 
+ kernel/locking/spinlock_debug.c  |    5 
+ 9 files changed, 758 insertions(+), 3 deletions(-)
 
+--- a/include/linux/locallock.h
++++ b/include/linux/locallock.h
+@@ -42,9 +42,15 @@ struct local_irq_lock {
+  * already takes care of the migrate_disable/enable
+  * for CONFIG_PREEMPT_BASE map to the normal spin_* calls.
+  */
++#ifdef CONFIG_PREEMPT_RT_FULL
++# define spin_lock_local(lock)			rt_spin_lock(lock)
++# define spin_trylock_local(lock)		rt_spin_trylock(lock)
++# define spin_unlock_local(lock)		rt_spin_unlock(lock)
++#else
+ # define spin_lock_local(lock)			spin_lock(lock)
+ # define spin_trylock_local(lock)		spin_trylock(lock)
+ # define spin_unlock_local(lock)		spin_unlock(lock)
++#endif
+ 
+ static inline void __local_lock(struct local_irq_lock *lv)
+ {
 --- /dev/null
 +++ b/include/linux/rwlock_rt.h
 @@ -0,0 +1,123 @@
@@ -147,7 +166,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#endif
 --- a/include/linux/spinlock.h
 +++ b/include/linux/spinlock.h
-@@ -262,7 +262,11 @@ static inline void do_raw_spin_unlock(ra
+@@ -272,7 +272,11 @@ static inline void do_raw_spin_unlock(ra
  #define raw_spin_can_lock(lock)	(!raw_spin_is_locked(lock))
  
  /* Include rwlock functions */
@@ -160,7 +179,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  /*
   * Pull the _spin_*()/_read_*()/_write_*() functions/declarations:
-@@ -273,6 +277,10 @@ static inline void do_raw_spin_unlock(ra
+@@ -283,6 +287,10 @@ static inline void do_raw_spin_unlock(ra
  # include <linux/spinlock_api_up.h>
  #endif
  
@@ -171,7 +190,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * Map the spin_lock functions to the raw variants for PREEMPT_RT=n
   */
-@@ -402,4 +410,6 @@ extern int _atomic_dec_and_lock(atomic_t
+@@ -412,4 +420,6 @@ extern int _atomic_dec_and_lock(atomic_t
  #define atomic_dec_and_lock(atomic, lock) \
  		__cond_lock(lock, _atomic_dec_and_lock(atomic, lock))
  
@@ -180,7 +199,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif /* __LINUX_SPINLOCK_H */
 --- a/include/linux/spinlock_api_smp.h
 +++ b/include/linux/spinlock_api_smp.h
-@@ -191,6 +191,8 @@ static inline int __raw_spin_trylock_bh(
+@@ -187,6 +187,8 @@ static inline int __raw_spin_trylock_bh(
  	return 0;
  }
  
@@ -192,7 +211,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif /* __LINUX_SPINLOCK_API_SMP_H */
 --- /dev/null
 +++ b/include/linux/spinlock_rt.h
-@@ -0,0 +1,158 @@
+@@ -0,0 +1,155 @@
 +#ifndef __LINUX_SPINLOCK_RT_H
 +#define __LINUX_SPINLOCK_RT_H
 +
@@ -229,9 +248,6 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 + */
 +extern void __lockfunc __rt_spin_lock(struct rt_mutex *lock);
 +extern void __lockfunc __rt_spin_unlock(struct rt_mutex *lock);
-+
-+#define spin_lock_local(lock)			rt_spin_lock(lock)
-+#define spin_unlock_local(lock)			rt_spin_unlock(lock)
 +
 +#define spin_lock(lock)				\
 +	do {					\
@@ -351,23 +367,19 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	atomic_dec_and_spin_lock(atomic, lock)
 +
 +#endif
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -7,8 +7,8 @@ obj-y     = fork.o exec_domain.o panic.o
- 	    sysctl.o sysctl_binary.o capability.o ptrace.o timer.o user.o \
- 	    signal.o sys.o kmod.o workqueue.o pid.o task_work.o \
- 	    rcupdate.o extable.o params.o posix-timers.o \
--	    kthread.o wait.o sys_ni.o posix-cpu-timers.o mutex.o \
--	    hrtimer.o rwsem.o nsproxy.o srcu.o semaphore.o \
-+	    kthread.o wait.o sys_ni.o posix-cpu-timers.o \
-+	    hrtimer.o nsproxy.o srcu.o semaphore.o \
- 	    notifier.o ksysfs.o cred.o reboot.o \
- 	    async.o range.o groups.o lglock.o smpboot.o
+--- a/kernel/locking/Makefile
++++ b/kernel/locking/Makefile
+@@ -1,5 +1,5 @@
  
-@@ -33,7 +33,11 @@ obj-$(CONFIG_FREEZER) += freezer.o
- obj-$(CONFIG_PROFILING) += profile.o
- obj-$(CONFIG_STACKTRACE) += stacktrace.o
- obj-y += time/
+-obj-y += mutex.o semaphore.o rwsem.o lglock.o
++obj-y += semaphore.o lglock.o
+ 
+ ifdef CONFIG_FUNCTION_TRACER
+ CFLAGS_REMOVE_lockdep.o = -pg
+@@ -8,7 +8,11 @@ CFLAGS_REMOVE_mutex-debug.o = -pg
+ CFLAGS_REMOVE_rtmutex-debug.o = -pg
+ endif
+ 
 +ifneq ($(CONFIG_PREEMPT_RT_FULL),y)
 +obj-y += mutex.o
  obj-$(CONFIG_DEBUG_MUTEXES) += mutex-debug.o
@@ -376,16 +388,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  obj-$(CONFIG_LOCKDEP) += lockdep.o
  ifeq ($(CONFIG_PROC_FS),y)
  obj-$(CONFIG_LOCKDEP) += lockdep_proc.o
-@@ -45,6 +49,7 @@ endif
- obj-$(CONFIG_RT_MUTEXES) += rtmutex.o
- obj-$(CONFIG_DEBUG_RT_MUTEXES) += rtmutex-debug.o
- obj-$(CONFIG_RT_MUTEX_TESTER) += rtmutex-tester.o
+@@ -25,3 +29,4 @@ obj-$(CONFIG_RWSEM_GENERIC_SPINLOCK) +=
+ obj-$(CONFIG_RWSEM_XCHGADD_ALGORITHM) += rwsem-xadd.o
+ endif
+ obj-$(CONFIG_PERCPU_RWSEM) += percpu-rwsem.o
 +obj-$(CONFIG_PREEMPT_RT_FULL) += rt.o
- obj-$(CONFIG_GENERIC_ISA_DMA) += dma.o
- obj-$(CONFIG_SMP) += smp.o
- ifneq ($(CONFIG_SMP),y)
 --- /dev/null
-+++ b/kernel/rt.c
++++ b/kernel/locking/rt.c
 @@ -0,0 +1,442 @@
 +/*
 + * kernel/rt.c
@@ -612,7 +621,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +
 +	if (ret) {
 +		rwlock->read_depth++;
-+		rwlock_acquire_read(&rwlock->dep_map, 0, 1, _RET_IP_);
++		rwlock_acquire(&rwlock->dep_map, 0, 1, _RET_IP_);
 +	} else
 +		migrate_enable();
 +
@@ -631,7 +640,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +{
 +	struct rt_mutex *lock = &rwlock->lock;
 +
-+	rwlock_acquire_read(&rwlock->dep_map, 0, 0, _RET_IP_);
++	rwlock_acquire(&rwlock->dep_map, 0, 0, _RET_IP_);
 +
 +	/*
 +	 * recursive read locks succeed when current owns the lock
@@ -829,8 +838,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	return 1;
 +}
 +EXPORT_SYMBOL(atomic_dec_and_mutex_lock);
---- a/kernel/spinlock.c
-+++ b/kernel/spinlock.c
+--- a/kernel/locking/spinlock.c
++++ b/kernel/locking/spinlock.c
 @@ -124,8 +124,11 @@ void __lockfunc __raw_##op##_lock_bh(loc
   *         __[spin|read|write]_lock_bh()
   */
@@ -861,8 +870,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #ifdef CONFIG_DEBUG_LOCK_ALLOC
  
  void __lockfunc _raw_spin_lock_nested(raw_spinlock_t *lock, int subclass)
---- a/lib/spinlock_debug.c
-+++ b/lib/spinlock_debug.c
+--- a/kernel/locking/spinlock_debug.c
++++ b/kernel/locking/spinlock_debug.c
 @@ -31,6 +31,7 @@ void __raw_spin_lock_init(raw_spinlock_t
  
  EXPORT_SYMBOL(__raw_spin_lock_init);

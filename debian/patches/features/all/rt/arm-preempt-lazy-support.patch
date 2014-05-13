@@ -1,7 +1,7 @@
 Subject: arm-preempt-lazy-support.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 31 Oct 2012 12:04:11 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -14,10 +14,10 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -51,6 +51,7 @@ config ARM
- 	select HAVE_MOD_ARCH_SPECIFIC if ARM_UNWIND
- 	select HAVE_OPROFILE if (HAVE_PERF_EVENTS)
+@@ -58,6 +58,7 @@ config ARM
  	select HAVE_PERF_EVENTS
+ 	select HAVE_PERF_REGS
+ 	select HAVE_PERF_USER_STACK_DUMP
 +	select HAVE_PREEMPT_LAZY
  	select HAVE_REGS_AND_STACK_ACCESS_API
  	select HAVE_SYSCALL_TRACEPOINTS
@@ -32,7 +32,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	mm_segment_t		addr_limit;	/* address limit */
  	struct task_struct	*task;		/* main task structure */
  	struct exec_domain	*exec_domain;	/* execution domain */
-@@ -159,6 +160,7 @@ extern int vfp_restore_user_hwstate(stru
+@@ -153,6 +154,7 @@ extern int vfp_restore_user_hwstate(stru
  #define TIF_SIGPENDING		0
  #define TIF_NEED_RESCHED	1
  #define TIF_NOTIFY_RESUME	2	/* callback before returning to user */
@@ -40,7 +40,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define TIF_SYSCALL_TRACE	8
  #define TIF_SYSCALL_AUDIT	9
  #define TIF_SYSCALL_TRACEPOINT	10
-@@ -171,6 +173,7 @@ extern int vfp_restore_user_hwstate(stru
+@@ -165,6 +167,7 @@ extern int vfp_restore_user_hwstate(stru
  #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
  #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
  #define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
@@ -92,7 +92,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif
 --- a/arch/arm/kernel/signal.c
 +++ b/arch/arm/kernel/signal.c
-@@ -589,7 +589,8 @@ asmlinkage int
+@@ -573,7 +573,8 @@ asmlinkage int
  do_work_pending(struct pt_regs *regs, unsigned int thread_flags, int syscall)
  {
  	do {

@@ -1,7 +1,7 @@
 Subject: vtime-split-lock-and-seqcount.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 23 Jul 2013 15:45:51 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -12,19 +12,19 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  4 files changed, 46 insertions(+), 25 deletions(-)
 --- a/include/linux/init_task.h
 +++ b/include/linux/init_task.h
-@@ -145,7 +145,8 @@ extern struct task_group root_task_group
+@@ -147,7 +147,8 @@ extern struct task_group root_task_group
  
  #ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN
  # define INIT_VTIME(tsk)						\
 -	.vtime_seqlock = __SEQLOCK_UNLOCKED(tsk.vtime_seqlock),	\
 +	.vtime_lock = __RAW_SPIN_LOCK_UNLOCKED(tsk.vtime_lock),	\
-+	.vtime_seq = SEQCNT_ZERO,			\
++	.vtime_seq = SEQCNT_ZERO(tsk.vtime_seq),			\
  	.vtime_snap = 0,				\
  	.vtime_snap_whence = VTIME_SYS,
  #else
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1159,7 +1159,8 @@ struct task_struct {
+@@ -1295,7 +1295,8 @@ struct task_struct {
  	struct cputime prev_cputime;
  #endif
  #ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN
@@ -36,7 +36,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		VTIME_SLEEPING = 0,
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -1241,7 +1241,8 @@ static struct task_struct *copy_process(
+@@ -1243,7 +1243,8 @@ static struct task_struct *copy_process(
  	p->prev_cputime.utime = p->prev_cputime.stime = 0;
  #endif
  #ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN

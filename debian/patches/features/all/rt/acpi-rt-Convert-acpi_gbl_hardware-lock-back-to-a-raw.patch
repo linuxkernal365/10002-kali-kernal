@@ -1,7 +1,7 @@
 From: Steven Rostedt <rostedt@goodmis.org>
 Date: Wed, 13 Feb 2013 09:26:05 -0500
 Subject: [PATCH] acpi/rt: Convert acpi_gbl_hardware lock back to a raw_spinlock_t
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 We hit the following bug with 3.6-rt:
 
@@ -73,7 +73,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/drivers/acpi/acpica/acglobal.h
 +++ b/drivers/acpi/acpica/acglobal.h
-@@ -235,7 +235,7 @@ ACPI_EXTERN u8 acpi_gbl_global_lock_pend
+@@ -253,7 +253,7 @@ ACPI_EXTERN u8 acpi_gbl_global_lock_pend
   * interrupt level
   */
  ACPI_EXTERN acpi_spinlock acpi_gbl_gpe_lock;	/* For GPE data structs and registers */
@@ -103,7 +103,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		goto exit;
 --- a/drivers/acpi/acpica/hwxface.c
 +++ b/drivers/acpi/acpica/hwxface.c
-@@ -365,7 +365,7 @@ acpi_status acpi_write_bit_register(u32
+@@ -374,7 +374,7 @@ acpi_status acpi_write_bit_register(u32
  		return_ACPI_STATUS(AE_BAD_PARAMETER);
  	}
  
@@ -112,7 +112,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	/*
  	 * At this point, we know that the parent register is one of the
-@@ -426,7 +426,7 @@ acpi_status acpi_write_bit_register(u32
+@@ -435,7 +435,7 @@ acpi_status acpi_write_bit_register(u32
  
  unlock_and_exit:
  
@@ -143,17 +143,17 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	/* Delete the reader/writer lock */
 --- a/include/acpi/platform/aclinux.h
 +++ b/include/acpi/platform/aclinux.h
-@@ -72,6 +72,7 @@
+@@ -73,6 +73,7 @@
  
  #define acpi_cache_t                        struct kmem_cache
  #define acpi_spinlock                       spinlock_t *
-+#define acpi_raw_spinlock                   raw_spinlock_t *
++#define acpi_raw_spinlock		    raw_spinlock_t *
  #define acpi_cpu_flags                      unsigned long
  
- #else /* !__KERNEL__ */
-@@ -174,6 +175,19 @@ static inline void *acpi_os_acquire_obje
- 	lock ? AE_OK : AE_NO_MEMORY;				\
- })
+ #else				/* !__KERNEL__ */
+@@ -210,6 +211,19 @@ static inline acpi_thread_id acpi_os_get
+ 	})
+ #define ACPI_USE_ALTERNATE_PROTOTYPE_acpi_os_create_lock
  
 +#define acpi_os_create_raw_lock(__handle)			\
 +({								\
@@ -168,6 +168,6 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 +
 +#define acpi_os_delete_raw_lock(__handle)	kfree(__handle)
 +
- #endif /* __KERNEL__ */
+ void __iomem *acpi_os_map_memory(acpi_physical_address where, acpi_size length);
+ #define ACPI_USE_ALTERNATE_PROTOTYPE_acpi_os_map_memory
  
- #endif /* __ACLINUX_H__ */

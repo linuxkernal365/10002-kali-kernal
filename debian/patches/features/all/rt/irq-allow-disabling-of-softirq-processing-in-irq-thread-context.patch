@@ -1,7 +1,7 @@
 Subject: genirq: Allow disabling of softirq processing in irq thread context
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 31 Jan 2012 13:01:27 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 The processing of softirqs in irq thread context is a performance gain
 for the non-rt workloads of a system, but it's counterproductive for
@@ -13,15 +13,15 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable-rt@vger.kernel.org
 ---
  include/linux/interrupt.h |    2 ++
- include/linux/irq.h       |    5 ++++-
+ include/linux/irq.h       |    4 +++-
  kernel/irq/manage.c       |   13 ++++++++++++-
  kernel/irq/settings.h     |   12 ++++++++++++
  kernel/softirq.c          |    7 +++++++
- 5 files changed, 37 insertions(+), 2 deletions(-)
+ 5 files changed, 36 insertions(+), 2 deletions(-)
 
 --- a/include/linux/interrupt.h
 +++ b/include/linux/interrupt.h
-@@ -58,6 +58,7 @@
+@@ -57,6 +57,7 @@
   * IRQF_NO_THREAD - Interrupt cannot be threaded
   * IRQF_EARLY_RESUME - Resume IRQ early during syscore instead of at device
   *                resume time.
@@ -29,37 +29,37 @@ Cc: stable-rt@vger.kernel.org
   */
  #define IRQF_DISABLED		0x00000020
  #define IRQF_SHARED		0x00000080
-@@ -71,6 +72,7 @@
+@@ -70,6 +71,7 @@
  #define IRQF_FORCE_RESUME	0x00008000
  #define IRQF_NO_THREAD		0x00010000
  #define IRQF_EARLY_RESUME	0x00020000
-+#define IRQF_NO_SOFTIRQ_CALL	0x00040000
++#define IRQF_NO_SOFTIRQ_CALL	0x00080000
  
  #define IRQF_TIMER		(__IRQF_TIMER | IRQF_NO_SUSPEND | IRQF_NO_THREAD)
  
 --- a/include/linux/irq.h
 +++ b/include/linux/irq.h
-@@ -70,6 +70,7 @@ typedef	void (*irq_preflow_handler_t)(st
-  * IRQ_MOVE_PCNTXT		- Interrupt can be migrated from process context
-  * IRQ_NESTED_TRHEAD		- Interrupt nests into another thread
-  * IRQ_PER_CPU_DEVID		- Dev_id is a per-cpu variable
+@@ -73,6 +73,7 @@ typedef	void (*irq_preflow_handler_t)(st
+  * IRQ_IS_POLLED		- Always polled by another interrupt. Exclude
+  *				  it from the spurious interrupt detection
+  *				  mechanism and from core side polling.
 + * IRQ_NO_SOFTIRQ_CALL		- No softirq processing in the irq thread context (RT)
   */
  enum {
  	IRQ_TYPE_NONE		= 0x00000000,
-@@ -94,12 +95,14 @@ enum {
- 	IRQ_NESTED_THREAD	= (1 << 15),
+@@ -98,13 +99,14 @@ enum {
  	IRQ_NOTHREAD		= (1 << 16),
  	IRQ_PER_CPU_DEVID	= (1 << 17),
-+	IRQ_NO_SOFTIRQ_CALL	= (1 << 18),
+ 	IRQ_IS_POLLED		= (1 << 18),
++	IRQ_NO_SOFTIRQ_CALL     = (1 << 19),
  };
  
  #define IRQF_MODIFY_MASK	\
  	(IRQ_TYPE_SENSE_MASK | IRQ_NOPROBE | IRQ_NOREQUEST | \
  	 IRQ_NOAUTOEN | IRQ_MOVE_PCNTXT | IRQ_LEVEL | IRQ_NO_BALANCING | \
--	 IRQ_PER_CPU | IRQ_NESTED_THREAD | IRQ_NOTHREAD | IRQ_PER_CPU_DEVID)
-+	 IRQ_PER_CPU | IRQ_NESTED_THREAD | IRQ_NOTHREAD | IRQ_PER_CPU_DEVID | \
-+	 IRQ_NO_SOFTIRQ_CALL)
+ 	 IRQ_PER_CPU | IRQ_NESTED_THREAD | IRQ_NOTHREAD | IRQ_PER_CPU_DEVID | \
+-	 IRQ_IS_POLLED)
++	 IRQ_IS_POLLED | IRQ_NO_SOFTIRQ_CALL)
  
  #define IRQ_NO_BALANCING_MASK	(IRQ_PER_CPU | IRQ_NO_BALANCING)
  
@@ -82,7 +82,7 @@ Cc: stable-rt@vger.kernel.org
  	return ret;
  }
  
-@@ -1202,6 +1210,9 @@ static int
+@@ -1201,6 +1209,9 @@ static int
  			irqd_set(&desc->irq_data, IRQD_NO_BALANCING);
  		}
  
@@ -94,23 +94,23 @@ Cc: stable-rt@vger.kernel.org
  
 --- a/kernel/irq/settings.h
 +++ b/kernel/irq/settings.h
-@@ -14,6 +14,7 @@ enum {
- 	_IRQ_NO_BALANCING	= IRQ_NO_BALANCING,
+@@ -15,6 +15,7 @@ enum {
  	_IRQ_NESTED_THREAD	= IRQ_NESTED_THREAD,
  	_IRQ_PER_CPU_DEVID	= IRQ_PER_CPU_DEVID,
+ 	_IRQ_IS_POLLED		= IRQ_IS_POLLED,
 +	_IRQ_NO_SOFTIRQ_CALL	= IRQ_NO_SOFTIRQ_CALL,
  	_IRQF_MODIFY_MASK	= IRQF_MODIFY_MASK,
  };
  
-@@ -26,6 +27,7 @@ enum {
- #define IRQ_NOAUTOEN		GOT_YOU_MORON
+@@ -28,6 +29,7 @@ enum {
  #define IRQ_NESTED_THREAD	GOT_YOU_MORON
  #define IRQ_PER_CPU_DEVID	GOT_YOU_MORON
+ #define IRQ_IS_POLLED		GOT_YOU_MORON
 +#define IRQ_NO_SOFTIRQ_CALL	GOT_YOU_MORON
  #undef IRQF_MODIFY_MASK
  #define IRQF_MODIFY_MASK	GOT_YOU_MORON
  
-@@ -36,6 +38,16 @@ irq_settings_clr_and_set(struct irq_desc
+@@ -38,6 +40,16 @@ irq_settings_clr_and_set(struct irq_desc
  	desc->status_use_accessors |= (set & _IRQF_MODIFY_MASK);
  }
  
@@ -129,7 +129,7 @@ Cc: stable-rt@vger.kernel.org
  	return desc->status_use_accessors & _IRQ_PER_CPU;
 --- a/kernel/softirq.c
 +++ b/kernel/softirq.c
-@@ -460,6 +460,13 @@ void local_bh_enable_ip(unsigned long ip
+@@ -463,6 +463,13 @@ void local_bh_enable_ip(unsigned long ip
  }
  EXPORT_SYMBOL(local_bh_enable_ip);
  

@@ -1,7 +1,7 @@
 Subject: net: Another local_irq_disable/kmalloc headache
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 26 Sep 2012 16:21:08 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Replace it by a local lock. Though that's pretty inefficient :(
 
@@ -12,7 +12,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/net/core/skbuff.c
 +++ b/net/core/skbuff.c
-@@ -60,6 +60,7 @@
+@@ -62,6 +62,7 @@
  #include <linux/scatterlist.h>
  #include <linux/errqueue.h>
  #include <linux/prefetch.h>
@@ -20,7 +20,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  #include <net/protocol.h>
  #include <net/dst.h>
-@@ -362,6 +363,7 @@ struct netdev_alloc_cache {
+@@ -335,6 +336,7 @@ struct netdev_alloc_cache {
  	unsigned int		pagecnt_bias;
  };
  static DEFINE_PER_CPU(struct netdev_alloc_cache, netdev_alloc_cache);
@@ -28,7 +28,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  static void *__netdev_alloc_frag(unsigned int fragsz, gfp_t gfp_mask)
  {
-@@ -370,7 +372,7 @@ static void *__netdev_alloc_frag(unsigne
+@@ -343,7 +345,7 @@ static void *__netdev_alloc_frag(unsigne
  	int order;
  	unsigned long flags;
  
@@ -37,7 +37,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	nc = &__get_cpu_var(netdev_alloc_cache);
  	if (unlikely(!nc->frag.page)) {
  refill:
-@@ -404,7 +406,7 @@ static void *__netdev_alloc_frag(unsigne
+@@ -377,7 +379,7 @@ static void *__netdev_alloc_frag(unsigne
  	nc->frag.offset += fragsz;
  	nc->pagecnt_bias--;
  end:

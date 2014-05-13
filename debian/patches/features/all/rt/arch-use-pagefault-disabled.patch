@@ -1,7 +1,7 @@
 Subject: mm: Fixup all fault handlers to check current->pagefault_disable
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 17 Mar 2011 11:32:28 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Necessary for decoupling pagefault disable from preempt count.
 
@@ -20,7 +20,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  arch/mn10300/mm/fault.c    |    2 +-
  arch/parisc/mm/fault.c     |    2 +-
  arch/powerpc/mm/fault.c    |    2 +-
- arch/s390/mm/fault.c       |    6 ++++--
+ arch/s390/mm/fault.c       |    3 ++-
  arch/score/mm/fault.c      |    2 +-
  arch/sh/mm/fault.c         |    2 +-
  arch/sparc/mm/fault_32.c   |    2 +-
@@ -29,7 +29,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  arch/um/kernel/trap.c      |    2 +-
  arch/x86/mm/fault.c        |    2 +-
  arch/xtensa/mm/fault.c     |    2 +-
- 22 files changed, 26 insertions(+), 23 deletions(-)
+ 22 files changed, 24 insertions(+), 22 deletions(-)
 
 --- a/arch/alpha/mm/fault.c
 +++ b/arch/alpha/mm/fault.c
@@ -111,7 +111,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	if (error_code & ACE_USERMODE)
 --- a/arch/m68k/mm/fault.c
 +++ b/arch/m68k/mm/fault.c
-@@ -85,7 +85,7 @@ int do_page_fault(struct pt_regs *regs,
+@@ -81,7 +81,7 @@ int do_page_fault(struct pt_regs *regs,
  	 * If we're in an interrupt or have no user
  	 * context, we must not take the fault..
  	 */
@@ -155,7 +155,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	if ((fault_code & MMUFCR_xFC_ACCESS) == MMUFCR_xFC_ACCESS_USR)
 --- a/arch/parisc/mm/fault.c
 +++ b/arch/parisc/mm/fault.c
-@@ -177,7 +177,7 @@ void do_page_fault(struct pt_regs *regs,
+@@ -183,7 +183,7 @@ void do_page_fault(struct pt_regs *regs,
  	int fault;
  	unsigned int flags;
  
@@ -177,7 +177,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  			goto bail;
 --- a/arch/s390/mm/fault.c
 +++ b/arch/s390/mm/fault.c
-@@ -296,7 +296,8 @@ static inline int do_exception(struct pt
+@@ -291,7 +291,8 @@ static inline int do_exception(struct pt
  	 * user context.
  	 */
  	fault = VM_FAULT_BADCONTEXT;
@@ -187,16 +187,6 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		goto out;
  
  	address = trans_exc_code & __FAIL_ADDR_MASK;
-@@ -442,7 +443,8 @@ void __kprobes do_asce_exception(struct
- 	clear_tsk_thread_flag(current, TIF_PER_TRAP);
- 
- 	trans_exc_code = regs->int_parm_long;
--	if (unlikely(!user_space_fault(trans_exc_code) || in_atomic() || !mm))
-+	if (unlikely(!user_space_fault(trans_exc_code) || in_atomic() || !mm ||
-+		     current->pagefault_disabled()));
- 		goto no_context;
- 
- 	down_read(&mm->mmap_sem);
 --- a/arch/score/mm/fault.c
 +++ b/arch/score/mm/fault.c
 @@ -73,7 +73,7 @@ asmlinkage void do_page_fault(struct pt_
@@ -232,7 +222,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
 --- a/arch/sparc/mm/fault_64.c
 +++ b/arch/sparc/mm/fault_64.c
-@@ -322,7 +322,7 @@ asmlinkage void __kprobes do_sparc64_fau
+@@ -324,7 +324,7 @@ asmlinkage void __kprobes do_sparc64_fau
  	 * If we're in an interrupt or have no user
  	 * context, we must not take the fault..
  	 */
@@ -265,7 +255,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	if (is_user)
 --- a/arch/x86/mm/fault.c
 +++ b/arch/x86/mm/fault.c
-@@ -1094,7 +1094,7 @@ static void __kprobes
+@@ -1103,7 +1103,7 @@ static void __kprobes noinline
  	 * If we're in an interrupt, have no user context or are running
  	 * in an atomic region then we must not take the fault:
  	 */

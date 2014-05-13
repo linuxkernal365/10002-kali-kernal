@@ -1,7 +1,7 @@
 Subject: net: netfilter: Serialize xt_write_recseq sections on RT
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 28 Oct 2012 11:18:08 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 The netfilter code relies only on the implicit semantics of
 local_bh_disable() for serializing wt_write_recseq sections. RT breaks
@@ -25,7 +25,7 @@ Cc: stable-rt@vger.kernel.org
  #include <uapi/linux/netfilter/x_tables.h>
  
  /**
-@@ -284,6 +285,8 @@ extern void xt_free_table_info(struct xt
+@@ -282,6 +283,8 @@ void xt_free_table_info(struct xt_table_
   */
  DECLARE_PER_CPU(seqcount_t, xt_recseq);
  
@@ -34,7 +34,7 @@ Cc: stable-rt@vger.kernel.org
  /**
   * xt_write_recseq_begin - start of a write section
   *
-@@ -298,6 +301,9 @@ static inline unsigned int xt_write_recs
+@@ -296,6 +299,9 @@ static inline unsigned int xt_write_recs
  {
  	unsigned int addend;
  
@@ -44,7 +44,7 @@ Cc: stable-rt@vger.kernel.org
  	/*
  	 * Low order bit of sequence is set if we already
  	 * called xt_write_recseq_begin().
-@@ -328,6 +334,7 @@ static inline void xt_write_recseq_end(u
+@@ -326,6 +332,7 @@ static inline void xt_write_recseq_end(u
  	/* this is kind of a write_seqcount_end(), but addend is 0 or 1 */
  	smp_wmb();
  	__this_cpu_add(xt_recseq.sequence, addend);
