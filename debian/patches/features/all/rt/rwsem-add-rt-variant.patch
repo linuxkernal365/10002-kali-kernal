@@ -1,14 +1,14 @@
 Subject: rwsem-add-rt-variant.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 29 Jun 2011 21:02:53 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
  include/linux/rwsem.h    |    6 ++
- include/linux/rwsem_rt.h |  128 +++++++++++++++++++++++++++++++++++++++++++++++
- lib/Makefile             |    3 +
- 3 files changed, 137 insertions(+)
+ include/linux/rwsem_rt.h |  134 +++++++++++++++++++++++++++++++++++++++++++++++
+ kernel/locking/Makefile  |    2 
+ 3 files changed, 142 insertions(+)
 
 --- a/include/linux/rwsem.h
 +++ b/include/linux/rwsem.h
@@ -23,7 +23,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  struct rw_semaphore;
  
  #ifdef CONFIG_RWSEM_GENERIC_SPINLOCK
-@@ -149,4 +153,6 @@ extern void up_read_non_owner(struct rw_
+@@ -160,4 +164,6 @@ extern void up_read_non_owner(struct rw_
  # define up_read_non_owner(sem)			up_read(sem)
  #endif
  
@@ -32,7 +32,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif /* _LINUX_RWSEM_H */
 --- /dev/null
 +++ b/include/linux/rwsem_rt.h
-@@ -0,0 +1,128 @@
+@@ -0,0 +1,134 @@
 +#ifndef _LINUX_RWSEM_RT_H
 +#define _LINUX_RWSEM_RT_H
 +
@@ -101,6 +101,12 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#define init_rwsem(sem)		rt_init_rwsem(sem)
 +#define rwsem_is_locked(s)	rt_mutex_is_locked(&(s)->lock)
 +
++static inline int rwsem_is_contended(struct rw_semaphore *sem)
++{
++	/* rt_mutex_has_waiters() */
++	return !RB_EMPTY_ROOT(&sem->lock.waiters);
++}
++
 +static inline void down_read(struct rw_semaphore *sem)
 +{
 +	rt_down_read(sem);
@@ -161,17 +167,14 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +}
 +#endif
 +#endif
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -43,8 +43,11 @@ obj-$(CONFIG_HAS_IOMEM) += iomap_copy.o
- obj-$(CONFIG_CHECK_SIGNATURE) += check_signature.o
- obj-$(CONFIG_DEBUG_LOCKING_API_SELFTESTS) += locking-selftest.o
+--- a/kernel/locking/Makefile
++++ b/kernel/locking/Makefile
+@@ -20,6 +20,8 @@ obj-$(CONFIG_DEBUG_RT_MUTEXES) += rtmute
+ obj-$(CONFIG_RT_MUTEX_TESTER) += rtmutex-tester.o
+ obj-$(CONFIG_DEBUG_SPINLOCK) += spinlock.o
  obj-$(CONFIG_DEBUG_SPINLOCK) += spinlock_debug.o
-+
 +ifneq ($(CONFIG_PREEMPT_RT_FULL),y)
- lib-$(CONFIG_RWSEM_GENERIC_SPINLOCK) += rwsem-spinlock.o
- lib-$(CONFIG_RWSEM_XCHGADD_ALGORITHM) += rwsem.o
+ obj-$(CONFIG_RWSEM_GENERIC_SPINLOCK) += rwsem-spinlock.o
+ obj-$(CONFIG_RWSEM_XCHGADD_ALGORITHM) += rwsem-xadd.o
 +endif
- lib-$(CONFIG_PERCPU_RWSEM) += percpu-rwsem.o
- 
- CFLAGS_hweight.o = $(subst $(quote),,$(CONFIG_ARCH_HWEIGHT_CFLAGS))
+ obj-$(CONFIG_PERCPU_RWSEM) += percpu-rwsem.o

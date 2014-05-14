@@ -1,7 +1,7 @@
 From: Ingo Molnar <mingo@elte.hu>
 Date: Fri, 3 Jul 2009 08:29:30 -0500
 Subject: drivers: random: Reduce preempt disabled region
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 No need to keep preemption disabled across the whole function.
 
@@ -9,31 +9,24 @@ Signed-off-by: Ingo Molnar <mingo@elte.hu>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 ---
- drivers/char/random.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/char/random.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -673,9 +673,12 @@ static void add_timer_randomness(struct
- 	preempt_disable();
- 	/* if over the trickle threshold, use only 1 in 4096 samples */
- 	if (input_pool.entropy_count > trickle_thresh &&
--	    ((__this_cpu_inc_return(trickle_count) - 1) & 0xfff))
--		goto out;
-+	    ((__this_cpu_inc_return(trickle_count) - 1) & 0xfff)) {
-+		preempt_enable();
-+		return;
-+	}
+@@ -772,8 +772,6 @@ static void add_timer_randomness(struct
+ 	} sample;
+ 	long delta, delta2, delta3;
  
-+	preempt_enable();
+-	preempt_disable();
+-
  	sample.jiffies = jiffies;
  	sample.cycles = random_get_entropy();
  	sample.num = num;
-@@ -716,8 +719,6 @@ static void add_timer_randomness(struct
- 		credit_entropy_bits(&input_pool,
- 				    min_t(int, fls(delta>>1), 11));
+@@ -814,7 +812,6 @@ static void add_timer_randomness(struct
+ 		 */
+ 		credit_entropy_bits(r, min_t(int, fls(delta>>1), 11));
  	}
--out:
 -	preempt_enable();
  }
  

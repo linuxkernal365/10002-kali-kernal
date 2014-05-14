@@ -1,7 +1,7 @@
 Subject: mm: raw_pagefault_disable
 From: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Date: Fri Aug 05 17:16:58 CEST 2011
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Adding migrate_disable() to pagefault_disable() to preserve the
 per-cpu thing for kmap_atomic might not have been the best of choices.
@@ -75,28 +75,38 @@ that up by adding raw_pagefault_disable().
 Signed-off-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Link: http://lkml.kernel.org/n/tip-31keae8mkjiv8esq4rl76cib@git.kernel.org
 ---
- include/linux/uaccess.h |   30 ++++++++++++++++++++++++++++--
- mm/memory.c             |    2 ++
- 2 files changed, 30 insertions(+), 2 deletions(-)
+ include/linux/uaccess.h |   40 ++++++++++++++++++++++++++++++++++++++--
+ mm/memory.c             |    8 ++------
+ 2 files changed, 40 insertions(+), 8 deletions(-)
 
 --- a/include/linux/uaccess.h
 +++ b/include/linux/uaccess.h
-@@ -8,8 +8,34 @@
+@@ -8,8 +8,44 @@
   * These routines enable/disable the pagefault handler in that
   * it will not take any MM locks and go straight to the fixup table.
   */
 +static inline void raw_pagefault_disable(void)
 +{
-+	inc_preempt_count();
++	preempt_count_inc();
++	/*
++	 * make sure to have issued the store before a pagefault
++	 * can hit.
++	 */
 +	barrier();
 +}
 +
 +static inline void raw_pagefault_enable(void)
 +{
++#ifndef CONFIG_PREEMPT
++	/*
++	 * make sure to issue those last loads/stores before enabling
++	 * the pagefault handler again.
++	 */
 +	barrier();
-+	dec_preempt_count();
-+	barrier();
-+	preempt_check_resched();
++	preempt_count_dec();
++#else
++	preempt_enable();
++#endif
 +}
 +
 +#ifndef CONFIG_PREEMPT_RT_FULL
@@ -116,7 +126,7 @@ Link: http://lkml.kernel.org/n/tip-31keae8mkjiv8esq4rl76cib@git.kernel.org
  
  #ifndef ARCH_HAS_NOCACHE_UACCESS
  
-@@ -50,9 +76,9 @@ static inline unsigned long __copy_from_
+@@ -50,9 +86,9 @@ static inline unsigned long __copy_from_
  		mm_segment_t old_fs = get_fs();		\
  							\
  		set_fs(KERNEL_DS);			\
@@ -130,16 +140,31 @@ Link: http://lkml.kernel.org/n/tip-31keae8mkjiv8esq4rl76cib@git.kernel.org
  	})
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -3742,6 +3742,7 @@ static int handle_pte_fault(struct mm_st
+@@ -3690,6 +3690,7 @@ static int handle_pte_fault(struct mm_st
  	return 0;
  }
  
 +#ifdef CONFIG_PREEMPT_RT_FULL
  void pagefault_disable(void)
  {
- 	inc_preempt_count();
-@@ -3770,6 +3771,7 @@ void pagefault_enable(void)
- 	preempt_check_resched();
+ 	preempt_count_inc();
+@@ -3704,21 +3705,16 @@ EXPORT_SYMBOL(pagefault_disable);
+ 
+ void pagefault_enable(void)
+ {
+-#ifndef CONFIG_PREEMPT
+ 	/*
+ 	 * make sure to issue those last loads/stores before enabling
+ 	 * the pagefault handler again.
+ 	 */
+ 	barrier();
+ 	current->pagefault_disabled--;
+-	preempt_count_dec();
+-#else
+-	barrier();
+-	current->pagefault_disabled--;
+ 	preempt_enable();
+-#endif
  }
  EXPORT_SYMBOL(pagefault_enable);
 +#endif

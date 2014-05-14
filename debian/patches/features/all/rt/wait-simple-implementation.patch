@@ -12,14 +12,14 @@ should go mainline as well, as it lowers memory consumption and
 runtime overhead.
     
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 smp_mb() added by Steven Rostedt to fix a race condition with swait
 wakeups vs adding items to the list.
 ---
  include/linux/wait-simple.h |  235 ++++++++++++++++++++++++++++++++++++++++++++
- kernel/Makefile             |    2 
- kernel/wait-simple.c        |   68 ++++++++++++
+ kernel/sched/Makefile       |    2 
+ kernel/sched/wait-simple.c  |   68 ++++++++++++
  3 files changed, 304 insertions(+), 1 deletion(-)
 
 --- /dev/null
@@ -260,19 +260,19 @@ wakeups vs adding items to the list.
 +})
 +
 +#endif
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -10,7 +10,7 @@ obj-y     = fork.o exec_domain.o panic.o
- 	    kthread.o wait.o sys_ni.o posix-cpu-timers.o \
- 	    hrtimer.o nsproxy.o srcu.o semaphore.o \
- 	    notifier.o ksysfs.o cred.o reboot.o \
--	    async.o range.o groups.o lglock.o smpboot.o
-+	    async.o range.o groups.o lglock.o smpboot.o wait-simple.o
+--- a/kernel/sched/Makefile
++++ b/kernel/sched/Makefile
+@@ -13,7 +13,7 @@ endif
  
- ifdef CONFIG_FUNCTION_TRACER
- # Do not trace debug files and internal ftrace files
+ obj-y += core.o proc.o clock.o cputime.o
+ obj-y += idle_task.o fair.o rt.o deadline.o stop_task.o
+-obj-y += wait.o completion.o
++obj-y += wait.o wait-simple.o completion.o
+ obj-$(CONFIG_SMP) += cpupri.o cpudeadline.o
+ obj-$(CONFIG_SCHED_AUTOGROUP) += auto_group.o
+ obj-$(CONFIG_SCHEDSTATS) += stats.o
 --- /dev/null
-+++ b/kernel/wait-simple.c
++++ b/kernel/sched/wait-simple.c
 @@ -0,0 +1,68 @@
 +/*
 + * Simple waitqueues without fancy flags and callbacks

@@ -1,7 +1,7 @@
 Subject: mm-vmalloc.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 12 Jul 2011 11:39:36 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -790,7 +790,7 @@ static struct vmap_block *new_vmap_block
+@@ -796,7 +796,7 @@ static struct vmap_block *new_vmap_block
  	struct vmap_block *vb;
  	struct vmap_area *va;
  	unsigned long vb_idx;
@@ -19,7 +19,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	node = numa_node_id();
  
-@@ -828,11 +828,12 @@ static struct vmap_block *new_vmap_block
+@@ -834,11 +834,12 @@ static struct vmap_block *new_vmap_block
  	BUG_ON(err);
  	radix_tree_preload_end();
  
@@ -34,7 +34,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	return vb;
  }
-@@ -900,6 +901,7 @@ static void *vb_alloc(unsigned long size
+@@ -906,6 +907,7 @@ static void *vb_alloc(unsigned long size
  	struct vmap_block *vb;
  	unsigned long addr = 0;
  	unsigned int order;
@@ -42,7 +42,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	BUG_ON(size & ~PAGE_MASK);
  	BUG_ON(size > PAGE_SIZE*VMAP_MAX_ALLOC);
-@@ -915,7 +917,8 @@ static void *vb_alloc(unsigned long size
+@@ -921,7 +923,8 @@ static void *vb_alloc(unsigned long size
  
  again:
  	rcu_read_lock();
@@ -52,7 +52,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	list_for_each_entry_rcu(vb, &vbq->free, free_list) {
  		int i;
  
-@@ -939,7 +942,7 @@ static void *vb_alloc(unsigned long size
+@@ -945,7 +948,7 @@ static void *vb_alloc(unsigned long size
  		spin_unlock(&vb->lock);
  	}
  

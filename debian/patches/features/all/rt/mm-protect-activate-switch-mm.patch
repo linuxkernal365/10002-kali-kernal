@@ -1,7 +1,7 @@
 Subject:  mm: Protect activate_mm() by preempt_[disable&enable]_rt()
 From: Yong Zhang <yong.zhang0@gmail.com>
 Date: Tue, 15 May 2012 13:53:56 +0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 User preempt_*_rt instead of local_irq_*_rt or otherwise there will be
 warning on ARM like below:
@@ -37,7 +37,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/fs/exec.c
 +++ b/fs/exec.c
-@@ -840,10 +840,12 @@ static int exec_mmap(struct mm_struct *m
+@@ -842,10 +842,12 @@ static int exec_mmap(struct mm_struct *m
  		}
  	}
  	task_lock(tsk);
@@ -48,8 +48,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	activate_mm(active_mm, mm);
 +	preempt_enable_rt();
  	task_unlock(tsk);
- 	arch_pick_mmap_layout(mm);
  	if (old_mm) {
+ 		up_read(&old_mm->mmap_sem);
 --- a/mm/mmu_context.c
 +++ b/mm/mmu_context.c
 @@ -23,6 +23,7 @@ void use_mm(struct mm_struct *mm)

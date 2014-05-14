@@ -1,7 +1,7 @@
 From: John Stultz <johnstul@us.ibm.com>
 Date: Fri, 3 Jul 2009 08:29:58 -0500
 Subject: posix-timers: thread posix-cpu-timers on -rt
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 posix-cpu-timer code takes non -rt safe locks in hard irq
 context. Move it to a thread.
@@ -21,7 +21,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/include/linux/init_task.h
 +++ b/include/linux/init_task.h
-@@ -143,6 +143,12 @@ extern struct task_group root_task_group
+@@ -145,6 +145,12 @@ extern struct task_group root_task_group
  # define INIT_PERF_EVENTS(tsk)
  #endif
  
@@ -34,7 +34,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN
  # define INIT_VTIME(tsk)						\
  	.vtime_lock = __RAW_SPIN_LOCK_UNLOCKED(tsk.vtime_lock),	\
-@@ -208,6 +214,7 @@ extern struct task_group root_task_group
+@@ -218,6 +224,7 @@ extern struct task_group root_task_group
  	.cpu_timers	= INIT_CPU_TIMERS(tsk.cpu_timers),		\
  	.pi_lock	= __RAW_SPIN_LOCK_UNLOCKED(tsk.pi_lock),	\
  	.timer_slack_ns = 50000, /* 50 usec default slack */		\
@@ -44,7 +44,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		[PIDTYPE_PGID] = INIT_PID_LINK(PIDTYPE_PGID),		\
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1174,6 +1174,9 @@ struct task_struct {
+@@ -1310,6 +1310,9 @@ struct task_struct {
  
  	struct task_cputime cputime_expires;
  	struct list_head cpu_timers[3];
@@ -75,7 +75,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #include <linux/random.h>
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -1106,6 +1106,9 @@ void mm_init_owner(struct mm_struct *mm,
+@@ -1109,6 +1109,9 @@ void mm_init_owner(struct mm_struct *mm,
   */
  static void posix_cpu_timers_init(struct task_struct *tsk)
  {
@@ -95,25 +95,25 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #include <linux/posix-timers.h>
  #include <linux/errno.h>
  #include <linux/math64.h>
-@@ -663,7 +664,7 @@ static int posix_cpu_timer_set(struct k_
+@@ -640,7 +641,7 @@ static int posix_cpu_timer_set(struct k_
  	/*
  	 * Disarm any old timer after extracting its expiry time.
  	 */
--	BUG_ON(!irqs_disabled());
-+	BUG_ON_NONRT(!irqs_disabled());
+-	WARN_ON_ONCE(!irqs_disabled());
++	WARN_ON_ONCE_NONRT(!irqs_disabled());
  
  	ret = 0;
  	old_incr = timer->it.cpu.incr;
-@@ -1110,7 +1111,7 @@ void posix_cpu_timer_schedule(struct k_i
+@@ -1061,7 +1062,7 @@ void posix_cpu_timer_schedule(struct k_i
  	/*
  	 * Now re-arm for the new expiry time.
  	 */
--	BUG_ON(!irqs_disabled());
-+	BUG_ON_NONRT(!irqs_disabled());
+-	WARN_ON_ONCE(!irqs_disabled());
++	WARN_ON_ONCE_NONRT(!irqs_disabled());
  	arm_timer(timer);
- 	spin_unlock(&p->sighand->siglock);
+ 	unlock_task_sighand(p, &flags);
  
-@@ -1177,10 +1178,11 @@ static inline int fastpath_timer_check(s
+@@ -1127,10 +1128,11 @@ static inline int fastpath_timer_check(s
  	sig = tsk->signal;
  	if (sig->cputimer.running) {
  		struct task_cputime group_sample;
@@ -127,7 +127,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  		if (task_cputime_expired(&group_sample, &sig->cputime_expires))
  			return 1;
-@@ -1194,13 +1196,13 @@ static inline int fastpath_timer_check(s
+@@ -1144,13 +1146,13 @@ static inline int fastpath_timer_check(s
   * already updated our counts.  We need to check if any timers fire now.
   * Interrupts are disabled.
   */
@@ -138,13 +138,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	struct k_itimer *timer, *next;
  	unsigned long flags;
  
--	BUG_ON(!irqs_disabled());
-+	BUG_ON_NONRT(!irqs_disabled());
+-	WARN_ON_ONCE(!irqs_disabled());
++	WARN_ON_ONCE_NONRT(!irqs_disabled());
  
  	/*
  	 * The fast path checks that there are no expired thread or thread
-@@ -1265,6 +1267,175 @@ void run_posix_cpu_timers(struct task_st
- 		posix_cpu_timer_kick_nohz();
+@@ -1208,6 +1210,175 @@ void run_posix_cpu_timers(struct task_st
+ 	}
  }
  
 +#ifdef CONFIG_PREEMPT_RT_BASE

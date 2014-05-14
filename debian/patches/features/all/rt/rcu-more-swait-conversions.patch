@@ -2,7 +2,7 @@ From eddcd14571497d3d5d6ce7df0ee1bf2ecec72292 Mon Sep 17 00:00:00 2001
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 31 Jul 2013 19:00:35 +0200
 Subject: [PATCH] rcu-more-swait-conversions.patch
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
@@ -16,12 +16,12 @@ Merged Steven's
 Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- kernel/rcutree.h        |    5 +++--
- kernel/rcutree_plugin.h |   14 +++++++-------
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ kernel/rcu/tree.h        |    5 +++--
+ kernel/rcu/tree_plugin.h |   16 ++++++++--------
+ 2 files changed, 11 insertions(+), 10 deletions(-)
 
---- a/kernel/rcutree.h
-+++ b/kernel/rcutree.h
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
 @@ -28,6 +28,7 @@
  #include <linux/cpumask.h>
  #include <linux/seqlock.h>
@@ -30,7 +30,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  /*
   * Define shape of hierarchy based on NR_CPUS, CONFIG_RCU_FANOUT, and
-@@ -198,7 +199,7 @@ struct rcu_node {
+@@ -200,7 +201,7 @@ struct rcu_node {
  				/*  This can happen due to race conditions. */
  #endif /* #ifdef CONFIG_RCU_BOOST */
  #ifdef CONFIG_RCU_NOCB_CPU
@@ -39,18 +39,18 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  				/* Place for rcu_nocb_kthread() to wait GP. */
  #endif /* #ifdef CONFIG_RCU_NOCB_CPU */
  	int need_future_gp[2];
-@@ -331,7 +332,7 @@ struct rcu_data {
+@@ -334,7 +335,7 @@ struct rcu_data {
  	atomic_long_t nocb_q_count_lazy; /*  (approximate). */
  	int nocb_p_count;		/* # CBs being invoked by kthread */
  	int nocb_p_count_lazy;		/*  (approximate). */
 -	wait_queue_head_t nocb_wq;	/* For nocb kthreads to sleep on. */
 +	struct swait_head nocb_wq;	/* For nocb kthreads to sleep on. */
  	struct task_struct *nocb_kthread;
+ 	bool nocb_defer_wakeup;		/* Defer wakeup of nocb_kthread. */
  #endif /* #ifdef CONFIG_RCU_NOCB_CPU */
- 
---- a/kernel/rcutree_plugin.h
-+++ b/kernel/rcutree_plugin.h
-@@ -2059,7 +2059,7 @@ static int rcu_nocb_needs_gp(struct rcu_
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -1977,7 +1977,7 @@ static int rcu_nocb_needs_gp(struct rcu_
   */
  static void rcu_nocb_gp_cleanup(struct rcu_state *rsp, struct rcu_node *rnp)
  {
@@ -59,7 +59,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  /*
-@@ -2077,8 +2077,8 @@ static void rcu_nocb_gp_set(struct rcu_n
+@@ -1995,8 +1995,8 @@ static void rcu_nocb_gp_set(struct rcu_n
  
  static void rcu_init_one_nocb(struct rcu_node *rnp)
  {
@@ -70,16 +70,16 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  /* Is the specified CPU a no-CPUs CPU? */
-@@ -2118,7 +2118,7 @@ static void __call_rcu_nocb_enqueue(stru
- 		return;
+@@ -2041,7 +2041,7 @@ static void __call_rcu_nocb_enqueue(stru
  	len = atomic_long_read(&rdp->nocb_q_count);
  	if (old_rhpp == &rdp->nocb_head) {
--		wake_up(&rdp->nocb_wq); /* ... only if queue was empty ... */
-+		swait_wake(&rdp->nocb_wq); /* ... only if queue was empty ... */
- 		rdp->qlen_last_fqs_check = 0;
- 	} else if (len > rdp->qlen_last_fqs_check + qhimark) {
- 		wake_up_process(t); /* ... or if many callbacks queued. */
-@@ -2208,7 +2208,7 @@ static void rcu_nocb_wait_gp(struct rcu_
+ 		if (!irqs_disabled_flags(flags)) {
+-			wake_up(&rdp->nocb_wq); /* ... if queue was empty ... */
++			swait_wake(&rdp->nocb_wq); /* ... if queue was empty ... */
+ 			trace_rcu_nocb_wake(rdp->rsp->name, rdp->cpu,
+ 					    TPS("WakeEmpty"));
+ 		} else {
+@@ -2145,7 +2145,7 @@ static void rcu_nocb_wait_gp(struct rcu_
  	 */
  	trace_rcu_future_gp(rnp, rdp, c, TPS("StartWait"));
  	for (;;) {
@@ -88,16 +88,25 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  			rnp->nocb_gp_wq[c & 0x1],
  			(d = ULONG_CMP_GE(ACCESS_ONCE(rnp->completed), c)));
  		if (likely(d))
-@@ -2236,7 +2236,7 @@ static int rcu_nocb_kthread(void *arg)
- 	for (;;) {
- 		/* If not polling, wait for next batch of callbacks. */
- 		if (!rcu_nocb_poll)
+@@ -2176,7 +2176,7 @@ static int rcu_nocb_kthread(void *arg)
+ 		if (!rcu_nocb_poll) {
+ 			trace_rcu_nocb_wake(rdp->rsp->name, rdp->cpu,
+ 					    TPS("Sleep"));
 -			wait_event_interruptible(rdp->nocb_wq, rdp->nocb_head);
 +			swait_event_interruptible(rdp->nocb_wq, rdp->nocb_head);
- 		list = ACCESS_ONCE(rdp->nocb_head);
- 		if (!list) {
- 			schedule_timeout_interruptible(1);
-@@ -2286,7 +2286,7 @@ static int rcu_nocb_kthread(void *arg)
+ 			/* Memory barrier provide by xchg() below. */
+ 		} else if (firsttime) {
+ 			firsttime = 0;
+@@ -2250,7 +2250,7 @@ static void do_nocb_deferred_wakeup(stru
+ 	if (!rcu_nocb_need_deferred_wakeup(rdp))
+ 		return;
+ 	ACCESS_ONCE(rdp->nocb_defer_wakeup) = false;
+-	wake_up(&rdp->nocb_wq);
++	swait_wake(&rdp->nocb_wq);
+ 	trace_rcu_nocb_wake(rdp->rsp->name, rdp->cpu, TPS("DeferredWakeEmpty"));
+ }
+ 
+@@ -2258,7 +2258,7 @@ static void do_nocb_deferred_wakeup(stru
  static void __init rcu_boot_init_nocb_percpu_data(struct rcu_data *rdp)
  {
  	rdp->nocb_tail = &rdp->nocb_head;

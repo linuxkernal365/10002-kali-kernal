@@ -1,7 +1,7 @@
 Subject: softirq: Split softirq locks
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 04 Oct 2012 14:20:47 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 The 3.x RT series removed the split softirq implementation in favour
 of pushing softirq processing into the context of the thread which
@@ -26,12 +26,12 @@ threads.
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
  include/linux/sched.h |    1 
- kernel/softirq.c      |  307 ++++++++++++++++++++++++++++++--------------------
- 2 files changed, 186 insertions(+), 122 deletions(-)
+ kernel/softirq.c      |  311 ++++++++++++++++++++++++++++++--------------------
+ 2 files changed, 189 insertions(+), 123 deletions(-)
 
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1441,6 +1441,7 @@ struct task_struct {
+@@ -1611,6 +1611,7 @@ struct task_struct {
  #ifdef CONFIG_PREEMPT_RT_BASE
  	struct rcu_head put_rcu;
  	int softirq_nestcnt;
@@ -41,7 +41,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  # if defined CONFIG_HIGHMEM || defined CONFIG_X86_32
 --- a/kernel/softirq.c
 +++ b/kernel/softirq.c
-@@ -162,6 +162,12 @@ static void handle_softirq(unsigned int
+@@ -161,6 +161,12 @@ static void handle_softirq(unsigned int
  		rcu_bh_qs(cpu);
  }
  
@@ -53,8 +53,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +
  static void handle_pending_softirqs(u32 pending, int cpu, int need_rcu_bh_qs)
  {
- 	unsigned int vec_nr;
-@@ -174,7 +180,19 @@ static void handle_pending_softirqs(u32
+ 	struct softirq_action *h = softirq_vec;
+@@ -184,7 +190,19 @@ static void handle_pending_softirqs(u32
  	local_irq_disable();
  }
  
@@ -75,9 +75,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * preempt_count and SOFTIRQ_OFFSET usage:
   * - preempt_count is changed by SOFTIRQ_OFFSET on entering or leaving
-@@ -410,6 +428,32 @@ asmlinkage void do_softirq(void)
- 
- #endif
+@@ -394,6 +412,32 @@ asmlinkage void do_softirq(void)
+ 	local_irq_restore(flags);
+ }
  
 +/*
 + * This function must run with irqs disabled!
@@ -108,7 +108,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  static inline void local_bh_disable_nort(void) { local_bh_disable(); }
  static inline void _local_bh_enable_nort(void) { _local_bh_enable(); }
  static void ksoftirqd_set_sched_params(unsigned int cpu) { }
-@@ -418,20 +462,78 @@ static void ksoftirqd_clr_sched_params(u
+@@ -402,20 +446,78 @@ static void ksoftirqd_clr_sched_params(u
  #else /* !PREEMPT_RT_FULL */
  
  /*
@@ -127,7 +127,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +		local_irq_lock_init(local_softirq_locks[i]);
 +}
  
--void __do_softirq(void)
+-asmlinkage __do_softirq(void)
 +static void lock_softirq(int which)
  {
 -	__do_softirq_common(0);
@@ -136,13 +136,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 -void __init softirq_early_init(void)
 +static void unlock_softirq(int which)
-+{
+ {
+-	local_irq_lock_init(local_softirq_lock);
 +	__local_unlock(&__get_cpu_var(local_softirq_locks[which]));
 +}
 +
 +static void do_single_softirq(int which, int need_rcu_bh_qs)
- {
--	local_irq_lock_init(local_softirq_lock);
++{
 +	unsigned long old_flags = current->flags;
 +
 +	current->flags &= ~PF_MEMALLOC;
@@ -193,8 +193,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	}
  }
  
- void local_bh_disable(void)
-@@ -446,17 +548,11 @@ void local_bh_enable(void)
+ static void __local_bh_disable(void)
+@@ -442,17 +544,11 @@ static void __local_bh_enable(void)
  	if (WARN_ON(current->softirq_nestcnt == 0))
  		return;
  
@@ -216,7 +216,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	current->softirq_nestcnt--;
  	migrate_enable();
  }
-@@ -481,86 +577,82 @@ int in_serving_softirq(void)
+@@ -489,81 +585,83 @@ int in_serving_softirq(void)
  }
  EXPORT_SYMBOL(in_serving_softirq);
  
@@ -224,7 +224,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 - * Called with bh and local interrupts disabled. For full RT cpu must
 - * be pinned.
 - */
--static void __do_softirq_common(int need_rcu_bh_qs)
+-asmlinkage void __do_softirq(void)
 +/* Called with preemption disabled */
 +static void run_ksoftirqd(unsigned int cpu)
  {
@@ -233,7 +233,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -
 +	local_irq_disable();
  	current->softirq_nestcnt++;
--
+ 
 -	/* Reset the pending bitmask before enabling irqs */
 -	set_softirq_pending(0);
 -
@@ -254,27 +254,26 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	current->softirq_nestcnt--;
 +	rcu_note_context_switch(cpu);
 +	local_irq_enable();
- }
- 
--static int __thread_do_softirq(int cpu)
++}
++
 +/*
 + * Called from netif_rx_ni(). Preemption enabled, but migration
 + * disabled. So the cpu can't go away under us.
 + */
 +void thread_do_softirq(void)
- {
++{
 +	if (!in_serving_softirq() && current->softirqs_raised) {
 +		current->softirq_nestcnt++;
 +		do_current_softirqs(0);
 +		current->softirq_nestcnt--;
 +	}
-+}
-+
+ }
+ 
+-static int __thread_do_softirq(int cpu)
 +void __raise_softirq_irqoff(unsigned int nr)
-+{
+ {
 +	trace_softirq_raise(nr);
 +	or_softirq_pending(1UL << nr);
-+
  	/*
 -	 * Prevent the current cpu from going offline.
 -	 * pin_current_cpu() can reenable preemption and block on the
@@ -287,6 +286,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	 * delegate it to ksoftirqd.
  	 */
 -	pin_current_cpu();
++
 +	if (!in_irq() && current->softirq_nestcnt)
 +		current->softirqs_raised |= (1U << nr);
 +	else if (__this_cpu_read(ksoftirqd))
@@ -316,7 +316,6 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -	local_irq_disable();
 +	if (in_irq())
 +		return;
-+
  	/*
 -	 * We cannot switch stacks on RT as we want to be able to
 -	 * schedule!
@@ -327,6 +326,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	 * into local_bh_disable/enable pairs. Though it's unclear
 +	 * whether this is worth the effort. To find those places just
 +	 * raise a WARN() if the condition is met.
++	 *
  	 */
 -	if (local_softirq_pending())
 -		__do_softirq_common(cpu >= 0);
@@ -351,17 +351,15 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -		preempt_enable();
 -	}
 +	raise_softirq_irqoff(nr);
- }
- 
--static int ksoftirqd_do_softirq(int cpu)
++}
++
 +static inline int ksoftirqd_softirq_pending(void)
- {
--	return __thread_do_softirq(cpu);
++{
 +	return current->softirqs_raised;
  }
  
  static inline void local_bh_disable_nort(void) { }
-@@ -571,6 +663,10 @@ static inline void ksoftirqd_set_sched_p
+@@ -574,6 +672,10 @@ static inline void ksoftirqd_set_sched_p
  	struct sched_param param = { .sched_priority = 1 };
  
  	sched_setscheduler(current, SCHED_FIFO, &param);
@@ -372,7 +370,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static inline void ksoftirqd_clr_sched_params(unsigned int cpu, bool online)
-@@ -619,8 +715,14 @@ static inline void invoke_softirq(void)
+@@ -625,8 +727,14 @@ static inline void invoke_softirq(void)
  	} else {
  		wakeup_softirqd();
  	}
@@ -389,7 +387,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif
  }
  
-@@ -658,26 +760,6 @@ void irq_exit(void)
+@@ -664,26 +772,6 @@ void irq_exit(void)
  	trace_hardirq_exit(); /* must be last! */
  }
  
@@ -416,7 +414,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  void raise_softirq(unsigned int nr)
  {
  	unsigned long flags;
-@@ -687,12 +769,6 @@ void raise_softirq(unsigned int nr)
+@@ -693,12 +781,6 @@ void raise_softirq(unsigned int nr)
  	local_irq_restore(flags);
  }
  
@@ -429,7 +427,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  void open_softirq(int nr, void (*action)(struct softirq_action *))
  {
  	softirq_vec[nr].action = action;
-@@ -1136,20 +1212,7 @@ EXPORT_SYMBOL(tasklet_unlock_wait);
+@@ -1004,24 +1086,7 @@ EXPORT_SYMBOL(tasklet_unlock_wait);
  
  static int ksoftirqd_should_run(unsigned int cpu)
  {
@@ -440,6 +438,10 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -{
 -	local_irq_disable();
 -	if (local_softirq_pending()) {
+-		/*
+-		 * We can safely run softirq on inline stack, as we are not deep
+-		 * in the task stack here.
+-		 */
 -		__do_softirq();
 -		rcu_note_context_switch(cpu);
 -		local_irq_enable();

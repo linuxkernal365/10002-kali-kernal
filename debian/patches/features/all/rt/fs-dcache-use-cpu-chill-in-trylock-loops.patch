@@ -1,7 +1,7 @@
 Subject: fs: dcache: Use cpu_chill() in trylock loops
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 07 Mar 2012 21:00:34 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Retry loops on RT might loop forever when the modifying side was
 preempted. Use cpu_chill() instead of cpu_relax() to let the system
@@ -47,7 +47,7 @@ Cc: stable-rt@vger.kernel.org
  #include <linux/slab.h>
  #include <linux/init.h>
  #include <linux/hash.h>
-@@ -554,7 +555,7 @@ dentry_kill(struct dentry *dentry, int u
+@@ -517,7 +518,7 @@ dentry_kill(struct dentry *dentry, int u
  relock:
  		if (unlock_on_failure) {
  			spin_unlock(&dentry->d_lock);
@@ -56,7 +56,7 @@ Cc: stable-rt@vger.kernel.org
  		}
  		return dentry; /* try again with same dentry */
  	}
-@@ -2391,7 +2392,7 @@ void d_delete(struct dentry * dentry)
+@@ -2379,7 +2380,7 @@ void d_delete(struct dentry * dentry)
  	if (dentry->d_lockref.count == 1) {
  		if (!spin_trylock(&inode->i_lock)) {
  			spin_unlock(&dentry->d_lock);
@@ -67,15 +67,15 @@ Cc: stable-rt@vger.kernel.org
  		dentry->d_flags &= ~DCACHE_CANT_MOUNT;
 --- a/fs/namespace.c
 +++ b/fs/namespace.c
-@@ -23,6 +23,7 @@
- #include <linux/uaccess.h>
- #include <linux/proc_ns.h>
- #include <linux/magic.h>
+@@ -14,6 +14,7 @@
+ #include <linux/mnt_namespace.h>
+ #include <linux/user_namespace.h>
+ #include <linux/namei.h>
 +#include <linux/delay.h>
- #include "pnode.h"
- #include "internal.h"
- 
-@@ -317,7 +318,7 @@ int __mnt_want_write(struct vfsmount *m)
+ #include <linux/security.h>
+ #include <linux/idr.h>
+ #include <linux/acct.h>		/* acct_auto_close_mnt */
+@@ -345,7 +346,7 @@ int __mnt_want_write(struct vfsmount *m)
  	smp_mb();
  	while (ACCESS_ONCE(mnt->mnt.mnt_flags) & MNT_WRITE_HOLD) {
  		preempt_enable();

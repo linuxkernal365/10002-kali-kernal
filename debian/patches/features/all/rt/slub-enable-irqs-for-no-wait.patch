@@ -1,7 +1,7 @@
 Subject: slub: Enable irqs for __GFP_WAIT
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 09 Jan 2013 12:08:15 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 SYSTEM_RUNNING might be too late for enabling interrupts. Allocations
 with GFP_WAIT can happen before that. So use this as an indicator.
@@ -13,7 +13,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -1297,14 +1297,15 @@ static struct page *allocate_slab(struct
+@@ -1337,14 +1337,15 @@ static struct page *allocate_slab(struct
  	struct page *page;
  	struct kmem_cache_order_objects oo = s->oo;
  	gfp_t alloc_gfp;
@@ -32,7 +32,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		local_irq_enable();
  
  	flags |= s->allocflags;
-@@ -1344,11 +1345,7 @@ static struct page *allocate_slab(struct
+@@ -1384,11 +1385,7 @@ static struct page *allocate_slab(struct
  			kmemcheck_mark_unallocated_pages(page, pages);
  	}
  

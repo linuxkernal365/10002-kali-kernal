@@ -1,7 +1,7 @@
 From: Benedikt Spranger <b.spranger@linutronix.de>
 Date: Sat, 6 Mar 2010 17:47:10 +0100
 Subject: ARM: AT91: PIT: Remove irq handler when clock event is unused
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Setup and remove the interrupt handler in clock event mode selection.
 This avoids calling the (shared) interrupt handler when the device is
@@ -30,7 +30,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		break;
 --- a/arch/arm/mach-at91/at91sam926x_time.c
 +++ b/arch/arm/mach-at91/at91sam926x_time.c
-@@ -77,7 +77,7 @@ static struct clocksource pit_clk = {
+@@ -78,7 +78,7 @@ static struct clocksource pit_clk = {
  	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
  };
  
@@ -39,7 +39,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  /*
   * Clockevent device:  interrupts every 1/HZ (== pit_cycles * MCK/16)
   */
-@@ -86,6 +86,8 @@ pit_clkevt_mode(enum clock_event_mode mo
+@@ -87,6 +87,8 @@ pit_clkevt_mode(enum clock_event_mode mo
  {
  	switch (mode) {
  	case CLOCK_EVT_MODE_PERIODIC:
@@ -48,7 +48,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		/* update clocksource counter */
  		pit_cnt += pit_cycle * PIT_PICNT(pit_read(AT91_PIT_PIVR));
  		pit_write(AT91_PIT_MR, (pit_cycle - 1) | AT91_PIT_PITEN
-@@ -98,6 +100,7 @@ pit_clkevt_mode(enum clock_event_mode mo
+@@ -99,6 +101,7 @@ pit_clkevt_mode(enum clock_event_mode mo
  	case CLOCK_EVT_MODE_UNUSED:
  		/* disable irq, leaving the clocksource active */
  		pit_write(AT91_PIT_MR, (pit_cycle - 1) | AT91_PIT_PITEN);

@@ -1,7 +1,7 @@
 Subject: latency-hist.patch
 From: Carsten Emde <C.Emde@osadl.org>
 Date: Tue, 19 Jul 2011 14:03:41 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 This patch provides a recording mechanism to store data of potential
 sources of system latencies. The recordings separately determine the
@@ -17,14 +17,14 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  Documentation/trace/histograms.txt  |  186 +++++
  include/linux/hrtimer.h             |    3 
  include/linux/sched.h               |    6 
- include/trace/events/hist.h         |   69 ++
+ include/trace/events/hist.h         |   72 ++
  include/trace/events/latency_hist.h |   29 
  kernel/hrtimer.c                    |   23 
  kernel/trace/Kconfig                |  104 +++
  kernel/trace/Makefile               |    4 
- kernel/trace/latency_hist.c         | 1177 ++++++++++++++++++++++++++++++++++++
+ kernel/trace/latency_hist.c         | 1178 ++++++++++++++++++++++++++++++++++++
  kernel/trace/trace_irqsoff.c        |   11 
- 10 files changed, 1612 insertions(+)
+ 10 files changed, 1616 insertions(+)
 
 --- /dev/null
 +++ b/Documentation/trace/histograms.txt
@@ -229,7 +229,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	void				*start_site;
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1398,6 +1398,12 @@ struct task_struct {
+@@ -1568,6 +1568,12 @@ struct task_struct {
  	unsigned long trace;
  	/* bitmask and counter of trace recursion */
  	unsigned long trace_recursion;
@@ -244,7 +244,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	struct memcg_batch_info {
 --- /dev/null
 +++ b/include/trace/events/hist.h
-@@ -0,0 +1,69 @@
+@@ -0,0 +1,72 @@
 +#undef TRACE_SYSTEM
 +#define TRACE_SYSTEM hist
 +
@@ -255,7 +255,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#include <linux/tracepoint.h>
 +
 +#if !defined(CONFIG_PREEMPT_OFF_HIST) && !defined(CONFIG_INTERRUPT_OFF_HIST)
-+#define trace_preemptirqsoff_hist(a,b)
++#define trace_preemptirqsoff_hist(a, b)
 +#else
 +TRACE_EVENT(preemptirqsoff_hist,
 +
@@ -264,8 +264,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	TP_ARGS(reason, starthist),
 +
 +	TP_STRUCT__entry(
-+		__field(int,	reason	)
-+		__field(int,	starthist	)
++		__field(int,	reason)
++		__field(int,	starthist)
 +	),
 +
 +	TP_fast_assign(
@@ -279,21 +279,22 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#endif
 +
 +#ifndef CONFIG_MISSED_TIMER_OFFSETS_HIST
-+#define trace_hrtimer_interrupt(a,b,c,d)
++#define trace_hrtimer_interrupt(a, b, c, d)
 +#else
 +TRACE_EVENT(hrtimer_interrupt,
 +
-+	TP_PROTO(int cpu, long long offset, struct task_struct *curr, struct task_struct *task),
++	TP_PROTO(int cpu, long long offset, struct task_struct *curr,
++		struct task_struct *task),
 +
 +	TP_ARGS(cpu, offset, curr, task),
 +
 +	TP_STRUCT__entry(
-+		__field(int,		cpu	)
-+		__field(long long,	offset	)
++		__field(int,		cpu)
++		__field(long long,	offset)
 +		__array(char,		ccomm,	TASK_COMM_LEN)
-+		__field(int,		cprio	)
++		__field(int,		cprio)
 +		__array(char,		tcomm,	TASK_COMM_LEN)
-+		__field(int,		tprio	)
++		__field(int,		tprio)
 +	),
 +
 +	TP_fast_assign(
@@ -301,12 +302,14 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +		__entry->offset	= offset;
 +		memcpy(__entry->ccomm, curr->comm, TASK_COMM_LEN);
 +		__entry->cprio  = curr->prio;
-+		memcpy(__entry->tcomm, task != NULL ? task->comm : "<none>", task != NULL ? TASK_COMM_LEN : 7);
++		memcpy(__entry->tcomm, task != NULL ? task->comm : "<none>",
++			task != NULL ? TASK_COMM_LEN : 7);
 +		__entry->tprio  = task != NULL ? task->prio : -1;
 +	),
 +
 +	TP_printk("cpu=%d offset=%lld curr=%s[%d] thread=%s[%d]",
-+		__entry->cpu, __entry->offset, __entry->ccomm, __entry->cprio, __entry->tcomm, __entry->tprio)
++		__entry->cpu, __entry->offset, __entry->ccomm,
++		__entry->cprio, __entry->tcomm, __entry->tprio)
 +);
 +#endif
 +
@@ -341,14 +344,14 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +static inline char *getaction(int action)
 +{
 +	if (action >= 0 && action <= sizeof(actions)/sizeof(actions[0]))
-+		return(actions[action]);
-+	return("unknown");
++		return actions[action];
++	return "unknown";
 +}
 +
 +#endif /* _LATENCY_HIST_H */
 --- a/kernel/hrtimer.c
 +++ b/kernel/hrtimer.c
-@@ -52,6 +52,7 @@
+@@ -53,6 +53,7 @@
  #include <asm/uaccess.h>
  
  #include <trace/events/timer.h>
@@ -356,7 +359,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  /*
   * The timer bases:
-@@ -997,6 +998,17 @@ int __hrtimer_start_range_ns(struct hrti
+@@ -998,6 +999,17 @@ int __hrtimer_start_range_ns(struct hrti
  #endif
  	}
  
@@ -374,7 +377,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	hrtimer_set_expires_range_ns(timer, tim, delta_ns);
  
  	timer_stats_hrtimer_set_start_info(timer);
-@@ -1275,6 +1287,8 @@ static void __run_hrtimer(struct hrtimer
+@@ -1276,6 +1288,8 @@ static void __run_hrtimer(struct hrtimer
  
  #ifdef CONFIG_HIGH_RES_TIMERS
  
@@ -383,7 +386,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * High resolution timer interrupt
   * Called with interrupts disabled
-@@ -1318,6 +1332,15 @@ void hrtimer_interrupt(struct clock_even
+@@ -1319,6 +1333,15 @@ void hrtimer_interrupt(struct clock_even
  
  			timer = container_of(node, struct hrtimer, node);
  
@@ -541,7 +544,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  obj-$(CONFIG_MMIOTRACE) += trace_mmiotrace.o
 --- /dev/null
 +++ b/kernel/trace/latency_hist.c
-@@ -0,0 +1,1177 @@
+@@ -0,0 +1,1178 @@
 +/*
 + * kernel/trace/latency_hist.c
 + *
@@ -566,7 +569,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#include <linux/sched.h>
 +#include <linux/sched/rt.h>
 +#include <linux/slab.h>
-+#include <asm/atomic.h>
++#include <linux/atomic.h>
 +#include <asm/div64.h>
 +
 +#include "trace.h"
@@ -639,7 +642,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#endif
 +
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) || \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +struct maxlatproc_data {
 +	char comm[FIELD_SIZEOF(struct task_struct, comm)];
 +	char current_comm[FIELD_SIZEOF(struct task_struct, comm)];
@@ -659,11 +662,11 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +static char *wakeup_latency_hist_dir = "wakeup";
 +static char *wakeup_latency_hist_dir_sharedprio = "sharedprio";
 +static notrace void probe_wakeup_latency_hist_start(void *v,
-+    struct task_struct *p, int success);
++	struct task_struct *p, int success);
 +static notrace void probe_wakeup_latency_hist_stop(void *v,
-+    struct task_struct *prev, struct task_struct *next);
++	struct task_struct *prev, struct task_struct *next);
 +static notrace void probe_sched_migrate_task(void *,
-+    struct task_struct *task, int cpu);
++	struct task_struct *task, int cpu);
 +static struct enable_data wakeup_latency_enabled_data = {
 +	.latency_type = WAKEUP_LATENCY,
 +	.enabled = 0,
@@ -679,7 +682,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +static DEFINE_PER_CPU(struct hist_data, missed_timer_offsets);
 +static char *missed_timer_offsets_dir = "missed_timer_offsets";
 +static notrace void probe_hrtimer_interrupt(void *v, int cpu,
-+    long long offset, struct task_struct *curr, struct task_struct *task);
++	long long offset, struct task_struct *curr, struct task_struct *task);
 +static struct enable_data missed_timer_offsets_enabled_data = {
 +	.latency_type = MISSED_TIMER_OFFSETS,
 +	.enabled = 0,
@@ -689,7 +692,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#endif
 +
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) && \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +static DEFINE_PER_CPU(struct hist_data, timerandwakeup_latency_hist);
 +static char *timerandwakeup_latency_hist_dir = "timerandwakeup";
 +static struct enable_data timerandwakeup_enabled_data = {
@@ -705,11 +708,11 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +{
 +	struct hist_data *my_hist;
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) || \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +	struct maxlatproc_data *mp = NULL;
 +#endif
 +
-+	if (cpu < 0 || cpu >= NR_CPUS || latency_type < 0 ||
++	if (!cpu_possible(cpu) || latency_type < 0 ||
 +	    latency_type >= MAX_LATENCY_TYPE)
 +		return;
 +
@@ -746,7 +749,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +		break;
 +#endif
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) && \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +	case TIMERANDWAKEUP_LATENCY:
 +		my_hist = &per_cpu(timerandwakeup_latency_hist, cpu);
 +		mp = &per_cpu(timerandwakeup_maxlatproc, cpu);
@@ -773,7 +776,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	if (unlikely(latency > my_hist->max_lat ||
 +	    my_hist->min_lat == LONG_MAX)) {
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) || \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +		if (latency_type == WAKEUP_LATENCY ||
 +		    latency_type == WAKEUP_LATENCY_SHAREDPRIO ||
 +		    latency_type == MISSED_TIMER_OFFSETS ||
@@ -878,7 +881,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	return 0;
 +}
 +
-+static struct seq_operations latency_hist_seq_op = {
++static const struct seq_operations latency_hist_seq_op = {
 +	.start = l_start,
 +	.next  = l_next,
 +	.stop  = l_stop,
@@ -897,7 +900,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	return ret;
 +}
 +
-+static struct file_operations latency_hist_fops = {
++static const struct file_operations latency_hist_fops = {
 +	.open = latency_hist_open,
 +	.read = seq_read,
 +	.llseek = seq_lseek,
@@ -905,7 +908,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +};
 +
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) || \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +static void clear_maxlatprocdata(struct maxlatproc_data *mp)
 +{
 +	mp->comm[0] = mp->current_comm[0] = '\0';
@@ -937,7 +940,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	int cpu;
 +	struct hist_data *hist = NULL;
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) || \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +	struct maxlatproc_data *mp = NULL;
 +#endif
 +	off_t latency_type = (off_t) file->private_data;
@@ -977,7 +980,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +			break;
 +#endif
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) && \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +		case TIMERANDWAKEUP_LATENCY:
 +			hist = &per_cpu(timerandwakeup_latency_hist, cpu);
 +			mp = &per_cpu(timerandwakeup_maxlatproc, cpu);
@@ -987,7 +990,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +
 +		hist_reset(hist);
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) || \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +		if (latency_type == WAKEUP_LATENCY ||
 +		    latency_type == WAKEUP_LATENCY_SHAREDPRIO ||
 +		    latency_type == MISSED_TIMER_OFFSETS ||
@@ -1000,7 +1003,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +}
 +
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) || \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +static ssize_t
 +show_pid(struct file *file, char __user *ubuf, size_t cnt, loff_t *ppos)
 +{
@@ -1027,8 +1030,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +
 +	buf[cnt] = '\0';
 +
-+	if (strict_strtoul(buf, 10, &pid))
-+		return(-EINVAL);
++	if (kstrtoul(buf, 10, &pid))
++		return -EINVAL;
 +
 +	*this_pid = pid;
 +
@@ -1037,7 +1040,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#endif
 +
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) || \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +static ssize_t
 +show_maxlatproc(struct file *file, char __user *ubuf, size_t cnt, loff_t *ppos)
 +{
@@ -1098,8 +1101,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +
 +	buf[cnt] = 0;
 +
-+	if (strict_strtol(buf, 10, &enable))
-+		return(-EINVAL);
++	if (kstrtoul(buf, 10, &enable))
++		return -EINVAL;
 +
 +	if ((enable && ed->enabled) || (!enable && !ed->enabled))
 +		return cnt;
@@ -1181,7 +1184,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +			break;
 +#endif
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) && \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +		case TIMERANDWAKEUP_LATENCY:
 +			if (!wakeup_latency_enabled_data.enabled ||
 +			    !missed_timer_offsets_enabled_data.enabled)
@@ -1270,7 +1273,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +};
 +
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) || \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +static const struct file_operations pid_fops = {
 +	.open = tracing_open_generic,
 +	.read = show_pid,
@@ -1285,7 +1288,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +
 +#if defined(CONFIG_INTERRUPT_OFF_HIST) || defined(CONFIG_PREEMPT_OFF_HIST)
 +static notrace void probe_preemptirqsoff_hist(void *v, int reason,
-+    int starthist)
++	int starthist)
 +{
 +	int cpu = raw_smp_processor_id();
 +	int time_set = 0;
@@ -1390,7 +1393,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#ifdef CONFIG_WAKEUP_LATENCY_HIST
 +static DEFINE_RAW_SPINLOCK(wakeup_lock);
 +static notrace void probe_sched_migrate_task(void *v, struct task_struct *task,
-+    int cpu)
++	int cpu)
 +{
 +	int old_cpu = task_cpu(task);
 +
@@ -1413,7 +1416,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +}
 +
 +static notrace void probe_wakeup_latency_hist_start(void *v,
-+    struct task_struct *p, int success)
++	struct task_struct *p, int success)
 +{
 +	unsigned long flags;
 +	struct task_struct *curr = current;
@@ -1451,7 +1454,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +}
 +
 +static notrace void probe_wakeup_latency_hist_stop(void *v,
-+    struct task_struct *prev, struct task_struct *next)
++	struct task_struct *prev, struct task_struct *next)
 +{
 +	unsigned long flags;
 +	int cpu = task_cpu(next);
@@ -1520,7 +1523,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +
 +#ifdef CONFIG_MISSED_TIMER_OFFSETS_HIST
 +static notrace void probe_hrtimer_interrupt(void *v, int cpu,
-+    long long latency_ns, struct task_struct *curr, struct task_struct *task)
++	long long latency_ns, struct task_struct *curr,
++	struct task_struct *task)
 +{
 +	if (latency_ns <= 0 && task != NULL && rt_task(task) &&
 +	    (task->prio < curr->prio ||
@@ -1560,7 +1564,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	char name[64];
 +	char *cpufmt = "CPU%d";
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) || \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +	char *cpufmt_maxlatproc = "max_latency-CPU%d";
 +	struct maxlatproc_data *mp = NULL;
 +#endif
@@ -1691,7 +1695,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#endif
 +
 +#if defined(CONFIG_WAKEUP_LATENCY_HIST) && \
-+    defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
++	defined(CONFIG_MISSED_TIMER_OFFSETS_HIST)
 +	dentry = debugfs_create_dir(timerandwakeup_latency_hist_dir,
 +	    latency_hist_root);
 +	for_each_possible_cpu(i) {
@@ -1718,7 +1722,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	return 0;
 +}
 +
-+__initcall(latency_hist_init);
++device_initcall(latency_hist_init);
 --- a/kernel/trace/trace_irqsoff.c
 +++ b/kernel/trace/trace_irqsoff.c
 @@ -17,6 +17,7 @@

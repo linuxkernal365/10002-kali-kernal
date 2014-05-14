@@ -1,7 +1,7 @@
 Subject: sched, rt: Fix migrate_enable() thinko
 From: Mike Galbraith <efault@gmx.de>
 Date: Tue, 23 Aug 2011 16:12:43 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Assigning mask = tsk_cpus_allowed(p) after p->migrate_disable = 0 ensures
 that we won't see a mask change.. no push/pull, we stack tasks on one CPU.
@@ -23,7 +23,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -4492,12 +4492,14 @@ void migrate_enable(void)
+@@ -4769,12 +4769,14 @@ void migrate_enable(void)
  	 */
  	rq = this_rq();
  	raw_spin_lock_irqsave(&rq->lock, flags);
@@ -41,7 +41,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		p->nr_cpus_allowed = cpumask_weight(mask);
 --- a/kernel/sched/debug.c
 +++ b/kernel/sched/debug.c
-@@ -248,6 +248,9 @@ void print_rt_rq(struct seq_file *m, int
+@@ -260,6 +260,9 @@ void print_rt_rq(struct seq_file *m, int
  	P(rt_throttled);
  	PN(rt_time);
  	PN(rt_runtime);
@@ -51,7 +51,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  #undef PN
  #undef P
-@@ -577,6 +580,10 @@ void proc_sched_show_task(struct task_st
+@@ -639,6 +642,10 @@ void proc_sched_show_task(struct task_st
  #endif
  	P(policy);
  	P(prio);

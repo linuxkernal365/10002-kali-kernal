@@ -5,7 +5,7 @@ Subject: [PATCH] wait.h: include atomic.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 |  CC      init/main.o
 |In file included from include/linux/mmzone.h:9:0,
@@ -25,7 +25,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/include/linux/wait.h
 +++ b/include/linux/wait.h
-@@ -7,6 +7,7 @@
+@@ -8,6 +8,7 @@
  #include <linux/spinlock.h>
  #include <asm/current.h>
  #include <uapi/linux/wait.h>

@@ -1,7 +1,7 @@
 Subject: printk-kill.patch
 From: Ingo Molnar <mingo@elte.hu>
 Date: Fri, 22 Jul 2011 17:58:40 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -12,7 +12,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/include/linux/printk.h
 +++ b/include/linux/printk.h
-@@ -101,9 +101,11 @@ int no_printk(const char *fmt, ...)
+@@ -109,9 +109,11 @@ int no_printk(const char *fmt, ...)
  extern asmlinkage __printf(1, 2)
  void early_printk(const char *fmt, ...);
  void early_vprintk(const char *fmt, va_list ap);
@@ -24,7 +24,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif
  
  #ifdef CONFIG_PRINTK
-@@ -137,7 +139,6 @@ extern int __printk_ratelimit(const char
+@@ -145,7 +147,6 @@ extern int __printk_ratelimit(const char
  #define printk_ratelimit() __printk_ratelimit(__func__)
  extern bool printk_timed_ratelimit(unsigned long *caller_jiffies,
  				   unsigned int interval_msec);
@@ -34,7 +34,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  extern int kptr_restrict;
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -1488,6 +1488,55 @@ static size_t cont_print_text(char *text
+@@ -1483,6 +1483,55 @@ static size_t cont_print_text(char *text
  	return textlen;
  }
  
@@ -90,7 +90,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  asmlinkage int vprintk_emit(int facility, int level,
  			    const char *dict, size_t dictlen,
  			    const char *fmt, va_list args)
-@@ -1501,6 +1550,13 @@ asmlinkage int vprintk_emit(int facility
+@@ -1496,6 +1545,13 @@ asmlinkage int vprintk_emit(int facility
  	int this_cpu;
  	int printed_len = 0;
  
@@ -104,7 +104,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	boot_delay_msec(level);
  	printk_delay();
  
-@@ -1723,29 +1779,6 @@ static size_t cont_print_text(char *text
+@@ -1721,29 +1777,6 @@ static size_t cont_print_text(char *text
  
  #endif /* CONFIG_PRINTK */
  

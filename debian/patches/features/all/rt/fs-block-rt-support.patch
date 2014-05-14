@@ -1,7 +1,7 @@
 Subject: fs-block-rt-support.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 14 Jun 2011 17:05:09 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/block/blk-core.c
 +++ b/block/blk-core.c
-@@ -232,7 +232,7 @@ EXPORT_SYMBOL(blk_delay_queue);
+@@ -197,7 +197,7 @@ EXPORT_SYMBOL(blk_delay_queue);
   **/
  void blk_start_queue(struct request_queue *q)
  {

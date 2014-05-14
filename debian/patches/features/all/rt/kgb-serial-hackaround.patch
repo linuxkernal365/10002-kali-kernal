@@ -1,7 +1,7 @@
 From: Jason Wessel <jason.wessel@windriver.com>
 Date: Thu, 28 Jul 2011 12:42:23 -0500
 Subject: kgdb/serial: Short term workaround
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 On 07/27/2011 04:37 PM, Thomas Gleixner wrote:
 >  - KGDB (not yet disabled) is reportedly unusable on -rt right now due
@@ -34,7 +34,7 @@ Jason.
  #ifdef CONFIG_SPARC
  #include <linux/sunserialcore.h>
  #endif
-@@ -2869,7 +2870,7 @@ serial8250_console_write(struct console
+@@ -2891,7 +2892,7 @@ serial8250_console_write(struct console
  
  	touch_nmi_watchdog();
  
@@ -45,7 +45,7 @@ Jason.
  		spin_lock_irqsave(&port->lock, flags);
 --- a/include/linux/kdb.h
 +++ b/include/linux/kdb.h
-@@ -115,7 +115,7 @@ extern int kdb_trap_printk;
+@@ -116,7 +116,7 @@ extern int kdb_trap_printk;
  extern __printf(1, 0) int vkdb_printf(const char *fmt, va_list args);
  extern __printf(1, 2) int kdb_printf(const char *, ...);
  typedef __printf(1, 2) int (*kdb_printf_t)(const char *, ...);
@@ -54,7 +54,7 @@ Jason.
  extern void kdb_init(int level);
  
  /* Access to kdb specific polling devices */
-@@ -150,6 +150,7 @@ extern int kdb_register_repeat(char *, k
+@@ -151,6 +151,7 @@ extern int kdb_register_repeat(char *, k
  extern int kdb_unregister(char *);
  #else /* ! CONFIG_KGDB_KDB */
  static inline __printf(1, 2) int kdb_printf(const char *fmt, ...) { return 0; }

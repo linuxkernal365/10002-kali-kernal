@@ -1,7 +1,7 @@
 From: Ingo Molnar <mingo@elte.hu>
 Date: Fri, 3 Jul 2009 08:29:51 -0500
 Subject: mm: convert swap to percpu locked
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Ingo Molnar <mingo@elte.hu>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
@@ -12,15 +12,15 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/mm/swap.c
 +++ b/mm/swap.c
-@@ -32,6 +32,7 @@
+@@ -31,6 +31,7 @@
+ #include <linux/memcontrol.h>
  #include <linux/gfp.h>
  #include <linux/uio.h>
- #include <linux/hugetlb.h>
 +#include <linux/locallock.h>
  
  #include "internal.h"
  
-@@ -45,6 +46,9 @@ static DEFINE_PER_CPU(struct pagevec, lr
+@@ -44,6 +45,9 @@ static DEFINE_PER_CPU(struct pagevec, lr
  static DEFINE_PER_CPU(struct pagevec, lru_rotate_pvecs);
  static DEFINE_PER_CPU(struct pagevec, lru_deactivate_pvecs);
  
@@ -30,7 +30,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * This path almost never happens for VM activity - pages are normally
   * freed via pagevecs.  But it gets used by networking.
-@@ -385,11 +389,11 @@ void rotate_reclaimable_page(struct page
+@@ -440,11 +444,11 @@ void rotate_reclaimable_page(struct page
  		unsigned long flags;
  
  		page_cache_get(page);
@@ -44,7 +44,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  }
  
-@@ -440,12 +444,13 @@ static bool need_activate_page_drain(int
+@@ -495,12 +499,13 @@ static bool need_activate_page_drain(int
  void activate_page(struct page *page)
  {
  	if (PageLRU(page) && !PageActive(page) && !PageUnevictable(page)) {
@@ -60,7 +60,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  }
  
-@@ -471,7 +476,7 @@ void activate_page(struct page *page)
+@@ -526,7 +531,7 @@ void activate_page(struct page *page)
  
  static void __lru_cache_activate_page(struct page *page)
  {
@@ -69,7 +69,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	int i;
  
  	/*
-@@ -493,7 +498,7 @@ static void __lru_cache_activate_page(st
+@@ -548,7 +553,7 @@ static void __lru_cache_activate_page(st
  		}
  	}
  
@@ -78,7 +78,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  /*
-@@ -533,13 +538,13 @@ EXPORT_SYMBOL(mark_page_accessed);
+@@ -588,13 +593,13 @@ EXPORT_SYMBOL(mark_page_accessed);
   */
  void __lru_cache_add(struct page *page)
  {
@@ -94,7 +94,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  EXPORT_SYMBOL(__lru_cache_add);
  
-@@ -662,9 +667,9 @@ void lru_add_drain_cpu(int cpu)
+@@ -717,9 +722,9 @@ void lru_add_drain_cpu(int cpu)
  		unsigned long flags;
  
  		/* No harm done if a racing interrupt already did this */
@@ -106,7 +106,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  
  	pvec = &per_cpu(lru_deactivate_pvecs, cpu);
-@@ -692,18 +697,19 @@ void deactivate_page(struct page *page)
+@@ -747,18 +752,19 @@ void deactivate_page(struct page *page)
  		return;
  
  	if (likely(get_page_unless_zero(page))) {

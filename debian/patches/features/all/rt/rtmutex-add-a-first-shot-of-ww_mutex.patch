@@ -2,7 +2,7 @@ From fbebd5600c1b72bb707ada50d040ad719656a301 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
 Date: Mon, 28 Oct 2013 09:36:37 +0100
 Subject: [PATCH] rtmutex: add a first shot of ww_mutex
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 lockdep says:
 | --------------------------------------------------------------------------
@@ -24,20 +24,20 @@ lockdep says:
 
 Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
 ---
- kernel/rtmutex.c |  235 +++++++++++++++++++++++++++++++++++++++++++++++++++----
+ kernel/locking/rtmutex.c |  235 ++++++++++++++++++++++++++++++++++++++++++++---
  1 file changed, 222 insertions(+), 13 deletions(-)
 
---- a/kernel/rtmutex.c
-+++ b/kernel/rtmutex.c
-@@ -21,6 +21,7 @@
- #include <linux/sched.h>
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -22,6 +22,7 @@
  #include <linux/sched/rt.h>
+ #include <linux/sched/deadline.h>
  #include <linux/timer.h>
 +#include <linux/ww_mutex.h>
  
  #include "rtmutex_common.h"
  
-@@ -959,6 +960,39 @@ EXPORT_SYMBOL(__rt_spin_lock_init);
+@@ -1052,6 +1053,39 @@ EXPORT_SYMBOL(__rt_spin_lock_init);
  
  #endif /* PREEMPT_RT_FULL */
  
@@ -77,7 +77,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  /**
   * __rt_mutex_slowlock() - Perform the wait-wake-try-to-take loop
   * @lock:		 the rt_mutex to take
-@@ -972,7 +1006,8 @@ EXPORT_SYMBOL(__rt_spin_lock_init);
+@@ -1065,7 +1099,8 @@ EXPORT_SYMBOL(__rt_spin_lock_init);
  static int __sched
  __rt_mutex_slowlock(struct rt_mutex *lock, int state,
  		    struct hrtimer_sleeper *timeout,
@@ -87,7 +87,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  {
  	int ret = 0;
  
-@@ -995,6 +1030,12 @@ static int __sched
+@@ -1088,6 +1123,12 @@ static int __sched
  				break;
  		}
  
@@ -100,7 +100,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  		raw_spin_unlock(&lock->wait_lock);
  
  		debug_rt_mutex_print_deadlock(waiter);
-@@ -1008,13 +1049,89 @@ static int __sched
+@@ -1101,13 +1142,89 @@ static int __sched
  	return ret;
  }
  
@@ -149,7 +149,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
 +		struct ww_acquire_ctx *ww_ctx)
 +{
 +	struct ww_mutex *ww = container_of(lock, struct ww_mutex, base.lock);
-+	struct rt_mutex_waiter *waiter;
++	struct rt_mutex_waiter *waiter, *n;
 +
 +	/*
 +	 * This branch gets optimized out for the common case,
@@ -162,8 +162,8 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
 +	 * Give any possible sleeping processes the chance to wake up,
 +	 * so they can recheck if they have to back off.
 +	 */
-+	plist_for_each_entry(waiter, &lock->wait_list, list_entry) {
-+
++	rbtree_postorder_for_each_entry_safe(waiter, n, &lock->waiters,
++			tree_entry) {
 +		/* XXX debug rt mutex waiter wakeup */
 +
 +		BUG_ON(waiter->lock != lock);
@@ -191,7 +191,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  {
  	struct rt_mutex_waiter waiter;
  	int ret = 0;
-@@ -1026,6 +1143,8 @@ rt_mutex_slowlock(struct rt_mutex *lock,
+@@ -1118,6 +1235,8 @@ rt_mutex_slowlock(struct rt_mutex *lock,
  
  	/* Try to acquire the lock again: */
  	if (try_to_take_rt_mutex(lock, current, NULL)) {
@@ -200,7 +200,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  		raw_spin_unlock(&lock->wait_lock);
  		return 0;
  	}
-@@ -1042,12 +1161,14 @@ rt_mutex_slowlock(struct rt_mutex *lock,
+@@ -1134,12 +1253,14 @@ rt_mutex_slowlock(struct rt_mutex *lock,
  	ret = task_blocks_on_rt_mutex(lock, &waiter, current, detect_deadlock);
  
  	if (likely(!ret))
@@ -216,7 +216,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  
  	/*
  	 * try_to_take_rt_mutex() sets the waiter bit
-@@ -1126,30 +1247,33 @@ rt_mutex_slowunlock(struct rt_mutex *loc
+@@ -1217,30 +1338,33 @@ rt_mutex_slowunlock(struct rt_mutex *loc
   */
  static inline int
  rt_mutex_fastlock(struct rt_mutex *lock, int state,
@@ -255,7 +255,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  }
  
  static inline int
-@@ -1182,7 +1306,7 @@ void __sched rt_mutex_lock(struct rt_mut
+@@ -1273,7 +1397,7 @@ void __sched rt_mutex_lock(struct rt_mut
  {
  	might_sleep();
  
@@ -264,7 +264,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  }
  EXPORT_SYMBOL_GPL(rt_mutex_lock);
  
-@@ -1203,7 +1327,7 @@ int __sched rt_mutex_lock_interruptible(
+@@ -1294,7 +1418,7 @@ int __sched rt_mutex_lock_interruptible(
  	might_sleep();
  
  	return rt_mutex_fastlock(lock, TASK_INTERRUPTIBLE,
@@ -273,7 +273,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  }
  EXPORT_SYMBOL_GPL(rt_mutex_lock_interruptible);
  
-@@ -1224,7 +1348,7 @@ int __sched rt_mutex_lock_killable(struc
+@@ -1315,7 +1439,7 @@ int __sched rt_mutex_lock_killable(struc
  	might_sleep();
  
  	return rt_mutex_fastlock(lock, TASK_KILLABLE,
@@ -282,7 +282,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  }
  EXPORT_SYMBOL_GPL(rt_mutex_lock_killable);
  
-@@ -1250,7 +1374,7 @@ rt_mutex_timed_lock(struct rt_mutex *loc
+@@ -1341,7 +1465,7 @@ rt_mutex_timed_lock(struct rt_mutex *loc
  	might_sleep();
  
  	return rt_mutex_timed_fastlock(lock, TASK_INTERRUPTIBLE, timeout,
@@ -291,7 +291,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  }
  EXPORT_SYMBOL_GPL(rt_mutex_timed_lock);
  
-@@ -1474,7 +1598,7 @@ int rt_mutex_finish_proxy_lock(struct rt
+@@ -1566,7 +1690,7 @@ int rt_mutex_finish_proxy_lock(struct rt
  
  	set_current_state(TASK_INTERRUPTIBLE);
  
@@ -300,7 +300,7 @@ Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
  
  	set_current_state(TASK_RUNNING);
  
-@@ -1491,3 +1615,88 @@ int rt_mutex_finish_proxy_lock(struct rt
+@@ -1583,3 +1707,88 @@ int rt_mutex_finish_proxy_lock(struct rt
  
  	return ret;
  }

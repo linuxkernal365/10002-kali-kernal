@@ -1,7 +1,7 @@
 Subject: softirq-disable-softirq-stacks-for-rt.patch
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Mon, 18 Jul 2011 13:59:17 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.12/patches-3.12.6-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/3.14/patches-3.14.3-rt5.tar.xz
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -12,23 +12,22 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  arch/sparc/kernel/irq_64.c    |    2 ++
  arch/x86/kernel/entry_64.S    |    2 ++
  arch/x86/kernel/irq_32.c      |    2 ++
- arch/x86/kernel/irq_64.c      |    3 ++-
- include/linux/interrupt.h     |    3 +--
- 9 files changed, 17 insertions(+), 3 deletions(-)
+ include/linux/interrupt.h     |    8 ++++----
+ 8 files changed, 18 insertions(+), 4 deletions(-)
 
 --- a/arch/powerpc/kernel/irq.c
 +++ b/arch/powerpc/kernel/irq.c
-@@ -594,6 +594,7 @@ void irq_ctx_init(void)
+@@ -605,6 +605,7 @@ void irq_ctx_init(void)
  	}
  }
  
 +#ifndef CONFIG_PREEMPT_RT_FULL
- static inline void do_softirq_onstack(void)
+ void do_softirq_own_stack(void)
  {
  	struct thread_info *curtp, *irqtp;
-@@ -626,6 +627,7 @@ void do_softirq(void)
- 
- 	local_irq_restore(flags);
+@@ -622,6 +623,7 @@ void do_softirq_own_stack(void)
+ 	if (irqtp->flags)
+ 		set_bits(irqtp->flags, &curtp->flags);
  }
 +#endif
  
@@ -50,8 +49,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	blr
 +#endif
  
- _GLOBAL(call_do_irq)
- 	mflr	r0
+ /*
+  * void call_do_irq(struct pt_regs *regs, struct thread_info *irqtp);
 --- a/arch/powerpc/kernel/misc_64.S
 +++ b/arch/powerpc/kernel/misc_64.S
 @@ -29,6 +29,7 @@
@@ -77,12 +76,12 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
 +#ifndef CONFIG_PREEMPT_RT_FULL
- asmlinkage void do_softirq(void)
+ void do_softirq_own_stack(void)
  {
- 	unsigned long flags;
-@@ -191,6 +192,7 @@ asmlinkage void do_softirq(void)
- 
- 	local_irq_restore(flags);
+ 	struct thread_info *curctx;
+@@ -176,6 +177,7 @@ void do_softirq_own_stack(void)
+ 		  "r5", "r6", "r7", "r8", "r9", "r15", "t", "pr"
+ 	);
  }
 +#endif
  #else
@@ -95,12 +94,12 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
 +#ifndef CONFIG_PREEMPT_RT_FULL
- void do_softirq(void)
+ void do_softirq_own_stack(void)
  {
- 	unsigned long flags;
-@@ -723,6 +724,7 @@ void do_softirq(void)
- 
- 	local_irq_restore(flags);
+ 	void *orig_sp, *sp = softirq_stack[smp_processor_id()];
+@@ -712,6 +713,7 @@ void do_softirq_own_stack(void)
+ 	__asm__ __volatile__("mov %0, %%sp"
+ 			     : : "r" (orig_sp));
  }
 +#endif
  
@@ -108,67 +107,64 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  void fixup_irqs(void)
 --- a/arch/x86/kernel/entry_64.S
 +++ b/arch/x86/kernel/entry_64.S
-@@ -1341,6 +1341,7 @@ END(native_load_gs_index)
+@@ -1350,6 +1350,7 @@ END(native_load_gs_index)
  	jmp  2b
  	.previous
  
 +#ifndef CONFIG_PREEMPT_RT_FULL
  /* Call softirq on interrupt stack. Interrupts are off. */
- ENTRY(call_softirq)
+ ENTRY(do_softirq_own_stack)
  	CFI_STARTPROC
-@@ -1360,6 +1361,7 @@ ENTRY(call_softirq)
+@@ -1369,6 +1370,7 @@ ENTRY(do_softirq_own_stack)
  	ret
  	CFI_ENDPROC
- END(call_softirq)
+ END(do_softirq_own_stack)
 +#endif
  
  #ifdef CONFIG_XEN
  zeroentry xen_hypervisor_callback xen_do_hypervisor_callback
 --- a/arch/x86/kernel/irq_32.c
 +++ b/arch/x86/kernel/irq_32.c
-@@ -149,6 +149,7 @@ void irq_ctx_init(int cpu)
+@@ -145,6 +145,7 @@ void irq_ctx_init(int cpu)
  	       cpu, per_cpu(hardirq_ctx, cpu),  per_cpu(softirq_ctx, cpu));
  }
  
 +#ifndef CONFIG_PREEMPT_RT_FULL
- asmlinkage void do_softirq(void)
+ void do_softirq_own_stack(void)
  {
- 	unsigned long flags;
-@@ -179,6 +180,7 @@ asmlinkage void do_softirq(void)
+ 	struct thread_info *curctx;
+@@ -161,6 +162,7 @@ void do_softirq_own_stack(void)
  
- 	local_irq_restore(flags);
+ 	call_on_stack(__do_softirq, isp);
  }
 +#endif
  
  bool handle_irq(unsigned irq, struct pt_regs *regs)
  {
---- a/arch/x86/kernel/irq_64.c
-+++ b/arch/x86/kernel/irq_64.c
-@@ -88,7 +88,7 @@ bool handle_irq(unsigned irq, struct pt_
- 	return true;
- }
- 
--
-+#ifndef CONFIG_PREEMPT_RT_FULL
- extern void call_softirq(void);
- 
- asmlinkage void do_softirq(void)
-@@ -108,3 +108,4 @@ asmlinkage void do_softirq(void)
- 	}
- 	local_irq_restore(flags);
- }
-+#endif
 --- a/include/linux/interrupt.h
 +++ b/include/linux/interrupt.h
-@@ -377,10 +377,9 @@ struct softirq_action
+@@ -381,13 +381,10 @@ struct softirq_action
  	void	(*action)(struct softirq_action *);
  };
  
 +#ifndef CONFIG_PREEMPT_RT_FULL
  asmlinkage void do_softirq(void);
  asmlinkage void __do_softirq(void);
--
 -#ifndef CONFIG_PREEMPT_RT_FULL
  static inline void thread_do_softirq(void) { do_softirq(); }
+-#else
+-extern void thread_do_softirq(void);
+-#endif
+ #ifdef __ARCH_HAS_DO_SOFTIRQ
+ void do_softirq_own_stack(void);
  #else
- extern void thread_do_softirq(void);
+@@ -396,6 +393,9 @@ static inline void do_softirq_own_stack(
+ 	__do_softirq();
+ }
+ #endif
++#else
++extern void thread_do_softirq(void);
++#endif
+ 
+ extern void open_softirq(int nr, void (*action)(struct softirq_action *));
+ extern void softirq_init(void);
