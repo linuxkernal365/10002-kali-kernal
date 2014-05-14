@@ -91,12 +91,14 @@ int radeon_uvd_init(struct radeon_device *rdev)
 	case CHIP_VERDE:
 	case CHIP_PITCAIRN:
 	case CHIP_ARUBA:
+	case CHIP_OLAND:
 		fw_name = FIRMWARE_TAHITI;
 		break;
 
 	case CHIP_BONAIRE:
 	case CHIP_KABINI:
 	case CHIP_KAVERI:
+	case CHIP_HAWAII:
 		fw_name = FIRMWARE_BONAIRE;
 		break;
 
@@ -168,6 +170,8 @@ void radeon_uvd_fini(struct radeon_device *rdev)
 	}
 
 	radeon_bo_unref(&rdev->uvd.vcpu_bo);
+
+	radeon_ring_fini(rdev, &rdev->ring[R600_RING_TYPE_UVD_INDEX]);
 
 	release_firmware(rdev->uvd_fw);
 }
@@ -777,6 +781,8 @@ static void radeon_uvd_idle_work_handler(struct work_struct *work)
 
 	if (radeon_fence_count_emitted(rdev, R600_RING_TYPE_UVD_INDEX) == 0) {
 		if ((rdev->pm.pm_method == PM_METHOD_DPM) && rdev->pm.dpm_enabled) {
+			radeon_uvd_count_handles(rdev, &rdev->pm.dpm.sd,
+						 &rdev->pm.dpm.hd);
 			radeon_dpm_enable_uvd(rdev, false);
 		} else {
 			radeon_set_uvd_clocks(rdev, 0, 0);
