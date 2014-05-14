@@ -1,5 +1,5 @@
 5cfa1fec85b0833569d105f9c36b9514  debian/bin/gencontrol.py
-5ab9b6a914bf5bd720f17ddc8dcc7b40  debian/changelog
+ff626ad75d6bc42590975cde5fd4cc07  debian/changelog
 3e2fde720ec84a08dab1cca4224521e2  debian/templates/image.plain.preinst.in
 1b17e6e766d2f44e0852cfa864459837  debian/templates/control.main.in
 4c5446e06f8220c5064d4810073445a4  debian/templates/image.plain.prerm.in
@@ -18,8 +18,9 @@ bb68ff74384e6775bbd75fd2449e9e20  debian/templates/control.image.type-standalone
 8991a0797a881ca5fb5e2ec5b36a718b  debian/templates/control.extra.in
 d253b8a3cc1ffc2054b1d485facc490a  debian/templates/control.headers.arch.in
 6d8ccc8d2ca7e951fe89dddb2ff91c88  debian/templates/image.plain.templates.in
-fc7d75e96e96dbfc7465698e5f9d0bcc  debian/config/defines
+510cc49c3eae3b74f94bb07c21c20a7b  debian/config/defines
 108d46ddbafd59535ffb0aa269a26876  debian/config/i386/defines
+2be38b0f20823417f9c51eca200bf243  debian/config/ppc64el/defines
 9896b2b1e0000190b27c3fd62709009f  debian/config/armhf/defines
 271bc129a98d5ffd60c582bb693f11ca  debian/config/amd64/defines
 d423788361d3b9bb16a91efff45a0ba9  debian/config/mips/defines
@@ -38,7 +39,6 @@ e45681c668fde7fa18fbf40fa05686e1  debian/config/m68k/defines
 2a259e447c81628c8d33560dce855fd2  debian/config/ia64/defines
 154e12eb46508ba2173f1ba80afe0b10  debian/config/alpha/defines
 7c1adb69bdc9137d58e707d3c8c6210b  debian/config/hppa/defines
-2be38b0f20823417f9c51eca200bf243  debian/config/ppc64el/defines
 49a4f7a4e6434a8fc14ba1ded15a9793  debian/config/armel/defines
 91671d7ce75310062f65a60d3b94489b  debian/config/or1k/defines
 42eb39c4d4d537ad0b3a75dd82999937  debian/config/s390/defines

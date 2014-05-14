@@ -41,11 +41,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-alpha-generic/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-alpha-generic/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-alpha-generic/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-alpha-generic/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -139,11 +139,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-alpha-smp/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-alpha-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-alpha-smp/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-alpha-smp/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -237,11 +237,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-alpha-legacy/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-alpha-legacy/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-alpha-legacy/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-alpha-legacy/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -335,11 +335,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-amd64/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-amd64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-amd64/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-amd64/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -433,11 +433,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-rt-amd64/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-rt-amd64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-rt-amd64/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-rt-amd64/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -531,11 +531,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-kirkwood/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-kirkwood/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-kirkwood/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-kirkwood/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -629,11 +629,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-mv78xx0/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-mv78xx0/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-mv78xx0/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-mv78xx0/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -727,11 +727,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-orion5x/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-orion5x/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-orion5x/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-orion5x/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -825,11 +825,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-versatile/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-versatile/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-versatile/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-versatile/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -923,11 +923,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-armmp/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-armmp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-armmp/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-armmp/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -1021,11 +1021,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-armmp-lpae/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-armmp-lpae/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-armmp-lpae/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-armmp-lpae/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -1119,11 +1119,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-parisc/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-parisc/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-parisc/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-parisc/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -1217,11 +1217,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-parisc64-smp/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-parisc64-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-parisc64-smp/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-parisc64-smp/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -1315,11 +1315,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-486/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-486/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-486/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-486/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -1413,11 +1413,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-686-pae/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-686-pae/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-686-pae/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-686-pae/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -1511,11 +1511,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-amd64/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-amd64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-amd64/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-amd64/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -1609,11 +1609,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-rt-686-pae/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-rt-686-pae/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-rt-686-pae/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-rt-686-pae/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -1707,11 +1707,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-itanium/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-itanium/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-itanium/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-itanium/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -1805,11 +1805,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-mckinley/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-mckinley/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-mckinley/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-mckinley/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -1903,11 +1903,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-m68k/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-m68k/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-m68k/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-m68k/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2001,11 +2001,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-r4k-ip22/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-r4k-ip22/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-r4k-ip22/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-r4k-ip22/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2099,11 +2099,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-r5k-ip32/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-r5k-ip32/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-r5k-ip32/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-r5k-ip32/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2197,11 +2197,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-sb1-bcm91250a/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-sb1-bcm91250a/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-sb1-bcm91250a/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-sb1-bcm91250a/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2295,11 +2295,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-sb1a-bcm91480b/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-sb1a-bcm91480b/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-sb1a-bcm91480b/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-sb1a-bcm91480b/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2393,11 +2393,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-4kc-malta/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-4kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-4kc-malta/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-4kc-malta/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2491,11 +2491,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-5kc-malta/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-5kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-5kc-malta/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-5kc-malta/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2589,11 +2589,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-octeon/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-octeon/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-octeon/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-octeon/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2687,11 +2687,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-sb1-bcm91250a/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-sb1-bcm91250a/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-sb1-bcm91250a/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-sb1-bcm91250a/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2785,11 +2785,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-sb1a-bcm91480b/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-sb1a-bcm91480b/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-sb1a-bcm91480b/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-sb1a-bcm91480b/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2883,11 +2883,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-4kc-malta/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-4kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-4kc-malta/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-4kc-malta/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -2981,11 +2981,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-5kc-malta/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-5kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-5kc-malta/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-5kc-malta/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -3079,11 +3079,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-loongson-2e/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-loongson-2e/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-loongson-2e/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-loongson-2e/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -3177,11 +3177,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-loongson-2f/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-loongson-2f/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-loongson-2f/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-loongson-2f/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -3275,11 +3275,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-powerpc/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-powerpc/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-powerpc/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-powerpc/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -3373,11 +3373,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-powerpc-smp/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-powerpc-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-powerpc-smp/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-powerpc-smp/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -3471,11 +3471,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-powerpc64/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-powerpc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-powerpc64/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-powerpc64/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -3569,11 +3569,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-powerpcspe/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-powerpcspe/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-powerpcspe/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-powerpcspe/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -3667,11 +3667,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-powerpc64/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-powerpc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-powerpc64/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-powerpc64/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -3765,11 +3765,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-s390x/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-s390x/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-s390x/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-s390x/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -3863,11 +3863,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-s390x/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-s390x/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-s390x/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-s390x/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -3961,11 +3961,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-sh7751r/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-sh7751r/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-sh7751r/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-sh7751r/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -4059,11 +4059,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-sh7785lcr/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-sh7785lcr/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-sh7785lcr/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-sh7785lcr/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -4157,11 +4157,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-sparc64/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-sparc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-sparc64/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-sparc64/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -4255,11 +4255,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-sparc64-smp/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-sparc64-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-sparc64-smp/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-sparc64-smp/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -4353,11 +4353,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-sparc64/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-sparc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-sparc64/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-sparc64/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
@@ -4451,11 +4451,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/3.14-1-sparc64-smp/"
+"Since this image uses initrd, the ${modules_base}/3.14-kali1-sparc64-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "このイメージは initrd を使っているので、${modules_base}/"
-"3.14-1-sparc64-smp/modules.dep ファイルは (たとえ無効なものであったとし"
+"3.14-kali1-sparc64-smp/modules.dep ファイルは (たとえ無効なものであったとし"
 "ても) 削除されません。"
 
 #. Type: boolean
