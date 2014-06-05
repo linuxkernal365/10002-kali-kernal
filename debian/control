@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Kernel Team <debian-kernel@lists.debian.org>
 Uploaders: Bastian Blank <waldi@debian.org>, Frederik Schüler <fs@debian.org>, maximilian attems <maks@debian.org>, Ben Hutchings <ben@decadent.org.uk>
 Standards-Version: 3.9.4
-Build-Depends: debhelper, cpio, kmod, python, python-six, lzma [armel], kernel-wedge, quilt, patchutils, bc, gcc-4.8 [alpha amd64 armel armhf hppa i386 m68k mips mipsel powerpc powerpcspe s390 s390x sparc sparc64], binutils-hppa64 [hppa], gcc-4.8-hppa64 [hppa], gcc-4.6 [ia64], gcc-4.8 (>= 4.8.2-21) [ppc64], gcc-4.7 [sh4]
+Build-Depends: debhelper, cpio, kmod, python, python-six, lzma [armel], kernel-wedge, quilt, patchutils, bc, gcc-4.8 [alpha amd64 arm64 armel armhf hppa i386 m68k mips mipsel powerpc powerpcspe s390 s390x sparc sparc64], binutils-hppa64 [hppa], gcc-4.8-hppa64 [hppa], gcc-4.6 [ia64], gcc-4.8 (>= 4.8.2-21) [ppc64], gcc-4.7 [sh4]
 Build-Depends-Indep: xz-utils, xmlto
 Vcs-Svn: svn://anonscm.debian.org/svn/kernel/dists/trunk/linux/
 Vcs-Browser: http://anonscm.debian.org/viewvc/kernel/dists/trunk/linux/
@@ -79,7 +79,7 @@ Description: Linux support headers for userspace development
 Multi-Arch: same
 
 Package: linux-headers-3.14-1-all
-Architecture: alpha amd64 armel armhf hppa i386 ia64 m68k mips mipsel powerpc powerpcspe ppc64 s390 s390x sh4 sparc sparc64
+Architecture: alpha amd64 arm64 armel armhf hppa i386 ia64 m68k mips mipsel powerpc powerpcspe ppc64 s390 s390x sh4 sparc sparc64
 Depends: linux-headers-3.14-1-all-${kernel:Arch} (= ${binary:Version}), ${misc:Depends}
 Description: All header files for Linux 3.14 (meta-package)
  This package depends against all architecture-specific kernel header files
@@ -95,7 +95,7 @@ Description: All header files for Linux 3.14 (meta-package)
  kernel modules.
 
 Package: linux-headers-3.14-1-common
-Architecture: alpha amd64 armel armhf hppa i386 ia64 m68k mips mipsel powerpc powerpcspe ppc64 s390 s390x sh4 sparc sparc64
+Architecture: alpha amd64 arm64 armel armhf hppa i386 ia64 m68k mips mipsel powerpc powerpcspe ppc64 s390 s390x sh4 sparc sparc64
 Depends: ${misc:Depends}
 Description: Common header files for Linux 3.14-1
  This package provides the architecture-specific common kernel header files
@@ -870,6 +870,428 @@ Depends: ${misc:Depends}
 Description: Debugging symbols for Linux 3.14-1-rt-amd64
  This package provides the detached debugging symbols for the Linux kernel
  and modules in linux-image-3.14-1-rt-amd64.
+
+Package: linux-headers-3.14-1-all-arm64
+Architecture: arm64
+Depends: ${misc:Depends}, linux-headers-3.14-1-arm64 (= ${binary:Version})
+Description: All header files for Linux 3.14 (meta-package)
+ This package depends against all architecture-specific kernel header files
+ for Linux kernel version 3.14, generally used for building out-of-tree
+ kernel modules.
+
+Package: kernel-image-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: kernel-image
+Description: Linux kernel binary image for the Debian installer
+ This package contains the kernel image for the Debian installer boot
+ images.  It does _not_ provide a usable kernel for your full Debian
+ system.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: nic-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: nic-modules, nic-extra-modules
+Depends: kernel-image-3.14-1-arm64-di, nic-shared-modules-3.14-1-arm64-di, core-modules-3.14-1-arm64-di, crc-modules-3.14-1-arm64-di
+Description: NIC drivers
+ This package contains Ethernet and some paravirtualised network drivers
+ for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: nic-wireless-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: nic-wireless-modules
+Depends: kernel-image-3.14-1-arm64-di, nic-shared-modules-3.14-1-arm64-di, core-modules-3.14-1-arm64-di, usb-modules-3.14-1-arm64-di, mmc-modules-3.14-1-arm64-di, crc-modules-3.14-1-arm64-di
+Description: Wireless NIC drivers
+ This package contains wireless NIC drivers for the kernel.  Includes
+ crypto modules only needed for wireless (WEP, WPA).
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: nic-shared-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: nic-shared-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: Shared NIC drivers
+ This package contains NIC drivers needed by combinations of nic-modules,
+ nic-pcmcia-modules, nic-usb-modules and nic-wireless-modules.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: ppp-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: optional
+Provides: ppp-modules
+Depends: kernel-image-3.14-1-arm64-di, zlib-modules-3.14-1-arm64-di, crc-modules-3.14-1-arm64-di
+Description: PPP drivers
+ This package contains PPP drivers for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: scsi-core-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: scsi-core-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: Core SCSI subsystem
+ This package contains the core SCSI subsystem for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: scsi-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: scsi-modules
+Depends: kernel-image-3.14-1-arm64-di, scsi-core-modules-3.14-1-arm64-di, core-modules-3.14-1-arm64-di, ata-modules-3.14-1-arm64-di
+Description: SCSI drivers
+ This package contains SCSI drivers for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: loop-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: loop-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: Loopback filesystem support
+ This package contains loopback filesystem support for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: btrfs-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: btrfs-modules
+Depends: kernel-image-3.14-1-arm64-di, core-modules-3.14-1-arm64-di, crc-modules-3.14-1-arm64-di, zlib-modules-3.14-1-arm64-di, md-modules-3.14-1-arm64-di
+Description: BTRFS filesystem support
+ This package contains the BTRFS filesystem module for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: ext4-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: ext4-modules, ext2-modules, ext3-modules
+Depends: kernel-image-3.14-1-arm64-di, core-modules-3.14-1-arm64-di, crc-modules-3.14-1-arm64-di
+Description: ext2/ext3/ext4 filesystem support
+ This package contains the ext4 filesystem module for the kernel, which
+ also supports ext2 and ext3.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: isofs-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: isofs-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: ISOFS filesystem support
+ This package contains the ISOFS filesystem module for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: jfs-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: jfs-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: JFS filesystem support
+ This package contains the JFS filesystem module for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: fat-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: fat-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: FAT filesystem support
+ This package contains the FAT and VFAT filesystem modules for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: md-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: md-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: RAID and LVM support
+ This package contains RAID and LVM modules for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: multipath-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: multipath-modules
+Depends: kernel-image-3.14-1-arm64-di, md-modules-3.14-1-arm64-di, scsi-core-modules-3.14-1-arm64-di
+Description: Multipath support
+ This package contains DM-Multipath modules for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: usb-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: usb-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: USB support
+ This package contains core USB drivers for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: usb-storage-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: usb-storage-modules
+Depends: kernel-image-3.14-1-arm64-di, scsi-core-modules-3.14-1-arm64-di, usb-modules-3.14-1-arm64-di
+Description: USB storage support
+ This package contains the USB storage driver for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: input-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: input-modules
+Depends: kernel-image-3.14-1-arm64-di, usb-modules-3.14-1-arm64-di
+Description: Input devices support
+ This package contains input device drivers for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: event-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: event-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: Event support
+ This package contains event drivers for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: nic-usb-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: nic-usb-modules
+Depends: kernel-image-3.14-1-arm64-di, nic-shared-modules-3.14-1-arm64-di, nic-wireless-modules-3.14-1-arm64-di, usb-modules-3.14-1-arm64-di, core-modules-3.14-1-arm64-di, crc-modules-3.14-1-arm64-di
+Description: USB NIC drivers
+ This package contains USB network adapter drivers for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: sata-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: sata-modules
+Depends: kernel-image-3.14-1-arm64-di, scsi-core-modules-3.14-1-arm64-di, ata-modules-3.14-1-arm64-di
+Description: SATA drivers
+ This package contains SATA drivers for the kernel.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: core-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: standard
+Provides: core-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: Core modules
+ This package contains core modules for the kernel, that will almost
+ always be needed.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: crc-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: crc-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: CRC modules
+ This package contains CRC support modules.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: crypto-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: crypto-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: crypto modules
+ This package contains crypto modules.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: crypto-dm-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: crypto-dm-modules
+Depends: kernel-image-3.14-1-arm64-di, md-modules-3.14-1-arm64-di
+Description: devicemapper crypto module
+ This package contains the devicemapper crypto (dm-crypt) module.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: ata-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: ata-modules
+Depends: kernel-image-3.14-1-arm64-di, scsi-core-modules-3.14-1-arm64-di
+Description: ATA disk modules
+ This package contains core ATA disk modules used by both PATA and SATA
+ disk drivers.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: mmc-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: mmc-modules
+Depends: kernel-image-3.14-1-arm64-di, core-modules-3.14-1-arm64-di
+Description: MMC/SD card modules
+ This package contains modules needed to support MMC (multimedia) and SD
+ cards.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: nbd-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: nbd-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: Network Block Device modules
+ This package contains the modules required for support of the Network
+ Block Device
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: squashfs-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: squashfs-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: squashfs modules
+ This package contains squashfs modules.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: virtio-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: virtio-modules
+Depends: kernel-image-3.14-1-arm64-di, scsi-core-modules-3.14-1-arm64-di
+Description: virtio modules
+ This package contains virtio modules.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: uinput-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: uinput-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: uinput support
+ This package contains the uinput module.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: zlib-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: zlib-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: zlib modules
+ This package contains zlib modules.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: udf-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: udf-modules
+Depends: kernel-image-3.14-1-arm64-di, crc-modules-3.14-1-arm64-di
+Description: UDF modules
+ This package contains the UDF filesystem module.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: fuse-modules-3.14-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: fuse-modules
+Depends: kernel-image-3.14-1-arm64-di
+Description: FUSE modules
+ This package contains the Filesystem in Userspace (FUSE) module.
+Kernel-Version: 3.14-1-arm64
+Package-Type: udeb
+
+Package: linux-image-3.14-1-arm64
+Architecture: arm64
+Provides: linux-modules-3.14-1-arm64
+Pre-Depends: debconf | debconf-2.0
+Depends: kmod | module-init-tools, linux-base (>= 3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [arm64] | linux-initramfs-tool [arm64]
+Recommends: firmware-linux-free (>= 3~)
+Suggests: linux-doc-3.14, debian-kernel-handbook
+Breaks: at (<< 3.1.12-1+squeeze1), initramfs-tools (<< 0.110~)
+Description: Linux 3.14 for 64-bit ARMv8 machines
+ The Linux kernel 3.14 and modules for use on 64-bit ARMv8 machines.
+
+Package: linux-headers-3.14-1-arm64
+Architecture: arm64
+Depends: linux-headers-3.14-1-common (= ${binary:Version}), linux-kbuild-3.14, ${misc:Depends}, gcc-4.8
+Description: Header files for Linux 3.14-1-arm64
+ This package provides the architecture-specific kernel header files for
+ Linux kernel 3.14-1-arm64, generally used for building out-of-tree kernel
+ modules.  These files are going to be installed into
+ /usr/src/linux-headers-3.14-1-arm64, and can be used for building modules
+ that load into the kernel provided by the linux-image-3.14-1-arm64
+ package.
+
+Package: linux-image-3.14-1-arm64-dbg
+Architecture: arm64
+Section: debug
+Priority: extra
+Depends: ${misc:Depends}
+Description: Debugging symbols for Linux 3.14-1-arm64
+ This package provides the detached debugging symbols for the Linux kernel
+ and modules in linux-image-3.14-1-arm64.
 
 Package: linux-headers-3.14-1-all-armel
 Architecture: armel
@@ -2412,6 +2834,17 @@ Provides: squashfs-modules
 Depends: kernel-image-3.14-1-armmp-di
 Description: squashfs modules
  This package contains squashfs modules.
+Kernel-Version: 3.14-1-armmp
+Package-Type: udeb
+
+Package: virtio-modules-3.14-1-armmp-di
+Architecture: armhf
+Section: debian-installer
+Priority: extra
+Provides: virtio-modules
+Depends: kernel-image-3.14-1-armmp-di, scsi-core-modules-3.14-1-armmp-di
+Description: virtio modules
+ This package contains virtio modules.
 Kernel-Version: 3.14-1-armmp
 Package-Type: udeb
 
