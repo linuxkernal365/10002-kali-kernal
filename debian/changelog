@@ -1,3 +1,9 @@
+linux (3.14.5-1kali1) kali; urgency=medium
+
+  * Import into Kali.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Fri, 06 Jun 2014 11:16:06 +0200
+
 linux (3.14.5-1) unstable; urgency=high
 
   * New upstream stable update:
