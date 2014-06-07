@@ -1,3 +1,13 @@
+linux (3.14.5-1kali2) kali; urgency=medium
+
+  * Merge changes from SVN commits 21407-21409 on the Debian repository:
+    http://anonscm.debian.org/viewvc/kernel?view=revision&revision=21407
+    http://anonscm.debian.org/viewvc/kernel?view=revision&revision=21408
+    http://anonscm.debian.org/viewvc/kernel?view=revision&revision=21409
+    This should fix the FTBFS on armhf.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Sat, 07 Jun 2014 18:22:46 +0200
+
 linux (3.14.5-1kali1) kali; urgency=medium
 
   * Import into Kali.
