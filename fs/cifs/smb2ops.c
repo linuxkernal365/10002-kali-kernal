@@ -339,7 +339,7 @@ smb2_query_file_info(const unsigned int xid, struct cifs_tcon *tcon,
 	int rc;
 	struct smb2_file_all_info *smb2_data;
 
-	smb2_data = kzalloc(sizeof(struct smb2_file_all_info) + MAX_NAME * 2,
+	smb2_data = kzalloc(sizeof(struct smb2_file_all_info) + PATH_MAX * 2,
 			    GFP_KERNEL);
 	if (smb2_data == NULL)
 		return -ENOMEM;
@@ -1047,6 +1047,7 @@ smb2_create_lease_buf(u8 *lease_key, u8 oplock)
 	buf->ccontext.NameOffset = cpu_to_le16(offsetof
 				(struct create_lease, Name));
 	buf->ccontext.NameLength = cpu_to_le16(4);
+	/* SMB2_CREATE_REQUEST_LEASE is "RqLs" */
 	buf->Name[0] = 'R';
 	buf->Name[1] = 'q';
 	buf->Name[2] = 'L';
@@ -1073,6 +1074,7 @@ smb3_create_lease_buf(u8 *lease_key, u8 oplock)
 	buf->ccontext.NameOffset = cpu_to_le16(offsetof
 				(struct create_lease_v2, Name));
 	buf->ccontext.NameLength = cpu_to_le16(4);
+	/* SMB2_CREATE_REQUEST_LEASE is "RqLs" */
 	buf->Name[0] = 'R';
 	buf->Name[1] = 'q';
 	buf->Name[2] = 'L';
@@ -1100,6 +1102,12 @@ smb3_parse_lease_buf(void *buf, unsigned int *epoch)
 	if (lc->lcontext.LeaseFlags & SMB2_LEASE_FLAG_BREAK_IN_PROGRESS)
 		return SMB2_OPLOCK_LEVEL_NOCHANGE;
 	return le32_to_cpu(lc->lcontext.LeaseState);
+}
+
+static bool
+smb2_dir_needs_close(struct cifsFileInfo *cfile)
+{
+	return !cfile->invalidHandle;
 }
 
 struct smb_version_operations smb20_operations = {
@@ -1175,6 +1183,7 @@ struct smb_version_operations smb20_operations = {
 	.create_lease_buf = smb2_create_lease_buf,
 	.parse_lease_buf = smb2_parse_lease_buf,
 	.clone_range = smb2_clone_range,
+	.dir_needs_close = smb2_dir_needs_close,
 };
 
 struct smb_version_operations smb21_operations = {
@@ -1250,6 +1259,7 @@ struct smb_version_operations smb21_operations = {
 	.create_lease_buf = smb2_create_lease_buf,
 	.parse_lease_buf = smb2_parse_lease_buf,
 	.clone_range = smb2_clone_range,
+	.dir_needs_close = smb2_dir_needs_close,
 };
 
 struct smb_version_operations smb30_operations = {
@@ -1328,6 +1338,7 @@ struct smb_version_operations smb30_operations = {
 	.parse_lease_buf = smb3_parse_lease_buf,
 	.clone_range = smb2_clone_range,
 	.validate_negotiate = smb3_validate_negotiate,
+	.dir_needs_close = smb2_dir_needs_close,
 };
 
 struct smb_version_values smb20_values = {

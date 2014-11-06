@@ -32,7 +32,6 @@ class Gencontrol(Base):
         'image': {
             'bootloaders': config.SchemaItemList(),
             'configs': config.SchemaItemList(),
-            'initramfs': config.SchemaItemBoolean(),
             'initramfs-generators': config.SchemaItemList(),
         },
         'relations': {
@@ -61,8 +60,7 @@ class Gencontrol(Base):
         makeflags.update({
             'VERSION': self.version.linux_version,
             'UPSTREAMVERSION': self.version.linux_upstream,
-            'ABINAME': self.abiname,
-            'ABINAME_PART': self.abiname_part,
+            'ABINAME': self.abiname_version + self.abiname_part,
             'SOURCEVERSION': self.version.complete,
         })
 
@@ -131,8 +129,7 @@ class Gencontrol(Base):
             except KeyError:
                 abiname_part = self.abiname_part
             makeflags['ABINAME'] = vars['abiname'] = \
-                self.version.linux_upstream + abiname_part
-            makeflags['ABINAME_PART'] = abiname_part
+                self.abiname_version + abiname_part
 
         if foreign_kernel:
             packages_headers_arch = []
@@ -245,7 +242,6 @@ class Gencontrol(Base):
         override_localversion = config_image.get('override-localversion', None)
         if override_localversion is not None:
             vars['localversion-image'] = vars['localversion_headers'] + '-' + override_localversion
-        vars['initramfs'] = 'YES' if config_image.get('initramfs', True) else ''
         vars['image-stem'] = config_image.get('install-stem')
 
         self._setup_makeflags(self.flavour_makeflags_base, makeflags, config_base)
@@ -278,19 +274,18 @@ class Gencontrol(Base):
         for field in 'Depends', 'Provides', 'Suggests', 'Recommends', 'Conflicts', 'Breaks':
             image_fields[field] = PackageRelation(config_entry_image.get(field.lower(), None), override_arches=(arch,))
 
-        if config_entry_image.get('initramfs', True):
-            generators = config_entry_image['initramfs-generators']
-            l = PackageRelationGroup()
-            for i in generators:
-                i = config_entry_relations.get(i, i)
-                l.append(i)
-                a = PackageRelationEntry(i)
-                if a.operator is not None:
-                    a.operator = -a.operator
-                    image_fields['Breaks'].append(PackageRelationGroup([a]))
-            for item in l:
-                item.arches = [arch]
-            image_fields['Depends'].append(l)
+        generators = config_entry_image['initramfs-generators']
+        l = PackageRelationGroup()
+        for i in generators:
+            i = config_entry_relations.get(i, i)
+            l.append(i)
+            a = PackageRelationEntry(i)
+            if a.operator is not None:
+                a.operator = -a.operator
+                image_fields['Breaks'].append(PackageRelationGroup([a]))
+        for item in l:
+            item.arches = [arch]
+        image_fields['Depends'].append(l)
 
         bootloaders = config_entry_image.get('bootloaders')
         if bootloaders:
@@ -469,17 +464,21 @@ class Gencontrol(Base):
             self.abiname_part = ''
         else:
             self.abiname_part = '-%s' % self.config['abi', ]['abiname']
-        self.abiname = self.version.linux_upstream + self.abiname_part
+        # We need to keep at least three version components to avoid
+        # userland breakage (e.g. #742226, #745984).
+        self.abiname_version = re.sub('^(\d+\.\d+)(?=-|$)', r'\1.0',
+                                      self.version.linux_upstream)
         self.vars = {
             'upstreamversion': self.version.linux_upstream,
             'version': self.version.linux_version,
             'source_upstream': self.version.upstream,
             'source_package': self.changelog[0].source,
-            'abiname': self.abiname,
+            'abiname': self.abiname_version + self.abiname_part,
         }
         self.config['version', ] = {'source': self.version.complete,
                                     'upstream': self.version.linux_upstream,
-                                    'abiname': self.abiname}
+                                    'abiname': (self.abiname_version +
+                                                self.abiname_part)}
 
         distribution = self.changelog[0].distribution
         if distribution in ('unstable', ):

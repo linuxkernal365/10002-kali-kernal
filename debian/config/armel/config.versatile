@@ -9,7 +9,6 @@ CONFIG_ZBOOT_ROM_TEXT=0x0
 CONFIG_ZBOOT_ROM_BSS=0x0
 CONFIG_CMDLINE=""
 # CONFIG_XIP_KERNEL is not set
-CONFIG_KEXEC=y
 CONFIG_ATAGS_PROC=y
 CONFIG_FPE_NWFPE=y
 # CONFIG_FPE_NWFPE_XP is not set
@@ -68,7 +67,6 @@ CONFIG_SATA_VIA=m
 # CONFIG_PATA_ATIIXP is not set
 # CONFIG_PATA_CMD64X is not set
 # CONFIG_PATA_CS5520 is not set
-# CONFIG_PATA_CS5530 is not set
 # CONFIG_PATA_CYPRESS is not set
 # CONFIG_PATA_EFAR is not set
 # CONFIG_PATA_HPT366 is not set
@@ -168,7 +166,6 @@ CONFIG_SERIO_LIBPS2=y
 ##
 # CONFIG_NET_FC is not set
 CONFIG_IFB=m
-# CONFIG_NETPOLL_TRAP is not set
 
 ##
 ## file: drivers/net/arcnet/Kconfig
@@ -307,21 +304,6 @@ CONFIG_VIA_RHINE=m
 # CONFIG_HIPPI is not set
 
 ##
-## file: drivers/net/phy/Kconfig
-##
-CONFIG_PHYLIB=m
-CONFIG_MARVELL_PHY=m
-CONFIG_DAVICOM_PHY=m
-CONFIG_QSEMI_PHY=m
-CONFIG_LXT_PHY=m
-CONFIG_CICADA_PHY=m
-CONFIG_VITESSE_PHY=m
-CONFIG_SMSC_PHY=m
-CONFIG_BROADCOM_PHY=m
-CONFIG_ICPLUS_PHY=m
-# CONFIG_MDIO_BITBANG is not set
-
-##
 ## file: drivers/pci/Kconfig
 ##
 CONFIG_PCI_IOV=y
@@ -384,9 +366,19 @@ CONFIG_USB_UHCI_HCD=m
 # CONFIG_USB_R8A66597_HCD is not set
 
 ##
-## file: drivers/video/Kconfig
+## file: drivers/video/backlight/Kconfig
 ##
-CONFIG_VIDEO_OUTPUT_CONTROL=m
+CONFIG_BACKLIGHT_CLASS_DEVICE=m
+
+##
+## file: drivers/video/console/Kconfig
+##
+CONFIG_FRAMEBUFFER_CONSOLE=y
+CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
+
+##
+## file: drivers/video/fbdev/Kconfig
+##
 CONFIG_FB=y
 CONFIG_FIRMWARE_EDID=y
 CONFIG_FB_MODE_HELPERS=y
@@ -416,17 +408,6 @@ CONFIG_FB_ARK=m
 CONFIG_FB_PM3=m
 CONFIG_FB_SM501=m
 CONFIG_FB_VIRTUAL=m
-
-##
-## file: drivers/video/backlight/Kconfig
-##
-CONFIG_BACKLIGHT_CLASS_DEVICE=m
-
-##
-## file: drivers/video/console/Kconfig
-##
-CONFIG_FRAMEBUFFER_CONSOLE=y
-CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
 
 ##
 ## file: drivers/virtio/Kconfig

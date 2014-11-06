@@ -1,3 +1,4 @@
-#include <nic-modules>
 smc91x
 smsc911x
+xen-netfront
+xgene-enet

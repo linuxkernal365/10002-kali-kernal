@@ -59,6 +59,8 @@ struct btmrvl_device {
 };
 
 struct btmrvl_adapter {
+	void *hw_regs_buf;
+	u8 *hw_regs;
 	u32 int_count;
 	struct sk_buff_head tx_queue;
 	u8 psmode;
@@ -66,6 +68,7 @@ struct btmrvl_adapter {
 	u8 hs_state;
 	u8 wakeup_tries;
 	wait_queue_head_t cmd_wait_q;
+	wait_queue_head_t event_hs_wait_q;
 	u8 cmd_complete;
 	bool is_suspended;
 };
@@ -140,7 +143,7 @@ void btmrvl_interrupt(struct btmrvl_private *priv);
 bool btmrvl_check_evtpkt(struct btmrvl_private *priv, struct sk_buff *skb);
 int btmrvl_process_event(struct btmrvl_private *priv, struct sk_buff *skb);
 
-int btmrvl_send_module_cfg_cmd(struct btmrvl_private *priv, int subcmd);
+int btmrvl_send_module_cfg_cmd(struct btmrvl_private *priv, u8 subcmd);
 int btmrvl_send_hscfg_cmd(struct btmrvl_private *priv);
 int btmrvl_enable_ps(struct btmrvl_private *priv);
 int btmrvl_prepare_command(struct btmrvl_private *priv);
