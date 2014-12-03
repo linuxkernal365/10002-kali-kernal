@@ -395,6 +395,16 @@ int intel_opregion_notify_adapter(struct drm_device *dev, pci_power_t state)
 	return -EINVAL;
 }
 
+/*
+ * If the vendor backlight interface is not in use and ACPI backlight interface
+ * is broken, do not bother processing backlight change requests from firmware.
+ */
+static bool should_ignore_backlight_request(void)
+{
+	return acpi_video_backlight_support() &&
+	       !acpi_video_verify_backlight_support();
+}
+
 static u32 asle_set_backlight(struct drm_device *dev, u32 bclp)
 {
 	struct drm_i915_private *dev_priv = dev->dev_private;
@@ -403,6 +413,11 @@ static u32 asle_set_backlight(struct drm_device *dev, u32 bclp)
 
 	DRM_DEBUG_DRIVER("bclp = 0x%08x\n", bclp);
 
+	if (should_ignore_backlight_request()) {
+		DRM_DEBUG_KMS("opregion backlight request ignored\n");
+		return 0;
+	}
+
 	if (!(bclp & ASLE_BCLP_VALID))
 		return ASLC_BACKLIGHT_FAILED;
 
@@ -410,7 +425,7 @@ static u32 asle_set_backlight(struct drm_device *dev, u32 bclp)
 	if (bclp > 255)
 		return ASLC_BACKLIGHT_FAILED;
 
-	mutex_lock(&dev->mode_config.mutex);
+	drm_modeset_lock(&dev->mode_config.connection_mutex, NULL);
 
 	/*
 	 * Update backlight on all connectors that support backlight (usually
@@ -421,7 +436,7 @@ static u32 asle_set_backlight(struct drm_device *dev, u32 bclp)
 		intel_panel_set_backlight(intel_connector, bclp, 255);
 	iowrite32(DIV_ROUND_UP(bclp * 100, 255) | ASLE_CBLV_VALID, &asle->cblv);
 
-	mutex_unlock(&dev->mode_config.mutex);
+	drm_modeset_unlock(&dev->mode_config.connection_mutex);
 
 
 	return 0;

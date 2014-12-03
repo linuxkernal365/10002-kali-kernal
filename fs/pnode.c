@@ -235,7 +235,7 @@ static int propagate_one(struct mount *m)
 		if (IS_MNT_SHARED(m))
 			type |= CL_MAKE_SHARED;
 	}
-
+		
 	/* Notice when we are propagating across user namespaces */
 	if (m->mnt_ns->user_ns != user_ns)
 		type |= CL_UNPRIVILEGED;
@@ -381,6 +381,7 @@ static void __propagate_umount(struct mount *mnt)
 		 * other children
 		 */
 		if (child && list_empty(&child->mnt_mounts)) {
+			list_del_init(&child->mnt_child);
 			hlist_del_init_rcu(&child->mnt_hash);
 			hlist_add_before_rcu(&child->mnt_hash, &mnt->mnt_hash);
 		}
