@@ -22,7 +22,6 @@
 *.lst
 *.symtypes
 *.order
-modules.builtin
 *.elf
 *.bin
 *.gz
@@ -33,6 +32,8 @@ modules.builtin
 *.lzo
 *.gcno
 *.pyc
+modules.builtin
+Module.symvers
 
 #
 # Top-level generic files
@@ -44,7 +45,6 @@ modules.builtin
 /vmlinuz
 /System.map
 /Module.markers
-/Module.symvers
 
 #
 # git files that we don't want to ignore even it they are dot-files

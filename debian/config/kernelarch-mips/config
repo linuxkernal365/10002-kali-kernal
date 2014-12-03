@@ -1,7 +1,14 @@
 ##
 ## file: arch/mips/Kconfig
 ##
+CONFIG_KEXEC=y
 CONFIG_SECCOMP=y
+# CONFIG_RAPIDIO is not set
+
+##
+## file: arch/mips/Kconfig.debug
+##
+CONFIG_EARLY_PRINTK=y
 
 ##
 ## file: drivers/net/ethernet/sun/Kconfig
@@ -23,4 +30,10 @@ CONFIG_BLK_DEV_SD=y
 ## file: fs/ext4/Kconfig
 ##
 CONFIG_EXT4_FS=y
+
+##
+## file: init/Kconfig
+##
+CONFIG_SGETMASK_SYSCALL=y
+CONFIG_SYSFS_SYSCALL=y
 
