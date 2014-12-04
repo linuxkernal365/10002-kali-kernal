@@ -106,7 +106,7 @@ S'3.16.0-kali1'
 p59
 sS'source'
 p60
-V3.16.7-2kali1
+V3.16.7-2kali2
 p61
 sS'upstream'
 p62
@@ -2075,7 +2075,7 @@ aS'rt'
 p1120
 asS'compiler'
 p1121
-S'gcc-4.7'
+S'gcc-4.8'
 p1122
 ss(S'description'
 p1123

@@ -1,3 +1,9 @@
+linux (3.16.7-2kali2) kali-dev; urgency=medium
+
+  * Use compiler gcc-4.8
+
+ -- Sophie Brun <sophie@freexian.com>  Thu, 04 Dec 2014 15:25:28 +0100
+
 linux (3.16.7-2kali1) kali-dev; urgency=medium
 
   * Import new debian version
