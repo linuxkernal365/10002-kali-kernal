@@ -1,6 +1,5 @@
 [base]
 flavours:
- ixp4xx
  kirkwood
  orion5x
  versatile
@@ -17,18 +16,7 @@ configs:
 install-stem: vmlinuz
 
 [relations]
-headers%gcc-4.8: linux-compiler-gcc-4.8-arm
-
-[ixp4xx_description]
-hardware: IXP4xx
-hardware-long: IXP4xx based systems (Linksys NSLU2, etc)
-
-[ixp4xx_image]
-# Linksys NSLU2: 1441792 - 16 - 16 = 1441760
-check-size: 1441760
-configs:
- armel/config-reduced
- armel/config.ixp4xx
+headers%gcc-4.9: linux-compiler-gcc-4.9-arm
 
 [kirkwood_description]
 hardware: Marvell Kirkwood
@@ -39,6 +27,11 @@ recommends: uboot-mkimage
 # SheevaPlug: 4194304 - 8 - 64 = 4194232
 # QNAP TS-119/TS-219: 2097152 - 8 - 64 = 2097080
 check-size: 2097080
+check-size-with-dtb: true
+breaks: flash-kernel (<< 3.30~)
+configs:
+ armel/config-reduced
+ armel/config.kirkwood
 
 [orion5x_description]
 hardware: Marvell Orion
@@ -50,6 +43,7 @@ recommends: uboot-mkimage
 # HP Media Vault mv2120: ca 2 MB
 # QNAP TS-109/TS-209 & TS-409: 2097152 - 8 - 64 = 2097080
 check-size: 1572792
+check-size-with-dtb: true
 configs:
  armel/config-reduced
  armel/config.orion5x
