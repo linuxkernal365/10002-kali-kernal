@@ -1,9 +1,8 @@
 ##
 ## file: arch/arm/Kconfig
 ##
-## choice: ARM system type
-CONFIG_ARCH_KIRKWOOD=y
-## end choice
+CONFIG_ARCH_MULTI_V5=y
+# CONFIG_ARCH_MULTI_V7 is not set
 CONFIG_PCI=y
 CONFIG_HIGHMEM=y
 CONFIG_UACCESS_WITH_MEMCPY=y
@@ -21,25 +20,23 @@ CONFIG_FPE_NWFPE=y
 # CONFIG_ARTHUR is not set
 
 ##
+## file: arch/arm/Kconfig.debug
+##
+## choice: Kernel low-level debugging port
+CONFIG_DEBUG_MVEBU_UART_ALTERNATE=y
+## end choice
+
+##
 ## file: arch/arm/mach-imx/Kconfig
 ##
 # CONFIG_ARCH_MXC is not set
 
 ##
-## file: arch/arm/mach-kirkwood/Kconfig
+## file: arch/arm/mach-mvebu/Kconfig
 ##
-CONFIG_MACH_D2NET_V2=y
-CONFIG_MACH_NET2BIG_V2=y
-CONFIG_MACH_NET5BIG_V2=y
-CONFIG_MACH_OPENRD_BASE=y
-CONFIG_MACH_OPENRD_CLIENT=y
-CONFIG_MACH_OPENRD_ULTIMATE=y
-CONFIG_MACH_RD88F6192_NAS=y
-CONFIG_MACH_RD88F6281=y
-CONFIG_MACH_T5325=y
-CONFIG_MACH_TS219=y
-CONFIG_MACH_TS41X=y
-CONFIG_ARCH_KIRKWOOD_DT=y
+CONFIG_ARCH_MVEBU=y
+CONFIG_MACH_KIRKWOOD=y
+CONFIG_MACH_NETXBIG=y
 
 ##
 ## file: arch/arm/mm/Kconfig
@@ -48,11 +45,6 @@ CONFIG_ARM_THUMB=y
 # CONFIG_CPU_ICACHE_DISABLE is not set
 # CONFIG_CPU_DCACHE_DISABLE is not set
 # CONFIG_CPU_DCACHE_WRITETHROUGH is not set
-
-##
-## file: block/Kconfig.iosched
-##
-CONFIG_IOSCHED_DEADLINE=m
 
 ##
 ## file: block/partitions/Kconfig
@@ -161,7 +153,6 @@ CONFIG_CRYPTO_DEV_MV_CESA=m
 ##
 CONFIG_DMADEVICES=y
 CONFIG_MV_XOR=y
-# CONFIG_NET_DMA is not set
 
 ##
 ## file: drivers/gpio/Kconfig
@@ -172,11 +163,6 @@ CONFIG_GPIO_SYSFS=y
 ## file: drivers/gpu/drm/Kconfig
 ##
 # CONFIG_DRM is not set
-
-##
-## file: drivers/gpu/vga/Kconfig
-##
-# CONFIG_VGA_ARB is not set
 
 ##
 ## file: drivers/hwmon/Kconfig
@@ -617,16 +603,6 @@ CONFIG_JFFS2_FS=y
 CONFIG_UBIFS_FS=y
 
 ##
-## file: init/Kconfig
-##
-CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-
-##
-## file: kernel/power/Kconfig
-##
-# CONFIG_SUSPEND is not set
-
-##
 ## file: kernel/trace/Kconfig
 ##
 # CONFIG_FUNCTION_GRAPH_TRACER is not set
@@ -657,11 +633,6 @@ CONFIG_NETROM=m
 CONFIG_ROSE=m
 
 ##
-## file: net/ipv6/Kconfig
-##
-CONFIG_IPV6=m
-
-##
 ## file: sound/soc/Kconfig
 ##
 CONFIG_SND_SOC=m
@@ -675,6 +646,4 @@ CONFIG_SND_SOC=m
 ## file: sound/soc/kirkwood/Kconfig
 ##
 CONFIG_SND_KIRKWOOD_SOC=m
-CONFIG_SND_KIRKWOOD_SOC_OPENRD=m
-CONFIG_SND_KIRKWOOD_SOC_T5325=m
 
