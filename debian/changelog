@@ -1,6 +1,7 @@
 linux (3.18.3-1~kali1) kali; urgency=medium
 
   * Import new version from debian
+  * Use gcc-4.7 as 4.9 not available in kali
 
  -- Sophie Brun <sophie@freexian.com>  Mon, 19 Jan 2015 15:11:01 +0100
 
