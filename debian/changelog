@@ -1,3 +1,9 @@
+linux (3.18.3-1~kali2) kali; urgency=medium
+
+  * Increase check-size for armel build (orion5x)
+
+ -- Sophie Brun <sophie@freexian.com>  Tue, 20 Jan 2015 11:02:10 +0100
+
 linux (3.18.3-1~kali1) kali; urgency=medium
 
   * Import new version from debian
