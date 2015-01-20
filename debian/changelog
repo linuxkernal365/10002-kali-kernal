@@ -1,3 +1,9 @@
+linux (3.18.3-1+kali2) kali-dev; urgency=medium
+
+  * Increase check-size for armel build (orion5x)
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Fri, 20 Feb 2015 17:44:00 +0100
+
 linux (3.18.3-1+kali1) kali-dev; urgency=medium
 
   * Bump ABI to "kali2" and rebuild with gcc 4.9.
