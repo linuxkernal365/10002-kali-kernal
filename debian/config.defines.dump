@@ -106,7 +106,7 @@ S'3.18.0-kali1'
 p59
 sS'source'
 p60
-V3.18.3-1~kali1
+V3.18.3-1~kali2
 p61
 sS'abiname_base'
 p62
@@ -1427,7 +1427,7 @@ tp771
 (dp772
 S'check-size'
 p773
-I1572792
+I1582792
 sS'check-size-with-dtb'
 p774
 I01
