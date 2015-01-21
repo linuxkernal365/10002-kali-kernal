@@ -1,3 +1,10 @@
+linux (3.18.3-1~kali3) kali; urgency=medium
+
+  * Enable CONFIG_UEVENT_HELPER to not break udev of kali & wheezy. See
+    #752742 for an explanation.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Wed, 21 Jan 2015 15:03:15 +0100
+
 linux (3.18.3-1~kali2) kali; urgency=medium
 
   * Increase check-size for armel build (orion5x)
