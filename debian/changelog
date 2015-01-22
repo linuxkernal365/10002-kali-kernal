@@ -1,3 +1,10 @@
+linux (3.18.3-1~kali4) kali; urgency=medium
+
+  * Add aufs3 back and update it for Linux 3.18. We're not ready yet to use
+    overlayfs...
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Thu, 22 Jan 2015 17:02:31 +0100
+
 linux (3.18.3-1~kali3) kali; urgency=medium
 
   * Enable CONFIG_UEVENT_HELPER to not break udev of kali & wheezy. See
