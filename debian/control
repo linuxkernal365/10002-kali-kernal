@@ -839,7 +839,7 @@ Package: kernel-image-3.18.0-trunk-arm64-di
 Architecture: arm64
 Section: debian-installer
 Priority: extra
-Provides: kernel-image
+Provides: kernel-image, zlib-modules
 Description: Linux kernel binary image for the Debian installer
  This package contains the kernel image for the Debian installer boot
  images.  It does _not_ provide a usable kernel for your full Debian
@@ -888,7 +888,7 @@ Architecture: arm64
 Section: debian-installer
 Priority: optional
 Provides: ppp-modules
-Depends: kernel-image-3.18.0-trunk-arm64-di, zlib-modules-3.18.0-trunk-arm64-di, crc-modules-3.18.0-trunk-arm64-di
+Depends: kernel-image-3.18.0-trunk-arm64-di, crc-modules-3.18.0-trunk-arm64-di
 Description: PPP drivers
  This package contains PPP drivers for the kernel.
 Kernel-Version: 3.18.0-trunk-arm64
@@ -943,7 +943,7 @@ Architecture: arm64
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-3.18.0-trunk-arm64-di, core-modules-3.18.0-trunk-arm64-di, crc-modules-3.18.0-trunk-arm64-di, zlib-modules-3.18.0-trunk-arm64-di, md-modules-3.18.0-trunk-arm64-di
+Depends: kernel-image-3.18.0-trunk-arm64-di, core-modules-3.18.0-trunk-arm64-di, crc-modules-3.18.0-trunk-arm64-di, md-modules-3.18.0-trunk-arm64-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Kernel-Version: 3.18.0-trunk-arm64
@@ -1215,17 +1215,6 @@ Provides: uinput-modules
 Depends: kernel-image-3.18.0-trunk-arm64-di
 Description: uinput support
  This package contains the uinput module.
-Kernel-Version: 3.18.0-trunk-arm64
-Package-Type: udeb
-
-Package: zlib-modules-3.18.0-trunk-arm64-di
-Architecture: arm64
-Section: debian-installer
-Priority: extra
-Provides: zlib-modules
-Depends: kernel-image-3.18.0-trunk-arm64-di
-Description: zlib modules
- This package contains zlib modules.
 Kernel-Version: 3.18.0-trunk-arm64
 Package-Type: udeb
 

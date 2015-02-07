@@ -1,5 +1,5 @@
 615024e6ff75fbb4ee0482182bd33704  debian/bin/gencontrol.py
-ec5b2afa79b539a8aeec08522c1fa599  debian/changelog
+e7ccc9545aaa062097423a921c30b1a7  debian/changelog
 3e2fde720ec84a08dab1cca4224521e2  debian/templates/image.plain.preinst.in
 1b17e6e766d2f44e0852cfa864459837  debian/templates/control.main.in
 4c5446e06f8220c5064d4810073445a4  debian/templates/image.plain.prerm.in
@@ -75,7 +75,7 @@ a7421d0f16ac8a0fb443591062293101  debian/installer/i386/package-list
 d09d2db2d7b84bf6a421c8e5b709a346  debian/installer/armhf/package-list
 8edf75fc4236742d6d651514e8ad3d3d  debian/installer/amd64/package-list
 a947383707e47dfafb66edc3d352f2b0  debian/installer/mips/package-list
-74bb400cb4101a6d914c9a263b6066ad  debian/installer/arm64/package-list
+9e2b11d9b288c0400e77b23245fd0ef0  debian/installer/arm64/package-list
 b9df39e550a637012ccd5b1ddaa4b74a  debian/installer/sparc/package-list
 8b7d23c8cd92a63434be9319b47d23e9  debian/installer/powerpc/package-list
 8b7d23c8cd92a63434be9319b47d23e9  debian/installer/ppc64/package-list
