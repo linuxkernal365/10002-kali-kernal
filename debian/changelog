@@ -1,9 +1,10 @@
-linux (3.18.3-1~kali4) kali; urgency=medium
+linux (3.18.3-1+kali1) kali-dev; urgency=medium
 
+  * Bump ABI to "kali2" and rebuild with gcc 4.9.
   * Add aufs3 back and update it for Linux 3.18. We're not ready yet to use
     overlayfs...
 
- -- Raphaël Hertzog <hertzog@debian.org>  Thu, 22 Jan 2015 17:02:31 +0100
+ -- Raphaël Hertzog <hertzog@debian.org>  Thu, 19 Feb 2015 14:55:59 +0100
 
 linux (3.18.3-1~kali1) kali; urgency=medium
 
