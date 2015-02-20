@@ -182,7 +182,7 @@ S'3.18.0-kali2'
 p104
 sS'source'
 p105
-V3.18.3-1+kali1
+V3.18.3-1+kali2
 p106
 sS'abiname_base'
 p107
@@ -588,7 +588,7 @@ tp327
 (dp328
 S'check-size'
 p329
-I1572792
+I1582792
 sS'check-size-with-dtb'
 p330
 I01
