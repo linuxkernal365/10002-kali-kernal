@@ -1,3 +1,9 @@
+linux (3.18.6-1+kali1) kali-dev; urgency=medium
+
+  * Import new version from debian
+
+ -- Sophie Brun <sophie@freexian.com>  Tue, 24 Feb 2015 14:19:00 +0100
+
 linux (3.18.6-1~exp1) experimental; urgency=medium
 
   [ Ben Hutchings ]

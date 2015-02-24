@@ -102,11 +102,11 @@ tp56
 (dp57
 S'abiname'
 p58
-S'3.18.0-trunk'
+S'3.18.0-kali2'
 p59
 sS'source'
 p60
-V3.18.6-1~exp1
+V3.18.6-1+kali1
 p61
 sS'abiname_base'
 p62
@@ -1427,7 +1427,7 @@ tp771
 (dp772
 S'check-size'
 p773
-I1572792
+I1582792
 sS'check-size-with-dtb'
 p774
 I01
@@ -2351,7 +2351,7 @@ tp1267
 (dp1268
 S'abiname'
 p1269
-S'trunk'
+S'kali2'
 p1270
 ss(S'build'
 p1271
