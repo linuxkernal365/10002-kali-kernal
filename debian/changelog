@@ -1,6 +1,7 @@
 linux (3.18.11-0~kali1) kali; urgency=medium
 
   * Import new upstream stable update.
+  * Switch ABI name to 3.18-kali4.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Wed, 15 Apr 2015 16:20:03 +0200
 
