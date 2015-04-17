@@ -178,7 +178,7 @@ tp101
 (dp102
 S'abiname'
 p103
-S'3.18.0-kali3'
+S'3.18.0-kali4'
 p104
 sS'source'
 p105
@@ -2317,7 +2317,7 @@ tp1244
 (dp1245
 S'abiname'
 p1246
-S'kali3'
+S'kali4'
 p1247
 ss(S'image'
 p1248
