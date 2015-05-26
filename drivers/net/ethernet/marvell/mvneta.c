@@ -2559,11 +2559,10 @@ static void mvneta_adjust_link(struct net_device *ndev)
 				MVNETA_GMAC_FORCE_LINK_DOWN);
 			mvreg_write(pp, MVNETA_GMAC_AUTONEG_CONFIG, val);
 			mvneta_port_up(pp);
-			netdev_info(pp->dev, "link up\n");
 		} else {
 			mvneta_port_down(pp);
-			netdev_info(pp->dev, "link down\n");
 		}
+		phy_print_status(phydev);
 	}
 }
 
@@ -2659,16 +2658,11 @@ static int mvneta_stop(struct net_device *dev)
 static int mvneta_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
 {
 	struct mvneta_port *pp = netdev_priv(dev);
-	int ret;
 
 	if (!pp->phy_dev)
 		return -ENOTSUPP;
 
-	ret = phy_mii_ioctl(pp->phy_dev, ifr, cmd);
-	if (!ret)
-		mvneta_adjust_link(dev);
-
-	return ret;
+	return phy_mii_ioctl(pp->phy_dev, ifr, cmd);
 }
 
 /* Ethtool methods */

@@ -14,7 +14,6 @@ CONFIG_64BIT=y
 CONFIG_PAGE_SIZE_4KB=y
 ## end choice
 CONFIG_PCI=y
-CONFIG_MIPS32_COMPAT=y
 CONFIG_MIPS32_O32=y
 CONFIG_MIPS32_N32=y
 
@@ -78,11 +77,6 @@ CONFIG_SERIO_SERPORT=y
 CONFIG_SERIO_MACEPS2=y
 CONFIG_SERIO_LIBPS2=y
 CONFIG_SERIO_RAW=y
-
-##
-## file: drivers/media/parport/Kconfig
-##
-# CONFIG_MEDIA_PARPORT_SUPPORT is not set
 
 ##
 ## file: drivers/media/pci/bt8xx/Kconfig
@@ -198,7 +192,6 @@ CONFIG_BLK_DEV_SR=y
 # CONFIG_SCSI_AACRAID is not set
 # CONFIG_SCSI_LPFC is not set
 # CONFIG_SCSI_DC395x is not set
-# CONFIG_SCSI_DC390T is not set
 
 ##
 ## file: drivers/scsi/aic7xxx/Kconfig.aic79xx

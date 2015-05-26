@@ -23,7 +23,7 @@ CONFIG_FPE_NWFPE=y
 ## file: arch/arm/Kconfig.debug
 ##
 ## choice: Kernel low-level debugging port
-CONFIG_DEBUG_MVEBU_UART_ALTERNATE=y
+CONFIG_DEBUG_MVEBU_UART0_ALTERNATE=y
 ## end choice
 
 ##
@@ -448,6 +448,12 @@ CONFIG_POWER_RESET_QNAP=y
 CONFIG_POWER_RESET_RESTART=y
 
 ##
+## file: drivers/regulator/Kconfig
+##
+CONFIG_REGULATOR=y
+CONFIG_REGULATOR_FIXED_VOLTAGE=y
+
+##
 ## file: drivers/rtc/Kconfig
 ##
 CONFIG_RTC_DRV_S35390A=y
@@ -473,7 +479,6 @@ CONFIG_RTC_DRV_MV=y
 # CONFIG_SCSI_QLOGIC_1280 is not set
 # CONFIG_SCSI_LPFC is not set
 # CONFIG_SCSI_DC395x is not set
-# CONFIG_SCSI_DC390T is not set
 # CONFIG_SCSI_NSP32 is not set
 
 ##
@@ -641,6 +646,13 @@ CONFIG_SND_SOC=m
 ## file: sound/soc/codecs/Kconfig
 ##
 # CONFIG_SND_SOC_ALL_CODECS is not set
+CONFIG_SND_SOC_ALC5623=m
+CONFIG_SND_SOC_CS42L51_I2C=m
+
+##
+## file: sound/soc/generic/Kconfig
+##
+CONFIG_SND_SIMPLE_CARD=m
 
 ##
 ## file: sound/soc/kirkwood/Kconfig
