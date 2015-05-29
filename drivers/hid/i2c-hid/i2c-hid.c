@@ -370,7 +370,10 @@ static int i2c_hid_hwreset(struct i2c_client *client)
 static void i2c_hid_get_input(struct i2c_hid *ihid)
 {
 	int ret, ret_size;
-	int size = ihid->bufsize;
+	int size = le16_to_cpu(ihid->hdesc.wMaxInputLength);
+
+	if (size > ihid->bufsize)
+		size = ihid->bufsize;
 
 	ret = i2c_master_recv(ihid->client, ihid->inbuf, size);
 	if (ret != size) {
@@ -438,7 +441,7 @@ static void i2c_hid_init_report(struct hid_report *report, u8 *buffer,
 			report->id, buffer, size))
 		return;
 
-	i2c_hid_dbg(ihid, "report (len=%d): %*ph\n", size, size, ihid->inbuf);
+	i2c_hid_dbg(ihid, "report (len=%d): %*ph\n", size, size, buffer);
 
 	ret_size = buffer[0] | (buffer[1] << 8);
 
@@ -785,7 +788,7 @@ static int i2c_hid_init_irq(struct i2c_client *client)
 	dev_dbg(&client->dev, "Requesting IRQ: %d\n", client->irq);
 
 	ret = request_threaded_irq(client->irq, NULL, i2c_hid_irq,
-			IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+			IRQF_TRIGGER_LOW | IRQF_ONESHOT,
 			client->name, ihid);
 	if (ret < 0) {
 		dev_warn(&client->dev,
@@ -1094,7 +1097,7 @@ static int i2c_hid_resume(struct device *dev)
 }
 #endif
 
-#ifdef CONFIG_PM_RUNTIME
+#ifdef CONFIG_PM
 static int i2c_hid_runtime_suspend(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);

@@ -43,9 +43,20 @@ Module.symvers
 /TAGS
 /linux
 /vmlinux
+/vmlinux-gdb.py
 /vmlinuz
 /System.map
 /Module.markers
+
+#
+# Debian directory (make deb-pkg)
+#
+/debian/
+
+#
+# tar directory (make tar*-pkg)
+#
+/tar-install/
 
 #
 # git files that we don't want to ignore even it they are dot-files
@@ -87,3 +98,6 @@ x509.genkey
 
 # Kconfig presets
 all.config
+
+# Kdevelop4
+*.kdev4
