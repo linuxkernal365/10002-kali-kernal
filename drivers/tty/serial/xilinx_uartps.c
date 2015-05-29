@@ -133,6 +133,15 @@ MODULE_PARM_DESC(rx_timeout, "Rx timeout, 1-255");
 #define CDNS_UART_IXR_BRK	0x80000000
 
 /*
+ * Modem Control register:
+ * The read/write Modem Control register controls the interface with the modem
+ * or data set, or a peripheral device emulating a modem.
+ */
+#define CDNS_UART_MODEMCR_FCM	0x00000020 /* Automatic flow control mode */
+#define CDNS_UART_MODEMCR_RTS	0x00000002 /* Request to send output control */
+#define CDNS_UART_MODEMCR_DTR	0x00000001 /* Data Terminal Ready */
+
+/*
  * Channel Status Register:
  * The channel status register (CSR) is provided to enable the control logic
  * to monitor the status of bits in the channel interrupt status register,
@@ -628,10 +637,12 @@ static void cdns_uart_set_termios(struct uart_port *port,
 
 	spin_lock_irqsave(&port->lock, flags);
 
-	/* Empty the receive FIFO 1st before making changes */
-	while ((cdns_uart_readl(CDNS_UART_SR_OFFSET) &
-		 CDNS_UART_SR_RXEMPTY) != CDNS_UART_SR_RXEMPTY) {
-		cdns_uart_readl(CDNS_UART_FIFO_OFFSET);
+	/* Wait for the transmit FIFO to empty before making changes */
+	if (!(cdns_uart_readl(CDNS_UART_CR_OFFSET) & CDNS_UART_CR_TX_DIS)) {
+		while (!(cdns_uart_readl(CDNS_UART_SR_OFFSET) &
+				CDNS_UART_SR_TXEMPTY)) {
+			cpu_relax();
+		}
 	}
 
 	/* Disable the TX and RX to set baud rate */
@@ -915,7 +926,18 @@ static unsigned int cdns_uart_get_mctrl(struct uart_port *port)
 
 static void cdns_uart_set_mctrl(struct uart_port *port, unsigned int mctrl)
 {
-	/* N/A */
+	u32 val;
+
+	val = cdns_uart_readl(CDNS_UART_MODEMCR_OFFSET);
+
+	val &= ~(CDNS_UART_MODEMCR_RTS | CDNS_UART_MODEMCR_DTR);
+
+	if (mctrl & TIOCM_RTS)
+		val |= CDNS_UART_MODEMCR_RTS;
+	if (mctrl & TIOCM_DTR)
+		val |= CDNS_UART_MODEMCR_DTR;
+
+	cdns_uart_writel(val, CDNS_UART_MODEMCR_OFFSET);
 }
 
 #ifdef CONFIG_CONSOLE_POLL
@@ -1303,9 +1325,9 @@ static SIMPLE_DEV_PM_OPS(cdns_uart_dev_pm_ops, cdns_uart_suspend,
  */
 static int cdns_uart_probe(struct platform_device *pdev)
 {
-	int rc, id;
+	int rc, id, irq;
 	struct uart_port *port;
-	struct resource *res, *res2;
+	struct resource *res;
 	struct cdns_uart *cdns_uart_data;
 
 	cdns_uart_data = devm_kzalloc(&pdev->dev, sizeof(*cdns_uart_data),
@@ -1352,9 +1374,9 @@ static int cdns_uart_probe(struct platform_device *pdev)
 		goto err_out_clk_disable;
 	}
 
-	res2 = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-	if (!res2) {
-		rc = -ENODEV;
+	irq = platform_get_irq(pdev, 0);
+	if (irq <= 0) {
+		rc = -ENXIO;
 		goto err_out_clk_disable;
 	}
 
@@ -1383,7 +1405,7 @@ static int cdns_uart_probe(struct platform_device *pdev)
 		 * and triggers invocation of the config_port() entry point.
 		 */
 		port->mapbase = res->start;
-		port->irq = res2->start;
+		port->irq = irq;
 		port->dev = &pdev->dev;
 		port->uartclk = clk_get_rate(cdns_uart_data->uartclk);
 		port->private_data = cdns_uart_data;
