@@ -5,6 +5,7 @@ linux (4.0.4-1+kali1) kali-dev; urgency=medium
   * Update patches aufs3 with patches aufs4
   * Disable rt mode
   * udeb: Remove i2o modules (fixes FTBFS on amd64)
+  * [armhf] Add stmmac-platform module to nic-modules udeb. (Closes: #786716)
 
  -- Sophie Brun <sophie@freexian.com>  Fri, 29 May 2015 11:57:46 +0200
 
