@@ -3,6 +3,7 @@ linux (4.0.4-1+kali1) kali-dev; urgency=medium
   * Import new version from debian unstable
   * Refresh patch features/all/kali-wifi-injection.patch
   * Update patches aufs3 with patches aufs4
+  * Disable rt mode
 
  -- Sophie Brun <sophie@freexian.com>  Fri, 29 May 2015 11:57:46 +0200
 
