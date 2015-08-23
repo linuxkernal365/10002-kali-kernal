@@ -1,8 +1,7 @@
-From 66ba6c9e2893bd2f7659286627b05c37312994db Mon Sep 17 00:00:00 2001
 From: David Hildenbrand <dahi@linux.vnet.ibm.com>
 Date: Mon, 11 May 2015 17:52:19 +0200
-Subject: [PATCH 13/14] mips: properly lock access to the fpu
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: sched/preempt, MIPS: Properly lock access to the FPU
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 Let's always disable preemption and pagefaults when locking the fpu,
 so we can be sure that the owner won't change in between.
@@ -10,6 +9,7 @@ so we can be sure that the owner won't change in between.
 This is a preparation for pagefault_disable() not touching preemption
 anymore.
 
+[upstream commit 76deabd1867d6d2895152f31fdec819e3505738b]
 Signed-off-by: David Hildenbrand <dahi@linux.vnet.ibm.com>
 ---
  arch/mips/kernel/signal-common.h |    9 ++-------

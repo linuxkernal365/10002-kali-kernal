@@ -32,7 +32,6 @@
 #include <linux/security.h>
 #include <linux/bootmem.h>
 #include <linux/memblock.h>
-#include <linux/aio.h>
 #include <linux/syscalls.h>
 #include <linux/kexec.h>
 #include <linux/kdb.h>
@@ -46,6 +45,7 @@
 #include <linux/irq_work.h>
 #include <linux/utsname.h>
 #include <linux/ctype.h>
+#include <linux/uio.h>
 
 #include <asm/uaccess.h>
 
@@ -484,11 +484,11 @@ int check_syslog_permissions(int type, bool from_file)
 	 * already done the capabilities checks at open time.
 	 */
 	if (from_file && type != SYSLOG_ACTION_OPEN)
-		return 0;
+		goto ok;
 
 	if (syslog_action_restricted(type)) {
 		if (capable(CAP_SYSLOG))
-			return 0;
+			goto ok;
 		/*
 		 * For historical reasons, accept CAP_SYS_ADMIN too, with
 		 * a warning.
@@ -498,10 +498,11 @@ int check_syslog_permissions(int type, bool from_file)
 				     "CAP_SYS_ADMIN but no CAP_SYSLOG "
 				     "(deprecated).\n",
 				 current->comm, task_pid_nr(current));
-			return 0;
+			goto ok;
 		}
 		return -EPERM;
 	}
+ok:
 	return security_syslog(type);
 }
 
@@ -521,7 +522,7 @@ static ssize_t devkmsg_write(struct kiocb *iocb, struct iov_iter *from)
 	int i;
 	int level = default_message_loglevel;
 	int facility = 1;	/* LOG_USER */
-	size_t len = iocb->ki_nbytes;
+	size_t len = iov_iter_count(from);
 	ssize_t ret = len;
 
 	if (len > LOG_LINE_MAX)
@@ -1262,10 +1263,6 @@ int do_syslog(int type, char __user *buf, int len, bool from_file)
 	error = check_syslog_permissions(type, from_file);
 	if (error)
 		goto out;
-
-	error = security_syslog(type);
-	if (error)
-		return error;
 
 	switch (type) {
 	case SYSLOG_ACTION_CLOSE:	/* Close log */
@@ -2017,24 +2014,6 @@ int add_preferred_console(char *name, int idx, char *options)
 	return __add_preferred_console(name, idx, options, NULL);
 }
 
-int update_console_cmdline(char *name, int idx, char *name_new, int idx_new, char *options)
-{
-	struct console_cmdline *c;
-	int i;
-
-	for (i = 0, c = console_cmdline;
-	     i < MAX_CMDLINECONSOLES && c->name[0];
-	     i++, c++)
-		if (strcmp(c->name, name) == 0 && c->index == idx) {
-			strlcpy(c->name, name_new, sizeof(c->name));
-			c->options = options;
-			c->index = idx_new;
-			return i;
-		}
-	/* not found */
-	return -1;
-}
-
 bool console_suspend_enabled = true;
 EXPORT_SYMBOL(console_suspend_enabled);
 
@@ -2436,9 +2415,6 @@ void register_console(struct console *newcon)
 	if (preferred_console < 0 || bcon || !console_drivers)
 		preferred_console = selected_console;
 
-	if (newcon->early_setup)
-		newcon->early_setup();
-
 	/*
 	 *	See if we want to use this console driver. If we
 	 *	didn't select a console we take the first one
@@ -2464,23 +2440,27 @@ void register_console(struct console *newcon)
 	for (i = 0, c = console_cmdline;
 	     i < MAX_CMDLINECONSOLES && c->name[0];
 	     i++, c++) {
-		BUILD_BUG_ON(sizeof(c->name) != sizeof(newcon->name));
-		if (strcmp(c->name, newcon->name) != 0)
-			continue;
-		if (newcon->index >= 0 &&
-		    newcon->index != c->index)
-			continue;
-		if (newcon->index < 0)
-			newcon->index = c->index;
+		if (!newcon->match ||
+		    newcon->match(newcon, c->name, c->index, c->options) != 0) {
+			/* default matching */
+			BUILD_BUG_ON(sizeof(c->name) != sizeof(newcon->name));
+			if (strcmp(c->name, newcon->name) != 0)
+				continue;
+			if (newcon->index >= 0 &&
+			    newcon->index != c->index)
+				continue;
+			if (newcon->index < 0)
+				newcon->index = c->index;
 
-		if (_braille_register_console(newcon, c))
-			return;
+			if (_braille_register_console(newcon, c))
+				return;
 
-		if (newcon->setup &&
-		    newcon->setup(newcon, console_cmdline[i].options) != 0)
-			break;
+			if (newcon->setup &&
+			    newcon->setup(newcon, c->options) != 0)
+				break;
+		}
+
 		newcon->flags |= CON_ENABLED;
-		newcon->index = c->index;
 		if (i == selected_console) {
 			newcon->flags |= CON_CONSDEV;
 			preferred_console = selected_console;

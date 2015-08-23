@@ -1,8 +1,7 @@
-From 73a22bd9fee012b115222b6b20b42fd8f581a089 Mon Sep 17 00:00:00 2001
 From: Marcelo Tosatti <mtosatti@redhat.com>
 Date: Wed, 8 Apr 2015 20:33:24 -0300
-Subject: [PATCH 1/2] KVM: use simple waitqueue for vcpu->wq
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: KVM: use simple waitqueue for vcpu->wq
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 The problem:
 
@@ -48,7 +47,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/arch/arm/kvm/arm.c
 +++ b/arch/arm/kvm/arm.c
-@@ -454,9 +454,9 @@ static int kvm_vcpu_first_run_init(struc
+@@ -474,9 +474,9 @@ bool kvm_arch_intc_initialized(struct kv
  
  static void vcpu_pause(struct kvm_vcpu *vcpu)
  {
@@ -82,7 +81,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
 --- a/arch/powerpc/include/asm/kvm_host.h
 +++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -283,7 +283,7 @@ struct kvmppc_vcore {
+@@ -280,7 +280,7 @@ struct kvmppc_vcore {
  	u8 in_guest;
  	struct list_head runnable_threads;
  	spinlock_t lock;
@@ -91,7 +90,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	spinlock_t stoltb_lock;	/* protects stolen_tb and preempt_tb */
  	u64 stolen_tb;
  	u64 preempt_tb;
-@@ -607,7 +607,7 @@ struct kvm_vcpu_arch {
+@@ -613,7 +613,7 @@ struct kvm_vcpu_arch {
  	u8 prodded;
  	u32 last_inst;
  
@@ -102,9 +101,9 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	int trap;
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -87,11 +87,11 @@ static void kvmppc_fast_vcpu_kick_hv(str
+@@ -115,11 +115,11 @@ static bool kvmppc_ipi_thread(int cpu)
+ static void kvmppc_fast_vcpu_kick_hv(struct kvm_vcpu *vcpu)
  {
- 	int me;
  	int cpu = vcpu->cpu;
 -	wait_queue_head_t *wqp;
 +	struct swait_head *wqp;
@@ -117,7 +116,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		++vcpu->stat.halt_wakeup;
  	}
  
-@@ -666,8 +666,8 @@ int kvmppc_pseries_do_hcall(struct kvm_v
+@@ -686,8 +686,8 @@ int kvmppc_pseries_do_hcall(struct kvm_v
  		tvcpu->arch.prodded = 1;
  		smp_mb();
  		if (vcpu->arch.ceded) {
@@ -128,7 +127,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  				vcpu->stat.halt_wakeup++;
  			}
  		}
-@@ -1394,7 +1394,7 @@ static struct kvmppc_vcore *kvmppc_vcore
+@@ -1426,7 +1426,7 @@ static struct kvmppc_vcore *kvmppc_vcore
  	INIT_LIST_HEAD(&vcore->runnable_threads);
  	spin_lock_init(&vcore->lock);
  	spin_lock_init(&vcore->stoltb_lock);
@@ -137,7 +136,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	vcore->preempt_tb = TB_NIL;
  	vcore->lpcr = kvm->arch.lpcr;
  	vcore->first_vcpuid = core * threads_per_subcore;
-@@ -1875,10 +1875,9 @@ static void kvmppc_vcore_blocked(struct
+@@ -2073,10 +2073,9 @@ static void kvmppc_vcore_blocked(struct
  {
  	struct kvm_vcpu *vcpu;
  	int do_sleep = 1;
@@ -150,7 +149,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	/*
  	 * Check one last time for pending exceptions and ceded state after
-@@ -1892,7 +1891,7 @@ static void kvmppc_vcore_blocked(struct
+@@ -2090,7 +2089,7 @@ static void kvmppc_vcore_blocked(struct
  	}
  
  	if (!do_sleep) {
@@ -159,7 +158,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		return;
  	}
  
-@@ -1900,7 +1899,7 @@ static void kvmppc_vcore_blocked(struct
+@@ -2098,7 +2097,7 @@ static void kvmppc_vcore_blocked(struct
  	trace_kvmppc_vcore_blocked(vc, 0);
  	spin_unlock(&vc->lock);
  	schedule();
@@ -168,7 +167,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	spin_lock(&vc->lock);
  	vc->vcore_state = VCORE_INACTIVE;
  	trace_kvmppc_vcore_blocked(vc, 1);
-@@ -1945,7 +1944,7 @@ static int kvmppc_run_vcpu(struct kvm_ru
+@@ -2142,7 +2141,7 @@ static int kvmppc_run_vcpu(struct kvm_ru
  			kvmppc_start_thread(vcpu);
  			trace_kvm_guest_enter(vcpu);
  		} else if (vc->vcore_state == VCORE_SLEEPING) {
@@ -179,7 +178,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	}
 --- a/arch/s390/include/asm/kvm_host.h
 +++ b/arch/s390/include/asm/kvm_host.h
-@@ -404,7 +404,7 @@ struct kvm_s390_irq_payload {
+@@ -419,7 +419,7 @@ struct kvm_s390_irq_payload {
  struct kvm_s390_local_interrupt {
  	spinlock_t lock;
  	struct kvm_s390_float_interrupt *float_int;
@@ -190,7 +189,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	struct kvm_s390_irq_payload irq;
 --- a/arch/s390/kvm/interrupt.c
 +++ b/arch/s390/kvm/interrupt.c
-@@ -836,13 +836,13 @@ int kvm_s390_handle_wait(struct kvm_vcpu
+@@ -875,13 +875,13 @@ int kvm_s390_handle_wait(struct kvm_vcpu
  
  void kvm_s390_vcpu_wakeup(struct kvm_vcpu *vcpu)
  {
@@ -206,7 +205,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		vcpu->stat.halt_wakeup++;
  	}
  }
-@@ -963,7 +963,7 @@ int kvm_s390_inject_program_int(struct k
+@@ -987,7 +987,7 @@ int kvm_s390_inject_program_int(struct k
  	spin_lock(&li->lock);
  	irq.u.pgm.code = code;
  	__inject_prog(vcpu, &irq);
@@ -215,7 +214,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	spin_unlock(&li->lock);
  	return 0;
  }
-@@ -982,7 +982,7 @@ int kvm_s390_inject_prog_irq(struct kvm_
+@@ -1006,7 +1006,7 @@ int kvm_s390_inject_prog_irq(struct kvm_
  	spin_lock(&li->lock);
  	irq.u.pgm = *pgm_info;
  	rc = __inject_prog(vcpu, &irq);
@@ -226,7 +225,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
 --- a/arch/x86/kvm/lapic.c
 +++ b/arch/x86/kvm/lapic.c
-@@ -1067,7 +1067,7 @@ static void update_divide_count(struct k
+@@ -1104,7 +1104,7 @@ static void apic_update_lvtt(struct kvm_
  static void apic_timer_expired(struct kvm_lapic *apic)
  {
  	struct kvm_vcpu *vcpu = apic->vcpu;
@@ -235,7 +234,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	struct kvm_timer *ktimer = &apic->lapic_timer;
  
  	if (atomic_read(&apic->lapic_timer.pending))
-@@ -1076,8 +1076,8 @@ static void apic_timer_expired(struct kv
+@@ -1113,8 +1113,8 @@ static void apic_timer_expired(struct kv
  	atomic_inc(&apic->lapic_timer.pending);
  	kvm_set_pending_timer(vcpu);
  
@@ -257,7 +256,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	struct pid *pid;
  	int sigset_active;
  	sigset_t sigset;
-@@ -691,7 +691,7 @@ static inline bool kvm_arch_has_noncoher
+@@ -690,7 +690,7 @@ static inline bool kvm_arch_has_noncoher
  }
  #endif
  
@@ -281,7 +280,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	kvm_put_kvm(vcpu->kvm);
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -217,7 +217,7 @@ int kvm_vcpu_init(struct kvm_vcpu *vcpu,
+@@ -218,7 +218,7 @@ int kvm_vcpu_init(struct kvm_vcpu *vcpu,
  	vcpu->kvm = kvm;
  	vcpu->vcpu_id = id;
  	vcpu->pid = NULL;
@@ -290,7 +289,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	kvm_async_pf_vcpu_init(vcpu);
  
  	page = alloc_page(GFP_KERNEL | __GFP_ZERO);
-@@ -1794,7 +1794,7 @@ static int kvm_vcpu_check_block(struct k
+@@ -1779,7 +1779,7 @@ static int kvm_vcpu_check_block(struct k
  void kvm_vcpu_block(struct kvm_vcpu *vcpu)
  {
  	ktime_t start, cur;
@@ -299,7 +298,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	bool waited = false;
  
  	start = cur = ktime_get();
-@@ -1814,7 +1814,7 @@ void kvm_vcpu_block(struct kvm_vcpu *vcp
+@@ -1800,7 +1800,7 @@ void kvm_vcpu_block(struct kvm_vcpu *vcp
  	}
  
  	for (;;) {
@@ -308,7 +307,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  		if (kvm_vcpu_check_block(vcpu) < 0)
  			break;
-@@ -1823,7 +1823,7 @@ void kvm_vcpu_block(struct kvm_vcpu *vcp
+@@ -1809,7 +1809,7 @@ void kvm_vcpu_block(struct kvm_vcpu *vcp
  		schedule();
  	}
  
@@ -317,7 +316,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	cur = ktime_get();
  
  out:
-@@ -1839,11 +1839,11 @@ void kvm_vcpu_kick(struct kvm_vcpu *vcpu
+@@ -1825,11 +1825,11 @@ void kvm_vcpu_kick(struct kvm_vcpu *vcpu
  {
  	int me;
  	int cpu = vcpu->cpu;
@@ -332,7 +331,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		++vcpu->stat.halt_wakeup;
  	}
  
-@@ -1944,7 +1944,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *m
+@@ -1930,7 +1930,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *m
  				continue;
  			if (vcpu == me)
  				continue;

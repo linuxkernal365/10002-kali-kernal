@@ -21,7 +21,6 @@ fnic ?
 gdth ?
 hpsa ?
 hptiop ?
-i2o_block ?
 ibmmca ?
 ips
 isci ?
@@ -46,3 +45,4 @@ sym53c416 ?
 ufshcd ?
 ufshcd-pci ?
 vmw_pvscsi ?
+wd719x ?

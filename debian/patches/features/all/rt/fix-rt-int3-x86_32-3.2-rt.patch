@@ -1,6 +1,7 @@
 From: Steven Rostedt <rostedt@goodmis.org>
+Date: Tue, 14 Jul 2015 14:26:34 +0200
 Subject: x86: Do not disable preemption in int3 on 32bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 Preemption must be disabled before enabling interrupts in do_trap
 on x86_64 because the stack in use for int3 and debug is a per CPU
@@ -15,7 +16,7 @@ The name of the function is changed from preempt_conditional_sti/cli()
 to conditional_sti/cli_ist(), to annotate that this function is used
 when the stack is on the IST.
 
-Cc: stable-rt@vger.kernel.org
+
 Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
@@ -63,7 +64,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  enum ctx_state ist_enter(struct pt_regs *regs)
-@@ -539,9 +553,9 @@ dotraplinkage void notrace do_int3(struc
+@@ -536,9 +550,9 @@ dotraplinkage void notrace do_int3(struc
  	 * as we may switch to the interrupt stack.
  	 */
  	debug_stack_usage_inc();
@@ -75,14 +76,14 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	debug_stack_usage_dec();
  exit:
  	ist_exit(regs, prev_state);
-@@ -671,12 +685,12 @@ dotraplinkage void do_debug(struct pt_re
+@@ -668,12 +682,12 @@ dotraplinkage void do_debug(struct pt_re
  	debug_stack_usage_inc();
  
  	/* It's safe to allow irq's after DR6 has been saved */
 -	preempt_conditional_sti(regs);
 +	conditional_sti_ist(regs);
  
- 	if (regs->flags & X86_VM_MASK) {
+ 	if (v8086_mode(regs)) {
  		handle_vm86_trap((struct kernel_vm86_regs *) regs, error_code,
  					X86_TRAP_DB);
 -		preempt_conditional_cli(regs);
@@ -90,7 +91,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		debug_stack_usage_dec();
  		goto exit;
  	}
-@@ -696,7 +710,7 @@ dotraplinkage void do_debug(struct pt_re
+@@ -693,7 +707,7 @@ dotraplinkage void do_debug(struct pt_re
  	si_code = get_si_code(tsk->thread.debugreg6);
  	if (tsk->thread.debugreg6 & (DR_STEP | DR_TRAP_BITS) || user_icebp)
  		send_sigtrap(tsk, regs, error_code, si_code);

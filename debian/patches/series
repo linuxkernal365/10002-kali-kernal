@@ -1,5 +1,6 @@
 # Changes to support package build system
 debian/version.patch
+debian/uname-version-timestamp.patch
 debian/kernelvariables.patch
 debian/gitignore.patch
 debian/ia64-hardcode-arch-script-output.patch
@@ -15,6 +16,13 @@ bugfix/all/firmware_class-return-specific-errors-from-file-read.patch
 bugfix/all/firmware_class-log-every-success-and-failure.patch
 bugfix/all/firmware-remove-redundant-log-messages-from-drivers.patch
 bugfix/all/radeon-firmware-is-required-for-drm-and-kms-on-r600-onward.patch
+
+# Patches from aufs4 repository, imported with
+# debian/patches/features/all/aufs4/gen-patch.  These are only the
+# changes needed to allow aufs to be built out-of-tree.
+features/all/aufs4/aufs4-base.patch
+features/all/aufs4/aufs4-mmap.patch
+features/all/aufs4/aufs4-standalone.patch
 
 # Change some defaults for security reasons
 debian/af_802154-Disable-auto-loading-as-mitigation-against.patch
@@ -41,7 +49,6 @@ debian/qxl-disable-modeset-by-default.patch
 bugfix/mips/disable-advansys.patch
 bugfix/arm64/arm64-add-missing-dts-entry-for-X-Gene-platform.patch
 bugfix/arm64/arm64-removed-using-of-the-mask-attribute-in-the-dts.patch
-bugfix/x86/config-enable-need_dma_map_state-by-default-when-swi.patch
 
 # Arch features
 features/mips/MIPS-increase-MAX-PHYSMEM-BITS-on-Loongson-3-only.patch
@@ -57,26 +64,28 @@ features/arm64/usb-add-support-for-acpi-identification-to-xhci-platform.patch
 bugfix/all/misc-bmp085-Enable-building-as-a-module.patch
 bugfix/all/kbuild-use-nostdinc-in-compile-tests.patch
 bugfix/all/disable-some-marvell-phys.patch
-debian/i2o-disable-i2o_ext_adaptec-on-64bit.patch
 bugfix/all/aic94xx-remove-broken-fallback-for-missing-ctrl-a.patch
 bugfix/all/rtsx_usb_ms-use-msleep_interruptible-in-polling-loop.patch
 bugfix/all/net-mv643xx-disable-tso-by-default.patch
-bugfix/all/vfs-read-file_handle-only-once-in-handle_to_path.patch
-bugfix/all/ext4-allocate-entire-range-in-zero-range.patch
 debian/emmc-don-t-initialize-partitions-on-rpmb-flagged-areas.patch
-bugfix/all/mnt-fail-collect_mounts-when-applied-to-unmounted-mo.patch
-bugfix/all/fs_pin-allow-for-the-possibility-that-m_list-or-s_li.patch
-bugfix/all/rtc-hctosys-do-not-treat-lack-of-rtc-device-as-error.patch
-bugfix/all/rtc-hctosys-use-function-name-in-the-error-log.patch
-bugfix/all/md-raid0-fix-restore-to-sector-variable-in-raid0_make_request.patch
-bugfix/all/cdc_ncm-fix-tx_bytes-statistics.patch
-bugfix/all/musb-musb-fix-order-of-conditions-for-assigning-end-p.patch
+
+# Reproducible docs
+bugfix/all/make-highlights-deterministic-in-kernel-doc.patch
+bugfix/all/remove-timestamps-from-compressed-man-pages.patch
+bugfix/all/docbook-generate-consistent-ids.patch
+bugfix/all/docbook-fix-duplicate-man-pages.patch
+bugfix/all/kernel-doc-set-man-page-date.patch
 
 # Miscellaneous features
 features/all/efi-autoload-efi-pstore.patch
+features/all/cpufreq-dt-allow-driver-to-boot-automatically.patch
+features/all/regulator-axp20x-Add-module-alias.patch
 
-# Add Sunrise Point support to e1000e
-features/all/e1000e/0001-e1000e-initial-support-for-i219.patch
-features/all/e1000e/0002-e1000e-fix-obscure-comments.patch
-features/all/e1000e/0003-e1000e-remove-calls-to-ioremap-unmap-for-nvm-addr.patch
-features/all/e1000e/0004-e1000e-nvm-write-protect-access-removed-from-spt-hw.patch
+# Hardening from grsecurity
+features/all/grsecurity/grsecurity-kconfig.patch
+# Disabled until we add code into the grsecurity/ directory
+#features/all/grsecurity/grsecurity-kbuild.patch
+features/all/grsecurity/grkernsec_perf_harden.patch
+bugfix/all/virtio-net-drop-netif_f_fraglist.patch
+bugfix/all/perf-fix-aux-buffer-refcounting.patch
+bugfix/all/perf-fix-double-free-of-the-aux-buffer.patch

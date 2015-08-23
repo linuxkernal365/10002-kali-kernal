@@ -33,8 +33,6 @@
 #include <target/iscsi/iscsi_target_core.h>
 #include "iscsi_target_parameters.h"
 #include "iscsi_target_seq_pdu_list.h"
-#include "iscsi_target_tq.h"
-#include "iscsi_target_configfs.h"
 #include "iscsi_target_datain_values.h"
 #include "iscsi_target_erl0.h"
 #include "iscsi_target_erl1.h"
@@ -232,7 +230,7 @@ int iscsit_access_np(struct iscsi_np *np, struct iscsi_portal_group *tpg)
 	 * Here we serialize access across the TIQN+TPG Tuple.
 	 */
 	ret = down_interruptible(&tpg->np_login_sem);
-	if ((ret != 0) || signal_pending(current))
+	if (ret != 0)
 		return -1;
 
 	spin_lock_bh(&tpg->tpg_state_lock);
@@ -552,8 +550,8 @@ static int __init iscsi_target_init_module(void)
 	idr_init(&tiqn_idr);
 	idr_init(&sess_idr);
 
-	ret = iscsi_target_register_configfs();
-	if (ret < 0)
+	ret = target_register_template(&iscsi_ops);
+	if (ret)
 		goto out;
 
 	size = BITS_TO_LONGS(ISCSIT_BITMAP_BITS) * sizeof(long);
@@ -617,7 +615,10 @@ qr_out:
 bitmap_out:
 	vfree(iscsit_global->ts_bitmap);
 configfs_out:
-	iscsi_target_deregister_configfs();
+	/* XXX: this probably wants it to be it's own unwind step.. */
+	if (iscsit_global->discovery_tpg)
+		iscsit_tpg_disable_portal_group(iscsit_global->discovery_tpg, 1);
+	target_unregister_template(&iscsi_ops);
 out:
 	kfree(iscsit_global);
 	return -ENOMEM;
@@ -632,7 +633,13 @@ static void __exit iscsi_target_cleanup_module(void)
 	kmem_cache_destroy(lio_ooo_cache);
 	kmem_cache_destroy(lio_r2t_cache);
 
-	iscsi_target_deregister_configfs();
+	/*
+	 * Shutdown discovery sessions and disable discovery TPG
+	 */
+	if (iscsit_global->discovery_tpg)
+		iscsit_tpg_disable_portal_group(iscsit_global->discovery_tpg, 1);
+
+	target_unregister_template(&iscsi_ops);
 
 	vfree(iscsit_global->ts_bitmap);
 	kfree(iscsit_global);
@@ -984,7 +991,7 @@ int iscsit_setup_scsi_cmd(struct iscsi_conn *conn, struct iscsi_cmd *cmd,
 	/*
 	 * Initialize struct se_cmd descriptor from target_core_mod infrastructure
 	 */
-	transport_init_se_cmd(&cmd->se_cmd, &lio_target_fabric_configfs->tf_ops,
+	transport_init_se_cmd(&cmd->se_cmd, &iscsi_ops,
 			conn->sess->se_sess, be32_to_cpu(hdr->data_length),
 			cmd->data_direction, sam_task_attr,
 			cmd->sense_buffer + 2);
@@ -1799,8 +1806,7 @@ iscsit_handle_task_mgt_cmd(struct iscsi_conn *conn, struct iscsi_cmd *cmd,
 		u8 tcm_function;
 		int ret;
 
-		transport_init_se_cmd(&cmd->se_cmd,
-				      &lio_target_fabric_configfs->tf_ops,
+		transport_init_se_cmd(&cmd->se_cmd, &iscsi_ops,
 				      conn->sess->se_sess, 0, DMA_NONE,
 				      TCM_SIMPLE_TAG, cmd->sense_buffer + 2);
 
@@ -2149,7 +2155,6 @@ reject:
 	cmd->text_in_ptr = NULL;
 	return iscsit_reject_cmd(cmd, ISCSI_REASON_PROTOCOL_ERROR, buf);
 }
-EXPORT_SYMBOL(iscsit_handle_text_cmd);
 
 int iscsit_logout_closesession(struct iscsi_cmd *cmd, struct iscsi_conn *conn)
 {
@@ -3996,7 +4001,13 @@ get_immediate:
 	}
 
 transport_err:
-	iscsit_take_action_for_connection_exit(conn);
+	/*
+	 * Avoid the normal connection failure code-path if this connection
+	 * is still within LOGIN mode, and iscsi_np process context is
+	 * responsible for cleaning up the early connection failure.
+	 */
+	if (conn->conn_state != TARG_CONN_STATE_IN_LOGIN)
+		iscsit_take_action_for_connection_exit(conn);
 out:
 	return 0;
 }
@@ -4088,7 +4099,7 @@ reject:
 
 int iscsi_target_rx_thread(void *arg)
 {
-	int ret;
+	int ret, rc;
 	u8 buffer[ISCSI_HDR_LEN], opcode;
 	u32 checksum = 0, digest = 0;
 	struct iscsi_conn *conn = arg;
@@ -4098,10 +4109,16 @@ int iscsi_target_rx_thread(void *arg)
 	 * connection recovery / failure event can be triggered externally.
 	 */
 	allow_signal(SIGINT);
+	/*
+	 * Wait for iscsi_post_login_handler() to complete before allowing
+	 * incoming iscsi/tcp socket I/O, and/or failing the connection.
+	 */
+	rc = wait_for_completion_interruptible(&conn->rx_login_comp);
+	if (rc < 0)
+		return 0;
 
 	if (conn->conn_transport->transport_type == ISCSI_INFINIBAND) {
 		struct completion comp;
-		int rc;
 
 		init_completion(&comp);
 		rc = wait_for_completion_interruptible(&comp);
@@ -4372,8 +4389,6 @@ int iscsit_close_connection(
 
 	iscsit_put_transport(conn->conn_transport);
 
-	conn->thread_set = NULL;
-
 	pr_debug("Moving to TARG_CONN_STATE_FREE.\n");
 	conn->conn_state = TARG_CONN_STATE_FREE;
 	kfree(conn);
@@ -4540,7 +4555,18 @@ static void iscsit_logout_post_handler_closesession(
 	struct iscsi_conn *conn)
 {
 	struct iscsi_session *sess = conn->sess;
-	int sleep = cmpxchg(&conn->tx_thread_active, true, false);
+	int sleep = 1;
+	/*
+	 * Traditional iscsi/tcp will invoke this logic from TX thread
+	 * context during session logout, so clear tx_thread_active and
+	 * sleep if iscsit_close_connection() has not already occured.
+	 *
+	 * Since iser-target invokes this logic from it's own workqueue,
+	 * always sleep waiting for RX/TX thread shutdown to complete
+	 * within iscsit_close_connection().
+	 */
+	if (conn->conn_transport->transport_type == ISCSI_TCP)
+		sleep = cmpxchg(&conn->tx_thread_active, true, false);
 
 	atomic_set(&conn->conn_logout_remove, 0);
 	complete(&conn->conn_logout_comp);
@@ -4554,7 +4580,10 @@ static void iscsit_logout_post_handler_closesession(
 static void iscsit_logout_post_handler_samecid(
 	struct iscsi_conn *conn)
 {
-	int sleep = cmpxchg(&conn->tx_thread_active, true, false);
+	int sleep = 1;
+
+	if (conn->conn_transport->transport_type == ISCSI_TCP)
+		sleep = cmpxchg(&conn->tx_thread_active, true, false);
 
 	atomic_set(&conn->conn_logout_remove, 0);
 	complete(&conn->conn_logout_comp);
@@ -4773,6 +4802,7 @@ int iscsit_release_sessions_for_tpg(struct iscsi_portal_group *tpg, int force)
 	struct iscsi_session *sess;
 	struct se_portal_group *se_tpg = &tpg->tpg_se_tpg;
 	struct se_session *se_sess, *se_sess_tmp;
+	LIST_HEAD(free_list);
 	int session_count = 0;
 
 	spin_lock_bh(&se_tpg->session_lock);
@@ -4794,14 +4824,17 @@ int iscsit_release_sessions_for_tpg(struct iscsi_portal_group *tpg, int force)
 		}
 		atomic_set(&sess->session_reinstatement, 1);
 		spin_unlock(&sess->conn_lock);
-		spin_unlock_bh(&se_tpg->session_lock);
 
-		iscsit_free_session(sess);
-		spin_lock_bh(&se_tpg->session_lock);
-
-		session_count++;
+		list_move_tail(&se_sess->sess_list, &free_list);
 	}
 	spin_unlock_bh(&se_tpg->session_lock);
+
+	list_for_each_entry_safe(se_sess, se_sess_tmp, &free_list, sess_list) {
+		sess = (struct iscsi_session *)se_sess->fabric_sess_ptr;
+
+		iscsit_free_session(sess);
+		session_count++;
+	}
 
 	pr_debug("Released %d iSCSI Session(s) from Target Portal"
 			" Group: %hu\n", session_count, tpg->tpgt);

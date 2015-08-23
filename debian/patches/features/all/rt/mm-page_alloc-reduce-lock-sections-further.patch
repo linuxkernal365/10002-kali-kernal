@@ -1,7 +1,7 @@
-From: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Date: Fri, 3 Jul 2009 08:44:37 -0500
-Subject: mm: page_alloc reduce lock sections further
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+From: Peter Zijlstra <peterz@infradead.org>
+Date: Fri Jul 3 08:44:37 2009 -0500
+Subject: mm: page_alloc: Reduce lock sections further
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 Split out the pages which are to be freed into a separate list and
 call free_pages_bulk() outside of the percpu page allocator locks.
@@ -9,8 +9,8 @@ call free_pages_bulk() outside of the percpu page allocator locks.
 Signed-off-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- mm/page_alloc.c |   83 ++++++++++++++++++++++++++++++++++++++++----------------
- 1 file changed, 60 insertions(+), 23 deletions(-)
+ mm/page_alloc.c |   85 ++++++++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 61 insertions(+), 24 deletions(-)
 
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
@@ -94,8 +94,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		do {
 -			int mt;	/* migratetype of the to-be-freed page */
 -
- 			page = list_last_entry(list, struct page, lru);
+-			page = list_entry(list->prev, struct page, lru);
 -			/* must delete as __free_one_page list manipulates */
++			page = list_last_entry(list, struct page, lru);
  			list_del(&page->lru);
 -			mt = get_freepage_migratetype(page);
 -			if (unlikely(has_isolate_pageblock(zone)))
@@ -131,7 +132,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static int free_tail_pages_check(struct page *head_page, struct page *page)
-@@ -1331,16 +1356,18 @@ static int rmqueue_bulk(struct zone *zon
+@@ -1381,16 +1406,18 @@ static int rmqueue_bulk(struct zone *zon
  void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
  {
  	unsigned long flags;
@@ -139,7 +140,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	int to_drain, batch;
  
  	local_lock_irqsave(pa_lock, flags);
- 	batch = ACCESS_ONCE(pcp->batch);
+ 	batch = READ_ONCE(pcp->batch);
  	to_drain = min(pcp->count, batch);
  	if (to_drain > 0) {
 -		free_pcppages_bulk(zone, to_drain, pcp);
@@ -151,7 +152,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  #endif
  
-@@ -1356,16 +1383,21 @@ static void drain_pages_zone(unsigned in
+@@ -1406,16 +1433,21 @@ static void drain_pages_zone(unsigned in
  	unsigned long flags;
  	struct per_cpu_pageset *pset;
  	struct per_cpu_pages *pcp;
@@ -175,10 +176,10 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  /*
-@@ -1543,8 +1575,13 @@ void free_hot_cold_page(struct page *pag
+@@ -1593,8 +1625,13 @@ void free_hot_cold_page(struct page *pag
  	pcp->count++;
  	if (pcp->count >= pcp->high) {
- 		unsigned long batch = ACCESS_ONCE(pcp->batch);
+ 		unsigned long batch = READ_ONCE(pcp->batch);
 -		free_pcppages_bulk(zone, batch, pcp);
 +		LIST_HEAD(dst);
 +

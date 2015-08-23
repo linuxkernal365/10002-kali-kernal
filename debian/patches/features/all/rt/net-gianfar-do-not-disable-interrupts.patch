@@ -1,8 +1,7 @@
-From 271b3e203a92b4ba55b4a6ff3281a59e99ad486c Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 25 Mar 2014 18:34:20 +0100
-Subject: [PATCH] net: gianfar: do not disable interrupts
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: net: gianfar: Do not disable interrupts
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 each per-queue lock is taken with spin_lock_irqsave() except in the case
 where all of them are taken for some kind of serialisation. As an
@@ -15,7 +14,7 @@ Lockdep screems easily by "ethtool -K eth0 rx off tx off"
 What remains is missing lockdep annotation that makes lockdep think
 lock_tx_qs() may cause a dead lock.
 
-Cc: stable-rt@vger.kernel.org
+
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
  drivers/net/ethernet/freescale/gianfar.c |   12 ++++++------
@@ -23,7 +22,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/drivers/net/ethernet/freescale/gianfar.c
 +++ b/drivers/net/ethernet/freescale/gianfar.c
-@@ -1522,7 +1522,7 @@ static int gfar_suspend(struct device *d
+@@ -1540,7 +1540,7 @@ static int gfar_suspend(struct device *d
  
  	if (netif_running(ndev)) {
  
@@ -32,7 +31,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		lock_tx_qs(priv);
  
  		gfar_halt_nodisable(priv);
-@@ -1538,7 +1538,7 @@ static int gfar_suspend(struct device *d
+@@ -1556,7 +1556,7 @@ static int gfar_suspend(struct device *d
  		gfar_write(&regs->maccfg1, tempval);
  
  		unlock_tx_qs(priv);
@@ -41,7 +40,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  		disable_napi(priv);
  
-@@ -1580,7 +1580,7 @@ static int gfar_resume(struct device *de
+@@ -1598,7 +1598,7 @@ static int gfar_resume(struct device *de
  	/* Disable Magic Packet mode, in case something
  	 * else woke us up.
  	 */
@@ -50,7 +49,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	lock_tx_qs(priv);
  
  	tempval = gfar_read(&regs->maccfg2);
-@@ -1590,7 +1590,7 @@ static int gfar_resume(struct device *de
+@@ -1608,7 +1608,7 @@ static int gfar_resume(struct device *de
  	gfar_start(priv);
  
  	unlock_tx_qs(priv);
@@ -59,7 +58,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	netif_device_attach(ndev);
  
-@@ -3384,14 +3384,14 @@ static irqreturn_t gfar_error(int irq, v
+@@ -3418,14 +3418,14 @@ static irqreturn_t gfar_error(int irq, v
  			dev->stats.tx_dropped++;
  			atomic64_inc(&priv->extra_stats.tx_underrun);
  

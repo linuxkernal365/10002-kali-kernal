@@ -1,7 +1,7 @@
 Subject: cpu: Make hotplug.lock a "sleeping" spinlock on RT
 From: Steven Rostedt <rostedt@goodmis.org>
 Date: Fri, 02 Mar 2012 10:36:57 -0500
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 Tasks can block on hotplug.lock in pin_current_cpu(), but their state
 might be != RUNNING. So the mutex wakeup will set the state
@@ -16,7 +16,7 @@ Cc: Carsten Emde <C.Emde@osadl.org>
 Cc: John Kacur <jkacur@redhat.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Clark Williams <clark.williams@gmail.com>
-Cc: stable-rt@vger.kernel.org
+
 Link: http://lkml.kernel.org/r/1330702617.25686.265.camel@gandalf.stny.rr.com
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -25,7 +25,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/kernel/cpu.c
 +++ b/kernel/cpu.c
-@@ -58,10 +58,16 @@ static int cpu_hotplug_disabled;
+@@ -59,10 +59,16 @@ static int cpu_hotplug_disabled;
  
  static struct {
  	struct task_struct *active_writer;
@@ -42,7 +42,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	/*
  	 * Also blocks the new readers during
  	 * an ongoing cpu hotplug operation.
-@@ -74,12 +80,26 @@ static struct {
+@@ -75,12 +81,26 @@ static struct {
  } cpu_hotplug = {
  	.active_writer = NULL,
  	.wq = __WAIT_QUEUE_HEAD_INITIALIZER(cpu_hotplug.wq),
@@ -69,7 +69,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /* Lockdep annotations for get/put_online_cpus() and cpu_hotplug_begin/end() */
  #define cpuhp_lock_acquire_read() lock_map_acquire_read(&cpu_hotplug.dep_map)
  #define cpuhp_lock_acquire_tryread() \
-@@ -116,8 +136,8 @@ void pin_current_cpu(void)
+@@ -117,8 +137,8 @@ void pin_current_cpu(void)
  		return;
  	}
  	preempt_enable();
@@ -80,7 +80,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	preempt_disable();
  	goto retry;
  }
-@@ -190,9 +210,9 @@ void get_online_cpus(void)
+@@ -191,9 +211,9 @@ void get_online_cpus(void)
  	if (cpu_hotplug.active_writer == current)
  		return;
  	cpuhp_lock_acquire_read();
@@ -92,7 +92,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  EXPORT_SYMBOL_GPL(get_online_cpus);
  
-@@ -200,11 +220,11 @@ bool try_get_online_cpus(void)
+@@ -201,11 +221,11 @@ bool try_get_online_cpus(void)
  {
  	if (cpu_hotplug.active_writer == current)
  		return true;
@@ -106,7 +106,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	return true;
  }
  EXPORT_SYMBOL_GPL(try_get_online_cpus);
-@@ -258,11 +278,11 @@ void cpu_hotplug_begin(void)
+@@ -259,11 +279,11 @@ void cpu_hotplug_begin(void)
  	cpuhp_lock_acquire();
  
  	for (;;) {
@@ -120,7 +120,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		schedule();
  	}
  	finish_wait(&cpu_hotplug.wq, &wait);
-@@ -271,7 +291,7 @@ void cpu_hotplug_begin(void)
+@@ -272,7 +292,7 @@ void cpu_hotplug_begin(void)
  void cpu_hotplug_done(void)
  {
  	cpu_hotplug.active_writer = NULL;

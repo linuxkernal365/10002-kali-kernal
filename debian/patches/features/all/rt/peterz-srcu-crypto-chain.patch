@@ -1,7 +1,7 @@
 Subject: crypto: Convert crypto notifier chain to SRCU
 From: Peter Zijlstra <peterz@infradead.org>
 Date: Fri, 05 Oct 2012 09:03:24 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 The crypto notifier deadlocks on RT. Though this can be a real deadlock
 on mainline as well due to fifo fair rwsems.
@@ -121,7 +121,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/crypto/algapi.c
 +++ b/crypto/algapi.c
-@@ -699,13 +699,13 @@ EXPORT_SYMBOL_GPL(crypto_spawn_tfm2);
+@@ -695,13 +695,13 @@ EXPORT_SYMBOL_GPL(crypto_spawn_tfm2);
  
  int crypto_register_notifier(struct notifier_block *nb)
  {

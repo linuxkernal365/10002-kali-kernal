@@ -1,8 +1,7 @@
-From 91021aa7ea1469d0b3127e68d177e0ad58a7eda3 Mon Sep 17 00:00:00 2001
 From: David Hildenbrand <dahi@linux.vnet.ibm.com>
 Date: Mon, 11 May 2015 17:52:10 +0200
-Subject: [PATCH 05/14] mips: kmap_coherent relies on disabled preemption
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: sched/preempt, mm/kmap, MIPS: Disable preemption in kmap_coherent() explicitly
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 k(un)map_coherent relies on pagefault_disable() to also disable
 preemption.
@@ -16,6 +15,7 @@ cache. However, actually, the most modern MIPS processors have PIPT dcache
 without dcache alias issue. In such case, k{un}map_atomic will be called
 with preempt enabled."
 
+[upstream commit ce01948eb85da733558fa77c2a554144a57ab0fb]
 Signed-off-by: David Hildenbrand <dahi@linux.vnet.ibm.com>
 ---
  arch/mips/mm/init.c |    2 ++
@@ -31,7 +31,7 @@ Signed-off-by: David Hildenbrand <dahi@linux.vnet.ibm.com>
  	pagefault_disable();
  	idx = (addr >> PAGE_SHIFT) & (FIX_N_COLOURS - 1);
  	idx += in_interrupt() ? FIX_N_COLOURS : 0;
-@@ -147,6 +148,7 @@ void kunmap_coherent(void)
+@@ -152,6 +153,7 @@ void kunmap_coherent(void)
  	write_c0_entryhi(old_ctx);
  	local_irq_restore(flags);
  	pagefault_enable();

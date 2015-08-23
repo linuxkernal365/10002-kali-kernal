@@ -1,8 +1,7 @@
-From de8fa902784181346b91bd121fba824a588fa99c Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Sat, 3 May 2014 11:00:29 +0200
-Subject: [PATCH] blk-mq: revert raw locks, post pone notifier to POST_DEAD
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: blk-mq: revert raw locks, post pone notifier to POST_DEAD
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 The blk_mq_cpu_notify_lock should be raw because some CPU down levels
 are called with interrupts off. The notifier itself calls currently one
@@ -74,7 +73,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  void blk_mq_init_cpu_notifier(struct blk_mq_cpu_notifier *notifier,
 --- a/block/blk-mq.c
 +++ b/block/blk-mq.c
-@@ -1601,7 +1601,7 @@ static int blk_mq_hctx_notify(void *data
+@@ -1612,7 +1612,7 @@ static int blk_mq_hctx_notify(void *data
  {
  	struct blk_mq_hw_ctx *hctx = data;
  

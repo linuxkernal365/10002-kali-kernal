@@ -701,7 +701,7 @@ static void vnt_bss_info_changed(struct ieee80211_hw *hw,
 
 	priv->current_aid = conf->aid;
 
-	if (changed & BSS_CHANGED_BSSID)
+	if (changed & BSS_CHANGED_BSSID && conf->bssid)
 		vnt_mac_set_bssid_addr(priv, (u8 *)conf->bssid);
 
 
@@ -963,6 +963,7 @@ vt6656_probe(struct usb_interface *intf, const struct usb_device_id *id)
 	hw = ieee80211_alloc_hw(sizeof(struct vnt_private), &vnt_mac_ops);
 	if (!hw) {
 		dev_err(&udev->dev, "could not register ieee80211_hw\n");
+		rc = -ENOMEM;
 		goto err_nomem;
 	}
 

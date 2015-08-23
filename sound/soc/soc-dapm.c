@@ -473,16 +473,6 @@ struct snd_soc_dapm_context *snd_soc_dapm_kcontrol_dapm(
 }
 EXPORT_SYMBOL_GPL(snd_soc_dapm_kcontrol_dapm);
 
-/**
- * snd_soc_dapm_kcontrol_codec() - Returns the codec associated to a kcontrol
- * @kcontrol: The kcontrol
- */
-struct snd_soc_codec *snd_soc_dapm_kcontrol_codec(struct snd_kcontrol *kcontrol)
-{
-	return snd_soc_dapm_to_codec(snd_soc_dapm_kcontrol_dapm(kcontrol));
-}
-EXPORT_SYMBOL_GPL(snd_soc_dapm_kcontrol_codec);
-
 static void dapm_reset(struct snd_soc_card *card)
 {
 	struct snd_soc_dapm_widget *w;
@@ -849,6 +839,36 @@ static int dapm_new_pga(struct snd_soc_dapm_widget *w)
 	if (w->num_kcontrols)
 		dev_err(w->dapm->dev,
 			"ASoC: PGA controls not supported: '%s'\n", w->name);
+
+	return 0;
+}
+
+/* create new dapm dai link control */
+static int dapm_new_dai_link(struct snd_soc_dapm_widget *w)
+{
+	int i, ret;
+	struct snd_kcontrol *kcontrol;
+	struct snd_soc_dapm_context *dapm = w->dapm;
+	struct snd_card *card = dapm->card->snd_card;
+
+	/* create control for links with > 1 config */
+	if (w->num_params <= 1)
+		return 0;
+
+	/* add kcontrol */
+	for (i = 0; i < w->num_kcontrols; i++) {
+		kcontrol = snd_soc_cnew(&w->kcontrol_news[i], w,
+					w->name, NULL);
+		ret = snd_ctl_add(card, kcontrol);
+		if (ret < 0) {
+			dev_err(dapm->dev,
+				"ASoC: failed to add widget %s dapm kcontrol %s: %d\n",
+				w->name, w->kcontrol_news[i].name, ret);
+			return ret;
+		}
+		kcontrol->private_data = w;
+		w->kcontrols[i] = kcontrol;
+	}
 
 	return 0;
 }
@@ -1791,6 +1811,7 @@ static ssize_t dapm_widget_power_read_file(struct file *file,
 					   size_t count, loff_t *ppos)
 {
 	struct snd_soc_dapm_widget *w = file->private_data;
+	struct snd_soc_card *card = w->dapm->card;
 	char *buf;
 	int in, out;
 	ssize_t ret;
@@ -1799,6 +1820,8 @@ static ssize_t dapm_widget_power_read_file(struct file *file,
 	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
 	if (!buf)
 		return -ENOMEM;
+
+	mutex_lock(&card->dapm_mutex);
 
 	/* Supply widgets are not handled by is_connected_{input,output}_ep() */
 	if (w->is_supply) {
@@ -1845,6 +1868,8 @@ static ssize_t dapm_widget_power_read_file(struct file *file,
 					p->name ? p->name : "static",
 					p->sink->name);
 	}
+
+	mutex_unlock(&card->dapm_mutex);
 
 	ret = simple_read_from_buffer(user_buf, count, ppos, buf, ret);
 
@@ -1897,6 +1922,9 @@ void snd_soc_dapm_debugfs_init(struct snd_soc_dapm_context *dapm,
 	struct dentry *parent)
 {
 	struct dentry *d;
+
+	if (!parent)
+		return;
 
 	dapm->debugfs_dapm = debugfs_create_dir("dapm", parent);
 
@@ -2117,10 +2145,14 @@ static ssize_t dapm_widget_show(struct device *dev,
 	struct snd_soc_pcm_runtime *rtd = dev_get_drvdata(dev);
 	int i, count = 0;
 
+	mutex_lock(&rtd->card->dapm_mutex);
+
 	for (i = 0; i < rtd->num_codecs; i++) {
 		struct snd_soc_codec *codec = rtd->codec_dais[i]->codec;
 		count += dapm_widget_show_codec(codec, buf + count);
 	}
+
+	mutex_unlock(&rtd->card->dapm_mutex);
 
 	return count;
 }
@@ -2719,6 +2751,9 @@ int snd_soc_dapm_new_widgets(struct snd_soc_card *card)
 		case snd_soc_dapm_out_drv:
 			dapm_new_pga(w);
 			break;
+		case snd_soc_dapm_dai_link:
+			dapm_new_dai_link(w);
+			break;
 		default:
 			break;
 		}
@@ -3078,7 +3113,6 @@ snd_soc_dapm_new_control(struct snd_soc_dapm_context *dapm,
 		w->name = kasprintf(GFP_KERNEL, "%s %s", prefix, widget->name);
 	else
 		w->name = kasprintf(GFP_KERNEL, "%s", widget->name);
-
 	if (w->name == NULL) {
 		kfree(w);
 		return NULL;
@@ -3193,7 +3227,7 @@ static int snd_soc_dai_link_event(struct snd_soc_dapm_widget *w,
 {
 	struct snd_soc_dapm_path *source_p, *sink_p;
 	struct snd_soc_dai *source, *sink;
-	const struct snd_soc_pcm_stream *config = w->params;
+	const struct snd_soc_pcm_stream *config = w->params + w->params_select;
 	struct snd_pcm_substream substream;
 	struct snd_pcm_hw_params *params = NULL;
 	u64 fmt;
@@ -3285,22 +3319,97 @@ out:
 	return ret;
 }
 
+static int snd_soc_dapm_dai_link_get(struct snd_kcontrol *kcontrol,
+			  struct snd_ctl_elem_value *ucontrol)
+{
+	struct snd_soc_dapm_widget *w = snd_kcontrol_chip(kcontrol);
+
+	ucontrol->value.integer.value[0] = w->params_select;
+
+	return 0;
+}
+
+static int snd_soc_dapm_dai_link_put(struct snd_kcontrol *kcontrol,
+			  struct snd_ctl_elem_value *ucontrol)
+{
+	struct snd_soc_dapm_widget *w = snd_kcontrol_chip(kcontrol);
+
+	/* Can't change the config when widget is already powered */
+	if (w->power)
+		return -EBUSY;
+
+	if (ucontrol->value.integer.value[0] == w->params_select)
+		return 0;
+
+	if (ucontrol->value.integer.value[0] >= w->num_params)
+		return -EINVAL;
+
+	w->params_select = ucontrol->value.integer.value[0];
+
+	return 0;
+}
+
 int snd_soc_dapm_new_pcm(struct snd_soc_card *card,
 			 const struct snd_soc_pcm_stream *params,
+			 unsigned int num_params,
 			 struct snd_soc_dapm_widget *source,
 			 struct snd_soc_dapm_widget *sink)
 {
 	struct snd_soc_dapm_widget template;
 	struct snd_soc_dapm_widget *w;
-	size_t len;
 	char *link_name;
-	int ret;
+	int ret, count;
+	unsigned long private_value;
+	const char **w_param_text;
+	struct soc_enum w_param_enum[] = {
+		SOC_ENUM_SINGLE(0, 0, 0, NULL),
+	};
+	struct snd_kcontrol_new kcontrol_dai_link[] = {
+		SOC_ENUM_EXT(NULL, w_param_enum[0],
+			     snd_soc_dapm_dai_link_get,
+			     snd_soc_dapm_dai_link_put),
+	};
+	const struct snd_soc_pcm_stream *config = params;
 
-	len = strlen(source->name) + strlen(sink->name) + 2;
-	link_name = devm_kzalloc(card->dev, len, GFP_KERNEL);
-	if (!link_name)
+	w_param_text = devm_kcalloc(card->dev, num_params,
+					sizeof(char *), GFP_KERNEL);
+	if (!w_param_text)
 		return -ENOMEM;
-	snprintf(link_name, len, "%s-%s", source->name, sink->name);
+
+	link_name = devm_kasprintf(card->dev, GFP_KERNEL, "%s-%s",
+				   source->name, sink->name);
+	if (!link_name) {
+		ret = -ENOMEM;
+		goto outfree_w_param;
+	}
+
+	for (count = 0 ; count < num_params; count++) {
+		if (!config->stream_name) {
+			dev_warn(card->dapm.dev,
+				"ASoC: anonymous config %d for dai link %s\n",
+				count, link_name);
+			w_param_text[count] =
+				devm_kasprintf(card->dev, GFP_KERNEL,
+					       "Anonymous Configuration %d",
+					       count);
+			if (!w_param_text[count]) {
+				ret = -ENOMEM;
+				goto outfree_link_name;
+			}
+		} else {
+			w_param_text[count] = devm_kmemdup(card->dev,
+						config->stream_name,
+						strlen(config->stream_name) + 1,
+						GFP_KERNEL);
+			if (!w_param_text[count]) {
+				ret = -ENOMEM;
+				goto outfree_link_name;
+			}
+		}
+		config++;
+	}
+	w_param_enum[0].items = num_params;
+	w_param_enum[0].texts = w_param_text;
 
 	memset(&template, 0, sizeof(template));
 	template.reg = SND_SOC_NOPM;
@@ -3309,6 +3418,30 @@ int snd_soc_dapm_new_pcm(struct snd_soc_card *card,
 	template.event = snd_soc_dai_link_event;
 	template.event_flags = SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
 		SND_SOC_DAPM_PRE_PMD;
+	template.num_kcontrols = 1;
+	/* duplicate w_param_enum on heap so that memory persists */
+	private_value =
+		(unsigned long) devm_kmemdup(card->dev,
+			(void *)(kcontrol_dai_link[0].private_value),
+			sizeof(struct soc_enum), GFP_KERNEL);
+	if (!private_value) {
+		dev_err(card->dev, "ASoC: Failed to create control for %s widget\n",
+			link_name);
+		ret = -ENOMEM;
+		goto outfree_link_name;
+	}
+	kcontrol_dai_link[0].private_value = private_value;
+	/* duplicate kcontrol_dai_link on heap so that memory persists */
+	template.kcontrol_news =
+				devm_kmemdup(card->dev, &kcontrol_dai_link[0],
+					sizeof(struct snd_kcontrol_new),
+					GFP_KERNEL);
+	if (!template.kcontrol_news) {
+		dev_err(card->dev, "ASoC: Failed to create control for %s widget\n",
+			link_name);
+		ret = -ENOMEM;
+		goto outfree_private_value;
+	}
 
 	dev_dbg(card->dev, "ASoC: adding %s widget\n", link_name);
 
@@ -3316,15 +3449,32 @@ int snd_soc_dapm_new_pcm(struct snd_soc_card *card,
 	if (!w) {
 		dev_err(card->dev, "ASoC: Failed to create %s widget\n",
 			link_name);
-		return -ENOMEM;
+		ret = -ENOMEM;
+		goto outfree_kcontrol_news;
 	}
 
 	w->params = params;
+	w->num_params = num_params;
 
 	ret = snd_soc_dapm_add_path(&card->dapm, source, w, NULL, NULL);
 	if (ret)
-		return ret;
+		goto outfree_w;
 	return snd_soc_dapm_add_path(&card->dapm, w, sink, NULL, NULL);
+
+outfree_w:
+	devm_kfree(card->dev, w);
+outfree_kcontrol_news:
+	devm_kfree(card->dev, (void *)template.kcontrol_news);
+outfree_private_value:
+	devm_kfree(card->dev, (void *)private_value);
+outfree_link_name:
+	devm_kfree(card->dev, link_name);
+outfree_w_param:
+	for (count = 0 ; count < num_params; count++)
+		devm_kfree(card->dev, (void *)w_param_text[count]);
+	devm_kfree(card->dev, w_param_text);
+
+	return ret;
 }
 
 int snd_soc_dapm_new_dai_widgets(struct snd_soc_dapm_context *dapm,
@@ -3410,7 +3560,7 @@ int snd_soc_dapm_link_dai_widgets(struct snd_soc_card *card)
 				break;
 			}
 
-			if (!w->sname || !strstr(w->sname, dai_w->name))
+			if (!w->sname || !strstr(w->sname, dai_w->sname))
 				continue;
 
 			if (dai_w->id == snd_soc_dapm_dai_in) {

@@ -273,9 +273,7 @@ static int musb_has_gadget(struct musb *musb)
 #ifdef CONFIG_USB_MUSB_HOST
 	return 1;
 #else
-	if (musb->port_mode == MUSB_PORT_MODE_HOST)
-		return 1;
-	return musb->g.dev.driver != NULL;
+	return musb->port_mode == MUSB_PORT_MODE_HOST;
 #endif
 }
 
@@ -345,7 +343,7 @@ int musb_hub_control(
 		struct usb_hub_descriptor *desc = (void *)buf;
 
 		desc->bDescLength = 9;
-		desc->bDescriptorType = 0x29;
+		desc->bDescriptorType = USB_DT_HUB;
 		desc->bNbrPorts = 1;
 		desc->wHubCharacteristics = cpu_to_le16(
 			HUB_CHAR_INDV_PORT_LPSM /* per-port power switching */

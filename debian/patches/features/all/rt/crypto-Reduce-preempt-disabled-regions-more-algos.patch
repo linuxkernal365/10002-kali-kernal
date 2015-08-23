@@ -1,8 +1,7 @@
-From 0fcf777e2f217e61564bd30a2c39cb49d0e0b8c3 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 21 Feb 2014 17:24:04 +0100
-Subject: [PATCH] crypto: Reduce preempt disabled regions, more algos
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: crypto: Reduce preempt disabled regions, more algos
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 Don Estabrook reported
 | kernel: WARNING: CPU: 2 PID: 858 at kernel/sched/core.c:2428 migrate_disable+0xed/0x100()
@@ -35,7 +34,7 @@ with preemption enabled. This might hurt the performance because we now
 enable/disable the FPU state more often but we gain lower latency and
 the bug is gone.
 
-Cc: stable-rt@vger.kernel.org
+
 Reported-by: Don Estabrook <don.estabrook@gmail.com>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
@@ -180,7 +179,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	return err;
  }
  EXPORT_SYMBOL_GPL(glue_cbc_decrypt_128bit);
-@@ -278,7 +278,7 @@ int glue_ctr_crypt_128bit(const struct c
+@@ -277,7 +277,7 @@ int glue_ctr_crypt_128bit(const struct c
  			  struct scatterlist *src, unsigned int nbytes)
  {
  	const unsigned int bsize = 128 / 8;
@@ -189,7 +188,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	struct blkcipher_walk walk;
  	int err;
  
-@@ -287,13 +287,12 @@ int glue_ctr_crypt_128bit(const struct c
+@@ -286,13 +286,12 @@ int glue_ctr_crypt_128bit(const struct c
  
  	while ((nbytes = walk.nbytes) >= bsize) {
  		fpu_enabled = glue_fpu_begin(bsize, gctx->fpu_blocks_limit,
@@ -205,7 +204,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	if (walk.nbytes) {
  		glue_ctr_crypt_final_128bit(
  			gctx->funcs[gctx->num_funcs - 1].fn_u.ctr, desc, &walk);
-@@ -348,7 +347,7 @@ int glue_xts_crypt_128bit(const struct c
+@@ -347,7 +346,7 @@ int glue_xts_crypt_128bit(const struct c
  			  void *tweak_ctx, void *crypt_ctx)
  {
  	const unsigned int bsize = 128 / 8;
@@ -214,7 +213,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	struct blkcipher_walk walk;
  	int err;
  
-@@ -361,21 +360,21 @@ int glue_xts_crypt_128bit(const struct c
+@@ -360,21 +359,21 @@ int glue_xts_crypt_128bit(const struct c
  
  	/* set minimum length to bsize, for tweak_fn */
  	fpu_enabled = glue_fpu_begin(bsize, gctx->fpu_blocks_limit,

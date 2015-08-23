@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 15 Jul 2010 10:29:00 +0200
 Subject: suspend: Prevent might sleep splats
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 timekeeping suspend/resume calls read_persistant_clock() which takes
 rtc_lock. That results in might sleep warnings because at that point
@@ -26,7 +26,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 --- a/include/linux/kernel.h
 +++ b/include/linux/kernel.h
-@@ -455,6 +455,7 @@ extern enum system_states {
+@@ -467,6 +467,7 @@ extern enum system_states {
  	SYSTEM_HALT,
  	SYSTEM_POWER_OFF,
  	SYSTEM_RESTART,
@@ -87,7 +87,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/kernel/power/suspend.c
 +++ b/kernel/power/suspend.c
-@@ -347,6 +347,8 @@ static int suspend_enter(suspend_state_t
+@@ -356,6 +356,8 @@ static int suspend_enter(suspend_state_t
  	arch_suspend_disable_irqs();
  	BUG_ON(!irqs_disabled());
  
@@ -96,7 +96,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	error = syscore_suspend();
  	if (!error) {
  		*wakeup = pm_wakeup_pending();
-@@ -361,6 +363,8 @@ static int suspend_enter(suspend_state_t
+@@ -370,6 +372,8 @@ static int suspend_enter(suspend_state_t
  		syscore_resume();
  	}
  

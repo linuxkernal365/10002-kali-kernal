@@ -1,10 +1,10 @@
-Subject: sched-mmdrop-delayed.patch
+Subject: sched: Move mmdrop to RCU on RT
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Mon, 06 Jun 2011 12:20:33 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
-Needs thread context (pgd_lock) -> ifdeffed. workqueues wont work with
-RT
+Takes sleeping locks and calls into the memory allocator, so nothing
+we want to do in task switch and oder atomic contexts.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -24,7 +24,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #include <linux/page-flags-layout.h>
  #include <asm/page.h>
  #include <asm/mmu.h>
-@@ -460,6 +461,9 @@ struct mm_struct {
+@@ -462,6 +463,9 @@ struct mm_struct {
  	bool tlb_flush_pending;
  #endif
  	struct uprobes_state uprobes_state;
@@ -36,7 +36,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	void __user *bd_addr;
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -2495,12 +2495,24 @@ extern struct mm_struct * mm_alloc(void)
+@@ -2548,12 +2548,24 @@ extern struct mm_struct * mm_alloc(void)
  
  /* mmdrop drops the mm and the page tables */
  extern void __mmdrop(struct mm_struct *);
@@ -63,7 +63,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /* Grab a reference to a task's mm, if it is not already going away */
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -661,6 +661,19 @@ void __mmdrop(struct mm_struct *mm)
+@@ -693,6 +693,19 @@ void __mmdrop(struct mm_struct *mm)
  }
  EXPORT_SYMBOL_GPL(__mmdrop);
  
@@ -85,7 +85,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
   */
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -2248,8 +2248,12 @@ static struct rq *finish_task_switch(str
+@@ -2286,8 +2286,12 @@ static struct rq *finish_task_switch(str
  	finish_arch_post_lock_switch();
  
  	fire_sched_in_preempt_notifiers(current);
@@ -99,7 +99,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	if (unlikely(prev_state == TASK_DEAD)) {
  		if (prev->sched_class->task_dead)
  			prev->sched_class->task_dead(prev);
-@@ -4965,6 +4969,8 @@ static int migration_cpu_stop(void *data
+@@ -5125,6 +5129,8 @@ static int migration_cpu_stop(void *data
  
  #ifdef CONFIG_HOTPLUG_CPU
  
@@ -108,7 +108,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * Ensures that the idle task is using init_mm right before its cpu goes
   * offline.
-@@ -4979,7 +4985,11 @@ void idle_task_exit(void)
+@@ -5139,7 +5145,11 @@ void idle_task_exit(void)
  		switch_mm(mm, &init_mm, current);
  		finish_arch_post_lock_switch();
  	}
@@ -121,7 +121,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  /*
-@@ -5322,6 +5332,10 @@ migration_call(struct notifier_block *nf
+@@ -5482,6 +5492,10 @@ migration_call(struct notifier_block *nf
  
  	case CPU_DEAD:
  		calc_load_migrate(rq);

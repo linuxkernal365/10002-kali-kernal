@@ -120,6 +120,9 @@ static void tas2552_sw_shutdown(struct tas2552_data *tas_data, int sw_shutdown)
 {
 	u8 cfg1_reg;
 
+	if (!tas_data->codec)
+		return;
+
 	if (sw_shutdown)
 		cfg1_reg = 0;
 	else
@@ -335,7 +338,6 @@ static DECLARE_TLV_DB_SCALE(dac_tlv, -7, 100, 24);
 static const struct snd_kcontrol_new tas2552_snd_controls[] = {
 	SOC_SINGLE_TLV("Speaker Driver Playback Volume",
 			 TAS2552_PGA_GAIN, 0, 0x1f, 1, dac_tlv),
-	SOC_DAPM_SINGLE("Playback AMP", SND_SOC_NOPM, 0, 1, 0),
 };
 
 static const struct reg_default tas2552_init_regs[] = {
@@ -485,16 +487,9 @@ static int tas2552_probe(struct i2c_client *client,
 	if (data == NULL)
 		return -ENOMEM;
 
-	data->enable_gpio = devm_gpiod_get(dev, "enable");
-	if (IS_ERR(data->enable_gpio)) {
-		ret = PTR_ERR(data->enable_gpio);
-		if (ret != -ENOENT && ret != -ENOSYS)
-			return ret;
-
-		data->enable_gpio = NULL;
-	} else {
-		gpiod_direction_output(data->enable_gpio, 0);
-	}
+	data->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
+	if (IS_ERR(data->enable_gpio))
+		return PTR_ERR(data->enable_gpio);
 
 	data->tas2552_client = client;
 	data->regmap = devm_regmap_init_i2c(client, &tas2552_regmap_config);

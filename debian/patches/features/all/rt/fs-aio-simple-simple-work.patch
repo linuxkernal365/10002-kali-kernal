@@ -1,8 +1,7 @@
-From dff0dd4ff87b8f41b438f8b9bb32d2343943bb32 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Mon, 16 Feb 2015 18:49:10 +0100
-Subject: [PATCH] fs/aio: simple simple work
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: fs/aio: simple simple work
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 |BUG: sleeping function called from invalid context at kernel/locking/rtmutex.c:768
 |in_atomic(): 1, irqs_disabled(): 0, pid: 26, name: rcuos/2
@@ -39,7 +38,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  #include <asm/kmap_types.h>
  #include <asm/uaccess.h>
-@@ -110,7 +111,7 @@ struct kioctx {
+@@ -115,7 +116,7 @@ struct kioctx {
  	struct page		**ring_pages;
  	long			nr_pages;
  
@@ -48,7 +47,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	/*
  	 * signals when all in-flight requests are done
-@@ -216,6 +217,7 @@ static int __init aio_setup(void)
+@@ -253,6 +254,7 @@ static int __init aio_setup(void)
  		.mount		= aio_mount,
  		.kill_sb	= kill_anon_super,
  	};
@@ -56,8 +55,8 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	aio_mnt = kern_mount(&aio_fs);
  	if (IS_ERR(aio_mnt))
  		panic("Failed to create aio fs mount.");
-@@ -521,9 +523,9 @@ static int kiocb_cancel(struct kiocb *ki
- 	return cancel(kiocb);
+@@ -559,9 +561,9 @@ static int kiocb_cancel(struct aio_kiocb
+ 	return cancel(&kiocb->common);
  }
  
 -static void free_ioctx(struct work_struct *work)
@@ -68,9 +67,9 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	pr_debug("freeing %p\n", ctx);
  
-@@ -542,8 +544,8 @@ static void free_ioctx_reqs(struct percp
- 	if (ctx->requests_done)
- 		complete(ctx->requests_done);
+@@ -580,8 +582,8 @@ static void free_ioctx_reqs(struct percp
+ 	if (ctx->rq_wait && atomic_dec_and_test(&ctx->rq_wait->count))
+ 		complete(&ctx->rq_wait->comp);
  
 -	INIT_WORK(&ctx->free_work, free_ioctx);
 -	schedule_work(&ctx->free_work);
@@ -79,7 +78,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  /*
-@@ -551,9 +553,9 @@ static void free_ioctx_reqs(struct percp
+@@ -589,9 +591,9 @@ static void free_ioctx_reqs(struct percp
   * and ctx->users has dropped to 0, so we know no more kiocbs can be submitted -
   * now it's safe to cancel any that need to be.
   */
@@ -88,10 +87,10 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  {
 -	struct kioctx *ctx = container_of(ref, struct kioctx, users);
 +	struct kioctx *ctx = container_of(sev, struct kioctx, free_work);
- 	struct kiocb *req;
+ 	struct aio_kiocb *req;
  
  	spin_lock_irq(&ctx->ctx_lock);
-@@ -572,6 +574,14 @@ static void free_ioctx_users(struct perc
+@@ -610,6 +612,14 @@ static void free_ioctx_users(struct perc
  	percpu_ref_put(&ctx->reqs);
  }
  

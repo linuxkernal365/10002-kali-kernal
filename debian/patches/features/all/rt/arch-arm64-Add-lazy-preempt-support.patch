@@ -1,8 +1,7 @@
-From 7400b8761276c4b41581abc39ecd587f51856398 Mon Sep 17 00:00:00 2001
 From: Anders Roxell <anders.roxell@linaro.org>
 Date: Thu, 14 May 2015 17:52:17 +0200
-Subject: [PATCH 3/3] arch/arm64: Add lazy preempt support
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: arch/arm64: Add lazy preempt support
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 arm64 is missing support for PREEMPT_RT. The main feature which is
 lacking is support for lazy preemption. The arch-specific entry code,
@@ -21,7 +20,7 @@ Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
 
 --- a/arch/arm64/Kconfig
 +++ b/arch/arm64/Kconfig
-@@ -66,6 +66,7 @@ config ARM64
+@@ -69,6 +69,7 @@ config ARM64
  	select HAVE_PERF_REGS
  	select HAVE_PERF_USER_STACK_DUMP
  	select HAVE_RCU_TABLE_FREE
@@ -31,15 +30,15 @@ Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
  	select IRQ_FORCED_THREADING
 --- a/arch/arm64/include/asm/thread_info.h
 +++ b/arch/arm64/include/asm/thread_info.h
-@@ -49,6 +49,7 @@ struct thread_info {
+@@ -47,6 +47,7 @@ struct thread_info {
+ 	mm_segment_t		addr_limit;	/* address limit */
  	struct task_struct	*task;		/* main task structure */
- 	struct exec_domain	*exec_domain;	/* execution domain */
  	int			preempt_count;	/* 0 => preemptable, <0 => bug */
-+	int			preempt_lazy_count;	/* 0 => preemptable, <0 => bug */
++	int			preempt_lazy_count; /* 0 => preemptable, <0 => bug */
  	int			cpu;		/* cpu */
  };
  
-@@ -104,6 +105,7 @@ static inline struct thread_info *curren
+@@ -101,6 +102,7 @@ static inline struct thread_info *curren
  #define TIF_NEED_RESCHED	1
  #define TIF_NOTIFY_RESUME	2	/* callback before returning to user */
  #define TIF_FOREIGN_FPSTATE	3	/* CPU's FP state is not current's */
@@ -47,7 +46,7 @@ Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
  #define TIF_NOHZ		7
  #define TIF_SYSCALL_TRACE	8
  #define TIF_SYSCALL_AUDIT	9
-@@ -120,6 +122,7 @@ static inline struct thread_info *curren
+@@ -117,6 +119,7 @@ static inline struct thread_info *curren
  #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
  #define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
  #define _TIF_FOREIGN_FPSTATE	(1 << TIF_FOREIGN_FPSTATE)
@@ -57,14 +56,14 @@ Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
  #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
 --- a/arch/arm64/kernel/asm-offsets.c
 +++ b/arch/arm64/kernel/asm-offsets.c
-@@ -36,6 +36,7 @@ int main(void)
+@@ -35,6 +35,7 @@ int main(void)
    BLANK();
    DEFINE(TI_FLAGS,		offsetof(struct thread_info, flags));
    DEFINE(TI_PREEMPT,		offsetof(struct thread_info, preempt_count));
 +  DEFINE(TI_PREEMPT_LAZY,	offsetof(struct thread_info, preempt_lazy_count));
    DEFINE(TI_ADDR_LIMIT,		offsetof(struct thread_info, addr_limit));
    DEFINE(TI_TASK,		offsetof(struct thread_info, task));
-   DEFINE(TI_EXEC_DOMAIN,	offsetof(struct thread_info, exec_domain));
+   DEFINE(TI_CPU,		offsetof(struct thread_info, cpu));
 --- a/arch/arm64/kernel/entry.S
 +++ b/arch/arm64/kernel/entry.S
 @@ -367,11 +367,16 @@ ENDPROC(el1_sync)
@@ -95,7 +94,7 @@ Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
  	ret	x24
  #endif
  
-@@ -621,6 +627,7 @@ ENDPROC(cpu_switch_to)
+@@ -622,6 +628,7 @@ ENDPROC(cpu_switch_to)
  	str	x0, [sp, #S_X0]			// returned x0
  work_pending:
  	tbnz	x1, #TIF_NEED_RESCHED, work_resched

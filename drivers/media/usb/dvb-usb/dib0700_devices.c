@@ -510,9 +510,6 @@ static int stk7700ph_tuner_attach(struct dvb_usb_adapter *adap)
 
 static u8 rc_request[] = { REQUEST_POLL_RC, 0 };
 
-/* Number of keypresses to ignore before start repeating */
-#define RC_REPEAT_DELAY 6
-
 /*
  * This function is used only when firmware is < 1.20 version. Newer
  * firmwares use bulk mode, with functions implemented at dib0700_core,
@@ -3947,6 +3944,8 @@ struct dvb_usb_device_properties dib0700_devices[] = {
 
 				DIB0700_DEFAULT_STREAMING_CONFIG(0x02),
 			}},
+				.size_of_priv = sizeof(struct
+						dib0700_adapter_state),
 			}, {
 			.num_frontends = 1,
 			.fe = {{
@@ -3959,6 +3958,8 @@ struct dvb_usb_device_properties dib0700_devices[] = {
 
 				DIB0700_DEFAULT_STREAMING_CONFIG(0x03),
 			}},
+				.size_of_priv = sizeof(struct
+						dib0700_adapter_state),
 			}
 		},
 
@@ -4012,6 +4013,8 @@ struct dvb_usb_device_properties dib0700_devices[] = {
 
 				DIB0700_DEFAULT_STREAMING_CONFIG(0x02),
 			}},
+				.size_of_priv = sizeof(struct
+						dib0700_adapter_state),
 			},
 		},
 
