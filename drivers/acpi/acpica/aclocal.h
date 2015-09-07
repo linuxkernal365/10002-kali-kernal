@@ -53,7 +53,7 @@ typedef u32 acpi_mutex_handle;
 
 /* Total number of aml opcodes defined */
 
-#define AML_NUM_OPCODES                 0x81
+#define AML_NUM_OPCODES                 0x82
 
 /* Forward declarations */
 
@@ -213,6 +213,7 @@ struct acpi_table_list {
 
 #define ACPI_TABLE_INDEX_DSDT           (0)
 #define ACPI_TABLE_INDEX_FACS           (1)
+#define ACPI_TABLE_INDEX_X_FACS         (2)
 
 struct acpi_find_context {
 	char *search_for;

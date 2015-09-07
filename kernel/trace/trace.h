@@ -334,7 +334,7 @@ struct tracer_flags {
 
 
 /**
- * struct tracer - a specific tracer and its callbacks to interact with debugfs
+ * struct tracer - a specific tracer and its callbacks to interact with tracefs
  * @name: the name chosen to select it on the available_tracers file
  * @init: called when one switches to this tracer (echo name > current_tracer)
  * @reset: called when one switches to another tracer
@@ -444,6 +444,7 @@ enum {
 
 	TRACE_CONTROL_BIT,
 
+	TRACE_BRANCH_BIT,
 /*
  * Abuse of the trace_recursion.
  * As we need a way to maintain state if we are tracing the function
@@ -1309,8 +1310,10 @@ static inline void init_ftrace_syscalls(void) { }
 
 #ifdef CONFIG_EVENT_TRACING
 void trace_event_init(void);
+void trace_event_enum_update(struct trace_enum_map **map, int len);
 #else
 static inline void __init trace_event_init(void) { }
+static inline void trace_event_enum_update(struct trace_enum_map **map, int len) { }
 #endif
 
 extern struct trace_iterator *tracepoint_print_iter;

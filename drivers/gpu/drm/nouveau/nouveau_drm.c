@@ -181,6 +181,7 @@ nouveau_accel_init(struct nouveau_drm *drm)
 			break;
 		case FERMI_CHANNEL_GPFIFO:
 		case KEPLER_CHANNEL_GPFIFO_A:
+		case MAXWELL_CHANNEL_GPFIFO_A:
 			ret = nvc0_fence_create(drm);
 			break;
 		default:
@@ -862,8 +863,10 @@ nouveau_drm_preclose(struct drm_device *dev, struct drm_file *fpriv)
 
 	pm_runtime_get_sync(dev->dev);
 
+	mutex_lock(&cli->mutex);
 	if (cli->abi16)
 		nouveau_abi16_fini(cli->abi16);
+	mutex_unlock(&cli->mutex);
 
 	mutex_lock(&drm->client.mutex);
 	list_del(&cli->head);

@@ -201,8 +201,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
 {
 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
 
-	if (spi_imx->dma_is_inited && (transfer->len > spi_imx->rx_wml)
-	    && (transfer->len > spi_imx->tx_wml))
+	if (spi_imx->dma_is_inited
+	    && transfer->len > spi_imx->rx_wml * sizeof(u32)
+	    && transfer->len > spi_imx->tx_wml * sizeof(u32))
 		return true;
 	return false;
 }
@@ -903,7 +904,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
 
 	if (tx) {
 		desc_tx = dmaengine_prep_slave_sg(master->dma_tx,
-					tx->sgl, tx->nents, DMA_TO_DEVICE,
+					tx->sgl, tx->nents, DMA_MEM_TO_DEV,
 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
 		if (!desc_tx)
 			goto no_dma;
@@ -915,7 +916,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
 
 	if (rx) {
 		desc_rx = dmaengine_prep_slave_sg(master->dma_rx,
-					rx->sgl, rx->nents, DMA_FROM_DEVICE,
+					rx->sgl, rx->nents, DMA_DEV_TO_MEM,
 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
 		if (!desc_rx)
 			goto no_dma;
