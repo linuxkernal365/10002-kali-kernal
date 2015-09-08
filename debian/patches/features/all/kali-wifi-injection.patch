@@ -1,6 +1,6 @@
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -581,7 +581,8 @@ static int ieee80211_set_monitor_channel
+@@ -582,7 +582,8 @@ static int ieee80211_set_monitor_channel
  			ret = ieee80211_vif_use_channel(sdata, chandef,
  					IEEE80211_CHANCTX_EXCLUSIVE);
  		}
@@ -12,7 +12,7 @@
  	}
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -794,11 +794,19 @@ ieee80211_tx_h_sequence(struct ieee80211
+@@ -788,11 +788,19 @@ ieee80211_tx_h_sequence(struct ieee80211
  
  	/*
  	 * Packet injection may want to control the sequence
@@ -35,16 +35,16 @@
  
  	if (unlikely(ieee80211_is_ctl(hdr->frame_control)))
  		return TX_CONTINUE;
-@@ -1554,7 +1562,10 @@ void ieee80211_xmit(struct ieee80211_sub
+@@ -1651,7 +1659,10 @@ void ieee80211_xmit(struct ieee80211_sub
  		}
  	}
  
 -	ieee80211_set_qos_hdr(sdata, skb);
 +        // Don't overwrite QoS header in monitor mode
 +        if (likely(info->control.vif->type != NL80211_IFTYPE_MONITOR)) {
-+               ieee80211_set_qos_hdr(sdata, skb);
++            ieee80211_set_qos_hdr(sdata, skb);
 +        }
- 	ieee80211_tx(sdata, skb, false);
+ 	ieee80211_tx(sdata, sta, skb, false);
  }
  
 --- a/net/wireless/chan.c
