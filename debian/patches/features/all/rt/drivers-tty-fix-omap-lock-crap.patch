@@ -1,7 +1,11 @@
-Subject: drivers-tty-fix-omap-lock-crap.patch
+Subject: tty/serial/omap: Make the locking RT aware
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 28 Jul 2011 13:32:57 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
+
+The lock is a sleeping lock and local_irq_save() is not the
+optimsation we are looking for. Redo it to make it work on -RT and
+non-RT.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---

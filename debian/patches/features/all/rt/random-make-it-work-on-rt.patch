@@ -1,7 +1,7 @@
 Subject: random: Make it work on rt
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 21 Aug 2012 20:38:50 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 Delegate the random insertion to the forced threaded interrupt
 handler. Store the return IP of the hard interrupt handler in the irq
@@ -9,7 +9,7 @@ descriptor and feed it into the random generator as a source of
 entropy.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable-rt@vger.kernel.org
+
 ---
  drivers/char/random.c   |   11 +++++------
  include/linux/irqdesc.h |    1 +
@@ -101,7 +101,7 @@ Cc: stable-rt@vger.kernel.org
  		note_interrupt(irq, desc, retval);
 --- a/kernel/irq/manage.c
 +++ b/kernel/irq/manage.c
-@@ -959,6 +959,12 @@ static int irq_thread(void *data)
+@@ -991,6 +991,12 @@ static int irq_thread(void *data)
  		if (action_ret == IRQ_HANDLED)
  			atomic_inc(&desc->threads_handled);
  

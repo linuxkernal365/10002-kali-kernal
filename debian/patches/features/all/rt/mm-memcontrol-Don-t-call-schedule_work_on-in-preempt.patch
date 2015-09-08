@@ -1,8 +1,7 @@
 From: Yang Shi <yang.shi@windriver.com>
-Subject: [V3 PATCH] mm/memcontrol: Don't call schedule_work_on in preemption disabled context
+Subject: mm/memcontrol: Don't call schedule_work_on in preemption disabled context
 Date: Wed, 30 Oct 2013 11:48:33 -0700
-Message-ID: <1383158913-16325-1-git-send-email-yang.shi@windriver.com>
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 The following trace is triggered when running ltp oom test cases:
 
@@ -40,7 +39,7 @@ Call Trace:
 So, to prevent schedule_work_on from being called in preempt disabled context,
 replace the pair of get/put_cpu() to get/put_cpu_light().
 
-Cc: stable-rt@vger.kernel.org
+
 Signed-off-by: Yang Shi <yang.shi@windriver.com>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
@@ -50,7 +49,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -2138,7 +2138,7 @@ static void drain_all_stock(struct mem_c
+@@ -2147,7 +2147,7 @@ static void drain_all_stock(struct mem_c
  		return;
  	/* Notify other cpus that system-wide "drain" is running */
  	get_online_cpus();
@@ -59,7 +58,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	for_each_online_cpu(cpu) {
  		struct memcg_stock_pcp *stock = &per_cpu(memcg_stock, cpu);
  		struct mem_cgroup *memcg;
-@@ -2155,7 +2155,7 @@ static void drain_all_stock(struct mem_c
+@@ -2164,7 +2164,7 @@ static void drain_all_stock(struct mem_c
  				schedule_work_on(cpu, &stock->work);
  		}
  	}

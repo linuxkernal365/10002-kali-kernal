@@ -1,8 +1,7 @@
-From d841118ac80c5bfb18f47984bc40687eed08b714 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 25 Apr 2013 18:12:52 +0200
-Subject: [PATCH] drm/i915: drop trace_i915_gem_ring_dispatch on rt
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: drm/i915: drop trace_i915_gem_ring_dispatch on rt
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 This tracepoint is responsible for:
 
@@ -39,7 +38,7 @@ Chris Wilson does not like to move i915_trace_irq_get() out of the macro
 
 so it is gone now on RT.
 
-Cc: stable-rt@vger.kernel.org
+
 Reported-by: Joakim Hernberg <jbh@alchemy.lu>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
@@ -48,12 +47,12 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/drivers/gpu/drm/i915/i915_gem_execbuffer.c
 +++ b/drivers/gpu/drm/i915/i915_gem_execbuffer.c
-@@ -1279,7 +1279,9 @@ i915_gem_ringbuffer_submission(struct dr
+@@ -1339,7 +1339,9 @@ i915_gem_ringbuffer_submission(struct dr
  			return ret;
  	}
  
 +#ifndef CONFIG_PREEMPT_RT_BASE
- 	trace_i915_gem_ring_dispatch(intel_ring_get_request(ring), flags);
+ 	trace_i915_gem_ring_dispatch(intel_ring_get_request(ring), dispatch_flags);
 +#endif
  
  	i915_gem_execbuffer_move_to_active(vmas, ring);

@@ -1,9 +1,7 @@
-From 697b9317be3ef90ddc0997cc0d6db44380a8ce31 Mon Sep 17 00:00:00 2001
 From: David Hildenbrand <dahi@linux.vnet.ibm.com>
 Date: Mon, 11 May 2015 17:52:11 +0200
-Subject: [PATCH 06/14] mm: use pagefault_disable() to check for disabled
- pagefaults in the handler
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: mm/fault, arch: Use pagefault_disable() to check for disabled pagefaults in the handler
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 Introduce faulthandler_disabled() and use it to check for irq context and
 disabled pagefaults (via pagefault_disable()) in the pagefault handlers.
@@ -26,6 +24,7 @@ linux/uaccess.h, so let's properly add that include to all relevant files.
 
 This patch is based on a patch from Thomas Gleixner.
 
+[upstream commit 70ffdb9393a7264a069265edded729078dcf0425]
 Signed-off-by: David Hildenbrand <dahi@linux.vnet.ibm.com>
 ---
  arch/alpha/mm/fault.c      |    5 ++---
@@ -427,7 +426,7 @@ Signed-off-by: David Hildenbrand <dahi@linux.vnet.ibm.com>
  		die("Weird page fault", regs, SIGSEGV);
 --- a/arch/s390/mm/fault.c
 +++ b/arch/s390/mm/fault.c
-@@ -435,7 +435,7 @@ static inline int do_exception(struct pt
+@@ -399,7 +399,7 @@ static inline int do_exception(struct pt
  	 * user context.
  	 */
  	fault = VM_FAULT_BADCONTEXT;
@@ -531,7 +530,7 @@ Signed-off-by: David Hildenbrand <dahi@linux.vnet.ibm.com>
  	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
 --- a/arch/sparc/mm/init_64.c
 +++ b/arch/sparc/mm/init_64.c
-@@ -2706,7 +2706,7 @@ void hugetlb_setup(struct pt_regs *regs)
+@@ -2738,7 +2738,7 @@ void hugetlb_setup(struct pt_regs *regs)
  	struct mm_struct *mm = current->mm;
  	struct tsb_config *tp;
  
@@ -542,7 +541,7 @@ Signed-off-by: David Hildenbrand <dahi@linux.vnet.ibm.com>
  		entry = search_exception_tables(regs->tpc);
 --- a/arch/tile/mm/fault.c
 +++ b/arch/tile/mm/fault.c
-@@ -353,9 +353,9 @@ static int handle_page_fault(struct pt_r
+@@ -354,9 +354,9 @@ static int handle_page_fault(struct pt_r
  
  	/*
  	 * If we're in an interrupt, have no user context or are running in an

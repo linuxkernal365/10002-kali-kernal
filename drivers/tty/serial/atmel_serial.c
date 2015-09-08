@@ -315,8 +315,7 @@ static int atmel_config_rs485(struct uart_port *port,
 	if (rs485conf->flags & SER_RS485_ENABLED) {
 		dev_dbg(port->dev, "Setting UART to RS485\n");
 		atmel_port->tx_done_mask = ATMEL_US_TXEMPTY;
-		if ((rs485conf->delay_rts_after_send) > 0)
-			UART_PUT_TTGR(port, rs485conf->delay_rts_after_send);
+		UART_PUT_TTGR(port, rs485conf->delay_rts_after_send);
 		mode |= ATMEL_US_USMODE_RS485;
 	} else {
 		dev_dbg(port->dev, "Setting UART to RS232\n");
@@ -354,8 +353,7 @@ static void atmel_set_mctrl(struct uart_port *port, u_int mctrl)
 
 	/* override mode to RS485 if needed, otherwise keep the current mode */
 	if (port->rs485.flags & SER_RS485_ENABLED) {
-		if ((port->rs485.delay_rts_after_send) > 0)
-			UART_PUT_TTGR(port, port->rs485.delay_rts_after_send);
+		UART_PUT_TTGR(port, port->rs485.delay_rts_after_send);
 		mode &= ~ATMEL_US_USMODE;
 		mode |= ATMEL_US_USMODE_RS485;
 	}
@@ -855,7 +853,7 @@ static int atmel_prepare_tx_dma(struct uart_port *port)
 	spin_lock_init(&atmel_port->lock_tx);
 	sg_init_table(&atmel_port->sg_tx, 1);
 	/* UART circular tx buffer is an aligned page. */
-	BUG_ON((int)port->state->xmit.buf & ~PAGE_MASK);
+	BUG_ON(!PAGE_ALIGNED(port->state->xmit.buf));
 	sg_set_page(&atmel_port->sg_tx,
 			virt_to_page(port->state->xmit.buf),
 			UART_XMIT_SIZE,
@@ -1035,10 +1033,10 @@ static int atmel_prepare_rx_dma(struct uart_port *port)
 	spin_lock_init(&atmel_port->lock_rx);
 	sg_init_table(&atmel_port->sg_rx, 1);
 	/* UART circular rx buffer is an aligned page. */
-	BUG_ON((int)port->state->xmit.buf & ~PAGE_MASK);
+	BUG_ON(!PAGE_ALIGNED(ring->buf));
 	sg_set_page(&atmel_port->sg_rx,
 		    virt_to_page(ring->buf),
-		    ATMEL_SERIAL_RINGSIZE,
+		    sizeof(struct atmel_uart_char) * ATMEL_SERIAL_RINGSIZE,
 		    (int)ring->buf & ~PAGE_MASK);
 	nent = dma_map_sg(port->dev,
 			  &atmel_port->sg_rx,
@@ -1556,7 +1554,7 @@ static void atmel_tasklet_func(unsigned long data)
 	spin_unlock(&port->lock);
 }
 
-static int atmel_init_property(struct atmel_uart_port *atmel_port,
+static void atmel_init_property(struct atmel_uart_port *atmel_port,
 				struct platform_device *pdev)
 {
 	struct device_node *np = pdev->dev.of_node;
@@ -1597,7 +1595,6 @@ static int atmel_init_property(struct atmel_uart_port *atmel_port,
 		atmel_port->use_dma_tx  = false;
 	}
 
-	return 0;
 }
 
 static void atmel_init_rs485(struct uart_port *port,
@@ -1779,10 +1776,13 @@ static int atmel_startup(struct uart_port *port)
 	if (retval)
 		goto free_irq;
 
+	tasklet_enable(&atmel_port->tasklet);
+
 	/*
 	 * Initialize DMA (if necessary)
 	 */
 	atmel_init_property(atmel_port, pdev);
+	atmel_set_ops(port);
 
 	if (atmel_port->prepare_rx) {
 		retval = atmel_port->prepare_rx(port);
@@ -1881,6 +1881,7 @@ static void atmel_shutdown(struct uart_port *port)
 	 * Clear out any scheduled tasklets before
 	 * we destroy the buffers
 	 */
+	tasklet_disable(&atmel_port->tasklet);
 	tasklet_kill(&atmel_port->tasklet);
 
 	/*
@@ -2058,8 +2059,7 @@ static void atmel_set_termios(struct uart_port *port, struct ktermios *termios,
 
 	/* mode */
 	if (port->rs485.flags & SER_RS485_ENABLED) {
-		if ((port->rs485.delay_rts_after_send) > 0)
-			UART_PUT_TTGR(port, port->rs485.delay_rts_after_send);
+		UART_PUT_TTGR(port, port->rs485.delay_rts_after_send);
 		mode |= ATMEL_US_USMODE_RS485;
 	} else if (termios->c_cflag & CRTSCTS) {
 		/* RS232 with hardware handshake (RTS/CTS) */
@@ -2258,8 +2258,8 @@ static int atmel_init_port(struct atmel_uart_port *atmel_port,
 	struct uart_port *port = &atmel_port->uart;
 	struct atmel_uart_data *pdata = dev_get_platdata(&pdev->dev);
 
-	if (!atmel_init_property(atmel_port, pdev))
-		atmel_set_ops(port);
+	atmel_init_property(atmel_port, pdev);
+	atmel_set_ops(port);
 
 	atmel_init_rs485(port, pdev);
 
@@ -2274,6 +2274,7 @@ static int atmel_init_port(struct atmel_uart_port *atmel_port,
 
 	tasklet_init(&atmel_port->tasklet, atmel_tasklet_func,
 			(unsigned long)port);
+	tasklet_disable(&atmel_port->tasklet);
 
 	memset(&atmel_port->rx_ring, 0, sizeof(atmel_port->rx_ring));
 
@@ -2583,8 +2584,8 @@ static int atmel_init_gpios(struct atmel_uart_port *p, struct device *dev)
 	struct gpio_desc *gpiod;
 
 	p->gpios = mctrl_gpio_init(dev, 0);
-	if (IS_ERR_OR_NULL(p->gpios))
-		return -1;
+	if (IS_ERR(p->gpios))
+		return PTR_ERR(p->gpios);
 
 	for (i = 0; i < UART_GPIO_MAX; i++) {
 		gpiod = mctrl_gpio_to_gpiod(p->gpios, i);
@@ -2637,9 +2638,10 @@ static int atmel_serial_probe(struct platform_device *pdev)
 	spin_lock_init(&port->lock_suspended);
 
 	ret = atmel_init_gpios(port, &pdev->dev);
-	if (ret < 0)
-		dev_err(&pdev->dev, "%s",
-			"Failed to initialize GPIOs. The serial port may not work as expected");
+	if (ret < 0) {
+		dev_err(&pdev->dev, "Failed to initialize GPIOs.");
+		goto err;
+	}
 
 	ret = atmel_init_port(port, pdev);
 	if (ret)

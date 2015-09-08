@@ -1,9 +1,7 @@
-From 4a09aa40684aa2fd01fd52087553d19e99a59d91 Mon Sep 17 00:00:00 2001
 From: David Hildenbrand <dahi@linux.vnet.ibm.com>
 Date: Mon, 11 May 2015 17:52:16 +0200
-Subject: [PATCH 11/14] arm/futex: UP futex_atomic_op_inuser() relies on
- disabled preemption
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: sched/preempt, arm/futex: Disable preemption in UP futex_atomic_op_inuser() explicitly
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 The !CONFIG_SMP implementation of futex_atomic_op_inuser() seems to rely
 on disabled preemption to guarantee mutual exclusion.
@@ -16,6 +14,7 @@ From the code itself:
 Let's make this explicit, to prepare for pagefault_disable() not
 touching preemption anymore.
 
+[upstream commit 388b0e0adbc98a1b12a077dc92851a3ce016db42]
 Signed-off-by: David Hildenbrand <dahi@linux.vnet.ibm.com>
 ---
  arch/arm/include/asm/futex.h |   10 ++++++++--

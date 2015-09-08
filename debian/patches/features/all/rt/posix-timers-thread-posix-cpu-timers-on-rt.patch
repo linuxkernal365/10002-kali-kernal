@@ -1,7 +1,7 @@
 From: John Stultz <johnstul@us.ibm.com>
 Date: Fri, 3 Jul 2009 08:29:58 -0500
-Subject: posix-timers: thread posix-cpu-timers on -rt
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: posix-timers: Thread posix-cpu-timers on -rt
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 posix-cpu-timer code takes non -rt safe locks in hard irq
 context. Move it to a thread.
@@ -15,8 +15,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  include/linux/init_task.h      |    7 +
  include/linux/sched.h          |    3 
  kernel/fork.c                  |    3 
- kernel/time/posix-cpu-timers.c |  183 +++++++++++++++++++++++++++++++++++++++--
- 4 files changed, 190 insertions(+), 6 deletions(-)
+ kernel/time/posix-cpu-timers.c |  198 +++++++++++++++++++++++++++++++++++++++--
+ 4 files changed, 205 insertions(+), 6 deletions(-)
 
 --- a/include/linux/init_task.h
 +++ b/include/linux/init_task.h
@@ -43,7 +43,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		[PIDTYPE_PGID] = INIT_PID_LINK(PIDTYPE_PGID),		\
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1442,6 +1442,9 @@ struct task_struct {
+@@ -1501,6 +1501,9 @@ struct task_struct {
  
  	struct task_cputime cputime_expires;
  	struct list_head cpu_timers[3];
@@ -55,7 +55,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	const struct cred __rcu *real_cred; /* objective and real subjective task
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -1165,6 +1165,9 @@ static void rt_mutex_init_task(struct ta
+@@ -1214,6 +1214,9 @@ static void rt_mutex_init_task(struct ta
   */
  static void posix_cpu_timers_init(struct task_struct *tsk)
  {
@@ -123,7 +123,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/*
  	 * The fast path checks that there are no expired thread or thread
-@@ -1194,6 +1196,175 @@ void run_posix_cpu_timers(struct task_st
+@@ -1194,6 +1196,190 @@ void run_posix_cpu_timers(struct task_st
  	}
  }
  
@@ -191,6 +191,21 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	return 0;
 +}
 +
++static inline int __fastpath_timer_check(struct task_struct *tsk)
++{
++	/* tsk == current, ensure it is safe to use ->signal/sighand */
++	if (unlikely(tsk->exit_state))
++		return 0;
++
++	if (!task_cputime_zero(&tsk->cputime_expires))
++			return 1;
++
++	if (!task_cputime_zero(&tsk->signal->cputime_expires))
++			return 1;
++
++	return 0;
++}
++
 +void run_posix_cpu_timers(struct task_struct *tsk)
 +{
 +	unsigned long cpu = smp_processor_id();
@@ -203,7 +218,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	tasklist = per_cpu(posix_timer_tasklist, cpu);
 +
 +	/* check to see if we're already queued */
-+	if (!tsk->posix_timer_list) {
++	if (!tsk->posix_timer_list && __fastpath_timer_check(tsk)) {
 +		get_task_struct(tsk);
 +		if (tasklist) {
 +			tsk->posix_timer_list = tasklist;
@@ -215,9 +230,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +			tsk->posix_timer_list = tsk;
 +		}
 +		per_cpu(posix_timer_tasklist, cpu) = tsk;
++
++		wake_up_process(per_cpu(posix_timer_task, cpu));
 +	}
-+	/* XXX signal the thread somehow */
-+	wake_up_process(per_cpu(posix_timer_task, cpu));
 +}
 +
 +/*
@@ -234,7 +249,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	switch (action) {
 +	case CPU_UP_PREPARE:
 +		p = kthread_create(posix_cpu_timers_thread, hcpu,
-+					"posix_cpu_timers/%d",cpu);
++					"posixcputmr/%d",cpu);
 +		if (IS_ERR(p))
 +			return NOTIFY_BAD;
 +		p->flags |= PF_NOFREEZE;

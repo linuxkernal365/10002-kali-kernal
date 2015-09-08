@@ -166,10 +166,10 @@ int amdtp_stream_add_pcm_hw_constraints(struct amdtp_stream *s,
 	 * One AMDTP packet can include some frames. In blocking mode, the
 	 * number equals to SYT_INTERVAL. So the number is 8, 16 or 32,
 	 * depending on its sampling rate. For accurate period interrupt, it's
-	 * preferrable to aligh period/buffer sizes to current SYT_INTERVAL.
+	 * preferrable to align period/buffer sizes to current SYT_INTERVAL.
 	 *
-	 * TODO: These constraints can be improved with propper rules.
-	 * Currently apply LCM of SYT_INTEVALs.
+	 * TODO: These constraints can be improved with proper rules.
+	 * Currently apply LCM of SYT_INTERVALs.
 	 */
 	err = snd_pcm_hw_constraint_step(runtime, 0,
 					 SNDRV_PCM_HW_PARAM_PERIOD_SIZE, 32);
@@ -270,7 +270,7 @@ static void amdtp_read_s32(struct amdtp_stream *s,
  * @s: the AMDTP stream to configure
  * @format: the format of the ALSA PCM device
  *
- * The sample format must be set after the other paramters (rate/PCM channels/
+ * The sample format must be set after the other parameters (rate/PCM channels/
  * MIDI) and before the stream is started, and must not be changed while the
  * stream is running.
  */
@@ -730,8 +730,9 @@ static void handle_in_packet(struct amdtp_stream *s,
 	    s->data_block_counter != UINT_MAX)
 		data_block_counter = s->data_block_counter;
 
-	if (((s->flags & CIP_SKIP_DBC_ZERO_CHECK) && data_block_counter == 0) ||
-	    (s->data_block_counter == UINT_MAX)) {
+	if (((s->flags & CIP_SKIP_DBC_ZERO_CHECK) &&
+	     data_block_counter == s->tx_first_dbc) ||
+	    s->data_block_counter == UINT_MAX) {
 		lost = false;
 	} else if (!(s->flags & CIP_DBC_IS_END_EVENT)) {
 		lost = data_block_counter != s->data_block_counter;

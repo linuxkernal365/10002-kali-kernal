@@ -1,8 +1,7 @@
-From 707f90fbaa66cfe72a8543121474edce9319d9d6 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 13 Feb 2015 11:01:26 +0100
-Subject: [PATCH] block: blk-mq: use swait
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: block: blk-mq: Use swait
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 | BUG: sleeping function called from invalid context at kernel/locking/rtmutex.c:914
 | in_atomic(): 1, irqs_disabled(): 0, pid: 255, name: kworker/u257:6
@@ -47,7 +46,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/block/blk-core.c
 +++ b/block/blk-core.c
-@@ -651,7 +651,7 @@ struct request_queue *blk_alloc_queue_no
+@@ -664,7 +664,7 @@ struct request_queue *blk_alloc_queue_no
  	q->bypass_depth = 1;
  	__set_bit(QUEUE_FLAG_BYPASS, &q->queue_flags);
  
@@ -58,16 +57,16 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		goto fail_bdi;
 --- a/block/blk-mq.c
 +++ b/block/blk-mq.c
-@@ -86,7 +86,7 @@ static int blk_mq_queue_enter(struct req
- 		if (percpu_ref_tryget_live(&q->mq_usage_counter))
- 			return 0;
+@@ -88,7 +88,7 @@ static int blk_mq_queue_enter(struct req
+ 		if (!(gfp & __GFP_WAIT))
+ 			return -EBUSY;
  
 -		ret = wait_event_interruptible(q->mq_freeze_wq,
 +		ret = swait_event_interruptible(q->mq_freeze_wq,
  				!q->mq_freeze_depth || blk_queue_dying(q));
  		if (blk_queue_dying(q))
  			return -ENODEV;
-@@ -105,7 +105,7 @@ static void blk_mq_usage_counter_release
+@@ -107,7 +107,7 @@ static void blk_mq_usage_counter_release
  	struct request_queue *q =
  		container_of(ref, struct request_queue, mq_usage_counter);
  
@@ -76,7 +75,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  void blk_mq_freeze_queue_start(struct request_queue *q)
-@@ -125,7 +125,7 @@ EXPORT_SYMBOL_GPL(blk_mq_freeze_queue_st
+@@ -127,7 +127,7 @@ EXPORT_SYMBOL_GPL(blk_mq_freeze_queue_st
  
  static void blk_mq_freeze_queue_wait(struct request_queue *q)
  {
@@ -85,7 +84,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  /*
-@@ -149,7 +149,7 @@ void blk_mq_unfreeze_queue(struct reques
+@@ -151,7 +151,7 @@ void blk_mq_unfreeze_queue(struct reques
  	spin_unlock_irq(q->queue_lock);
  	if (wake) {
  		percpu_ref_reinit(&q->mq_usage_counter);
@@ -94,7 +93,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	}
  }
  EXPORT_SYMBOL_GPL(blk_mq_unfreeze_queue);
-@@ -168,7 +168,7 @@ void blk_mq_wake_waiters(struct request_
+@@ -170,7 +170,7 @@ void blk_mq_wake_waiters(struct request_
  	 * dying, we need to ensure that processes currently waiting on
  	 * the queue are notified as well.
  	 */

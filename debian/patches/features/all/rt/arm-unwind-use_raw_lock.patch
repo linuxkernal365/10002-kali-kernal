@@ -1,11 +1,7 @@
-From 4b82f1531c59f7c2f6e4deca57d74ad732a05cdd Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 20 Sep 2013 14:31:54 +0200
-Subject: [PATCH RT] arm/unwind: use a raw_spin_lock
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: arm/unwind: use a raw_spin_lock
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 Mostly unwind is done with irqs enabled however SLUB may call it with
 irqs disabled while creating a new SLUB cache.
@@ -27,7 +23,7 @@ interrupts and then
           ->unwind_find_idx()
            =>spin_lock_irqsave(&unwind_lock);
 
-Cc: stable-rt@vger.kernel.org
+
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
  arch/arm/kernel/unwind.c |   14 +++++++-------

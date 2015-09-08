@@ -1,8 +1,7 @@
-From c132b674ef2afe71b77fe66f2fd502faf7f2c04c Mon Sep 17 00:00:00 2001
 From: Mike Galbraith <umgwanakikbuti@gmail.com>
 Date: Tue, 24 Mar 2015 08:14:49 +0100
-Subject: [PATCH] hotplug: Use set_cpus_allowed_ptr() in sync_unplug_thread()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: hotplug: Use set_cpus_allowed_ptr() in sync_unplug_thread()
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 do_set_cpus_allowed() is not safe vs ->sched_class change.
 
@@ -29,7 +28,7 @@ crash> task_struct ffff88026f979da0 | grep class
   sched_class = 0xffffffff816111e0 <fair_sched_class+64>,
 
 Signed-off-by: Mike Galbraith <umgwanakikbuti@gmail.com>
-Cc: stable-rt@vger.kernel.org
+
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
  kernel/cpu.c |    2 +-
@@ -37,7 +36,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/kernel/cpu.c
 +++ b/kernel/cpu.c
-@@ -266,7 +266,7 @@ static int sync_unplug_thread(void *data
+@@ -267,7 +267,7 @@ static int sync_unplug_thread(void *data
  	 * we don't want any more work on this CPU.
  	 */
  	current->flags &= ~PF_NO_SETAFFINITY;

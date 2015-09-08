@@ -1,5 +1,8 @@
 [abi]
 abiname: kali1
+ignore-changes:
+ module:sound/firewire/snd-firewire-lib
+ perf_*
 
 [base]
 arches:

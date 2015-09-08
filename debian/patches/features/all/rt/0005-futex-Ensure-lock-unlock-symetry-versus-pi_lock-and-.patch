@@ -1,9 +1,7 @@
-From eef09918aff670a6162d2ae5fe87b393698ef57d Mon Sep 17 00:00:00 2001
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri, 1 Mar 2013 11:17:42 +0100
-Subject: [PATCH 5/6] futex: Ensure lock/unlock symetry versus pi_lock and
- hash bucket lock
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: futex: Ensure lock/unlock symetry versus pi_lock and hash bucket lock
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 In exit_pi_state_list() we have the following locking construct:
 

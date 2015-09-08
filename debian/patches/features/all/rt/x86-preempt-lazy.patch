@@ -1,7 +1,9 @@
-Subject: x86-preempt-lazy.patch
+Subject: x86: Support for lazy preemption
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 01 Nov 2012 11:03:47 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
+
+Implement the x86 pieces for lazy preempt.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
@@ -9,8 +11,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  arch/x86/include/asm/thread_info.h |    6 ++++++
  arch/x86/kernel/asm-offsets.c      |    2 ++
  arch/x86/kernel/entry_32.S         |   20 ++++++++++++++++++--
- arch/x86/kernel/entry_64.S         |   23 +++++++++++++++++++----
- 5 files changed, 46 insertions(+), 6 deletions(-)
+ arch/x86/kernel/entry_64.S         |   24 ++++++++++++++++++++----
+ 5 files changed, 47 insertions(+), 6 deletions(-)
 
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
@@ -19,12 +21,12 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  config X86
  	def_bool y
 +	select HAVE_PREEMPT_LAZY
+ 	select ACPI_SYSTEM_POWER_STATES_SUPPORT if ACPI
  	select ARCH_MIGHT_HAVE_ACPI_PDC if ACPI
  	select ARCH_HAS_DEBUG_STRICT_USER_COPY_CHECKS
- 	select ARCH_HAS_FAST_MULTIPLIER
 --- a/arch/x86/include/asm/thread_info.h
 +++ b/arch/x86/include/asm/thread_info.h
-@@ -30,6 +30,8 @@ struct thread_info {
+@@ -55,6 +55,8 @@ struct thread_info {
  	__u32			status;		/* thread synchronous flags */
  	__u32			cpu;		/* current CPU */
  	int			saved_preempt_count;
@@ -33,7 +35,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	mm_segment_t		addr_limit;
  	void __user		*sysenter_return;
  	unsigned int		sig_on_uaccess_error:1;
-@@ -71,6 +73,7 @@ struct thread_info {
+@@ -95,6 +97,7 @@ struct thread_info {
  #define TIF_SYSCALL_EMU		6	/* syscall emulation active */
  #define TIF_SYSCALL_AUDIT	7	/* syscall auditing active */
  #define TIF_SECCOMP		8	/* secure computing */
@@ -41,7 +43,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define TIF_USER_RETURN_NOTIFY	11	/* notify kernel of userspace return */
  #define TIF_UPROBE		12	/* breakpointed or singlestepping */
  #define TIF_NOTSC		16	/* TSC is not accessible in userland */
-@@ -95,6 +98,7 @@ struct thread_info {
+@@ -119,6 +122,7 @@ struct thread_info {
  #define _TIF_SYSCALL_EMU	(1 << TIF_SYSCALL_EMU)
  #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
  #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
@@ -49,15 +51,15 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define _TIF_USER_RETURN_NOTIFY	(1 << TIF_USER_RETURN_NOTIFY)
  #define _TIF_UPROBE		(1 << TIF_UPROBE)
  #define _TIF_NOTSC		(1 << TIF_NOTSC)
-@@ -144,6 +148,8 @@ struct thread_info {
+@@ -168,6 +172,8 @@ struct thread_info {
  #define _TIF_WORK_CTXSW_PREV (_TIF_WORK_CTXSW|_TIF_USER_RETURN_NOTIFY)
  #define _TIF_WORK_CTXSW_NEXT (_TIF_WORK_CTXSW)
  
-+#define _TIF_NEED_RESCHED_MASK (_TIF_NEED_RESCHED | _TIF_NEED_RESCHED_LAZY)
++#define _TIF_NEED_RESCHED_MASK	(_TIF_NEED_RESCHED | _TIF_NEED_RESCHED_LAZY)
 +
  #define STACK_WARN		(THREAD_SIZE/8)
- #define KERNEL_STACK_OFFSET	(5*(BITS_PER_LONG/8))
  
+ /*
 --- a/arch/x86/kernel/asm-offsets.c
 +++ b/arch/x86/kernel/asm-offsets.c
 @@ -32,6 +32,7 @@ void common(void) {
@@ -101,7 +103,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	testl $X86_EFLAGS_IF,PT_EFLAGS(%esp)	# interrupts off (exception path) ?
  	jz restore_all
  	call preempt_schedule_irq
-@@ -591,7 +607,7 @@ ENDPROC(system_call)
+@@ -594,7 +610,7 @@ ENDPROC(system_call)
  	ALIGN
  	RING0_PTREGS_FRAME		# can't unwind into user space anyway
  work_pending:
@@ -110,7 +112,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	jz work_notifysig
  work_resched:
  	call schedule
-@@ -604,7 +620,7 @@ ENDPROC(system_call)
+@@ -607,7 +623,7 @@ ENDPROC(system_call)
  	andl $_TIF_WORK_MASK, %ecx	# is there any work to be done other
  					# than syscall tracing?
  	jz restore_all
@@ -121,7 +123,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  work_notifysig:				# deal with pending signals and
 --- a/arch/x86/kernel/entry_64.S
 +++ b/arch/x86/kernel/entry_64.S
-@@ -457,8 +457,8 @@ GLOBAL(int_with_check)
+@@ -370,8 +370,8 @@ GLOBAL(int_with_check)
  	/* First do a reschedule test. */
  	/* edx:	work, edi: workmask */
  int_careful:
@@ -132,7 +134,31 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	TRACE_IRQS_ON
  	ENABLE_INTERRUPTS(CLBR_NONE)
  	pushq_cfi %rdi
-@@ -897,8 +897,8 @@ ENTRY(native_iret)
+@@ -776,7 +776,23 @@ retint_swapgs:		/* return to user-space
+ 	bt	$9,EFLAGS(%rsp)	/* interrupts were off? */
+ 	jnc	1f
+ 0:	cmpl	$0,PER_CPU_VAR(__preempt_count)
++#ifndef CONFIG_PREEMPT_LAZY
+ 	jnz	1f
++#else
++	jz	do_preempt_schedule_irq
++
++	# atleast preempt count == 0 ?
++	cmpl $_PREEMPT_ENABLED,PER_CPU_VAR(__preempt_count)
++	jnz	1f
++
++	GET_THREAD_INFO(%rcx)
++	cmpl	$0, TI_preempt_lazy_count(%rcx)
++	jnz	1f
++
++	bt	$TIF_NEED_RESCHED_LAZY,TI_flags(%rcx)
++	jnc	1f
++do_preempt_schedule_irq:
++#endif
+ 	call	preempt_schedule_irq
+ 	jmp	0b
+ 1:
+@@ -846,8 +862,8 @@ ENTRY(native_iret)
  	/* edi: workmask, edx: work */
  retint_careful:
  	CFI_RESTORE_STATE
@@ -143,26 +169,3 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	TRACE_IRQS_ON
  	ENABLE_INTERRUPTS(CLBR_NONE)
  	pushq_cfi %rdi
-@@ -930,7 +930,22 @@ ENTRY(native_iret)
- 	/* rcx:	 threadinfo. interrupts off. */
- ENTRY(retint_kernel)
- 	cmpl $0,PER_CPU_VAR(__preempt_count)
-+#ifndef CONFIG_PREEMPT_LAZY
- 	jnz  retint_restore_args
-+#else
-+	jz  check_int_off
-+
-+	# atleast preempt count == 0 ?
-+	cmpl $_PREEMPT_ENABLED,PER_CPU_VAR(__preempt_count)
-+	jnz retint_restore_args
-+
-+	cmpl $0, TI_preempt_lazy_count(%rcx)
-+	jnz retint_restore_args
-+
-+	bt $TIF_NEED_RESCHED_LAZY,TI_flags(%rcx)
-+	jnc  retint_restore_args
-+check_int_off:
-+#endif
- 	bt   $9,EFLAGS-ARGOFFSET(%rsp)	/* interrupts off? */
- 	jnc  retint_restore_args
- 	call preempt_schedule_irq

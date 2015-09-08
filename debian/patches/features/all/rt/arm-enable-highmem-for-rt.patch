@@ -1,27 +1,17 @@
-Subject: arm-enable-highmem-for-rt.patch
+Subject: arm: Enable highmem for rt
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 13 Feb 2013 11:03:11 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
+
+fixup highmem for ARM.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/arm/Kconfig                 |    2 -
  arch/arm/include/asm/switch_to.h |    8 ++++++
  arch/arm/mm/highmem.c            |   46 ++++++++++++++++++++++++++++++++++-----
  include/linux/highmem.h          |    1 
- 4 files changed, 51 insertions(+), 6 deletions(-)
+ 3 files changed, 50 insertions(+), 5 deletions(-)
 
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -1662,7 +1662,7 @@ config HAVE_GENERIC_RCU_GUP
- 
- config HIGHMEM
- 	bool "High Memory Support"
--	depends on MMU && !PREEMPT_RT_FULL
-+	depends on MMU
- 	help
- 	  The address space of ARM processors is only 4 Gigabytes large
- 	  and it has to accommodate user address space, kernel address
 --- a/arch/arm/include/asm/switch_to.h
 +++ b/arch/arm/include/asm/switch_to.h
 @@ -3,6 +3,13 @@

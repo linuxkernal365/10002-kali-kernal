@@ -1,8 +1,7 @@
-From 180cdb93d796bf52c919f5e3df30af83aa6d46ca Mon Sep 17 00:00:00 2001
 From: Yang Shi <yang.shi@windriver.com>
 Date: Mon, 16 Sep 2013 14:09:19 -0700
-Subject: [PATCH] hrtimer: Move schedule_work call to helper thread
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.0/patches-4.0.4-rt1.tar.xz
+Subject: hrtimer: Move schedule_work call to helper thread
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.1/patches-4.1.3-rt3.tar.xz
 
 When run ltp leapsec_timer test, the following call trace is caught:
 
@@ -47,7 +46,7 @@ makes a similar change.
 add a helper thread which does the call to schedule_work and wake up that
 thread instead of calling schedule_work directly.
 
-Cc: stable-rt@vger.kernel.org
+
 Signed-off-by: Yang Shi <yang.shi@windriver.com>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
@@ -64,7 +63,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  #include <linux/freezer.h>
  
  #include <asm/uaccess.h>
-@@ -711,6 +712,44 @@ static void clock_was_set_work(struct wo
+@@ -713,6 +714,44 @@ static void clock_was_set_work(struct wo
  
  static DECLARE_WORK(hrtimer_work, clock_was_set_work);
  
@@ -109,7 +108,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  /*
   * Called from timekeeping and resume code to reprogramm the hrtimer
   * interrupt device on all cpus.
-@@ -719,6 +758,7 @@ void clock_was_set_delayed(void)
+@@ -721,6 +760,7 @@ void clock_was_set_delayed(void)
  {
  	schedule_work(&hrtimer_work);
  }
