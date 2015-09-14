@@ -1,3 +1,10 @@
+linux (4.1.6-1kali2) kali-dev; urgency=medium
+
+  * debian/rules: add a check for missing files debian/linux-*
+  * Add missing files debian/linux-*
+
+ -- Sophie Brun <sophie@freexian.com>  Mon, 14 Sep 2015 16:08:02 +0200
+
 linux (4.1.6-1kali1) kali-dev; urgency=medium
 
   * Import new version from debian
