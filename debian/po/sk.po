@@ -45,11 +45,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-alpha-generic/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-alpha-generic/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-alpha-generic/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-alpha-generic/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -114,13 +114,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-alpha-generic) for the system's boot loader to use in addition to "
+"4.2.0-1-alpha-generic) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-alpha-generic) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-alpha-generic) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -131,12 +131,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -183,11 +183,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-alpha-smp/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-alpha-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-alpha-smp/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-alpha-smp/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -252,13 +252,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-alpha-smp) for the system's boot loader to use in addition to "
+"4.2.0-1-alpha-smp) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-alpha-smp) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-alpha-smp) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -269,12 +269,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -321,11 +321,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-amd64/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-amd64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-amd64/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-amd64/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -390,13 +390,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-amd64) for the system's boot loader to use in addition to "
+"4.2.0-1-amd64) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-amd64) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-amd64) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -407,12 +407,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -459,11 +459,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-rt-amd64/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-arm64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-rt-amd64/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-arm64/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -528,13 +528,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-rt-amd64) for the system's boot loader to use in addition to "
+"4.2.0-1-arm64) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-rt-amd64) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-arm64) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -545,12 +545,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -597,11 +597,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-arm64/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-kirkwood/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-arm64/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-kirkwood/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -666,13 +666,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-arm64) for the system's boot loader to use in addition to "
+"4.2.0-1-kirkwood) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-arm64) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-kirkwood) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -683,12 +683,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -735,11 +735,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-kirkwood/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-orion5x/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-kirkwood/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-orion5x/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -804,13 +804,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-kirkwood) for the system's boot loader to use in addition to "
+"4.2.0-1-orion5x) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-kirkwood) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-orion5x) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -821,12 +821,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -873,11 +873,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-orion5x/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-versatile/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-orion5x/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-versatile/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -942,13 +942,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-orion5x) for the system's boot loader to use in addition to "
+"4.2.0-1-versatile) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-orion5x) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-versatile) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -959,12 +959,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -1011,11 +1011,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-versatile/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-armmp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-versatile/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-armmp/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -1080,13 +1080,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-versatile) for the system's boot loader to use in addition to "
+"4.2.0-1-armmp) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-versatile) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-armmp) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -1097,12 +1097,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -1149,11 +1149,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-armmp/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-armmp-lpae/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-armmp/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-armmp-lpae/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -1218,13 +1218,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-armmp) for the system's boot loader to use in addition to "
+"4.2.0-1-armmp-lpae) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-armmp) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-armmp-lpae) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -1235,12 +1235,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -1287,11 +1287,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-armmp-lpae/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-parisc/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-armmp-lpae/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-parisc/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -1356,13 +1356,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-armmp-lpae) for the system's boot loader to use in addition to "
+"4.2.0-1-parisc) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-armmp-lpae) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-parisc) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -1373,12 +1373,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -1425,11 +1425,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-parisc/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-parisc64-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-parisc/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-parisc64-smp/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -1494,13 +1494,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-parisc) for the system's boot loader to use in addition to "
+"4.2.0-1-parisc64-smp) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-parisc) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-parisc64-smp) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -1511,12 +1511,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -1563,11 +1563,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-parisc64-smp/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-586/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-parisc64-smp/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-586/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -1632,13 +1632,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-parisc64-smp) for the system's boot loader to use in addition to "
+"4.2.0-1-586) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-parisc64-smp) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-586) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -1649,12 +1649,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -1701,11 +1701,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-586/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-686-pae/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-586/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-686-pae/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -1770,13 +1770,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-586) for the system's boot loader to use in addition to "
+"4.2.0-1-686-pae) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-586) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-686-pae) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -1787,12 +1787,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -1839,11 +1839,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-686-pae/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-m68k/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-686-pae/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-m68k/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -1908,13 +1908,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-686-pae) for the system's boot loader to use in addition to "
+"4.2.0-1-m68k) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-686-pae) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-m68k) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -1925,12 +1925,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -1977,11 +1977,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-rt-686-pae/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-4kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-rt-686-pae/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-4kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -2046,13 +2046,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-rt-686-pae) for the system's boot loader to use in addition to "
+"4.2.0-1-4kc-malta) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-rt-686-pae) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-4kc-malta) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -2063,12 +2063,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -2115,11 +2115,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-itanium/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-5kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-itanium/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-5kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -2184,13 +2184,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-itanium) for the system's boot loader to use in addition to "
+"4.2.0-1-5kc-malta) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-itanium) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-5kc-malta) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -2201,12 +2201,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -2253,11 +2253,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-mckinley/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-octeon/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-mckinley/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-octeon/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -2322,13 +2322,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-mckinley) for the system's boot loader to use in addition to "
+"4.2.0-1-octeon) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-mckinley) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-octeon) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -2339,12 +2339,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -2391,11 +2391,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-m68k/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-4kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-m68k/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-4kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -2460,13 +2460,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-m68k) for the system's boot loader to use in addition to "
+"4.2.0-1-4kc-malta) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-m68k) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-4kc-malta) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -2477,12 +2477,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -2529,11 +2529,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-r4k-ip22/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-5kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-r4k-ip22/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-5kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -2598,13 +2598,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-r4k-ip22) for the system's boot loader to use in addition to "
+"4.2.0-1-5kc-malta) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-r4k-ip22) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-5kc-malta) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -2615,12 +2615,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -2667,11 +2667,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-r5k-ip32/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-loongson-2e/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-r5k-ip32/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-loongson-2e/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -2736,13 +2736,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-r5k-ip32) for the system's boot loader to use in addition to "
+"4.2.0-1-loongson-2e) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-r5k-ip32) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-loongson-2e) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -2753,12 +2753,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -2805,11 +2805,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-sb1-bcm91250a/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-loongson-2f/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-sb1-bcm91250a/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-loongson-2f/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -2874,13 +2874,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-sb1-bcm91250a) for the system's boot loader to use in addition to "
+"4.2.0-1-loongson-2f) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-sb1-bcm91250a) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-loongson-2f) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -2891,12 +2891,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -2943,11 +2943,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-4kc-malta/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-loongson-3/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-4kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-loongson-3/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -3012,13 +3012,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-4kc-malta) for the system's boot loader to use in addition to "
+"4.2.0-1-loongson-3) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-4kc-malta) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-loongson-3) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -3029,12 +3029,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -3081,11 +3081,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-5kc-malta/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-5kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-5kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-5kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -3150,13 +3150,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-5kc-malta) for the system's boot loader to use in addition to "
+"4.2.0-1-5kc-malta) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-5kc-malta) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-5kc-malta) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -3167,12 +3167,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -3219,11 +3219,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-octeon/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-octeon/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-octeon/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-octeon/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -3288,13 +3288,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-octeon) for the system's boot loader to use in addition to "
+"4.2.0-1-octeon) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-octeon) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-octeon) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -3305,12 +3305,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -3357,11 +3357,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-sb1-bcm91250a/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-5kc-malta/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-sb1-bcm91250a/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-5kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -3426,13 +3426,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-sb1-bcm91250a) for the system's boot loader to use in addition to "
+"4.2.0-1-5kc-malta) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-sb1-bcm91250a) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-5kc-malta) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -3443,12 +3443,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -3495,11 +3495,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-4kc-malta/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-loongson-3/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-4kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-loongson-3/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -3564,13 +3564,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-4kc-malta) for the system's boot loader to use in addition to "
+"4.2.0-1-loongson-3) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-4kc-malta) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-loongson-3) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -3581,12 +3581,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -3633,11 +3633,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-5kc-malta/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-octeon/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-5kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-octeon/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -3702,13 +3702,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-5kc-malta) for the system's boot loader to use in addition to "
+"4.2.0-1-octeon) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-5kc-malta) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-octeon) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -3719,12 +3719,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -3771,11 +3771,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-loongson-2e/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-powerpc/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-loongson-2e/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-powerpc/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -3840,13 +3840,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-loongson-2e) for the system's boot loader to use in addition to "
+"4.2.0-1-powerpc) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-loongson-2e) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-powerpc) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -3857,12 +3857,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -3909,11 +3909,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-loongson-2f/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-powerpc-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-loongson-2f/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-powerpc-smp/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -3978,13 +3978,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-loongson-2f) for the system's boot loader to use in addition to "
+"4.2.0-1-powerpc-smp) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-loongson-2f) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-powerpc-smp) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -3995,12 +3995,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -4047,11 +4047,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-loongson-3/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-powerpc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-loongson-3/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-powerpc64/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -4116,13 +4116,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-loongson-3) for the system's boot loader to use in addition to "
+"4.2.0-1-powerpc64) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-loongson-3) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-powerpc64) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -4133,12 +4133,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -4185,11 +4185,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-sb1-bcm91250a/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-powerpcspe/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-sb1-bcm91250a/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-powerpcspe/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -4254,13 +4254,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-sb1-bcm91250a) for the system's boot loader to use in addition to "
+"4.2.0-1-powerpcspe) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-sb1-bcm91250a) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-powerpcspe) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -4271,12 +4271,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -4323,11 +4323,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-5kc-malta/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-powerpc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-5kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-powerpc64/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -4392,13 +4392,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-5kc-malta) for the system's boot loader to use in addition to "
+"4.2.0-1-powerpc64) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-5kc-malta) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-powerpc64) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -4409,12 +4409,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -4461,11 +4461,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-octeon/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-powerpc64le/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-octeon/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-powerpc64le/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -4530,13 +4530,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-octeon) for the system's boot loader to use in addition to "
+"4.2.0-1-powerpc64le) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-octeon) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-powerpc64le) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -4547,12 +4547,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -4599,11 +4599,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-sb1-bcm91250a/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-s390x/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-sb1-bcm91250a/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-s390x/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -4668,13 +4668,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-sb1-bcm91250a) for the system's boot loader to use in addition to "
+"4.2.0-1-s390x) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-sb1-bcm91250a) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-s390x) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -4685,12 +4685,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -4737,11 +4737,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-5kc-malta/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-sh7751r/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-5kc-malta/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-sh7751r/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -4806,13 +4806,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-5kc-malta) for the system's boot loader to use in addition to "
+"4.2.0-1-sh7751r) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-5kc-malta) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-sh7751r) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -4823,12 +4823,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -4875,11 +4875,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-loongson-3/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-sh7785lcr/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-loongson-3/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-sh7785lcr/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -4944,13 +4944,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-loongson-3) for the system's boot loader to use in addition to "
+"4.2.0-1-sh7785lcr) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-loongson-3) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-sh7785lcr) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -4961,12 +4961,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -5013,11 +5013,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-octeon/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-sparc64/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-octeon/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-sparc64/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -5082,13 +5082,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-octeon) for the system's boot loader to use in addition to "
+"4.2.0-1-sparc64) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-octeon) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-sparc64) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -5099,12 +5099,12 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
 # Slovak translations for linux package
@@ -5151,11 +5151,11 @@ msgstr ""
 #. Description
 #: ../image.plain.templates.in:2001
 msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-powerpc/"
+"Since this image uses initrd, the ${modules_base}/4.2.0-1-sparc64-smp/"
 "modules.dep file will not be deleted, even though it may be invalid."
 msgstr ""
 "Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-powerpc/modules.dep zmazaný, hoci môže byť neplatný."
+"4.2.0-1-sparc64-smp/modules.dep zmazaný, hoci môže byť neplatný."
 
 #. Type: boolean
 #. Description
@@ -5220,13 +5220,13 @@ msgstr ""
 #: ../image.plain.templates.in:4001
 msgid ""
 "This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-powerpc) for the system's boot loader to use in addition to "
+"4.2.0-1-sparc64-smp) for the system's boot loader to use in addition to "
 "the kernel itself. This method, formerly unsupported on MIPS, enables a more "
 "flexible boot process, and future kernel versions may require a "
 "corresponding initrd.img to boot."
 msgstr ""
 "Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-powerpc) pre zavádzač systému, na použitie ako doplnok k "
+"4.2.0-1-sparc64-smp) pre zavádzač systému, na použitie ako doplnok k "
 "samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
 "flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
 "vyžadovať príslušný initrd.img."
@@ -5237,1667 +5237,11 @@ msgstr ""
 msgid ""
 "The currently running kernel was booted without an initramfs. You should "
 "reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
+"4.2.0-1, and for each later version. This is probably most easily "
 "accomplished by using the initrd.img symbolic link maintained by the kernel "
 "package."
 msgstr ""
 "Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-powerpc-smp/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-powerpc-smp/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-powerpc-smp) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-powerpc-smp) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-powerpc64/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-powerpc64/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-powerpc64) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-powerpc64) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-powerpcspe/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-powerpcspe/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-powerpcspe) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-powerpcspe) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-powerpc64/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-powerpc64/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-powerpc64) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-powerpc64) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-powerpc64le/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-powerpc64le/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-powerpc64le) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-powerpc64le) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-s390x/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-s390x/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-s390x) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-s390x) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-sh7751r/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-sh7751r/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-sh7751r) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-sh7751r) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-sh7785lcr/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-sh7785lcr/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-sh7785lcr) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-sh7785lcr) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-sparc64/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-sparc64/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-sparc64) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-sparc64) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-sparc64-smp/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-sparc64-smp/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-sparc64-smp) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-sparc64-smp) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-sparc64/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-sparc64/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-sparc64) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-sparc64) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
-"novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
-"odkazu initrd.img, ktorý je spravovaný balíkom jadra."
-# Slovak translations for linux package
-# Slovenské preklady pre balík linux.
-# Copyright (C) 2011 Slavko
-# This file is distributed under the same license as the linux package.
-# Slavko <linux@slavino.sk>, 2011, 2014.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: linux 3.14.12-2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-20 22:37+0200\n"
-"PO-Revision-Date: 2014-07-18 12:28+0200\n"
-"Last-Translator: Slavko <linux@slavino.sk>\n"
-"Language-Team: slovenčina <linux@slavino.sk>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"X-POFile-SpellExtra: CORE depmod img- lib dep boot SIGNAL img modules\n"
-"X-POFile-SpellExtra: initrd initramfs modulesbase running exitvalue\n"
-"X-POFile-SpellExtra: version zavádzača abiname MIPS vmlinuz-\n"
-"X-POFile-SpellExtra: localversion\n"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid "Abort installation after depmod error?"
-msgstr "Prerušiť inštaláciu po chybe depmod?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"The 'depmod' command exited with the exit code ${exit_value} "
-"(${SIGNAL}${CORE})."
-msgstr ""
-"Príkaz „depmod” skončil s návratovým kódom ${exit_value} (${SIGNAL}${CORE})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"Since this image uses initrd, the ${modules_base}/4.1.0-2-sparc64-smp/"
-"modules.dep file will not be deleted, even though it may be invalid."
-msgstr ""
-"Keďže tento obraz používa initrd, nebude súbor ${modules_base}/"
-"4.1.0-2-sparc64-smp/modules.dep zmazaný, hoci môže byť neplatný."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:2001
-msgid ""
-"You should abort the installation and fix the errors in depmod, or "
-"regenerate the initrd image with a known good modules.dep file. If you don't "
-"abort the installation, there is a danger that the system will fail to boot."
-msgstr ""
-"Mali by ste prerušiť inštaláciu a opraviť chyby v depmod, alebo znova "
-"vytvoriť obraz initrd s funkčným súborom modules.dep. Ak teraz neprerušíte "
-"inštaláciu, môže sa stať, že sa nepodarí zaviesť systém."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid "Abort kernel removal?"
-msgstr "Prerušiť odstraňovanie jadra?"
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"You are running a kernel (version ${running}) and attempting to remove the "
-"same version."
-msgstr ""
-"Pokúšate sa odstrániť rovnakú verziu jadra, akú práve používate (version "
-"${running})."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"This can make the system unbootable as it will remove /boot/vmlinuz-"
-"${running} and all modules under the directory /lib/modules/${running}. This "
-"can only be fixed with a copy of the kernel image and the corresponding "
-"modules."
-msgstr ""
-"Toto môže spôsobiť, že sa systém nezavedie, pretože bude odstránený /boot/"
-"vmlinuz-${running} a všetky moduly z adresára /lib/modules/${running}. "
-"Opravené to môže byť len prekopírovaním obrazu jadra a príslušných modulov."
-
-#. Type: boolean
-#. Description
-#: ../image.plain.templates.in:3001
-msgid ""
-"It is highly recommended to abort the kernel removal unless you are prepared "
-"to fix the system after removal."
-msgstr ""
-"Dôrazne odporúčame prerušiť odstraňovanie jadra, ak nie ste pripravený na "
-"opravu systému po jeho odstránení."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid "Boot loader configuration must be updated to load initramfs"
-msgstr ""
-"Je potrebné aktualizovať nastavenie zavádzača tak, aby načítal initramfs"
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"This kernel package will build an \"initramfs\" file (/boot/initrd.img-"
-"4.1.0-2-sparc64-smp) for the system's boot loader to use in addition to "
-"the kernel itself. This method, formerly unsupported on MIPS, enables a more "
-"flexible boot process, and future kernel versions may require a "
-"corresponding initrd.img to boot."
-msgstr ""
-"Tento balík jadra zostaví súbor „initramfs” (/boot/initrd.img-"
-"4.1.0-2-sparc64-smp) pre zavádzač systému, na použitie ako doplnok k "
-"samotnému jadru. Táto metóda, predtým nepodporovaná na MIPS, poskytuje oveľa "
-"flexibilnejší proces zavádzania a budúce verzie jadra môžu na zavedenie "
-"vyžadovať príslušný initrd.img."
-
-#. Type: note
-#. Description
-#: ../image.plain.templates.in:4001
-msgid ""
-"The currently running kernel was booted without an initramfs. You should "
-"reconfigure the boot loader to load the initramfs for Linux version "
-"4.1.0-2, and for each later version. This is probably most easily "
-"accomplished by using the initrd.img symbolic link maintained by the kernel "
-"package."
-msgstr ""
-"Aktuálne bežiace jadro bolo zavedené bez initramfs. Mali by ste nastaviť "
-"zavádzač tak, aby načítal initramfs pre Linux verzie 4.1.0-2 a pre každú "
+"zavádzač tak, aby načítal initramfs pre Linux verzie 4.2.0-1 a pre každú "
 "novšiu verziu. Asi najjednoduchšie to môžete docieliť pomocou symbolického "
 "odkazu initrd.img, ktorý je spravovaný balíkom jadra."
