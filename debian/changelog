@@ -2,6 +2,7 @@ linux (4.2.5-1kali1) kali-dev; urgency=medium
 
   * Import new version from debian
   * Refresh kali-wifi-injection.patch
+  * Update aufs4 patches for kernel 4.2
 
  -- Sophie Brun <sophie@freexian.com>  Tue, 03 Nov 2015 11:07:05 +0100
 

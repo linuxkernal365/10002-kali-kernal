@@ -1,12 +1,12 @@
 From: J. R. Okajima <hooanon05@yahoo.co.jp>
-Date: Tue Jun 23 15:19:49 2015 +0900
-Subject: aufs4.1 kbuild patch
-Origin: https://github.com/sfjro/aufs4-standalone/tree/1a70d6a1618c28280e11783efed84d48e7cb15f2
+Date: Sat Sep 26 01:33:18 2015 +0900
+Subject: aufs4.2 kbuild patch
+Origin: https://github.com/sfjro/aufs4-standalone/tree/3ec3b71a4ad3f45469583e7219f423586bb8cdb9
 Bug-Debian: https://bugs.debian.org/541828
 
 Patch headers added by debian/patches/features/all/aufs4/gen-patch
 
-aufs4.1 kbuild patch
+aufs4.2 kbuild patch
 
 diff --git a/fs/Kconfig b/fs/Kconfig
 index 011f433..b1083f6 100644
@@ -21,16 +21,16 @@ index 011f433..b1083f6 100644
  endif # MISC_FILESYSTEMS
  
 diff --git a/fs/Makefile b/fs/Makefile
-index cb92fd4..8c2df12 100644
+index cb20e4b..dd81418 100644
 --- a/fs/Makefile
 +++ b/fs/Makefile
-@@ -127,3 +127,4 @@ obj-y				+= exofs/ # Multiple modules
+@@ -126,3 +126,4 @@ obj-y				+= exofs/ # Multiple modules
  obj-$(CONFIG_CEPH_FS)		+= ceph/
  obj-$(CONFIG_PSTORE)		+= pstore/
  obj-$(CONFIG_EFIVAR_FS)		+= efivarfs/
 +obj-$(CONFIG_AUFS_FS)           += aufs/
 diff --git a/include/uapi/linux/Kbuild b/include/uapi/linux/Kbuild
-index 1a0006a..ddad01a 100644
+index 1ff9942..31efc0a 100644
 --- a/include/uapi/linux/Kbuild
 +++ b/include/uapi/linux/Kbuild
 @@ -59,6 +59,7 @@ header-y += atmsvc.h
