@@ -1,8 +1,9 @@
 [abi]
 abiname: kali1
 ignore-changes:
- module:sound/firewire/snd-firewire-lib
- perf_*
+ module:drivers/mmc/host/*
+ module:drivers/net/wireless/*
+ sdhci_pci_o2_*
 
 [base]
 arches:
@@ -13,7 +14,6 @@ arches:
  armhf
  hppa
  i386
- ia64
  m68k
  mips
  mipsel
