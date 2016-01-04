@@ -1,9 +1,21 @@
 [abi]
 abiname: 1
 ignore-changes:
- module:drivers/mmc/host/*
- module:drivers/net/wireless/*
- sdhci_pci_o2_*
+# Apparently not used from OOT
+ module:net/dccp/dccp
+ fl6_*
+ inet_sk_diag_fill
+ ip6_append_data
+ ip6_datagram_send_ctl
+ ip6_xmit
+ ipv6_dup_options
+ ipv6_fixup_options
+ ipv6_push_nfrag_opts
+ tcp_cong_avoid_ai
+ tcp_slow_start
+# Can't be used from OOT
+ pin_is_valid
+ pinctrl_*
 
 [base]
 arches:
@@ -50,10 +62,9 @@ type: plain
 
 [relations]
 # compilers
-gcc-4.6: gcc-4.6
-gcc-4.7: gcc-4.7
-gcc-4.8: gcc-4.8
-gcc-4.9: gcc-4.9
+gcc-4.8: gcc-4.8 <!stage1>
+gcc-4.9: gcc-4.9 <!stage1>
+gcc-5: gcc-5 <!stage1>
 
 # initramfs-generators
 initramfs-fallback: linux-initramfs-tool
