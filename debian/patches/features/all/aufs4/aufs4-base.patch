@@ -1,7 +1,7 @@
 From: J. R. Okajima <hooanon05@yahoo.co.jp>
 Date: Fri Nov 6 10:26:35 2015 +0900
 Subject: aufs4.3 base patch
-Origin: https://github.com/sfjro/aufs4-standalone/tree/d376e884b0bb6d059bf616443042a016b26326a8
+Origin: https://github.com/sfjro/aufs4-standalone/tree/fbba338d78eb3bebce551a0b1d72bce2c9fb72f4
 Bug-Debian: https://bugs.debian.org/541828
 
 Patch headers added by debian/patches/features/all/aufs4/gen-patch

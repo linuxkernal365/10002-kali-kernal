@@ -1,6 +1,7 @@
 linux (4.3.3-5kali1) kali-dev; urgency=medium
 
   * Import new release from Debian.
+  * Update aufs patches for Linux 4.3.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Tue, 05 Jan 2016 16:13:07 +0100
 
