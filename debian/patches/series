@@ -18,6 +18,11 @@ bugfix/all/radeon-firmware-is-required-for-drm-and-kms-on-r600-onward.patch
 
 # Kali changes
 features/all/kali-wifi-injection.patch
+bugfix/all/vmwgfx-fixes-1.patch
+bugfix/all/vmwgfx-fixes-2.patch
+bugfix/all/vmwgfx-fixes-3.patch
+bugfix/all/vmwgfx-fixes-4.patch
+bugfix/all/vmwgfx-fixes-5.patch
 bugfix/all/drm-vmwgfx-Fix-a-width-pitch-mismatch-on-framebuffer.patch
 
 # Patches and source files from aufs4 repository, imported with

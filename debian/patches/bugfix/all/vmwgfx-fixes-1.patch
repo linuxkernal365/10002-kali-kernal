@@ -1,0 +1,72 @@
+commit 53c1e53571b1552204b2111b9fff5086f091bc9a
+Author: Thomas Hellstrom <thellstrom@vmware.com>
+Date:   Mon Oct 26 04:42:31 2015 -0700
+
+    drm/vmwgfx: Turn off support for multisample count != 0 v2
+    
+    Do this until we know how much MOB memory to allocate for these surfaces.
+    v2: Mask also non-DX multisample.
+    
+    Signed-off-by: Thomas Hellstrom <thellstrom@vmware.com>
+    Reviewed-by: Brian Paul <brianp@vmware.com>
+
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_ioctl.c b/drivers/gpu/drm/vmwgfx/vmwgfx_ioctl.c
+index 0a970af..a3e3c83 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_ioctl.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_ioctl.c
+@@ -122,6 +122,22 @@ int vmw_getparam_ioctl(struct drm_device *dev, void *data,
+ 	return 0;
+ }
+ 
++static u32 vmw_mask_multisample(unsigned int cap, u32 fmt_value)
++{
++	/* If the header is updated, update the format test as well! */
++	BUILD_BUG_ON(SVGA3D_DEVCAP_DXFMT_BC5_UNORM + 1 != SVGA3D_DEVCAP_MAX);
++
++	if (cap >= SVGA3D_DEVCAP_DXFMT_X8R8G8B8 &&
++	    cap <= SVGA3D_DEVCAP_DXFMT_BC5_UNORM)
++		fmt_value &= ~(SVGADX_DXFMT_MULTISAMPLE_2 |
++			       SVGADX_DXFMT_MULTISAMPLE_4 |
++			       SVGADX_DXFMT_MULTISAMPLE_8);
++	else if (cap == SVGA3D_DEVCAP_MULTISAMPLE_MASKABLESAMPLES)
++		return 0;
++
++	return fmt_value;
++}
++
+ static int vmw_fill_compat_cap(struct vmw_private *dev_priv, void *bounce,
+ 			       size_t size)
+ {
+@@ -147,7 +163,8 @@ static int vmw_fill_compat_cap(struct vmw_private *dev_priv, void *bounce,
+ 	for (i = 0; i < max_size; ++i) {
+ 		vmw_write(dev_priv, SVGA_REG_DEV_CAP, i);
+ 		compat_cap->pairs[i][0] = i;
+-		compat_cap->pairs[i][1] = vmw_read(dev_priv, SVGA_REG_DEV_CAP);
++		compat_cap->pairs[i][1] = vmw_mask_multisample
++			(i, vmw_read(dev_priv, SVGA_REG_DEV_CAP));
+ 	}
+ 	spin_unlock(&dev_priv->cap_lock);
+ 
+@@ -202,7 +219,8 @@ int vmw_get_cap_3d_ioctl(struct drm_device *dev, void *data,
+ 		spin_lock(&dev_priv->cap_lock);
+ 		for (i = 0; i < num; ++i) {
+ 			vmw_write(dev_priv, SVGA_REG_DEV_CAP, i);
+-			*bounce32++ = vmw_read(dev_priv, SVGA_REG_DEV_CAP);
++			*bounce32++ = vmw_mask_multisample
++				(i, vmw_read(dev_priv, SVGA_REG_DEV_CAP));
+ 		}
+ 		spin_unlock(&dev_priv->cap_lock);
+ 	} else if (gb_objects) {
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+index 64b5040..a279863 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+@@ -1290,6 +1290,8 @@ int vmw_gb_surface_define_ioctl(struct drm_device *dev, void *data,
+ 	uint32_t size;
+ 	uint32_t backup_handle;
+ 
++	if (req->multisample_count != 0)
++		return -EINVAL;
+ 
+ 	if (unlikely(vmw_user_surface_size == 0))
+ 		vmw_user_surface_size = ttm_round_pot(sizeof(*user_srf)) +

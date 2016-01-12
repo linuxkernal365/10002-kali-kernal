@@ -1,0 +1,25 @@
+commit 99f9be4c73cff20ec64793be68f03f927474298c
+Author: Dan Carpenter <dan.carpenter@oracle.com>
+Date:   Sat Nov 21 13:29:39 2015 +0300
+
+    drm/vmwgfx: fix a warning message
+    
+    The WARN_ON() macro only takes a condition argument, it doesn't take
+    a message.  I have converted this to WARN() instead.
+    
+    Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+    Reviewed-by: Sinclair Yeh <syeh@vmware.com>
+
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_fifo.c b/drivers/gpu/drm/vmwgfx/vmwgfx_fifo.c
+index a8baf5f..b6a0806 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_fifo.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fifo.c
+@@ -390,7 +390,7 @@ void *vmw_fifo_reserve_dx(struct vmw_private *dev_priv, uint32_t bytes,
+ 	else if (ctx_id == SVGA3D_INVALID_ID)
+ 		ret = vmw_local_fifo_reserve(dev_priv, bytes);
+ 	else {
+-		WARN_ON("Command buffer has not been allocated.\n");
++		WARN(1, "Command buffer has not been allocated.\n");
+ 		ret = NULL;
+ 	}
+ 	if (IS_ERR_OR_NULL(ret)) {

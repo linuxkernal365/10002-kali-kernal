@@ -1,3 +1,9 @@
+linux (4.3.3-5kali3) kali-dev; urgency=medium
+
+  * Add more fixes for vmwgfx.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Tue, 12 Jan 2016 11:18:57 +0100
+
 linux (4.3.3-5kali2) kali-dev; urgency=medium
 
   * Add bugfix/all/drm-vmwgfx-Fix-a-width-pitch-mismatch-on-framebuffer.patch
