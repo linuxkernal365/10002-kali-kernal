@@ -1,3 +1,10 @@
+linux (4.3.3-5kali4) kali-dev; urgency=medium
+
+  * Add hid-logitech-hidpp to input-modules udeb to fix some wireless
+    keyboards in debian-installer (FS #2563).
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Wed, 13 Jan 2016 16:10:39 +0100
+
 linux (4.3.3-5kali3) kali-dev; urgency=medium
 
   * Add more fixes for vmwgfx.
