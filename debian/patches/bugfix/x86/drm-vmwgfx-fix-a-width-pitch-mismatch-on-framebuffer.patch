@@ -1,8 +1,7 @@
-From ae15622bc6fa5af8f76641d96482d20ae3af2397 Mon Sep 17 00:00:00 2001
 From: Thomas Hellstrom <thellstrom@vmware.com>
-Date: Fri, 8 Jan 2016 10:10:22 +0100
-Subject: [PATCH] drm/vmwgfx: Fix a width / pitch mismatch on framebuffer
- updates
+Date: Fri, 8 Jan 2016 20:29:40 +0100
+Subject: drm/vmwgfx: Fix a width / pitch mismatch on framebuffer updates
+Origin: https://git.kernel.org/linus/a50e2bf5a0f674d62b69f51f6935a30e82bd015c
 
 When the framebuffer is a vmwgfx dma buffer and a proxy surface is
 created, the vmw_kms_update_proxy() function requires that the proxy
@@ -12,17 +11,19 @@ display corruption occurs as seen in gnome-shell/native with software
 a proxy surface the width of which is based on the framebuffer pitch
 rather than on the framebuffer width.
 
+Cc: <stable@vger.kernel.org>
 Reported-by: Raphael Hertzog <buxy@kali.org>
+Tested-by:  Mati Aharoni <muts@kali.org>
 Signed-off-by: Thomas Hellstrom <thellstrom@vmware.com>
+Reviewed-by: Brian Paul <brianp@vmware.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
 ---
  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index 9b4bb9e..21af55e 100644
 --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
 +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -763,21 +763,25 @@ static int vmw_create_dmabuf_proxy(struct drm_device *dev,
+@@ -725,21 +725,25 @@ static int vmw_create_dmabuf_proxy(struc
  	uint32_t format;
  	struct drm_vmw_size content_base_size;
  	struct vmw_resource *res;
@@ -48,7 +49,7 @@ index 9b4bb9e..21af55e 100644
  		break;
  
  	default:
-@@ -785,7 +789,7 @@ static int vmw_create_dmabuf_proxy(struct drm_device *dev,
+@@ -747,7 +751,7 @@ static int vmw_create_dmabuf_proxy(struc
  		return -EINVAL;
  	}
  
@@ -57,6 +58,3 @@ index 9b4bb9e..21af55e 100644
  	content_base_size.height = mode_cmd->height;
  	content_base_size.depth  = 1;
  
--- 
-2.5.0
-
