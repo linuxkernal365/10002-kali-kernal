@@ -1,3 +1,10 @@
+linux (4.3.3-5kali5) kali-dev; urgency=medium
+
+  * Add new patch fixing monitor mode in Ralink cards using the
+    rt2x00 driver. (FS #3014)
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Wed, 27 Jan 2016 14:17:00 +0100
+
 linux (4.3.3-5kali4) kali-dev; urgency=medium
 
   * Add hid-logitech-hidpp to input-modules udeb to fix some wireless
