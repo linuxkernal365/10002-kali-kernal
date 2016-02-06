@@ -11627,6 +11627,30 @@ Build-Profiles: <!stage1>
 Kernel-Version: 4.3.0-1-s390x
 Package-Type: udeb
 
+Package: loop-modules-4.3.0-1-s390x-di
+Architecture: s390 s390x
+Section: debian-installer
+Priority: standard
+Provides: loop-modules
+Depends: kernel-image-4.3.0-1-s390x-di
+Description: Loopback filesystem support
+ This package contains loopback filesystem support for the kernel.
+Build-Profiles: <!stage1>
+Kernel-Version: 4.3.0-1-s390x
+Package-Type: udeb
+
+Package: btrfs-modules-4.3.0-1-s390x-di
+Architecture: s390 s390x
+Section: debian-installer
+Priority: extra
+Provides: btrfs-modules
+Depends: kernel-image-4.3.0-1-s390x-di, core-modules-4.3.0-1-s390x-di, crc-modules-4.3.0-1-s390x-di, zlib-modules-4.3.0-1-s390x-di, md-modules-4.3.0-1-s390x-di
+Description: BTRFS filesystem support
+ This package contains the BTRFS filesystem module for the kernel.
+Build-Profiles: <!stage1>
+Kernel-Version: 4.3.0-1-s390x
+Package-Type: udeb
+
 Package: ext4-modules-4.3.0-1-s390x-di
 Architecture: s390 s390x
 Section: debian-installer
@@ -11636,6 +11660,18 @@ Depends: kernel-image-4.3.0-1-s390x-di, core-modules-4.3.0-1-s390x-di, crc-modul
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
+Build-Profiles: <!stage1>
+Kernel-Version: 4.3.0-1-s390x
+Package-Type: udeb
+
+Package: isofs-modules-4.3.0-1-s390x-di
+Architecture: s390 s390x
+Section: debian-installer
+Priority: standard
+Provides: isofs-modules
+Depends: kernel-image-4.3.0-1-s390x-di
+Description: ISOFS filesystem support
+ This package contains the ISOFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.3.0-1-s390x
 Package-Type: udeb
@@ -11758,6 +11794,30 @@ Provides: virtio-modules
 Depends: kernel-image-4.3.0-1-s390x-di, scsi-core-modules-4.3.0-1-s390x-di
 Description: virtio modules
  This package contains virtio modules.
+Build-Profiles: <!stage1>
+Kernel-Version: 4.3.0-1-s390x
+Package-Type: udeb
+
+Package: zlib-modules-4.3.0-1-s390x-di
+Architecture: s390 s390x
+Section: debian-installer
+Priority: extra
+Provides: zlib-modules
+Depends: kernel-image-4.3.0-1-s390x-di
+Description: zlib modules
+ This package contains zlib modules.
+Build-Profiles: <!stage1>
+Kernel-Version: 4.3.0-1-s390x
+Package-Type: udeb
+
+Package: udf-modules-4.3.0-1-s390x-di
+Architecture: s390 s390x
+Section: debian-installer
+Priority: extra
+Provides: udf-modules
+Depends: kernel-image-4.3.0-1-s390x-di, crc-modules-4.3.0-1-s390x-di
+Description: UDF modules
+ This package contains the UDF filesystem module.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.3.0-1-s390x
 Package-Type: udeb
