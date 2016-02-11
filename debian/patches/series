@@ -23,7 +23,6 @@ bugfix/all/vmwgfx-fixes-2.patch
 bugfix/all/vmwgfx-fixes-3.patch
 bugfix/all/vmwgfx-fixes-4.patch
 bugfix/all/vmwgfx-fixes-5.patch
-bugfix/all/rt2x00-fix-monitor-mode.patch
 
 # Patches and source files from aufs4 repository, imported with
 # debian/patches/features/all/aufs4/gen-patch.

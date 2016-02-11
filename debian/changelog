@@ -2,6 +2,8 @@ linux (4.3.5-1kali1) kali-dev; urgency=medium
 
   * Import new version from debian
   * Update aufs4 patches
+  * Drop bugfix/all/rt2x00-fix-monitor-mode.patch (included
+    in debian now)
 
  -- Sophie Brun <sophie@freexian.com>  Thu, 11 Feb 2016 14:58:36 +0100
 
