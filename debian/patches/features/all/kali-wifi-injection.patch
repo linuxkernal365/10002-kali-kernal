@@ -107,8 +107,8 @@
  
  	hw->wiphy->interface_modes =
  		BIT(NL80211_IFTYPE_MESH_POINT) |
---- a/drivers/net/wireless/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/rtl818x/rtl8187/dev.c
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
 @@ -251,8 +251,17 @@ static void rtl8187_tx(struct ieee80211_
  	flags |= RTL818X_TX_DESC_FLAG_NO_ENC;
  
