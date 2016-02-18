@@ -1,18 +1,18 @@
 From: J. R. Okajima <hooanon05@yahoo.co.jp>
-Date: Sat Nov 21 10:43:50 2015 +0900
-Subject: aufs4.x-rcN base patch
-Origin: https://github.com/sfjro/aufs4-standalone/tree/980697121e7bb079411664d77caa8f1e489f344c
+Date: Thu Jan 14 12:59:58 2016 +0900
+Subject: aufs4.4 base patch
+Origin: https://github.com/sfjro/aufs4-standalone/tree/4a604e1e28745efe36bccc20bb780463f7e51d6e
 Bug-Debian: https://bugs.debian.org/541828
 
 Patch headers added by debian/patches/features/all/aufs4/gen-patch
 
-aufs4.x-rcN base patch
+aufs4.4 base patch
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e9caa4b..ddb7b8a 100644
+index 233f834..c250892 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2028,6 +2028,19 @@ F:	include/linux/audit.h
+@@ -2029,6 +2029,19 @@ F:	include/linux/audit.h
  F:	include/uapi/linux/audit.h
  F:	kernel/audit*
  
@@ -108,10 +108,10 @@ index 819ef3f..fd0414e 100644
  {
  	mm_segment_t old_fs;
 diff --git a/fs/splice.c b/fs/splice.c
-index 801c21c..218d188 100644
+index 4cf700d..30a091d 100644
 --- a/fs/splice.c
 +++ b/fs/splice.c
-@@ -1102,8 +1102,8 @@ EXPORT_SYMBOL(generic_splice_sendpage);
+@@ -1110,8 +1110,8 @@ EXPORT_SYMBOL(generic_splice_sendpage);
  /*
   * Attempt to initiate a splice from pipe to file.
   */
@@ -122,7 +122,7 @@ index 801c21c..218d188 100644
  {
  	ssize_t (*splice_write)(struct pipe_inode_info *, struct file *,
  				loff_t *, size_t, unsigned int);
-@@ -1119,9 +1119,9 @@ static long do_splice_from(struct pipe_inode_info *pipe, struct file *out,
+@@ -1127,9 +1127,9 @@ static long do_splice_from(struct pipe_inode_info *pipe, struct file *out,
  /*
   * Attempt to initiate a splice from a file to a pipe.
   */
