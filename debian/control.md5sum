@@ -1,5 +1,5 @@
 31643e411d0d06dc729b487a8356ff73  debian/bin/gencontrol.py
-cdead59a1099eece43d6393096d0e533  debian/changelog
+ff8350d385f0d22df1f6c63a5e6fb935  debian/changelog
 e492c730e8bc71cc52aa5315391e587e  debian/templates/control.main.in
 8b5e82e3139d725d8dc41627933e7001  debian/templates/image.preinst.in
 0e7dfee77ac3fc5755791858f61f4715  debian/templates/image.prerm.in
@@ -79,7 +79,7 @@ d09d2db2d7b84bf6a421c8e5b709a346  debian/installer/armhf/package-list
 8b7d23c8cd92a63434be9319b47d23e9  debian/installer/ppc64/package-list
 0fc827f651bf58416e4e2231b01f6908  debian/installer/mips64/package-list
 b9df39e550a637012ccd5b1ddaa4b74a  debian/installer/sparc64/package-list
-2bfc44ae55c0c1d5676946c71d1f07f4  debian/installer/mipsel/package-list
+505e353d693fe4ea4c7e62ba11d84017  debian/installer/mipsel/package-list
 829a090aa9cb3a272daf6b77006c6519  debian/installer/sh4/package-list
 d243c37c6930b5d5f646e8b55b317376  debian/installer/m68k/package-list
 4c1bf26b971d89864682040568fa388e  debian/installer/s390x/package-list

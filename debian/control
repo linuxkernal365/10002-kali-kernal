@@ -1417,7 +1417,7 @@ Architecture: arm64
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.4.0-1-arm64-di, nic-shared-modules-4.4.0-1-arm64-di, core-modules-4.4.0-1-arm64-di, crc-modules-4.4.0-1-arm64-di
+Depends: kernel-image-4.4.0-1-arm64-di, nic-shared-modules-4.4.0-1-arm64-di, core-modules-4.4.0-1-arm64-di, i2c-modules-4.4.0-1-arm64-di, crc-modules-4.4.0-1-arm64-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -1637,7 +1637,7 @@ Architecture: arm64
 Section: debian-installer
 Priority: extra
 Provides: input-modules
-Depends: kernel-image-4.4.0-1-arm64-di, usb-modules-4.4.0-1-arm64-di
+Depends: kernel-image-4.4.0-1-arm64-di, usb-modules-4.4.0-1-arm64-di, i2c-modules-4.4.0-1-arm64-di
 Description: Input devices support
  This package contains input device drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -1689,6 +1689,18 @@ Depends: kernel-image-4.4.0-1-arm64-di
 Description: Core modules
  This package contains core modules for the kernel, that will almost
  always be needed.
+Build-Profiles: <!stage1>
+Kernel-Version: 4.4.0-1-arm64
+Package-Type: udeb
+
+Package: i2c-modules-4.4.0-1-arm64-di
+Architecture: arm64
+Section: debian-installer
+Priority: extra
+Provides: i2c-modules
+Depends: kernel-image-4.4.0-1-arm64-di
+Description: i2c support modules
+ This package contains basic i2c support modules.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.4.0-1-arm64
 Package-Type: udeb
@@ -6977,7 +6989,7 @@ Package: kernel-image-4.4.0-1-loongson-2e-di
 Architecture: mipsel
 Section: debian-installer
 Priority: extra
-Provides: kernel-image, rtc-modules
+Provides: kernel-image, i2c-modules, rtc-modules
 Description: Linux kernel binary image for the Debian installer
  This package contains the kernel image for the Debian installer boot
  images.  It does _not_ provide a usable kernel for your full Debian
@@ -7527,7 +7539,7 @@ Architecture: mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.4.0-1-loongson-2f-di, nic-shared-modules-4.4.0-1-loongson-2f-di, core-modules-4.4.0-1-loongson-2f-di, crc-modules-4.4.0-1-loongson-2f-di
+Depends: kernel-image-4.4.0-1-loongson-2f-di, nic-shared-modules-4.4.0-1-loongson-2f-di, core-modules-4.4.0-1-loongson-2f-di, i2c-modules-4.4.0-1-loongson-2f-di, crc-modules-4.4.0-1-loongson-2f-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -7843,7 +7855,7 @@ Architecture: mipsel
 Section: debian-installer
 Priority: extra
 Provides: input-modules
-Depends: kernel-image-4.4.0-1-loongson-2f-di, usb-modules-4.4.0-1-loongson-2f-di
+Depends: kernel-image-4.4.0-1-loongson-2f-di, usb-modules-4.4.0-1-loongson-2f-di, i2c-modules-4.4.0-1-loongson-2f-di
 Description: Input devices support
  This package contains input device drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -7895,6 +7907,18 @@ Depends: kernel-image-4.4.0-1-loongson-2f-di
 Description: Core modules
  This package contains core modules for the kernel, that will almost
  always be needed.
+Build-Profiles: <!stage1>
+Kernel-Version: 4.4.0-1-loongson-2f
+Package-Type: udeb
+
+Package: i2c-modules-4.4.0-1-loongson-2f-di
+Architecture: mipsel
+Section: debian-installer
+Priority: extra
+Provides: i2c-modules
+Depends: kernel-image-4.4.0-1-loongson-2f-di
+Description: i2c support modules
+ This package contains basic i2c support modules.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.4.0-1-loongson-2f
 Package-Type: udeb
@@ -8002,7 +8026,7 @@ Architecture: mipsel
 Section: debian-installer
 Priority: extra
 Provides: sound-modules
-Depends: kernel-image-4.4.0-1-loongson-2f-di, core-modules-4.4.0-1-loongson-2f-di, usb-modules-4.4.0-1-loongson-2f-di, firewire-core-modules-4.4.0-1-loongson-2f-di, crc-modules-4.4.0-1-loongson-2f-di
+Depends: kernel-image-4.4.0-1-loongson-2f-di, core-modules-4.4.0-1-loongson-2f-di, i2c-modules-4.4.0-1-loongson-2f-di, usb-modules-4.4.0-1-loongson-2f-di, firewire-core-modules-4.4.0-1-loongson-2f-di, crc-modules-4.4.0-1-loongson-2f-di
 Description: sound support
  This package contains sound modules.
 Build-Profiles: <!stage1>
