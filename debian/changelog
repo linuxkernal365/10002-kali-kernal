@@ -1,3 +1,10 @@
+linux (4.4.2-3kali1) kali-dev; urgency=medium
+
+  * Import new version from Debian
+  * debian/config/defines: disable featureset-rt_base
+
+ -- Sophie Brun <sophie@freexian.com>  Tue, 23 Feb 2016 17:45:54 +0100
+
 linux (4.4.2-3) unstable; urgency=medium
 
   * [x86] efi-bgrt: Fix kernel panic when mapping BGRT data (Closes: #815125)
