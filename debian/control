@@ -1183,7 +1183,7 @@ Architecture: amd64
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.4.0-1-amd64-di, core-modules-4.4.0-1-amd64-di, mmc-core-modules-4.4.0-1-amd64-di
+Depends: kernel-image-4.4.0-1-amd64-di, core-modules-4.4.0-1-amd64-di, mmc-core-modules-4.4.0-1-amd64-di, usb-modules-4.4.0-1-amd64-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.
@@ -1771,7 +1771,7 @@ Architecture: arm64
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.4.0-1-arm64-di, core-modules-4.4.0-1-arm64-di
+Depends: kernel-image-4.4.0-1-arm64-di, core-modules-4.4.0-1-arm64-di, usb-modules-4.4.0-1-arm64-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.
@@ -2263,7 +2263,7 @@ Architecture: armel
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.4.0-1-marvell-di, core-modules-4.4.0-1-marvell-di
+Depends: kernel-image-4.4.0-1-marvell-di, core-modules-4.4.0-1-marvell-di, usb-modules-4.4.0-1-marvell-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.
@@ -3126,7 +3126,7 @@ Architecture: armhf
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.4.0-1-armmp-di, core-modules-4.4.0-1-armmp-di
+Depends: kernel-image-4.4.0-1-armmp-di, core-modules-4.4.0-1-armmp-di, usb-modules-4.4.0-1-armmp-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.
@@ -4761,7 +4761,7 @@ Architecture: i386
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.4.0-1-686-di, core-modules-4.4.0-1-686-di, mmc-core-modules-4.4.0-1-686-di
+Depends: kernel-image-4.4.0-1-686-di, core-modules-4.4.0-1-686-di, mmc-core-modules-4.4.0-1-686-di, usb-modules-4.4.0-1-686-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.
@@ -5394,7 +5394,7 @@ Architecture: i386
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.4.0-1-686-pae-di, core-modules-4.4.0-1-686-pae-di, mmc-core-modules-4.4.0-1-686-pae-di
+Depends: kernel-image-4.4.0-1-686-pae-di, core-modules-4.4.0-1-686-pae-di, mmc-core-modules-4.4.0-1-686-pae-di, usb-modules-4.4.0-1-686-pae-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.
@@ -6318,7 +6318,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.4.0-1-4kc-malta-di, core-modules-4.4.0-1-4kc-malta-di, mmc-core-modules-4.4.0-1-4kc-malta-di
+Depends: kernel-image-4.4.0-1-4kc-malta-di, core-modules-4.4.0-1-4kc-malta-di, mmc-core-modules-4.4.0-1-4kc-malta-di, usb-modules-4.4.0-1-4kc-malta-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.
@@ -9136,7 +9136,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.4.0-1-5kc-malta-di, core-modules-4.4.0-1-5kc-malta-di, mmc-core-modules-4.4.0-1-5kc-malta-di
+Depends: kernel-image-4.4.0-1-5kc-malta-di, core-modules-4.4.0-1-5kc-malta-di, mmc-core-modules-4.4.0-1-5kc-malta-di, usb-modules-4.4.0-1-5kc-malta-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.

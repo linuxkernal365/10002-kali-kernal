@@ -42,8 +42,6 @@ debian/snd-pcsp-disable-autoload.patch
 bugfix/x86/viafb-autoload-on-olpc-xo1.5-only.patch
 
 # Arch bug fixes
-bugfix/x86/drm-i915-shut-up-gen8-sde-irq-dmesg-noise.patch
-bugfix/x86/drm-vmwgfx-fix-a-width-pitch-mismatch-on-framebuffer.patch
 bugfix/mips/mips-math-emu-correctly-handle-nop-emulation.patch
 
 # Arch features
@@ -83,22 +81,27 @@ features/arm/arm-orion-always-use-multi_irq_handler.patch
 features/arm/arm-orion-use-sparse_irq-everywhere.patch
 features/arm/arm-orion5x-clean-up-mach-.h-headers.patch
 features/arm/arm-orion5x-multiplatform-support.patch
+features/arm/device-tree/ARM-dts-imx6dlq-wandboard-revb1.dts-use-unique-model-id.patch
+features/arm/device-tree/ARM-dts-kirkwood-gpio-pin-fixes-for-linkstation-ls-wvl-vl.patch
+features/arm/device-tree/ARM-dts-kirkwood-gpio-pin-fixes-for-linkstation-ls-wxl-ws.patch
+features/arm/device-tree/ARM-dts-kirkwood-gpio-leds-fixes-for-linkstation-ls-wxl-w.patch
+features/arm/device-tree/ARM-dts-kirkwood-gpio-leds-fixes-for-linkstation-ls-wvl-v.patch
+features/arm/device-tree/ARM-dts-orion5x-gpio-pin-fixes-for-linkstation-lswtgl.patch
+features/arm/device-tree/ARM-dts-orion5x-fix-missing-mtdflash-linkstation-lswtgl.patch
+features/arm/device-tree/ARM-dts-kirkwood-relicense-dts-of-ls-wvl-vl-and-ls-wxl-ws.patch
+features/arm/device-tree/ARM-dts-kirkwood-split-lswxl-dts-to-linkstation-lswsxl-an.patch
+features/arm/device-tree/ARM-dts-kirkwood-split-lswvl-dts-to-linkstation-lsvl-and-.patch
+features/arm/device-tree/ARM-dts-kirkwood-add-for-buffalo-linkstation-ls-qvl.patch
+features/arm/device-tree/ARM-dts-orion5x-split-linkstation-lswtgl-into-common-and-.patch
+features/arm/device-tree/ARM-dts-orion5x-add-for-buffalo-linkstation-ls-gl.patch
+features/arm/novena/ARM-dts-imx6q-add-Novena-board.patch
+features/arm/novena/ARM-dts-imx6q-clean-up-unused-ipu2grp.patch
 
 # Miscellaneous bug fixes
 bugfix/all/misc-bmp085-Enable-building-as-a-module.patch
 bugfix/all/kbuild-use-nostdinc-in-compile-tests.patch
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/rtsx_usb_ms-use-msleep_interruptible-in-polling-loop.patch
-bugfix/all/revert-xhci-don-t-finish-a-td-if-we-get-a-short-transfer.patch
-bugfix/all/bcache-fix-a-livelock-when-we-cause-a-huge-number-of.patch
-bugfix/all/bcache-add-a-cond_resched-call-to-gc.patch
-bugfix/all/bcache-clear-bcache_dev_unlink_done-flag-when-attach.patch
-bugfix/all/bcache-fix-a-leak-in-bch_cached_dev_run.patch
-bugfix/all/bcache-unregister-reboot-notifier-if-bcache-fails-to.patch
-bugfix/all/bcache-allows-use-of-register-in-udev-to-avoid-devic.patch
-bugfix/all/bcache-prevent-crash-on-changing-writeback_running.patch
-bugfix/all/bcache-change-refill_dirty-to-always-scan-entire-dis.patch
-bugfix/all/scsi-fix-crashes-in-sd-and-sr-runtime-pm.patch
 bugfix/all/rt2x00-fix-monitor-mode-regression.patch
 
 # Miscellaneous features
@@ -114,21 +117,21 @@ bugfix/all/usbvision-fix-overflow-of-interfaces-array.patch
 bugfix/all/media-usbvision-fix-crash-on-detecting-device-with-i.patch
 bugfix/all/ptrace-being-capable-wrt-a-process-requires-mapped-uids-gids.patch
 bugfix/all/pipe-limit-the-per-user-amount-of-pages-allocated-in.patch
-bugfix/all/iw_cxgb3-Fix-incorrectly-returning-error-on-success.patch
-bugfix/all/fs-hugetlbfs-inode.c-fix-bugs-in-hugetlb_vmtruncate_.patch
-bugfix/all/af_unix-guard-against-other-sk-in-unix_dgram_sendmsg.patch
-bugfix/all/revert-workqueue-make-sure-delayed-work-run-in-local-cpu.patch
-bugfix/all/af_unix-don-t-set-err-in-unix_stream_read_generic-unless-there-was-an-error.patch
-bugfix/all/bpf-fix-branch-offset-adjustment-on-backjumps-after-.patch
 bugfix/x86/x86-mm-page-align-the-_end-symbol-to-avoid-pfn-conve.patch
 bugfix/x86/x86-mm-pat-ensure-cpa-pfn-only-contains-page-frame-n.patch
 bugfix/x86/x86-efi-map-ram-into-the-identity-page-table-for-mix.patch
 bugfix/x86/x86-efi-hoist-page-table-switching-code-into-efi_cal.patch
 bugfix/x86/x86-efi-build-our-own-page-table-structures.patch
 bugfix/x86/x86-efi-setup-separate-efi-page-tables-in-kexec-path.patch
-bugfix/x86/x86-mm-fix-types-used-in-pgprot-cacheability-flags-t.patch
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
-bugfix/all/iff_no_queue-fix-for-drivers-not-calling-ether_setup.patch
 bugfix/arm/net-mv643xx_eth-fix-packet-corruption-with-tso-and-t.patch
 bugfix/x86/x86-efi-bgrt-fix-kernel-panic-when-mapping-bgrt-data.patch
 bugfix/x86/x86-efi-bgrt-replace-early_memremap-with-memremap.patch
+bugfix/all/uas-fix-high-order-alloc.patch
+debian/revert-cgroup-make-sure-a-parent-css-isn-t-offlined.patch
+debian/thermal-fix-abi-change-in-4.4.4.patch
+debian/ipv4-fix-abi-change-in-4.4.4.patch
+debian/ipv6-fix-abi-change-in-4.4.4.patch
+bugfix/all/revert-drm-radeon-call-hpd_irq_event-on-resume.patch
+bugfix/powerpc/powerpc-simplify-module-toc-handling.patch
+bugfix/powerpc/powerpc-fix-dedotify-for-binutils-2.26.patch

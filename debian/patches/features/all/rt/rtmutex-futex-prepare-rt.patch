@@ -1,7 +1,7 @@
 Subject: rtmutex: Handle the various new futex race conditions
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri, 10 Jun 2011 11:04:15 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.4/patches-4.4.1-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/4.4/patches-4.4.3-rt9.tar.xz
 
 RT opens a few new interesting race conditions in the rtmutex/futex
 combo due to futex hash bucket lock being a 'sleeping' spinlock and
@@ -109,7 +109,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	/* Check if the requeue code acquired the second futex for us. */
  	if (!q.rt_waiter) {
-@@ -2753,9 +2798,10 @@ static int futex_wait_requeue_pi(u32 __u
+@@ -2753,14 +2798,15 @@ static int futex_wait_requeue_pi(u32 __u
  		 * did a lock-steal - fix up the PI-state in that case.
  		 */
  		if (q.pi_state && (q.pi_state->owner != current)) {
@@ -117,12 +117,17 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +			spin_lock(&hb2->lock);
 +			BUG_ON(&hb2->lock != q.lock_ptr);
  			ret = fixup_pi_state_owner(uaddr2, &q, current);
+ 			/*
+ 			 * Drop the reference to the pi state which
+ 			 * the requeue_pi() code acquired for us.
+ 			 */
+ 			free_pi_state(q.pi_state);
 -			spin_unlock(q.lock_ptr);
 +			spin_unlock(&hb2->lock);
  		}
  	} else {
  		/*
-@@ -2768,7 +2814,8 @@ static int futex_wait_requeue_pi(u32 __u
+@@ -2773,7 +2819,8 @@ static int futex_wait_requeue_pi(u32 __u
  		ret = rt_mutex_finish_proxy_lock(pi_mutex, to, &rt_waiter);
  		debug_rt_mutex_free_waiter(&rt_waiter);
  
