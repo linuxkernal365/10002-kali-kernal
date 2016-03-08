@@ -1,7 +1,7 @@
 From: J. R. Okajima <hooanon05@yahoo.co.jp>
-Date: Wed Feb 10 03:44:09 2016 +0900
+Date: Tue Mar 1 20:27:32 2016 +0900
 Subject: aufs4.4 standalone patch
-Origin: https://github.com/sfjro/aufs4-standalone/tree/4a604e1e28745efe36bccc20bb780463f7e51d6e
+Origin: https://github.com/sfjro/aufs4-standalone/tree/969b710f2860b8d5660ac9e6f96e886ae29b4dfa
 Bug-Debian: https://bugs.debian.org/541828
 
 Patch headers added by debian/patches/features/all/aufs4/gen-patch
@@ -9,7 +9,7 @@ Patch headers added by debian/patches/features/all/aufs4/gen-patch
 aufs4.4 standalone patch
 
 diff --git a/fs/dcache.c b/fs/dcache.c
-index 8aa7f26..f997345 100644
+index 8aa7f26..ff9a6f3 100644
 --- a/fs/dcache.c
 +++ b/fs/dcache.c
 @@ -1272,6 +1272,7 @@ rename_retry:
@@ -21,7 +21,7 @@ index 8aa7f26..f997345 100644
  /*
   * Search for at least 1 mount point in the dentry's subdirs.
 diff --git a/fs/exec.c b/fs/exec.c
-index b06623a..b9206c5 100644
+index b06623a..3526d30 100644
 --- a/fs/exec.c
 +++ b/fs/exec.c
 @@ -103,6 +103,7 @@ bool path_noexec(const struct path *path)
@@ -32,8 +32,20 @@ index b06623a..b9206c5 100644
  
  #ifdef CONFIG_USELIB
  /*
+diff --git a/fs/fcntl.c b/fs/fcntl.c
+index dacbf71..8abb9f81 100644
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -81,6 +81,7 @@ int setfl(int fd, struct file * filp, unsigned long arg)
+  out:
+ 	return error;
+ }
++EXPORT_SYMBOL_GPL(setfl);
+ 
+ static void f_modown(struct file *filp, struct pid *pid, enum pid_type type,
+                      int force)
 diff --git a/fs/file_table.c b/fs/file_table.c
-index ad17e05..38e046a 100644
+index ad17e05..ae9f267 100644
 --- a/fs/file_table.c
 +++ b/fs/file_table.c
 @@ -147,6 +147,7 @@ over:
@@ -69,7 +81,7 @@ index ad17e05..38e046a 100644
  void __init files_init(void)
  { 
 diff --git a/fs/namespace.c b/fs/namespace.c
-index 0570729..ec560d8 100644
+index 0570729..fc50028 100644
 --- a/fs/namespace.c
 +++ b/fs/namespace.c
 @@ -463,6 +463,7 @@ void __mnt_drop_write(struct vfsmount *mnt)
@@ -89,7 +101,7 @@ index 0570729..ec560d8 100644
  static void cleanup_group_ids(struct mount *mnt, struct mount *end)
  {
 diff --git a/fs/notify/group.c b/fs/notify/group.c
-index d16b62c..06ca6bc 100644
+index d16b62c..53e45b6 100644
 --- a/fs/notify/group.c
 +++ b/fs/notify/group.c
 @@ -22,6 +22,7 @@
@@ -125,7 +137,7 @@ index d16b62c..06ca6bc 100644
  int fsnotify_fasync(int fd, struct file *file, int on)
  {
 diff --git a/fs/notify/mark.c b/fs/notify/mark.c
-index fc0df44..325b5c6 100644
+index fc0df44..8175f3c 100644
 --- a/fs/notify/mark.c
 +++ b/fs/notify/mark.c
 @@ -109,6 +109,7 @@ void fsnotify_put_mark(struct fsnotify_mark *mark)
@@ -161,7 +173,7 @@ index fc0df44..325b5c6 100644
  static int fsnotify_mark_destroy(void *ignored)
  {
 diff --git a/fs/open.c b/fs/open.c
-index b6f1e96..4ab0d4e 100644
+index b6f1e96..e59c51b 100644
 --- a/fs/open.c
 +++ b/fs/open.c
 @@ -64,6 +64,7 @@ int do_truncate(struct dentry *dentry, loff_t length, unsigned int time_attrs,
@@ -181,7 +193,7 @@ index b6f1e96..4ab0d4e 100644
  static int do_dentry_open(struct file *f,
  			  struct inode *inode,
 diff --git a/fs/read_write.c b/fs/read_write.c
-index fd0414e..8ace6ec 100644
+index fd0414e..0a28933 100644
 --- a/fs/read_write.c
 +++ b/fs/read_write.c
 @@ -504,6 +504,7 @@ vfs_readf_t vfs_readf(struct file *file)
@@ -201,7 +213,7 @@ index fd0414e..8ace6ec 100644
  ssize_t __kernel_write(struct file *file, const char *buf, size_t count, loff_t *pos)
  {
 diff --git a/fs/splice.c b/fs/splice.c
-index 30a091d..c37c311 100644
+index 30a091d..b0ade1f 100644
 --- a/fs/splice.c
 +++ b/fs/splice.c
 @@ -1123,6 +1123,7 @@ long do_splice_from(struct pipe_inode_info *pipe, struct file *out,
@@ -221,7 +233,7 @@ index 30a091d..c37c311 100644
  /**
   * splice_direct_to_actor - splices data directly between two non-pipes
 diff --git a/fs/xattr.c b/fs/xattr.c
-index 9b932b9..44c457a 100644
+index 9b932b9..0c317c4 100644
 --- a/fs/xattr.c
 +++ b/fs/xattr.c
 @@ -207,6 +207,7 @@ vfs_getxattr_alloc(struct dentry *dentry, const char *name, char **xattr_value,
@@ -233,7 +245,7 @@ index 9b932b9..44c457a 100644
  /* Compare an extended attribute value with the given value */
  int vfs_xattr_cmp(struct dentry *dentry, const char *xattr_name,
 diff --git a/kernel/task_work.c b/kernel/task_work.c
-index 53fa971..f80d564 100644
+index 53fa971..bce3211 100644
 --- a/kernel/task_work.c
 +++ b/kernel/task_work.c
 @@ -118,3 +118,4 @@ void task_work_run(void)
@@ -242,7 +254,7 @@ index 53fa971..f80d564 100644
  }
 +EXPORT_SYMBOL_GPL(task_work_run);
 diff --git a/security/commoncap.c b/security/commoncap.c
-index 1832cf7..987ff5f 100644
+index 1832cf7..646e9b2 100644
 --- a/security/commoncap.c
 +++ b/security/commoncap.c
 @@ -1053,12 +1053,14 @@ int cap_mmap_addr(unsigned long addr)
@@ -261,7 +273,7 @@ index 1832cf7..987ff5f 100644
  #ifdef CONFIG_SECURITY
  
 diff --git a/security/device_cgroup.c b/security/device_cgroup.c
-index 03c1652..b00aa76 100644
+index 03c1652..f88c84b 100644
 --- a/security/device_cgroup.c
 +++ b/security/device_cgroup.c
 @@ -7,6 +7,7 @@
@@ -281,7 +293,7 @@ index 03c1652..b00aa76 100644
  int devcgroup_inode_mknod(int mode, dev_t dev)
  {
 diff --git a/security/security.c b/security/security.c
-index 46f405c..54488b0 100644
+index 46f405c..bc8514e 100644
 --- a/security/security.c
 +++ b/security/security.c
 @@ -433,6 +433,7 @@ int security_path_rmdir(struct path *dir, struct dentry *dentry)

@@ -1,3 +1,10 @@
+linux (4.4.4-1kali1) kali-dev; urgency=medium
+
+  * Import new version from Debian
+  * Refresh aufs4 patches
+
+ -- Sophie Brun <sophie@freexian.com>  Tue, 08 Mar 2016 11:18:21 +0100
+
 linux (4.4.4-1) unstable; urgency=medium
 
   [ Salvatore Bonaccorso ]
