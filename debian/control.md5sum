@@ -1,5 +1,5 @@
 31643e411d0d06dc729b487a8356ff73  debian/bin/gencontrol.py
-cc89445fa98a7eb77e38d936dc8258e9  debian/changelog
+f2f705daaae1d93b72b2f61f649de805  debian/changelog
 e492c730e8bc71cc52aa5315391e587e  debian/templates/control.main.in
 8b5e82e3139d725d8dc41627933e7001  debian/templates/image.preinst.in
 0e7dfee77ac3fc5755791858f61f4715  debian/templates/image.prerm.in
@@ -19,7 +19,7 @@ e5ddc3049729f85653d62f41764edd4e  debian/templates/control.libc-dev.in
 f0d4359d83bcd04b5f873804b4c7b9d4  debian/templates/control.docs.in
 5f1df5cd150d7663b81f5c54a604a766  debian/templates/control.headers.arch.in
 8f749b4b98b317144bb10958fd58df5d  debian/templates/image.templates.in
-0225d64b624ae7cf4cd4b3c290763cc3  debian/config/defines
+9e9db53e9f1c0501bb60cb6565f39366  debian/config/defines
 a4d383ee4292f6ba52ab0a0fdfec1568  debian/config/i386/defines
 f634b7f286691a76c386eecd3a243016  debian/config/mips64el/defines
 aa615c977f17dc4b565536647a3cbe20  debian/config/armhf/defines
@@ -39,7 +39,7 @@ b643abcfde9e3b8086c649c72447ee44  debian/config/sparc64/defines
 e45681c668fde7fa18fbf40fa05686e1  debian/config/m68k/defines
 8e4a4fc5336900246b90b041f0f1bd94  debian/config/s390x/defines
 da871dd4234a8d1ed82d76fa536fa411  debian/config/alpha/defines
-dc6c1dddd21d3b9bb288595b00eba29e  debian/config/hppa/defines
+d0dd2d53bc6ed7b0530e16d13df488ee  debian/config/hppa/defines
 4987bf8df1bf042f19fdec4da87aa1d4  debian/config/ppc64el/defines
 663282077cf25e2da1eebd8798322f75  debian/config/armel/defines
 91671d7ce75310062f65a60d3b94489b  debian/config/or1k/defines
@@ -87,4 +87,4 @@ d243c37c6930b5d5f646e8b55b317376  debian/installer/m68k/package-list
 42f64d483c9033b8af2bf2761a4a62fc  debian/installer/hppa/package-list
 6b9e1f21224c5267780b533e43716c26  debian/installer/armel/package-list
 4c1bf26b971d89864682040568fa388e  debian/installer/s390/package-list
-493b70fb82e14117b78a92b86e25c529  debian/installer/package-list
+4edd11d8d488f7b8170c40cd176b94f0  debian/installer/package-list
