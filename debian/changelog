@@ -1,3 +1,13 @@
+linux (4.4.4-2) unstable; urgency=medium
+
+  * Ignore ABI changes in sdhci* modules (fixes FTBFS on armhf)
+  * udeb: Add dependency from mmc-modules to crc-modules (fixes FTBFS on arm64)
+  * [hppa] Ignore ABI changes in built-in drm_kms_helper code (fixes FTBFS)
+  * [powerpc*] Revert "powerpc: Simplify module TOC handling"; it is not needed
+    to fix #808043 and causes a regression on ppc64el
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Wed, 09 Mar 2016 02:15:48 +0000
+
 linux (4.4.4-1kali1) kali-dev; urgency=medium
 
   * Import new version from Debian
