@@ -1,3 +1,9 @@
+linux (4.5.3-2kali1) kali-dev; urgency=medium
+
+  * Import new version from debian
+
+ -- Sophie Brun <sophie@freexian.com>  Mon, 09 May 2016 15:00:25 +0200
+
 linux (4.5.3-2) unstable; urgency=medium
 
   * [s390x] PCI: Ignore zpci ABI changes; these functions are not used by
