@@ -4,8 +4,8 @@ Priority: optional
 Maintainer: Debian Kernel Team <debian-kernel@lists.debian.org>
 Uploaders: Bastian Blank <waldi@debian.org>, maximilian attems <maks@debian.org>, Ben Hutchings <ben@decadent.org.uk>
 Standards-Version: 3.9.5
-Build-Depends: debhelper, python3:any, quilt, cpio <!stage1>, kmod <!stage1>, xz-utils <!stage1>, kernel-wedge (>= 2.93~) <!stage1>, bc <!stage1>, libssl-dev <!stage1>, openssl <!stage1>, asciidoc <!stage1>, bison <!stage1>, flex <!stage1>, gcc-multilib [amd64 ppc64 s390x sparc64] <!stage1>, libaudit-dev <!stage1>, libdw-dev <!stage1>, libelf-dev <!stage1>, libiberty-dev <!stage1> | binutils-dev (<< 2.23.91.20131123-1) <!stage1>, libnewt-dev <!stage1>, libnuma-dev [amd64 arm64 hppa i386 mips mips64 mips64el mipsel powerpc powerpcspe ppc64 ppc64el sparc x32] <!stage1>, libperl-dev <!stage1>, libunwind8-dev [amd64 armel armhf arm64 i386] <!stage1>, python-dev <!stage1>, xmlto <!stage1>, autoconf <!stage1>, automake <!stage1>, libtool <!stage1>, libglib2.0-dev <!stage1>, libudev-dev <!stage1>, libwrap0-dev <!stage1>, libpci-dev <!stage1>, dh-python <!stage1>, dh-systemd <!stage1>, gcc-5 [alpha amd64 arm64 armel armhf hppa i386 m68k mips mipsel mips64 mips64el powerpc powerpcspe ppc64 ppc64el s390x sh4 sparc64] <!stage1>, binutils-hppa64-linux-gnu [hppa] <!stage1>, gcc-5-hppa64-linux-gnu [hppa] <!stage1>
-Build-Depends-Indep: patchutils <!stage1>, xmlto <!stage1>
+Build-Depends: debhelper, python3:any, quilt, cpio <!stage1>, xz-utils <!stage1>, kernel-wedge (>= 2.93~) <!stage1>, kmod <!stage1>, bc <!stage1>, libssl-dev <!stage1>, openssl <!stage1>, asciidoc <!stage1 !nodoc !pkg.linux.notools>, xmlto <!stage1 !nodoc !pkg.linux.notools>, bison <!stage1 !pkg.linux.notools>, flex <!stage1 !pkg.linux.notools>, gcc-multilib [amd64 ppc64 s390x sparc64] <!stage1 !pkg.linux.notools>, libaudit-dev <!stage1 !pkg.linux.notools>, libdw-dev <!stage1 !pkg.linux.notools>, libelf-dev <!stage1 !pkg.linux.notools>, libiberty-dev <!stage1 !pkg.linux.notools>, libnewt-dev <!stage1 !pkg.linux.notools>, libnuma-dev [amd64 arm64 hppa i386 mips mips64 mips64el mipsel powerpc powerpcspe ppc64 ppc64el sparc x32] <!stage1 !pkg.linux.notools>, libperl-dev <!stage1 !pkg.linux.notools>, libunwind8-dev [amd64 armel armhf arm64 i386] <!stage1 !pkg.linux.notools>, python-dev <!stage1 !pkg.linux.notools>, autoconf <!stage1 !pkg.linux.notools>, automake <!stage1 !pkg.linux.notools>, libtool <!stage1 !pkg.linux.notools>, libglib2.0-dev <!stage1 !pkg.linux.notools>, libudev-dev <!stage1 !pkg.linux.notools>, libwrap0-dev <!stage1 !pkg.linux.notools>, libpci-dev <!stage1 !pkg.linux.notools>, dh-python <!stage1>, dh-systemd <!stage1 !pkg.linux.notools>, gcc-5 [alpha amd64 arm64 armel armhf hppa i386 m68k mips mipsel mips64 mips64el powerpc powerpcspe ppc64 ppc64el s390x sh4 sparc64] <!stage1>, binutils-hppa64-linux-gnu [hppa] <!stage1>, gcc-5-hppa64-linux-gnu [hppa] <!stage1>
+Build-Depends-Indep: patchutils <!stage1>, xmlto <!stage1 !nodoc>
 Homepage: https://www.kernel.org/
 Vcs-Browser: https://anonscm.debian.org/cgit/kernel/linux.git
 Vcs-Git: https://anonscm.debian.org/git/kernel/linux.git
@@ -47,7 +47,7 @@ Description: Linux kernel specific documentation for version 4.5
  notes and the like.  Consult the file
  /usr/share/doc/linux-doc-4.5/Documentation/00-INDEX for the detailed
  description of the contents.
-Build-Profiles: <!stage1>
+Build-Profiles: <!stage1 !nodoc>
 Multi-Arch: foreign
 
 Package: linux-manual-4.5
@@ -66,7 +66,7 @@ Description: Linux kernel API manual pages for version 4.5
  installed in the same location, only one linux-manual package may be
  installed at a time.  The linux-doc package containing the documentation
  in other formats is free from such restriction.
-Build-Profiles: <!stage1>
+Build-Profiles: <!stage1 !nodoc>
 Multi-Arch: foreign
 
 Package: linux-kbuild-4.5
@@ -75,6 +75,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Kbuild infrastructure for Linux 4.5
  This package provides the kbuild infrastructure for the headers packages
  for Linux kernel version 4.5.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 Multi-Arch: foreign
 
 Package: linux-cpupower
@@ -87,6 +88,7 @@ Description: CPU frequency and voltage scaling tools for Linux
  This set of userspace tools allow inspection and control of cpufreq and
  cpuidle tunables for hardware that support these features.  The "cpupower"
  command replaces "cpufreq-info" and "cpufreq-set" in cpufrequtils.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 
 Package: libcpupower0
 Architecture: linux-any
@@ -94,6 +96,7 @@ Section: libs
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: CPU frequency and voltage scaling tools for Linux (libraries)
  This package contains the shared library.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 
 Package: libcpupower-dev
 Architecture: linux-any
@@ -105,6 +108,7 @@ Conflicts: libcpufreq-dev
 Description: CPU frequency and voltage scaling tools for Linux (development files)
  This package contains the 'power/cpupower' headers and library shared
  objects.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 
 Package: linux-perf-4.5
 Architecture: alpha amd64 arm64 armel armhf hppa i386 mips mips64 mips64el mipsel powerpc powerpcspe ppc64 ppc64el s390 s390x sh4 sparc sparc64
@@ -121,6 +125,7 @@ Description: Performance analysis tools for Linux 4.5
  .
  The linux-base package contains a 'perf' command which will invoke the
  appropriate version for the running kernel.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 
 Package: libusbip-dev
 Architecture: linux-any
@@ -131,6 +136,7 @@ Description: USB device sharing system over IP network (development files)
  .
  This package provides headers for the libusbip library and the library
  itself for static linking.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 
 Package: usbip
 Architecture: linux-any
@@ -152,6 +158,7 @@ Description: USB device sharing system over IP network
  .
  This package provides the server component 'usbipd' and the client tool
  'usbip'.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 
 Package: hyperv-daemons
 Architecture: amd64 i386 x32
@@ -170,6 +177,7 @@ Description: Support daemons for Linux running on Hyper-V
  .
  hv_vss_daemon provides the volume shadow copy service (VSS), allowing the
  host to freeze the guest filesystems while taking a snapshot.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 
 Package: lockdep
 Architecture: all
@@ -179,6 +187,7 @@ Recommends: liblockdep-dev
 Description: Runtime locking correctness validator
  lockdep is a wrapper for programs that use the pthreads API, which detects
  actual and potential deadlocks and other locking bugs.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 Multi-Arch: allowed
 
 Package: liblockdep4.5
@@ -188,6 +197,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Runtime locking correctness validator (shared library)
  liblockdep is a library for programs that use the pthreads API, which can
  be used to detect actual and potential deadlocks and other locking bugs.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 Multi-Arch: same
 
 Package: liblockdep-dev
@@ -197,6 +207,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Runtime locking correctness validator (development files)
  liblockdep is a library for programs that use the pthreads API, which can
  be used to detect actual and potential deadlocks and other locking bugs.
+Build-Profiles: <!stage1 !pkg.linux.notools>
 Multi-Arch: same
 
 Package: linux-libc-dev
@@ -5610,7 +5621,7 @@ Package-Type: udeb
 Package: linux-image-4.5.0-2-686
 Architecture: i386
 Depends: kmod, linux-base, ${misc:Depends}, initramfs-tools (>= 0.110~) [i386] | linux-initramfs-tool [i386]
-Recommends: firmware-linux-free, ${kernel:Recommends}, libc6-i686 [i386]
+Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.5, debian-kernel-handbook, grub-pc [i386] | extlinux [i386]
 Breaks: udev (<< 208-8~), xserver-xorg-input-vmmouse (<< 1:13.0.99) [i386], initramfs-tools (<< 0.110~)
 Description: Linux 4.5 for older PCs
@@ -5632,7 +5643,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.5.0-2-686-pae
 Architecture: i386
 Depends: kmod, linux-base, ${misc:Depends}, initramfs-tools (>= 0.110~) [i386] | linux-initramfs-tool [i386]
-Recommends: firmware-linux-free, ${kernel:Recommends}, libc6-i686 [i386]
+Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.5, debian-kernel-handbook, grub-pc [i386] | extlinux [i386]
 Breaks: udev (<< 208-8~), xserver-xorg-input-vmmouse (<< 1:13.0.99) [i386], initramfs-tools (<< 0.110~)
 Description: Linux 4.5 for modern PCs
@@ -6468,7 +6479,7 @@ Kernel-Version: 4.5.0-2-4kc-malta
 Package-Type: udeb
 
 Package: kernel-image-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: kernel-image, rtc-modules
@@ -6481,7 +6492,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: nic-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
@@ -6494,7 +6505,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: nic-wireless-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-wireless-modules
@@ -6507,7 +6518,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: nic-shared-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-shared-modules
@@ -6520,7 +6531,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: usb-serial-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: optional
 Provides: usb-serial-modules
@@ -6532,7 +6543,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: ppp-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: optional
 Provides: ppp-modules
@@ -6544,7 +6555,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: pata-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: pata-modules
@@ -6556,7 +6567,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: cdrom-core-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: cdrom-core-modules
@@ -6568,7 +6579,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: scsi-core-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: scsi-core-modules
@@ -6580,7 +6591,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: scsi-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
@@ -6592,7 +6603,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: loop-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: loop-modules
@@ -6604,7 +6615,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: btrfs-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
@@ -6616,7 +6627,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: ext4-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
@@ -6629,7 +6640,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: isofs-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: isofs-modules
@@ -6641,7 +6652,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: jfs-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: jfs-modules
@@ -6653,7 +6664,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: ntfs-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: ntfs-modules
@@ -6665,7 +6676,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: xfs-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: xfs-modules
@@ -6677,7 +6688,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: fat-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: fat-modules
@@ -6689,7 +6700,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: hfs-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: hfs-modules
@@ -6701,7 +6712,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: affs-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: affs-modules
@@ -6713,7 +6724,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: minix-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: minix-modules
@@ -6725,7 +6736,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: md-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: md-modules
@@ -6737,7 +6748,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: multipath-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: multipath-modules
@@ -6749,7 +6760,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: usb-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
@@ -6761,7 +6772,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: usb-storage-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: usb-storage-modules
@@ -6773,7 +6784,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: input-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: input-modules
@@ -6785,7 +6796,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: event-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: event-modules
@@ -6797,7 +6808,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: nic-usb-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-usb-modules
@@ -6809,7 +6820,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: sata-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: sata-modules
@@ -6821,7 +6832,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: core-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: core-modules
@@ -6834,7 +6845,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: crc-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: crc-modules
@@ -6846,7 +6857,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: crypto-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: crypto-modules
@@ -6858,7 +6869,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: crypto-dm-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: crypto-dm-modules
@@ -6870,7 +6881,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: nbd-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: nbd-modules
@@ -6883,7 +6894,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: squashfs-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: squashfs-modules
@@ -6895,7 +6906,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: rtc-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: rtc-modules
@@ -6907,7 +6918,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: virtio-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: virtio-modules
@@ -6919,7 +6930,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: sound-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: sound-modules
@@ -6931,7 +6942,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: zlib-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: zlib-modules
@@ -6943,7 +6954,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: udf-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: udf-modules
@@ -6955,7 +6966,7 @@ Kernel-Version: 4.5.0-2-octeon
 Package-Type: udeb
 
 Package: fuse-modules-4.5.0-2-octeon-di
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: fuse-modules
@@ -7011,8 +7022,8 @@ Description: Header files for Linux 4.5.0-2-5kc-malta
 Build-Profiles: <!stage1>
 
 Package: linux-image-4.5.0-2-octeon
-Architecture: mips mips64 mips64el
-Depends: kmod, linux-base, ${misc:Depends}, initramfs-tools (>= 0.110~) [mips mips64 mips64el] | linux-initramfs-tool [mips mips64 mips64el]
+Architecture: mips mips64 mips64el mipsel
+Depends: kmod, linux-base, ${misc:Depends}, initramfs-tools (>= 0.110~) [mips mipsel mips64 mips64el] | linux-initramfs-tool [mips mipsel mips64 mips64el]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.5, debian-kernel-handbook
 Breaks: udev (<< 208-8~), initramfs-tools (<< 0.110~)
@@ -7021,7 +7032,7 @@ Description: Linux 4.5 for Octeon
 Build-Profiles: <!stage1>
 
 Package: linux-headers-4.5.0-2-octeon
-Architecture: mips mips64 mips64el
+Architecture: mips mips64 mips64el mipsel
 Depends: linux-headers-4.5.0-2-common (= ${binary:Version}), linux-kbuild-4.5, ${misc:Depends}, gcc-5
 Description: Header files for Linux 4.5.0-2-octeon
  This package provides the architecture-specific kernel header files for
@@ -7034,7 +7045,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.5.0-2-all-mipsel
 Architecture: mipsel
-Depends: ${misc:Depends}, linux-headers-4.5.0-2-4kc-malta (= ${binary:Version}), linux-headers-4.5.0-2-5kc-malta (= ${binary:Version}), linux-headers-4.5.0-2-loongson-2e (= ${binary:Version}), linux-headers-4.5.0-2-loongson-2f (= ${binary:Version}), linux-headers-4.5.0-2-loongson-3 (= ${binary:Version})
+Depends: ${misc:Depends}, linux-headers-4.5.0-2-4kc-malta (= ${binary:Version}), linux-headers-4.5.0-2-5kc-malta (= ${binary:Version}), linux-headers-4.5.0-2-loongson-2e (= ${binary:Version}), linux-headers-4.5.0-2-loongson-2f (= ${binary:Version}), linux-headers-4.5.0-2-loongson-3 (= ${binary:Version}), linux-headers-4.5.0-2-octeon (= ${binary:Version})
 Description: All header files for Linux 4.5 (meta-package)
  This package depends against all architecture-specific kernel header files
  for Linux kernel version 4.5, generally used for building out-of-tree
