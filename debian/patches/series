@@ -49,13 +49,15 @@ bugfix/x86/viafb-autoload-on-olpc-xo1.5-only.patch
 
 # Arch bug fixes
 bugfix/mips/MIPS-Allow-emulation-for-unaligned-LSDXC1-instructions.patch
+bugfix/mips/MIPS-Disable-preemption-during-prctl-PR_SET_FP_MODE.patch
+bugfix/mips/MIPS-Force-CPUs-to-lose-FP-context-during-mode-switc.patch
 bugfix/x86/vmxnet3-fix-lock-imbalance-in-vmxnet3_tq_xmit.patch
-bugfix/x86/acpi-processor-request-native-thermal-interrupt-hand.patch
 bugfix/arm/arm-dts-kirkwood-fix-sd-slot-default-configuration-f.patch
 bugfix/sparc/sparc-implement-and-wire-up-modalias_show-for-vio.patch
 bugfix/sparc/sparc-implement-and-wire-up-vio_hotplug-for-vio.patch
 bugfix/x86/revert-sp5100_tco-fix-the-device-check-for-SB800-and.patch
 bugfix/powerpc/powerpc-fix-sstep-compile-on-powerpcspe.patch
+bugfix/arm/dwc3-exynos-fix-deferred-probing-storm.patch
 
 # Arch features
 features/mips/MIPS-increase-MAX-PHYSMEM-BITS-on-Loongson-3-only.patch
@@ -63,6 +65,7 @@ features/mips/MIPS-Loongson-3-Add-Loongson-LS3A-RS780E-1-way-machi.patch
 features/mips/MIPS-octeon-Add-support-for-the-UBNT-E200-board.patch
 features/mips/libata-support-AHCI-on-OCTEON-platform.patch
 features/mips/MIPS-Octeon-Add-Octeon-III-CN7xxx-interface-detection.patch
+features/mips/MIPS-Octeon-detect-and-fix-byte-swapped-initramfs.patch
 features/x86/x86-memtest-WARN-if-bad-RAM-found.patch
 features/x86/x86-make-x32-syscall-support-conditional.patch
 features/sparc/hwrng-n2-attach-on-t5-m5-t7-m7-sparc-cpus.patch
@@ -83,8 +86,10 @@ bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/rtsx_usb_ms-use-msleep_interruptible-in-polling-loop.patch
 bugfix/all/mm-zone_device-depends-on-sparsemem_vmemmap.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
-bugfix/all/atl2-disable-unimplemented-scatter-gather-feature.patch
 bugfix/all/module-invalidate-signatures-on-force-loaded-modules.patch
+bugfix/all/mm-thp-kvm-fix-memory-corruption-in-KVM-with-THP-ena.patch
+bugfix/all/videobuf2-core-fix-crash-after-fixing-cve-2016-4568.patch
+bugfix/all/revert-stmmac-fix-eth0-no-phy-found-regression.patch
 
 # Miscellaneous features
 features/all/mm-exclude-zone_device-from-gfp_zone_table.patch
@@ -132,9 +137,16 @@ bugfix/all/netfilter-x_tables-check-for-size-overflow.patch
 bugfix/all/netfilter-x_tables-validate-e-target_offset-early.patch
 bugfix/all/netfilter-x_tables-make-sure-e-next_offset-covers-re.patch
 bugfix/x86/x86-mm-32-enable-full-randomization-on-i386-and-x86_.patch
-bugfix/all/bpf-fix-double-fdput-in-replace_map_fd_with_map_ptr.patch
-bugfix/all/bpf-fix-refcnt-overflow.patch
-bugfix/all/bpf-fix-check_map_func_compatibility-logic.patch
+bugfix/all/KEYS-Fix-ASN.1-indefinite-length-object-parsing.patch
+bugfix/all/do_splice_to-cap-the-size-before-passing-to-splice_r.patch
+bugfix/all/KVM-MTRR-remove-MSR-0x2f8.patch
+bugfix/all/tipc-check-nl-sock-before-parsing-nested-attributes.patch
+bugfix/x86/kvm-vmx-more-complete-state-update-on-apicv-on-off.patch
+bugfix/all/usb-usbfs-fix-potential-infoleak-in-devio.patch
+bugfix/all/alsa-timer-fix-leak-in-sndrv_timer_ioctl_params.patch
+bugfix/all/alsa-timer-fix-leak-in-events-via-snd_timer_user_cca.patch
+bugfix/all/alsa-timer-fix-leak-in-events-via-snd_timer_user_tin.patch
+bugfix/all/media-videobuf2-v4l2-verify-planes-array-in-buffer-d.patch
 
 # ABI maintenance
 debian/ib-fix-abi-change-in-4.5.3.patch
@@ -162,3 +174,4 @@ bugfix/all/tools-build-remove-bpf-run-time-check-at-build-time.patch
 bugfix/all/power-cpupower-fix-manpages-NAME.patch
 bugfix/all/tools-lib-traceevent-fix-use-of-uninitialized-variables.patch
 bugfix/all/scripts-fix-x.509-pem-support-in-sign-file.patch
+debian/net-sched-fix-abi-change-in-4.5.5.patch
