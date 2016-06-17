@@ -1,11 +1,8 @@
 [abi]
 abiname: kali1
 ignore-changes:
- module:drivers/net/ethernet/*
- module:sound/hda/*
- zpci_disable_device
- zpci_enable_device
- zpci_stop_device
+# Should not be used from OOT
+ module:drivers/net/wireless/realtek/rtlwifi/*
 
 [base]
 arches:
@@ -19,8 +16,17 @@ arches:
  m68k
  mips
  mipsel
+ mipsn32
+ mipsn32el
  mips64
  mips64el
+# Disabled until dak accepts them in the control file
+# mipsr6
+# mipsr6el
+# mipsn32r6
+# mipsn32r6el
+# mips64r6
+# mips64r6el
  or1k
  powerpc
  powerpcspe
@@ -31,6 +37,7 @@ arches:
  sh4
  sparc
  sparc64
+ tilegx
  x32
 compiler: gcc-5
 featuresets:
@@ -42,7 +49,7 @@ featuresets:
 signed-modules: true
 
 [featureset-rt_base]
-enabled: false
+enabled: true
 
 [description]
 part-long-up: This kernel is not suitable for SMP (multi-processor,
