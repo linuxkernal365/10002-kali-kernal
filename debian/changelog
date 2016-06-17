@@ -1,3 +1,9 @@
+linux (4.6.2-1kali1) kali-dev; urgency=medium
+
+  * Import new version from debian
+
+ -- Sophie Brun <sophie@freexian.com>  Fri, 17 Jun 2016 14:47:38 +0200
+
 linux (4.6.2-1) unstable; urgency=medium
 
   * Team upload.
