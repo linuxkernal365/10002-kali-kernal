@@ -1,3 +1,37 @@
+linux (4.6.2-2) unstable; urgency=medium
+
+  * [mips*] Fix ABI changes in 4.6.2
+  * [rt] Update to 4.6.2-rt5:
+    - mm/memcontrol: mem_cgroup_migrate() - replace another local_irq_disable()
+      w. local_lock_irq()
+  * KEYS: potential uninitialized variable (CVE-2016-4470)
+  * percpu: fix synchronization between chunk->map_extend_work and chunk
+    destruction (CVE-2016-4794)
+  * percpu: fix synchronization between synchronous map extension and
+    chunk destruction (CVE-2016-4794)
+  * netfilter: x_tables: Fix parsing of IPT_SO_SET_REPLACE blobs
+    (CVE-2016-4997, CVE-2016-4998)
+    - don't move to non-existent next rule
+    - validate targets of jumps
+    - add and use xt_check_entry_offsets
+    - kill check_entry helper
+    - assert minimum target size
+    - add compat version of xt_check_entry_offsets
+    - check standard target size too
+    - check for bogus target offset
+    - validate all offsets and sizes in a rule
+    - don't reject valid target size on some
+    - arp_tables: simplify translate_compat_table args
+    - ip_tables: simplify translate_compat_table args
+    - ip6_tables: simplify translate_compat_table args
+    - xt_compat_match_from_user doesn't need a retval
+    - do compat validation via translate_table
+    - introduce and use xt_copy_counters_from_user
+  * Ignore ABI change in x_tables
+  * nfsd: check permissions when setting ACLs (CVE-2016-1237)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sat, 25 Jun 2016 11:22:27 +0200
+
 linux (4.6.2-1) unstable; urgency=medium
 
   * Team upload.
