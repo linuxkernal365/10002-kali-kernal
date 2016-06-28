@@ -1,3 +1,9 @@
+linux (4.6.2-2kali2) kali-dev; urgency=medium
+
+  * Add bugfix/all/drm-vmwgfx-Fix-corner-case-screen-target-management.patch
+
+ -- Sophie Brun <sophie@freexian.com>  Tue, 28 Jun 2016 15:21:28 +0200
+
 linux (4.6.2-2kali1) kali-dev; urgency=medium
 
   * Import new version from debian
