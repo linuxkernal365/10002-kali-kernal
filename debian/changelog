@@ -1,3 +1,9 @@
+linux (4.6.4-1kali1) kali-dev; urgency=medium
+
+  * Import new version from debian
+
+ -- Sophie Brun <sophie@freexian.com>  Thu, 21 Jul 2016 10:07:03 +0200
+
 linux (4.6.4-1) unstable; urgency=medium
 
   * Team upload.
@@ -46,11 +52,11 @@ linux (4.6.4-1) unstable; urgency=medium
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 18 Jul 2016 21:57:31 +0200
 
-linux (3.6.3-1kali1) kali-dev; urgency=medium
+linux (4.6.3-1kali1) kali-dev; urgency=medium
 
   * Import new version from debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 11 Jul 2016 17:37:44 +0200
+ -- Sophie Brun <sophie@freexian.com>  Tue, 12 Jul 2016 17:37:44 +0200
 
 linux (4.6.3-1) unstable; urgency=medium
 
