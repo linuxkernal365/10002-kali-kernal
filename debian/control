@@ -822,15 +822,12 @@ Description: All header files for Linux 4.7 (meta-package)
  kernel modules.
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-amd64-unsigned
+Package: linux-image-4.7.0-kali1-amd64
 Architecture: amd64
-Provides: linux-image-4.7.0-kali1-amd64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [amd64] | linux-initramfs-tool [amd64]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.7, debian-kernel-handbook, grub-pc [amd64] | grub-efi-amd64 [amd64] | extlinux [amd64]
-Replaces: linux-image-4.7.0-kali1-amd64
 Breaks: xserver-xorg-input-vmmouse (<< 1:13.0.99) [amd64], initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-amd64
 Description: Linux 4.7 for 64-bit PCs
  The Linux kernel 4.7 and modules for use on PCs with AMD64, Intel 64 or
  VIA Nano processors.
@@ -876,15 +873,12 @@ Description: All header files for Linux 4.7 (meta-package)
  kernel modules.
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-arm64-unsigned
+Package: linux-image-4.7.0-kali1-arm64
 Architecture: arm64
-Provides: linux-image-4.7.0-kali1-arm64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [arm64] | linux-initramfs-tool [arm64]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.7, debian-kernel-handbook
-Replaces: linux-image-4.7.0-kali1-arm64
 Breaks: initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-arm64
 Description: Linux 4.7 for 64-bit ARMv8 machines
  The Linux kernel 4.7 and modules for use on 64-bit ARMv8 machines.
 Build-Profiles: <!stage1>
@@ -1819,15 +1813,12 @@ Description: All header files for Linux 4.7 (meta-package)
  kernel modules.
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-armmp-unsigned
+Package: linux-image-4.7.0-kali1-armmp
 Architecture: armhf
-Provides: linux-image-4.7.0-kali1-armmp
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [armhf] | linux-initramfs-tool [armhf]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.7, debian-kernel-handbook
-Replaces: linux-image-4.7.0-kali1-armmp
 Breaks: initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-armmp
 Description: Linux 4.7 for ARMv7 multiplatform compatible SoCs
  The Linux kernel 4.7 and modules for use on ARMv7 multiplatform kernel.
  See https://wiki.debian.org/DebianKernel/ARMMP for details of supported
@@ -1854,15 +1845,12 @@ Depends: ${misc:Depends}
 Description: Debug symbols for linux-image-4.7.0-kali1-armmp
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-armmp-lpae-unsigned
+Package: linux-image-4.7.0-kali1-armmp-lpae
 Architecture: armhf
-Provides: linux-image-4.7.0-kali1-armmp-lpae
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [armhf] | linux-initramfs-tool [armhf]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.7, debian-kernel-handbook
-Replaces: linux-image-4.7.0-kali1-armmp-lpae
 Breaks: initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-armmp-lpae
 Description: Linux 4.7 for ARMv7 multiplatform compatible SoCs supporting LPAE
  The Linux kernel 4.7 and modules for use on ARMv7 multiplatform kernel
  supporting LPAE. See https://wiki.debian.org/DebianKernel/ARMMP for
@@ -2859,15 +2847,12 @@ Description: All header files for Linux 4.7 (meta-package)
  kernel modules.
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-686-unsigned
+Package: linux-image-4.7.0-kali1-686
 Architecture: i386
-Provides: linux-image-4.7.0-kali1-686
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [i386] | linux-initramfs-tool [i386]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.7, debian-kernel-handbook, grub-pc [i386] | extlinux [i386]
-Replaces: linux-image-4.7.0-kali1-686
 Breaks: xserver-xorg-input-vmmouse (<< 1:13.0.99) [i386], initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-686
 Description: Linux 4.7 for older PCs
  The Linux kernel 4.7 and modules for use on PCs with one or more
  processors not supporting PAE.
@@ -2893,15 +2878,12 @@ Depends: ${misc:Depends}
 Description: Debug symbols for linux-image-4.7.0-kali1-686
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-686-pae-unsigned
+Package: linux-image-4.7.0-kali1-686-pae
 Architecture: i386
-Provides: linux-image-4.7.0-kali1-686-pae
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [i386] | linux-initramfs-tool [i386]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.7, debian-kernel-handbook, grub-pc [i386] | extlinux [i386]
-Replaces: linux-image-4.7.0-kali1-686-pae
 Breaks: xserver-xorg-input-vmmouse (<< 1:13.0.99) [i386], initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-686-pae
 Description: Linux 4.7 for modern PCs
  The Linux kernel 4.7 and modules for use on PCs with one or more
  processors supporting PAE.
@@ -5506,15 +5488,12 @@ Description: All header files for Linux 4.7 (meta-package)
  kernel modules.
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-powerpc-unsigned
+Package: linux-image-4.7.0-kali1-powerpc
 Architecture: powerpc
-Provides: linux-image-4.7.0-kali1-powerpc
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [powerpc] | linux-initramfs-tool [powerpc]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.7, debian-kernel-handbook, mkvmlinuz [powerpc]
-Replaces: linux-image-4.7.0-kali1-powerpc
 Breaks: initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-powerpc
 Description: Linux 4.7 for uniprocessor 32-bit PowerPC
  The Linux kernel 4.7 and modules for use on uniprocessor 32-bit PowerPC.
 Build-Profiles: <!stage1>
@@ -5539,15 +5518,12 @@ Depends: ${misc:Depends}
 Description: Debug symbols for linux-image-4.7.0-kali1-powerpc
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-powerpc-smp-unsigned
+Package: linux-image-4.7.0-kali1-powerpc-smp
 Architecture: powerpc
-Provides: linux-image-4.7.0-kali1-powerpc-smp
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [powerpc] | linux-initramfs-tool [powerpc]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.7, debian-kernel-handbook, mkvmlinuz [powerpc]
-Replaces: linux-image-4.7.0-kali1-powerpc-smp
 Breaks: initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-powerpc-smp
 Description: Linux 4.7 for multiprocessor 32-bit PowerPC
  The Linux kernel 4.7 and modules for use on multiprocessor 32-bit PowerPC.
 Build-Profiles: <!stage1>
@@ -5572,15 +5548,12 @@ Depends: ${misc:Depends}
 Description: Debug symbols for linux-image-4.7.0-kali1-powerpc-smp
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-powerpc64-unsigned
-Architecture: powerpc
-Provides: linux-image-4.7.0-kali1-powerpc64
-Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [powerpc] | linux-initramfs-tool [powerpc]
+Package: linux-image-4.7.0-kali1-powerpc64
+Architecture: powerpc ppc64
+Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [powerpc ppc64] | linux-initramfs-tool [powerpc ppc64]
 Recommends: firmware-linux-free, ${kernel:Recommends}
-Suggests: linux-doc-4.7, debian-kernel-handbook, mkvmlinuz [powerpc]
-Replaces: linux-image-4.7.0-kali1-powerpc64
+Suggests: linux-doc-4.7, debian-kernel-handbook, mkvmlinuz [powerpc ppc64]
 Breaks: initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-powerpc64
 Description: Linux 4.7 for 64-bit PowerPC
  The Linux kernel 4.7 and modules for use on 64-bit PowerPC.
 Build-Profiles: <!stage1>
@@ -6192,16 +6165,6 @@ Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-kali1-powerpc64
 Package-Type: udeb
 
-Package: linux-image-4.7.0-kali1-powerpc64
-Architecture: ppc64
-Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [ppc64] | linux-initramfs-tool [ppc64]
-Recommends: firmware-linux-free, ${kernel:Recommends}
-Suggests: linux-doc-4.7, debian-kernel-handbook, mkvmlinuz [ppc64]
-Breaks: initramfs-tools (<< 0.110~)
-Description: Linux 4.7 for 64-bit PowerPC
- The Linux kernel 4.7 and modules for use on 64-bit PowerPC.
-Build-Profiles: <!stage1>
-
 Package: linux-headers-4.7.0-kali1-all-ppc64el
 Architecture: ppc64el
 Depends: ${misc:Depends}, linux-headers-4.7.0-kali1-powerpc64le (= ${binary:Version})
@@ -6211,15 +6174,12 @@ Description: All header files for Linux 4.7 (meta-package)
  kernel modules.
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-powerpc64le-unsigned
+Package: linux-image-4.7.0-kali1-powerpc64le
 Architecture: ppc64el
-Provides: linux-image-4.7.0-kali1-powerpc64le
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [ppc64el] | linux-initramfs-tool [ppc64el]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.7, debian-kernel-handbook, mkvmlinuz [ppc64el]
-Replaces: linux-image-4.7.0-kali1-powerpc64le
 Breaks: initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-powerpc64le
 Description: Linux 4.7 for Little-endian 64-bit PowerPC
  The Linux kernel 4.7 and modules for use on Little-endian 64-bit PowerPC.
 Build-Profiles: <!stage1>
@@ -6253,15 +6213,12 @@ Description: All header files for Linux 4.7 (meta-package)
  kernel modules.
 Build-Profiles: <!stage1>
 
-Package: linux-image-4.7.0-kali1-s390x-unsigned
+Package: linux-image-4.7.0-kali1-s390x
 Architecture: s390x
-Provides: linux-image-4.7.0-kali1-s390x
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.110~) [s390x] | linux-initramfs-tool [s390x]
 Recommends: firmware-linux-free, ${kernel:Recommends}
 Suggests: linux-doc-4.7, debian-kernel-handbook, s390-tools [s390x]
-Replaces: linux-image-4.7.0-kali1-s390x
 Breaks: initramfs-tools (<< 0.110~)
-Conflicts: linux-image-4.7.0-kali1-s390x
 Description: Linux 4.7 for IBM zSeries
  The Linux kernel 4.7 and modules for use on IBM zSeries.
 Build-Profiles: <!stage1>
