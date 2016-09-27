@@ -1,3 +1,10 @@
+linux (4.7.5-1kali2) kali-experimental; urgency=medium
+
+  * Drop '-unsigned' suffix to packages (revert commit
+    72f58e83eaacb07b7dc5d077890f2be7d548300b in git Debian)
+
+ -- Sophie Brun <sophie@freexian.com>  Tue, 27 Sep 2016 09:21:16 +0200
+
 linux (4.7.5-1kali1) kali-experimental; urgency=medium
 
   * Import new version from Debian

@@ -372,10 +372,7 @@ class Gencontrol(Base):
         packages_dummy = []
         packages_own = []
 
-        build_signed = config_entry_build.get('signed-modules')
-
-        image = self.templates[build_signed and "control.image-unsigned"
-                               or "control.image"]
+        image = self.templates["control.image"]
 
         config_entry_xen = self.config.merge('xen', arch, featureset, flavour)
         if config_entry_xen:
@@ -390,7 +387,6 @@ class Gencontrol(Base):
 
         image_main = self.process_real_image(image[0], image_fields, vars)
         packages_own.append(image_main)
-        makeflags['IMAGE_PACKAGE_NAME'] = image_main['Package']
         packages_own.extend(self.process_packages(image[1:], vars))
 
         package_headers = self.process_package(headers[0], vars)
@@ -473,7 +469,7 @@ class Gencontrol(Base):
         makeflags['KCONFIG_OPTIONS'] = ''
         if build_debug:
             makeflags['KCONFIG_OPTIONS'] += ' -o DEBUG_INFO=y'
-        if build_signed:
+        if config_entry_build.get('signed-modules'):
             makeflags['KCONFIG_OPTIONS'] += ' -o MODULE_SIG=y'
 
         cmds_binary_arch = ["$(MAKE) -f debian/rules.real binary-arch-flavour %s" % makeflags]
@@ -494,7 +490,8 @@ class Gencontrol(Base):
                               (vars['abiname'], vars['localversion']))
         for name in ['postinst', 'postrm', 'preinst', 'prerm']:
             self._substitute_file('image.%s' % name, vars,
-                                  'debian/%s.%s' % (image_main['Package'], name))
+                                  'debian/linux-image-%s%s.%s' %
+                                  (vars['abiname'], vars['localversion'], name))
         if build_debug:
             self._substitute_file('image-dbg.lintian-override', vars,
                                   'debian/linux-image-%s%s-dbgsym.lintian-overrides' %
