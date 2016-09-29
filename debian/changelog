@@ -1,3 +1,10 @@
+linux (4.7.5-1kali3) kali-experimental; urgency=medium
+
+  * Revert "Drop '-unsigned' suffix to packages". Change config for
+    each architecture instead: signed-modules disabled
+
+ -- Sophie Brun <sophie@freexian.com>  Thu, 29 Sep 2016 12:00:41 +0200
+
 linux (4.7.5-1kali2) kali-experimental; urgency=medium
 
   * Drop '-unsigned' suffix to packages (revert commit
