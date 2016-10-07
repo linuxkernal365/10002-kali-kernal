@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Kernel Team <debian-kernel@lists.debian.org>
 Uploaders: Bastian Blank <waldi@debian.org>, maximilian attems <maks@debian.org>, Ben Hutchings <ben@decadent.org.uk>
 Standards-Version: 3.9.8
-Build-Depends: debhelper, python3:any, quilt, cpio <!stage1>, xz-utils <!stage1>, kernel-wedge (>= 2.93~) <!stage1>, kmod <!stage1>, bc <!stage1>, libssl-dev:native <!stage1>, libssl-dev [linux-any] <!stage1 !pkg.linux.notools cross>, openssl:native <!stage1>, asciidoc <!stage1 !nodoc !pkg.linux.notools>, xmlto <!stage1 !nodoc !pkg.linux.notools>, bison <!stage1 !pkg.linux.notools !nopython>, flex:native <!stage1 !pkg.linux.notools !nopython>, gcc-multilib [amd64 ppc64 s390x sparc64] <!stage1 !pkg.linux.notools !nopython>, libaudit-dev <!stage1 !pkg.linux.notools !nopython>, libdw-dev <!stage1 !pkg.linux.notools !nopython>, libelf-dev <!stage1 !pkg.linux.notools !nopython>, libiberty-dev <!stage1 !pkg.linux.notools !nopython>, libnewt-dev <!stage1 !pkg.linux.notools !nopython>, libnuma-dev [amd64 arm64 hppa i386 mips mips64 mips64el mipsel mipsn32 mipsn32el mipsr6 mipsr6el mipsn32r6 mipsn32r6el mips64r6 mips64r6el powerpc powerpcspe ppc64 ppc64el sparc x32] <!stage1 !pkg.linux.notools !nopython>, libperl-dev <!stage1 !pkg.linux.notools !nopython>, libunwind8-dev [amd64 armel armhf arm64 i386] <!stage1 !pkg.linux.notools !nopython>, python-dev <!stage1 !pkg.linux.notools !nopython>, autoconf <!stage1 !pkg.linux.notools>, automake <!stage1 !pkg.linux.notools>, libtool <!stage1 !pkg.linux.notools>, libglib2.0-dev <!stage1 !pkg.linux.notools>, libudev-dev <!stage1 !pkg.linux.notools>, libwrap0-dev <!stage1 !pkg.linux.notools>, rsync <!stage1 !pkg.linux.notools>, libpci-dev <!stage1 !pkg.linux.notools>, dh-python <!stage1>, dh-systemd <!stage1 !pkg.linux.notools>, gcc-5 [alpha amd64 arm64 armel armhf hppa i386 m68k mips mipsel mips64 mips64el powerpc powerpcspe ppc64 ppc64el s390x sh4 sparc64] <!stage1 !cross>, gcc-5-x86-64-linux-gnu:native [alpha amd64 arm64 armel armhf i386 m68k mips mipsel mips64 mips64el powerpc powerpcspe ppc64 ppc64el s390x sh4 sparc64] <!stage1 cross>, binutils-hppa64-linux-gnu [hppa] <!stage1 !cross>, gcc-5-hppa64-linux-gnu [hppa] <!stage1 !cross>, gcc-5-hppa-linux-gnu:native [hppa] <!stage1 cross>, binutils-hppa64-linux-gnu:native [hppa] <!stage1 cross>, gcc-5-hppa64-linux-gnu:native [hppa] <!stage1 cross>
+Build-Depends: debhelper, python3:any, quilt, cpio <!stage1>, xz-utils <!stage1>, kernel-wedge (>= 2.93~) <!stage1>, kmod <!stage1>, bc <!stage1>, libssl-dev:native <!stage1>, libssl-dev [linux-any] <!stage1 !pkg.linux.notools cross>, openssl:native <!stage1>, asciidoc <!stage1 !nodoc !pkg.linux.notools>, xmlto <!stage1 !nodoc !pkg.linux.notools>, bison <!stage1 !pkg.linux.notools !nopython>, flex:native <!stage1 !pkg.linux.notools !nopython>, gcc-multilib [amd64 ppc64 s390x sparc64] <!stage1 !pkg.linux.notools !nopython>, libaudit-dev <!stage1 !pkg.linux.notools !nopython>, libdw-dev <!stage1 !pkg.linux.notools !nopython>, libelf-dev <!stage1 !pkg.linux.notools !nopython>, libiberty-dev <!stage1 !pkg.linux.notools !nopython>, libnewt-dev <!stage1 !pkg.linux.notools !nopython>, libnuma-dev [amd64 arm64 hppa i386 mips mips64 mips64el mipsel mipsn32 mipsn32el mipsr6 mipsr6el mipsn32r6 mipsn32r6el mips64r6 mips64r6el powerpc powerpcspe ppc64 ppc64el sparc x32] <!stage1 !pkg.linux.notools !nopython>, libperl-dev <!stage1 !pkg.linux.notools !nopython>, libunwind8-dev [amd64 armel armhf arm64 i386] <!stage1 !pkg.linux.notools !nopython>, python-dev <!stage1 !pkg.linux.notools !nopython>, autoconf <!stage1 !pkg.linux.notools>, automake <!stage1 !pkg.linux.notools>, libtool <!stage1 !pkg.linux.notools>, libglib2.0-dev <!stage1 !pkg.linux.notools>, libudev-dev <!stage1 !pkg.linux.notools>, libwrap0-dev <!stage1 !pkg.linux.notools>, rsync <!stage1 !pkg.linux.notools>, libpci-dev <!stage1 !pkg.linux.notools>, dh-python <!stage1>, dh-systemd <!stage1 !pkg.linux.notools>, gcc-5 [alpha amd64 arm64 armel armhf hppa i386 m68k mips mipsel mips64 mips64el powerpc powerpcspe ppc64 ppc64el s390x sh4 sparc64] <!stage1 !cross>, gcc-5-alpha-linux-gnu:native [alpha] <!stage1 cross>, gcc-5-x86-64-linux-gnu:native [amd64] <!stage1 cross>, gcc-5-aarch64-linux-gnu:native [arm64] <!stage1 cross>, gcc-5-arm-linux-gnueabi:native [armel] <!stage1 cross>, gcc-5-arm-linux-gnueabihf:native [armhf] <!stage1 cross>, binutils-hppa64-linux-gnu [hppa] <!stage1 !cross>, gcc-5-hppa64-linux-gnu [hppa] <!stage1 !cross>, gcc-5-hppa-linux-gnu:native [hppa] <!stage1 cross>, binutils-hppa64-linux-gnu:native [hppa] <!stage1 cross>, gcc-5-hppa64-linux-gnu:native [hppa] <!stage1 cross>, gcc-5-i686-linux-gnu:native [i386] <!stage1 cross>, gcc-5-m68k-linux-gnu:native [m68k] <!stage1 cross>, gcc-5-mips-linux-gnu:native [mips] <!stage1 cross>, gcc-5-mipsel-linux-gnu:native [mipsel] <!stage1 cross>, gcc-5-mips64-linux-gnuabi64:native [mips64] <!stage1 cross>, gcc-5-mips64el-linux-gnuabi64:native [mips64el] <!stage1 cross>, gcc-5-powerpc-linux-gnu:native [powerpc] <!stage1 cross>, gcc-5-powerpc-linux-gnuspe:native [powerpcspe] <!stage1 cross>, gcc-5-powerpc64-linux-gnu:native [ppc64] <!stage1 cross>, gcc-5-powerpc64le-linux-gnu:native [ppc64el] <!stage1 cross>, gcc-5-s390x-linux-gnu:native [s390x] <!stage1 cross>, gcc-5-sh4-linux-gnu:native [sh4] <!stage1 cross>, gcc-5-sparc64-linux-gnu:native [sparc64] <!stage1 cross>
 Build-Depends-Indep: patchutils <!stage1>, xmlto <!stage1 !nodoc>
 Homepage: https://www.kernel.org/
 Vcs-Browser: https://anonscm.debian.org/cgit/kernel/linux.git
@@ -242,12 +242,12 @@ Build-Profiles: <!stage1>
 Package: kernel-image-4.7.0-1-alpha-generic-di
 Architecture: alpha
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-alpha-generic
 Package-Type: udeb
@@ -257,7 +257,7 @@ Architecture: alpha
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-alpha-generic-di, nic-shared-modules-4.7.0-1-alpha-generic-di, core-modules-4.7.0-1-alpha-generic-di, crc-modules-4.7.0-1-alpha-generic-di
+Depends: kernel-image-4.7.0-1-alpha-generic-di, nic-shared-modules-4.7.0-1-alpha-generic-di, crc-modules-4.7.0-1-alpha-generic-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -270,7 +270,7 @@ Architecture: alpha
 Section: debian-installer
 Priority: standard
 Provides: nic-wireless-modules
-Depends: kernel-image-4.7.0-1-alpha-generic-di, nic-shared-modules-4.7.0-1-alpha-generic-di, core-modules-4.7.0-1-alpha-generic-di, usb-modules-4.7.0-1-alpha-generic-di, pcmcia-modules-4.7.0-1-alpha-generic-di, crc-modules-4.7.0-1-alpha-generic-di
+Depends: kernel-image-4.7.0-1-alpha-generic-di, nic-shared-modules-4.7.0-1-alpha-generic-di, usb-modules-4.7.0-1-alpha-generic-di, pcmcia-modules-4.7.0-1-alpha-generic-di, crc-modules-4.7.0-1-alpha-generic-di
 Description: Wireless NIC drivers
  This package contains wireless NIC drivers for the kernel.  Includes
  crypto modules only needed for wireless (WEP, WPA).
@@ -368,7 +368,7 @@ Architecture: alpha
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-alpha-generic-di, scsi-core-modules-4.7.0-1-alpha-generic-di, cdrom-core-modules-4.7.0-1-alpha-generic-di, core-modules-4.7.0-1-alpha-generic-di, ata-modules-4.7.0-1-alpha-generic-di
+Depends: kernel-image-4.7.0-1-alpha-generic-di, scsi-core-modules-4.7.0-1-alpha-generic-di, cdrom-core-modules-4.7.0-1-alpha-generic-di, ata-modules-4.7.0-1-alpha-generic-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -392,7 +392,7 @@ Architecture: alpha
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-alpha-generic-di, core-modules-4.7.0-1-alpha-generic-di, crc-modules-4.7.0-1-alpha-generic-di, zlib-modules-4.7.0-1-alpha-generic-di, md-modules-4.7.0-1-alpha-generic-di
+Depends: kernel-image-4.7.0-1-alpha-generic-di, crc-modules-4.7.0-1-alpha-generic-di, zlib-modules-4.7.0-1-alpha-generic-di, md-modules-4.7.0-1-alpha-generic-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -404,7 +404,7 @@ Architecture: alpha
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-alpha-generic-di, core-modules-4.7.0-1-alpha-generic-di, crc-modules-4.7.0-1-alpha-generic-di
+Depends: kernel-image-4.7.0-1-alpha-generic-di, crc-modules-4.7.0-1-alpha-generic-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -489,7 +489,7 @@ Architecture: alpha
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-alpha-generic-di, core-modules-4.7.0-1-alpha-generic-di
+Depends: kernel-image-4.7.0-1-alpha-generic-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -573,7 +573,7 @@ Architecture: alpha
 Section: debian-installer
 Priority: standard
 Provides: pcmcia-modules
-Depends: kernel-image-4.7.0-1-alpha-generic-di, core-modules-4.7.0-1-alpha-generic-di
+Depends: kernel-image-4.7.0-1-alpha-generic-di
 Description: Common PCMCIA drivers
  This package contains common PCMCIA drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -585,7 +585,7 @@ Architecture: alpha
 Section: debian-installer
 Priority: standard
 Provides: nic-usb-modules
-Depends: kernel-image-4.7.0-1-alpha-generic-di, nic-shared-modules-4.7.0-1-alpha-generic-di, nic-wireless-modules-4.7.0-1-alpha-generic-di, usb-modules-4.7.0-1-alpha-generic-di, core-modules-4.7.0-1-alpha-generic-di, crc-modules-4.7.0-1-alpha-generic-di
+Depends: kernel-image-4.7.0-1-alpha-generic-di, nic-shared-modules-4.7.0-1-alpha-generic-di, nic-wireless-modules-4.7.0-1-alpha-generic-di, usb-modules-4.7.0-1-alpha-generic-di, crc-modules-4.7.0-1-alpha-generic-di
 Description: USB NIC drivers
  This package contains USB network adapter drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -600,19 +600,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-alpha-generic-di, scsi-core-modules-4.7.0-1-alpha-generic-di, ata-modules-4.7.0-1-alpha-generic-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-alpha-generic
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-alpha-generic-di
-Architecture: alpha
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-alpha-generic-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-alpha-generic
 Package-Type: udeb
@@ -921,12 +908,12 @@ Build-Profiles: <!stage1>
 Package: kernel-image-4.7.0-1-marvell-di
 Architecture: armel
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image, rtc-modules
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-marvell
 Package-Type: udeb
@@ -936,7 +923,7 @@ Architecture: armel
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-marvell-di, nic-shared-modules-4.7.0-1-marvell-di, core-modules-4.7.0-1-marvell-di, crc-modules-4.7.0-1-marvell-di
+Depends: kernel-image-4.7.0-1-marvell-di, nic-shared-modules-4.7.0-1-marvell-di, crc-modules-4.7.0-1-marvell-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -1034,7 +1021,7 @@ Architecture: armel
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-marvell-di, core-modules-4.7.0-1-marvell-di, crc-modules-4.7.0-1-marvell-di, zlib-modules-4.7.0-1-marvell-di, md-modules-4.7.0-1-marvell-di
+Depends: kernel-image-4.7.0-1-marvell-di, crc-modules-4.7.0-1-marvell-di, zlib-modules-4.7.0-1-marvell-di, md-modules-4.7.0-1-marvell-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -1046,7 +1033,7 @@ Architecture: armel
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-marvell-di, core-modules-4.7.0-1-marvell-di, crc-modules-4.7.0-1-marvell-di
+Depends: kernel-image-4.7.0-1-marvell-di, crc-modules-4.7.0-1-marvell-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -1143,7 +1130,7 @@ Architecture: armel
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-marvell-di, core-modules-4.7.0-1-marvell-di
+Depends: kernel-image-4.7.0-1-marvell-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -1215,7 +1202,7 @@ Architecture: armel
 Section: debian-installer
 Priority: standard
 Provides: nic-usb-modules
-Depends: kernel-image-4.7.0-1-marvell-di, nic-shared-modules-4.7.0-1-marvell-di, usb-modules-4.7.0-1-marvell-di, core-modules-4.7.0-1-marvell-di, crc-modules-4.7.0-1-marvell-di
+Depends: kernel-image-4.7.0-1-marvell-di, nic-shared-modules-4.7.0-1-marvell-di, usb-modules-4.7.0-1-marvell-di, crc-modules-4.7.0-1-marvell-di
 Description: USB NIC drivers
  This package contains USB network adapter drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -1230,19 +1217,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-marvell-di, scsi-core-modules-4.7.0-1-marvell-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-marvell
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-marvell-di
-Architecture: armel
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-marvell-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-marvell
 Package-Type: udeb
@@ -1288,7 +1262,7 @@ Architecture: armel
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.7.0-1-marvell-di, core-modules-4.7.0-1-marvell-di, usb-modules-4.7.0-1-marvell-di, crc-modules-4.7.0-1-marvell-di
+Depends: kernel-image-4.7.0-1-marvell-di, usb-modules-4.7.0-1-marvell-di, crc-modules-4.7.0-1-marvell-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.
@@ -1396,12 +1370,12 @@ Package-Type: udeb
 Package: kernel-image-4.7.0-1-versatile-di
 Architecture: armel
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image, rtc-modules
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-versatile
 Package-Type: udeb
@@ -1411,7 +1385,7 @@ Architecture: armel
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-versatile-di, nic-shared-modules-4.7.0-1-versatile-di, core-modules-4.7.0-1-versatile-di, crc-modules-4.7.0-1-versatile-di
+Depends: kernel-image-4.7.0-1-versatile-di, nic-shared-modules-4.7.0-1-versatile-di, crc-modules-4.7.0-1-versatile-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -1485,7 +1459,7 @@ Architecture: armel
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-versatile-di, scsi-core-modules-4.7.0-1-versatile-di, cdrom-core-modules-4.7.0-1-versatile-di, core-modules-4.7.0-1-versatile-di
+Depends: kernel-image-4.7.0-1-versatile-di, scsi-core-modules-4.7.0-1-versatile-di, cdrom-core-modules-4.7.0-1-versatile-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -1509,7 +1483,7 @@ Architecture: armel
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-versatile-di, core-modules-4.7.0-1-versatile-di, crc-modules-4.7.0-1-versatile-di, zlib-modules-4.7.0-1-versatile-di, md-modules-4.7.0-1-versatile-di
+Depends: kernel-image-4.7.0-1-versatile-di, crc-modules-4.7.0-1-versatile-di, zlib-modules-4.7.0-1-versatile-di, md-modules-4.7.0-1-versatile-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -1521,7 +1495,7 @@ Architecture: armel
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-versatile-di, core-modules-4.7.0-1-versatile-di, crc-modules-4.7.0-1-versatile-di
+Depends: kernel-image-4.7.0-1-versatile-di, crc-modules-4.7.0-1-versatile-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -1582,7 +1556,7 @@ Architecture: armel
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-versatile-di, core-modules-4.7.0-1-versatile-di
+Depends: kernel-image-4.7.0-1-versatile-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -1606,7 +1580,7 @@ Architecture: armel
 Section: debian-installer
 Priority: standard
 Provides: nic-usb-modules
-Depends: kernel-image-4.7.0-1-versatile-di, nic-shared-modules-4.7.0-1-versatile-di, usb-modules-4.7.0-1-versatile-di, core-modules-4.7.0-1-versatile-di, crc-modules-4.7.0-1-versatile-di
+Depends: kernel-image-4.7.0-1-versatile-di, nic-shared-modules-4.7.0-1-versatile-di, usb-modules-4.7.0-1-versatile-di, crc-modules-4.7.0-1-versatile-di
 Description: USB NIC drivers
  This package contains USB network adapter drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -1621,19 +1595,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-versatile-di, scsi-core-modules-4.7.0-1-versatile-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-versatile
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-versatile-di
-Architecture: armel
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-versatile-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-versatile
 Package-Type: udeb
@@ -1901,12 +1862,12 @@ Build-Profiles: <!stage1>
 Package: kernel-image-4.7.0-1-parisc-di
 Architecture: hppa
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-parisc
 Package-Type: udeb
@@ -1916,7 +1877,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-parisc-di, nic-shared-modules-4.7.0-1-parisc-di, core-modules-4.7.0-1-parisc-di, crc-modules-4.7.0-1-parisc-di
+Depends: kernel-image-4.7.0-1-parisc-di, nic-shared-modules-4.7.0-1-parisc-di, crc-modules-4.7.0-1-parisc-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -2014,7 +1975,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-parisc-di, scsi-core-modules-4.7.0-1-parisc-di, cdrom-core-modules-4.7.0-1-parisc-di, core-modules-4.7.0-1-parisc-di, ata-modules-4.7.0-1-parisc-di
+Depends: kernel-image-4.7.0-1-parisc-di, scsi-core-modules-4.7.0-1-parisc-di, cdrom-core-modules-4.7.0-1-parisc-di, ata-modules-4.7.0-1-parisc-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -2038,7 +1999,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-parisc-di, core-modules-4.7.0-1-parisc-di, crc-modules-4.7.0-1-parisc-di, zlib-modules-4.7.0-1-parisc-di, md-modules-4.7.0-1-parisc-di
+Depends: kernel-image-4.7.0-1-parisc-di, crc-modules-4.7.0-1-parisc-di, zlib-modules-4.7.0-1-parisc-di, md-modules-4.7.0-1-parisc-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -2050,7 +2011,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-parisc-di, core-modules-4.7.0-1-parisc-di, crc-modules-4.7.0-1-parisc-di
+Depends: kernel-image-4.7.0-1-parisc-di, crc-modules-4.7.0-1-parisc-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -2135,7 +2096,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-parisc-di, core-modules-4.7.0-1-parisc-di
+Depends: kernel-image-4.7.0-1-parisc-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -2195,7 +2156,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: nic-usb-modules
-Depends: kernel-image-4.7.0-1-parisc-di, nic-shared-modules-4.7.0-1-parisc-di, usb-modules-4.7.0-1-parisc-di, core-modules-4.7.0-1-parisc-di, crc-modules-4.7.0-1-parisc-di
+Depends: kernel-image-4.7.0-1-parisc-di, nic-shared-modules-4.7.0-1-parisc-di, usb-modules-4.7.0-1-parisc-di, crc-modules-4.7.0-1-parisc-di
 Description: USB NIC drivers
  This package contains USB network adapter drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -2210,19 +2171,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-parisc-di, scsi-core-modules-4.7.0-1-parisc-di, ata-modules-4.7.0-1-parisc-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-parisc
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-parisc-di
-Architecture: hppa
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-parisc-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-parisc
 Package-Type: udeb
@@ -2340,12 +2288,12 @@ Package-Type: udeb
 Package: kernel-image-4.7.0-1-parisc64-smp-di
 Architecture: hppa
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image, i2c-modules
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-parisc64-smp
 Package-Type: udeb
@@ -2355,7 +2303,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-parisc64-smp-di, nic-shared-modules-4.7.0-1-parisc64-smp-di, core-modules-4.7.0-1-parisc64-smp-di, crc-modules-4.7.0-1-parisc64-smp-di
+Depends: kernel-image-4.7.0-1-parisc64-smp-di, nic-shared-modules-4.7.0-1-parisc64-smp-di, crc-modules-4.7.0-1-parisc64-smp-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -2453,7 +2401,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-parisc64-smp-di, scsi-core-modules-4.7.0-1-parisc64-smp-di, cdrom-core-modules-4.7.0-1-parisc64-smp-di, core-modules-4.7.0-1-parisc64-smp-di, ata-modules-4.7.0-1-parisc64-smp-di
+Depends: kernel-image-4.7.0-1-parisc64-smp-di, scsi-core-modules-4.7.0-1-parisc64-smp-di, cdrom-core-modules-4.7.0-1-parisc64-smp-di, ata-modules-4.7.0-1-parisc64-smp-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -2477,7 +2425,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-parisc64-smp-di, core-modules-4.7.0-1-parisc64-smp-di, crc-modules-4.7.0-1-parisc64-smp-di, zlib-modules-4.7.0-1-parisc64-smp-di, md-modules-4.7.0-1-parisc64-smp-di
+Depends: kernel-image-4.7.0-1-parisc64-smp-di, crc-modules-4.7.0-1-parisc64-smp-di, zlib-modules-4.7.0-1-parisc64-smp-di, md-modules-4.7.0-1-parisc64-smp-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -2489,7 +2437,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-parisc64-smp-di, core-modules-4.7.0-1-parisc64-smp-di, crc-modules-4.7.0-1-parisc64-smp-di
+Depends: kernel-image-4.7.0-1-parisc64-smp-di, crc-modules-4.7.0-1-parisc64-smp-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -2574,7 +2522,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-parisc64-smp-di, core-modules-4.7.0-1-parisc64-smp-di
+Depends: kernel-image-4.7.0-1-parisc64-smp-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -2646,7 +2594,7 @@ Architecture: hppa
 Section: debian-installer
 Priority: standard
 Provides: nic-usb-modules
-Depends: kernel-image-4.7.0-1-parisc64-smp-di, nic-shared-modules-4.7.0-1-parisc64-smp-di, usb-modules-4.7.0-1-parisc64-smp-di, core-modules-4.7.0-1-parisc64-smp-di, crc-modules-4.7.0-1-parisc64-smp-di
+Depends: kernel-image-4.7.0-1-parisc64-smp-di, nic-shared-modules-4.7.0-1-parisc64-smp-di, usb-modules-4.7.0-1-parisc64-smp-di, crc-modules-4.7.0-1-parisc64-smp-di
 Description: USB NIC drivers
  This package contains USB network adapter drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -2661,19 +2609,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-parisc64-smp-di, scsi-core-modules-4.7.0-1-parisc64-smp-di, ata-modules-4.7.0-1-parisc64-smp-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-parisc64-smp
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-parisc64-smp-di
-Architecture: hppa
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-parisc64-smp-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-parisc64-smp
 Package-Type: udeb
@@ -2946,12 +2881,12 @@ Build-Profiles: <!stage1>
 Package: kernel-image-4.7.0-1-m68k-di
 Architecture: m68k
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-m68k
 Package-Type: udeb
@@ -2998,7 +2933,7 @@ Architecture: m68k
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-m68k-di, cdrom-core-modules-4.7.0-1-m68k-di, core-modules-4.7.0-1-m68k-di
+Depends: kernel-image-4.7.0-1-m68k-di, cdrom-core-modules-4.7.0-1-m68k-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -3010,7 +2945,7 @@ Architecture: m68k
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-m68k-di, core-modules-4.7.0-1-m68k-di, crc-modules-4.7.0-1-m68k-di, zlib-modules-4.7.0-1-m68k-di, md-modules-4.7.0-1-m68k-di
+Depends: kernel-image-4.7.0-1-m68k-di, crc-modules-4.7.0-1-m68k-di, zlib-modules-4.7.0-1-m68k-di, md-modules-4.7.0-1-m68k-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -3022,7 +2957,7 @@ Architecture: m68k
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-m68k-di, core-modules-4.7.0-1-m68k-di, crc-modules-4.7.0-1-m68k-di
+Depends: kernel-image-4.7.0-1-m68k-di, crc-modules-4.7.0-1-m68k-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -3062,19 +2997,6 @@ Provides: md-modules
 Depends: kernel-image-4.7.0-1-m68k-di, crc-modules-4.7.0-1-m68k-di
 Description: RAID and LVM support
  This package contains RAID and LVM modules for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-m68k
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-m68k-di
-Architecture: m68k
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-m68k-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-m68k
 Package-Type: udeb
@@ -3206,12 +3128,12 @@ Build-Profiles: <!stage1>
 Package: kernel-image-4.7.0-1-4kc-malta-di
 Architecture: mips mipsel
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image, rtc-modules
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-4kc-malta
 Package-Type: udeb
@@ -3221,7 +3143,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di, nic-shared-modules-4.7.0-1-4kc-malta-di, core-modules-4.7.0-1-4kc-malta-di, i2c-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
+Depends: kernel-image-4.7.0-1-4kc-malta-di, nic-shared-modules-4.7.0-1-4kc-malta-di, i2c-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -3234,7 +3156,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-wireless-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di, nic-shared-modules-4.7.0-1-4kc-malta-di, core-modules-4.7.0-1-4kc-malta-di, usb-modules-4.7.0-1-4kc-malta-di, mmc-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
+Depends: kernel-image-4.7.0-1-4kc-malta-di, nic-shared-modules-4.7.0-1-4kc-malta-di, usb-modules-4.7.0-1-4kc-malta-di, mmc-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
 Description: Wireless NIC drivers
  This package contains wireless NIC drivers for the kernel.  Includes
  crypto modules only needed for wireless (WEP, WPA).
@@ -3320,7 +3242,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di, scsi-core-modules-4.7.0-1-4kc-malta-di, cdrom-core-modules-4.7.0-1-4kc-malta-di, core-modules-4.7.0-1-4kc-malta-di, ata-modules-4.7.0-1-4kc-malta-di
+Depends: kernel-image-4.7.0-1-4kc-malta-di, scsi-core-modules-4.7.0-1-4kc-malta-di, cdrom-core-modules-4.7.0-1-4kc-malta-di, ata-modules-4.7.0-1-4kc-malta-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -3344,7 +3266,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di, core-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di, zlib-modules-4.7.0-1-4kc-malta-di, md-modules-4.7.0-1-4kc-malta-di
+Depends: kernel-image-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di, zlib-modules-4.7.0-1-4kc-malta-di, md-modules-4.7.0-1-4kc-malta-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -3356,7 +3278,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di, core-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
+Depends: kernel-image-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -3489,7 +3411,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di, core-modules-4.7.0-1-4kc-malta-di
+Depends: kernel-image-4.7.0-1-4kc-malta-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -3549,7 +3471,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-usb-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di, nic-shared-modules-4.7.0-1-4kc-malta-di, nic-wireless-modules-4.7.0-1-4kc-malta-di, usb-modules-4.7.0-1-4kc-malta-di, core-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
+Depends: kernel-image-4.7.0-1-4kc-malta-di, nic-shared-modules-4.7.0-1-4kc-malta-di, nic-wireless-modules-4.7.0-1-4kc-malta-di, usb-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
 Description: USB NIC drivers
  This package contains USB network adapter drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -3564,19 +3486,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-4kc-malta-di, scsi-core-modules-4.7.0-1-4kc-malta-di, ata-modules-4.7.0-1-4kc-malta-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-4kc-malta
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-4kc-malta-di
-Architecture: mips mipsel
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-4kc-malta
 Package-Type: udeb
@@ -3647,7 +3556,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: extra
 Provides: mmc-core-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di, core-modules-4.7.0-1-4kc-malta-di
+Depends: kernel-image-4.7.0-1-4kc-malta-di
 Description: MMC/SD/SDIO core modules
  This package contains core modules for MMC/SD/SDIO support.
 Build-Profiles: <!stage1>
@@ -3659,7 +3568,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di, core-modules-4.7.0-1-4kc-malta-di, mmc-core-modules-4.7.0-1-4kc-malta-di, usb-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
+Depends: kernel-image-4.7.0-1-4kc-malta-di, mmc-core-modules-4.7.0-1-4kc-malta-di, usb-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.
@@ -3709,7 +3618,7 @@ Architecture: mips mipsel
 Section: debian-installer
 Priority: extra
 Provides: sound-modules
-Depends: kernel-image-4.7.0-1-4kc-malta-di, core-modules-4.7.0-1-4kc-malta-di, i2c-modules-4.7.0-1-4kc-malta-di, usb-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
+Depends: kernel-image-4.7.0-1-4kc-malta-di, i2c-modules-4.7.0-1-4kc-malta-di, usb-modules-4.7.0-1-4kc-malta-di, crc-modules-4.7.0-1-4kc-malta-di
 Description: sound support
  This package contains sound modules.
 Build-Profiles: <!stage1>
@@ -3755,12 +3664,12 @@ Package-Type: udeb
 Package: kernel-image-4.7.0-1-octeon-di
 Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image, rtc-modules
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-octeon
 Package-Type: udeb
@@ -3770,7 +3679,7 @@ Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-octeon-di, nic-shared-modules-4.7.0-1-octeon-di, core-modules-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di
+Depends: kernel-image-4.7.0-1-octeon-di, nic-shared-modules-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -3783,7 +3692,7 @@ Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-wireless-modules
-Depends: kernel-image-4.7.0-1-octeon-di, nic-shared-modules-4.7.0-1-octeon-di, core-modules-4.7.0-1-octeon-di, usb-modules-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di
+Depends: kernel-image-4.7.0-1-octeon-di, nic-shared-modules-4.7.0-1-octeon-di, usb-modules-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di
 Description: Wireless NIC drivers
  This package contains wireless NIC drivers for the kernel.  Includes
  crypto modules only needed for wireless (WEP, WPA).
@@ -3869,7 +3778,7 @@ Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-octeon-di, scsi-core-modules-4.7.0-1-octeon-di, cdrom-core-modules-4.7.0-1-octeon-di, core-modules-4.7.0-1-octeon-di
+Depends: kernel-image-4.7.0-1-octeon-di, scsi-core-modules-4.7.0-1-octeon-di, cdrom-core-modules-4.7.0-1-octeon-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -3893,7 +3802,7 @@ Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-octeon-di, core-modules-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di, zlib-modules-4.7.0-1-octeon-di, md-modules-4.7.0-1-octeon-di
+Depends: kernel-image-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di, zlib-modules-4.7.0-1-octeon-di, md-modules-4.7.0-1-octeon-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -3905,7 +3814,7 @@ Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-octeon-di, core-modules-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di
+Depends: kernel-image-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -4038,7 +3947,7 @@ Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-octeon-di, core-modules-4.7.0-1-octeon-di
+Depends: kernel-image-4.7.0-1-octeon-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -4086,7 +3995,7 @@ Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-usb-modules
-Depends: kernel-image-4.7.0-1-octeon-di, nic-shared-modules-4.7.0-1-octeon-di, nic-wireless-modules-4.7.0-1-octeon-di, usb-modules-4.7.0-1-octeon-di, core-modules-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di
+Depends: kernel-image-4.7.0-1-octeon-di, nic-shared-modules-4.7.0-1-octeon-di, nic-wireless-modules-4.7.0-1-octeon-di, usb-modules-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di
 Description: USB NIC drivers
  This package contains USB network adapter drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -4101,19 +4010,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-octeon-di, scsi-core-modules-4.7.0-1-octeon-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-octeon
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-octeon-di
-Architecture: mips mips64 mips64el mipsel
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-octeon-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-octeon
 Package-Type: udeb
@@ -4208,7 +4104,7 @@ Architecture: mips mips64 mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: sound-modules
-Depends: kernel-image-4.7.0-1-octeon-di, core-modules-4.7.0-1-octeon-di, usb-modules-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di
+Depends: kernel-image-4.7.0-1-octeon-di, usb-modules-4.7.0-1-octeon-di, crc-modules-4.7.0-1-octeon-di
 Description: sound support
  This package contains sound modules.
 Build-Profiles: <!stage1>
@@ -4353,12 +4249,12 @@ Build-Profiles: <!stage1>
 Package: kernel-image-4.7.0-1-loongson-3-di
 Architecture: mips64el mipsel
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image, i2c-modules, rtc-modules
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-loongson-3
 Package-Type: udeb
@@ -4368,7 +4264,7 @@ Architecture: mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-loongson-3-di, nic-shared-modules-4.7.0-1-loongson-3-di, core-modules-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di
+Depends: kernel-image-4.7.0-1-loongson-3-di, nic-shared-modules-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -4381,7 +4277,7 @@ Architecture: mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-wireless-modules
-Depends: kernel-image-4.7.0-1-loongson-3-di, nic-shared-modules-4.7.0-1-loongson-3-di, core-modules-4.7.0-1-loongson-3-di, usb-modules-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di
+Depends: kernel-image-4.7.0-1-loongson-3-di, nic-shared-modules-4.7.0-1-loongson-3-di, usb-modules-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di
 Description: Wireless NIC drivers
  This package contains wireless NIC drivers for the kernel.  Includes
  crypto modules only needed for wireless (WEP, WPA).
@@ -4479,7 +4375,7 @@ Architecture: mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-loongson-3-di, scsi-core-modules-4.7.0-1-loongson-3-di, cdrom-core-modules-4.7.0-1-loongson-3-di, core-modules-4.7.0-1-loongson-3-di, ata-modules-4.7.0-1-loongson-3-di
+Depends: kernel-image-4.7.0-1-loongson-3-di, scsi-core-modules-4.7.0-1-loongson-3-di, cdrom-core-modules-4.7.0-1-loongson-3-di, ata-modules-4.7.0-1-loongson-3-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -4503,7 +4399,7 @@ Architecture: mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-loongson-3-di, core-modules-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di, zlib-modules-4.7.0-1-loongson-3-di, md-modules-4.7.0-1-loongson-3-di
+Depends: kernel-image-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di, zlib-modules-4.7.0-1-loongson-3-di, md-modules-4.7.0-1-loongson-3-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -4515,7 +4411,7 @@ Architecture: mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-loongson-3-di, core-modules-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di
+Depends: kernel-image-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -4660,7 +4556,7 @@ Architecture: mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-loongson-3-di, core-modules-4.7.0-1-loongson-3-di
+Depends: kernel-image-4.7.0-1-loongson-3-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -4720,7 +4616,7 @@ Architecture: mips64el mipsel
 Section: debian-installer
 Priority: standard
 Provides: nic-usb-modules
-Depends: kernel-image-4.7.0-1-loongson-3-di, nic-shared-modules-4.7.0-1-loongson-3-di, nic-wireless-modules-4.7.0-1-loongson-3-di, usb-modules-4.7.0-1-loongson-3-di, core-modules-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di
+Depends: kernel-image-4.7.0-1-loongson-3-di, nic-shared-modules-4.7.0-1-loongson-3-di, nic-wireless-modules-4.7.0-1-loongson-3-di, usb-modules-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di
 Description: USB NIC drivers
  This package contains USB network adapter drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -4735,19 +4631,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-loongson-3-di, scsi-core-modules-4.7.0-1-loongson-3-di, ata-modules-4.7.0-1-loongson-3-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-loongson-3
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-loongson-3-di
-Architecture: mips64el mipsel
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-loongson-3-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-loongson-3
 Package-Type: udeb
@@ -4855,7 +4738,7 @@ Architecture: mips64el mipsel
 Section: debian-installer
 Priority: extra
 Provides: sound-modules
-Depends: kernel-image-4.7.0-1-loongson-3-di, core-modules-4.7.0-1-loongson-3-di, usb-modules-4.7.0-1-loongson-3-di, firewire-core-modules-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di
+Depends: kernel-image-4.7.0-1-loongson-3-di, usb-modules-4.7.0-1-loongson-3-di, firewire-core-modules-4.7.0-1-loongson-3-di, crc-modules-4.7.0-1-loongson-3-di
 Description: sound support
  This package contains sound modules.
 Build-Profiles: <!stage1>
@@ -4941,12 +4824,12 @@ Build-Profiles: <!stage1>
 Package: kernel-image-4.7.0-1-5kc-malta-di
 Architecture: mips64 mips64el
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image, rtc-modules
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-5kc-malta
 Package-Type: udeb
@@ -4956,7 +4839,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di, nic-shared-modules-4.7.0-1-5kc-malta-di, core-modules-4.7.0-1-5kc-malta-di, i2c-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
+Depends: kernel-image-4.7.0-1-5kc-malta-di, nic-shared-modules-4.7.0-1-5kc-malta-di, i2c-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -4969,7 +4852,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: standard
 Provides: nic-wireless-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di, nic-shared-modules-4.7.0-1-5kc-malta-di, core-modules-4.7.0-1-5kc-malta-di, usb-modules-4.7.0-1-5kc-malta-di, mmc-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
+Depends: kernel-image-4.7.0-1-5kc-malta-di, nic-shared-modules-4.7.0-1-5kc-malta-di, usb-modules-4.7.0-1-5kc-malta-di, mmc-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
 Description: Wireless NIC drivers
  This package contains wireless NIC drivers for the kernel.  Includes
  crypto modules only needed for wireless (WEP, WPA).
@@ -5055,7 +4938,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di, scsi-core-modules-4.7.0-1-5kc-malta-di, cdrom-core-modules-4.7.0-1-5kc-malta-di, core-modules-4.7.0-1-5kc-malta-di, ata-modules-4.7.0-1-5kc-malta-di
+Depends: kernel-image-4.7.0-1-5kc-malta-di, scsi-core-modules-4.7.0-1-5kc-malta-di, cdrom-core-modules-4.7.0-1-5kc-malta-di, ata-modules-4.7.0-1-5kc-malta-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -5079,7 +4962,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di, core-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di, zlib-modules-4.7.0-1-5kc-malta-di, md-modules-4.7.0-1-5kc-malta-di
+Depends: kernel-image-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di, zlib-modules-4.7.0-1-5kc-malta-di, md-modules-4.7.0-1-5kc-malta-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -5091,7 +4974,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di, core-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
+Depends: kernel-image-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -5224,7 +5107,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di, core-modules-4.7.0-1-5kc-malta-di
+Depends: kernel-image-4.7.0-1-5kc-malta-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -5284,7 +5167,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: standard
 Provides: nic-usb-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di, nic-shared-modules-4.7.0-1-5kc-malta-di, nic-wireless-modules-4.7.0-1-5kc-malta-di, usb-modules-4.7.0-1-5kc-malta-di, core-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
+Depends: kernel-image-4.7.0-1-5kc-malta-di, nic-shared-modules-4.7.0-1-5kc-malta-di, nic-wireless-modules-4.7.0-1-5kc-malta-di, usb-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
 Description: USB NIC drivers
  This package contains USB network adapter drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -5299,19 +5182,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-5kc-malta-di, scsi-core-modules-4.7.0-1-5kc-malta-di, ata-modules-4.7.0-1-5kc-malta-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-5kc-malta
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-5kc-malta-di
-Architecture: mips64 mips64el
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-5kc-malta
 Package-Type: udeb
@@ -5382,7 +5252,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: extra
 Provides: mmc-core-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di, core-modules-4.7.0-1-5kc-malta-di
+Depends: kernel-image-4.7.0-1-5kc-malta-di
 Description: MMC/SD/SDIO core modules
  This package contains core modules for MMC/SD/SDIO support.
 Build-Profiles: <!stage1>
@@ -5394,7 +5264,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: extra
 Provides: mmc-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di, core-modules-4.7.0-1-5kc-malta-di, mmc-core-modules-4.7.0-1-5kc-malta-di, usb-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
+Depends: kernel-image-4.7.0-1-5kc-malta-di, mmc-core-modules-4.7.0-1-5kc-malta-di, usb-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
 Description: MMC/SD card modules
  This package contains modules needed to support MMC (multimedia) and SD
  cards.
@@ -5444,7 +5314,7 @@ Architecture: mips64 mips64el
 Section: debian-installer
 Priority: extra
 Provides: sound-modules
-Depends: kernel-image-4.7.0-1-5kc-malta-di, core-modules-4.7.0-1-5kc-malta-di, i2c-modules-4.7.0-1-5kc-malta-di, usb-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
+Depends: kernel-image-4.7.0-1-5kc-malta-di, i2c-modules-4.7.0-1-5kc-malta-di, usb-modules-4.7.0-1-5kc-malta-di, crc-modules-4.7.0-1-5kc-malta-di
 Description: sound support
  This package contains sound modules.
 Build-Profiles: <!stage1>
@@ -5656,12 +5526,12 @@ Build-Profiles: <!stage1>
 Package: kernel-image-4.7.0-1-powerpc64-di
 Architecture: ppc64
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-powerpc64
 Package-Type: udeb
@@ -5671,7 +5541,7 @@ Architecture: ppc64
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-powerpc64-di, nic-shared-modules-4.7.0-1-powerpc64-di, core-modules-4.7.0-1-powerpc64-di, crc-modules-4.7.0-1-powerpc64-di
+Depends: kernel-image-4.7.0-1-powerpc64-di, nic-shared-modules-4.7.0-1-powerpc64-di, crc-modules-4.7.0-1-powerpc64-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -5733,7 +5603,7 @@ Architecture: ppc64
 Section: debian-installer
 Priority: standard
 Provides: pata-modules
-Depends: kernel-image-4.7.0-1-powerpc64-di, ata-modules-4.7.0-1-powerpc64-di, core-modules-4.7.0-1-powerpc64-di
+Depends: kernel-image-4.7.0-1-powerpc64-di, ata-modules-4.7.0-1-powerpc64-di
 Description: PATA drivers
  This package contains PATA drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -5781,7 +5651,7 @@ Architecture: ppc64
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-powerpc64-di, scsi-core-modules-4.7.0-1-powerpc64-di, cdrom-core-modules-4.7.0-1-powerpc64-di, core-modules-4.7.0-1-powerpc64-di, ata-modules-4.7.0-1-powerpc64-di
+Depends: kernel-image-4.7.0-1-powerpc64-di, scsi-core-modules-4.7.0-1-powerpc64-di, cdrom-core-modules-4.7.0-1-powerpc64-di, ata-modules-4.7.0-1-powerpc64-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -5805,7 +5675,7 @@ Architecture: ppc64
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-powerpc64-di, core-modules-4.7.0-1-powerpc64-di, crc-modules-4.7.0-1-powerpc64-di, md-modules-4.7.0-1-powerpc64-di
+Depends: kernel-image-4.7.0-1-powerpc64-di, crc-modules-4.7.0-1-powerpc64-di, md-modules-4.7.0-1-powerpc64-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -5817,7 +5687,7 @@ Architecture: ppc64
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-powerpc64-di, core-modules-4.7.0-1-powerpc64-di, crc-modules-4.7.0-1-powerpc64-di
+Depends: kernel-image-4.7.0-1-powerpc64-di, crc-modules-4.7.0-1-powerpc64-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -5926,7 +5796,7 @@ Architecture: ppc64
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-powerpc64-di, core-modules-4.7.0-1-powerpc64-di
+Depends: kernel-image-4.7.0-1-powerpc64-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -5998,7 +5868,7 @@ Architecture: ppc64
 Section: debian-installer
 Priority: standard
 Provides: nic-pcmcia-modules
-Depends: kernel-image-4.7.0-1-powerpc64-di, nic-modules-4.7.0-1-powerpc64-di, nic-shared-modules-4.7.0-1-powerpc64-di, pcmcia-modules-4.7.0-1-powerpc64-di, core-modules-4.7.0-1-powerpc64-di
+Depends: kernel-image-4.7.0-1-powerpc64-di, nic-modules-4.7.0-1-powerpc64-di, nic-shared-modules-4.7.0-1-powerpc64-di, pcmcia-modules-4.7.0-1-powerpc64-di
 Description: Common PCMCIA NIC drivers
  This package contains common PCMCIA NIC drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -6010,7 +5880,7 @@ Architecture: ppc64
 Section: debian-installer
 Priority: standard
 Provides: pcmcia-modules
-Depends: kernel-image-4.7.0-1-powerpc64-di, core-modules-4.7.0-1-powerpc64-di
+Depends: kernel-image-4.7.0-1-powerpc64-di
 Description: Common PCMCIA drivers
  This package contains common PCMCIA drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -6025,19 +5895,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-powerpc64-di, scsi-core-modules-4.7.0-1-powerpc64-di, ata-modules-4.7.0-1-powerpc64-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-powerpc64
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-powerpc64-di
-Architecture: ppc64
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-powerpc64-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-powerpc64
 Package-Type: udeb
@@ -6297,12 +6154,12 @@ Build-Profiles: <!stage1>
 Package: kernel-image-4.7.0-1-sh7751r-di
 Architecture: sh4
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image, event-modules, fb-modules, input-modules, mouse-modules, nic-shared-modules, rtc-modules, uinput-modules, usb-modules
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-sh7751r
 Package-Type: udeb
@@ -6685,12 +6542,12 @@ Package-Type: udeb
 Package: kernel-image-4.7.0-1-sh7785lcr-di
 Architecture: sh4
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image, event-modules, fb-modules, input-modules, mouse-modules, nic-shared-modules, rtc-modules, uinput-modules, usb-modules
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-sh7785lcr
 Package-Type: udeb
@@ -7108,12 +6965,12 @@ Build-Profiles: <!stage1>
 Package: kernel-image-4.7.0-1-sparc64-di
 Architecture: sparc64
 Section: debian-installer
-Priority: extra
+Priority: standard
 Provides: kernel-image
-Description: Linux kernel binary image for the Debian installer
- This package contains the kernel image for the Debian installer boot
- images.  It does _not_ provide a usable kernel for your full Debian
- system.
+Description: Linux kernel image and core modules for the Debian installer
+ This package contains the kernel image and core modules for the Debian
+ installer boot images.  It does _not_ provide a usable kernel for your
+ full Debian system.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-sparc64
 Package-Type: udeb
@@ -7123,7 +6980,7 @@ Architecture: sparc64
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.7.0-1-sparc64-di, core-modules-4.7.0-1-sparc64-di, crc-modules-4.7.0-1-sparc64-di
+Depends: kernel-image-4.7.0-1-sparc64-di, crc-modules-4.7.0-1-sparc64-di
 Description: Network card modules for Sparc kernels
  This package contains the drivers for the Happy Meal/Big Mac 10/100BaseT,
  Sun QuadEthernet and MyriCOM Gigabit Ethernet SBus devices for SPARC
@@ -7188,7 +7045,7 @@ Architecture: sparc64
 Section: debian-installer
 Priority: standard
 Provides: scsi-modules
-Depends: kernel-image-4.7.0-1-sparc64-di, scsi-core-modules-4.7.0-1-sparc64-di, cdrom-core-modules-4.7.0-1-sparc64-di, core-modules-4.7.0-1-sparc64-di, ata-modules-4.7.0-1-sparc64-di
+Depends: kernel-image-4.7.0-1-sparc64-di, scsi-core-modules-4.7.0-1-sparc64-di, cdrom-core-modules-4.7.0-1-sparc64-di, ata-modules-4.7.0-1-sparc64-di
 Description: SCSI drivers
  This package contains SCSI drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -7200,7 +7057,7 @@ Architecture: sparc64
 Section: debian-installer
 Priority: extra
 Provides: btrfs-modules
-Depends: kernel-image-4.7.0-1-sparc64-di, core-modules-4.7.0-1-sparc64-di, crc-modules-4.7.0-1-sparc64-di, zlib-modules-4.7.0-1-sparc64-di, md-modules-4.7.0-1-sparc64-di
+Depends: kernel-image-4.7.0-1-sparc64-di, crc-modules-4.7.0-1-sparc64-di, zlib-modules-4.7.0-1-sparc64-di, md-modules-4.7.0-1-sparc64-di
 Description: BTRFS filesystem support
  This package contains the BTRFS filesystem module for the kernel.
 Build-Profiles: <!stage1>
@@ -7212,7 +7069,7 @@ Architecture: sparc64
 Section: debian-installer
 Priority: standard
 Provides: ext4-modules, ext2-modules, ext3-modules
-Depends: kernel-image-4.7.0-1-sparc64-di, core-modules-4.7.0-1-sparc64-di, crc-modules-4.7.0-1-sparc64-di
+Depends: kernel-image-4.7.0-1-sparc64-di, crc-modules-4.7.0-1-sparc64-di
 Description: ext2/ext3/ext4 filesystem support
  This package contains the ext4 filesystem module for the kernel, which
  also supports ext2 and ext3.
@@ -7297,7 +7154,7 @@ Architecture: sparc64
 Section: debian-installer
 Priority: extra
 Provides: usb-modules
-Depends: kernel-image-4.7.0-1-sparc64-di, core-modules-4.7.0-1-sparc64-di
+Depends: kernel-image-4.7.0-1-sparc64-di
 Description: USB support
  This package contains core USB drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -7336,19 +7193,6 @@ Provides: sata-modules
 Depends: kernel-image-4.7.0-1-sparc64-di, scsi-core-modules-4.7.0-1-sparc64-di, ata-modules-4.7.0-1-sparc64-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
-Build-Profiles: <!stage1>
-Kernel-Version: 4.7.0-1-sparc64
-Package-Type: udeb
-
-Package: core-modules-4.7.0-1-sparc64-di
-Architecture: sparc64
-Section: debian-installer
-Priority: standard
-Provides: core-modules
-Depends: kernel-image-4.7.0-1-sparc64-di
-Description: Core modules
- This package contains core modules for the kernel, that will almost
- always be needed.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.7.0-1-sparc64
 Package-Type: udeb
