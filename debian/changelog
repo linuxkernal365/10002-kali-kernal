@@ -1,3 +1,10 @@
+linux (4.7.8-1kali1) kali-dev; urgency=medium
+
+  * Import new version from Debian
+  * In debian/config/ architecture /defines, keep "signed-modules: false"
+
+ -- Sophie Brun <sophie@freexian.com>  Mon, 24 Oct 2016 16:59:37 +0200
+
 linux (4.7.8-1) unstable; urgency=high
 
   * New upstream stable update:
