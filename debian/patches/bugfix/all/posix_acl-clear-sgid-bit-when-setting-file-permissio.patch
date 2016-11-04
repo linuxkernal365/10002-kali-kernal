@@ -14,7 +14,6 @@ Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Jeff Layton <jlayton@redhat.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-[bwh: Backported to 4.7: adjust context]
 ---
  fs/9p/acl.c               | 40 +++++++++++++++++-----------------------
  fs/btrfs/acl.c            |  6 ++----
@@ -34,9 +33,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  include/linux/posix_acl.h |  1 +
  16 files changed, 89 insertions(+), 102 deletions(-)
 
+diff --git a/fs/9p/acl.c b/fs/9p/acl.c
+index 5b6a1743ea17..b3c2cc79c20d 100644
 --- a/fs/9p/acl.c
 +++ b/fs/9p/acl.c
-@@ -276,32 +276,26 @@ static int v9fs_xattr_set_acl(const stru
+@@ -276,32 +276,26 @@ static int v9fs_xattr_set_acl(const struct xattr_handler *handler,
  	switch (handler->flags) {
  	case ACL_TYPE_ACCESS:
  		if (acl) {
@@ -86,9 +87,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  		}
  		break;
  	case ACL_TYPE_DEFAULT:
+diff --git a/fs/btrfs/acl.c b/fs/btrfs/acl.c
+index 53bb7af4e5f0..247b8dfaf6e5 100644
 --- a/fs/btrfs/acl.c
 +++ b/fs/btrfs/acl.c
-@@ -80,11 +80,9 @@ static int __btrfs_set_acl(struct btrfs_
+@@ -79,11 +79,9 @@ static int __btrfs_set_acl(struct btrfs_trans_handle *trans,
  	case ACL_TYPE_ACCESS:
  		name = XATTR_NAME_POSIX_ACL_ACCESS;
  		if (acl) {
@@ -102,9 +105,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  		}
  		ret = 0;
  		break;
+diff --git a/fs/ceph/acl.c b/fs/ceph/acl.c
+index 4f67227f69a5..d0b6b342dff9 100644
 --- a/fs/ceph/acl.c
 +++ b/fs/ceph/acl.c
-@@ -95,11 +95,9 @@ int ceph_set_acl(struct inode *inode, st
+@@ -95,11 +95,9 @@ int ceph_set_acl(struct inode *inode, struct posix_acl *acl, int type)
  	case ACL_TYPE_ACCESS:
  		name = XATTR_NAME_POSIX_ACL_ACCESS;
  		if (acl) {
@@ -118,9 +123,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  		}
  		break;
  	case ACL_TYPE_DEFAULT:
+diff --git a/fs/ext2/acl.c b/fs/ext2/acl.c
+index 42f1d1814083..e725aa0890e0 100644
 --- a/fs/ext2/acl.c
 +++ b/fs/ext2/acl.c
-@@ -190,15 +190,11 @@ ext2_set_acl(struct inode *inode, struct
+@@ -190,15 +190,11 @@ ext2_set_acl(struct inode *inode, struct posix_acl *acl, int type)
  		case ACL_TYPE_ACCESS:
  			name_index = EXT2_XATTR_INDEX_POSIX_ACL_ACCESS;
  			if (acl) {
@@ -140,9 +147,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  			}
  			break;
  
+diff --git a/fs/ext4/acl.c b/fs/ext4/acl.c
+index c6601a476c02..dfa519979038 100644
 --- a/fs/ext4/acl.c
 +++ b/fs/ext4/acl.c
-@@ -193,15 +193,11 @@ __ext4_set_acl(handle_t *handle, struct
+@@ -193,15 +193,11 @@ __ext4_set_acl(handle_t *handle, struct inode *inode, int type,
  	case ACL_TYPE_ACCESS:
  		name_index = EXT4_XATTR_INDEX_POSIX_ACL_ACCESS;
  		if (acl) {
@@ -162,9 +171,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  		}
  		break;
  
+diff --git a/fs/f2fs/acl.c b/fs/f2fs/acl.c
+index 4dcc9e28dc5c..31344247ce89 100644
 --- a/fs/f2fs/acl.c
 +++ b/fs/f2fs/acl.c
-@@ -211,12 +211,10 @@ static int __f2fs_set_acl(struct inode *
+@@ -210,12 +210,10 @@ static int __f2fs_set_acl(struct inode *inode, int type,
  	case ACL_TYPE_ACCESS:
  		name_index = F2FS_XATTR_INDEX_POSIX_ACL_ACCESS;
  		if (acl) {
@@ -173,15 +184,17 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 +			error = posix_acl_update_mode(inode, &inode->i_mode, &acl);
 +			if (error)
  				return error;
- 			set_acl_inode(fi, inode->i_mode);
+ 			set_acl_inode(inode, inode->i_mode);
 -			if (error == 0)
 -				acl = NULL;
  		}
  		break;
  
+diff --git a/fs/gfs2/acl.c b/fs/gfs2/acl.c
+index 363ba9e9d8d0..2524807ee070 100644
 --- a/fs/gfs2/acl.c
 +++ b/fs/gfs2/acl.c
-@@ -92,17 +92,11 @@ int __gfs2_set_acl(struct inode *inode,
+@@ -92,17 +92,11 @@ int __gfs2_set_acl(struct inode *inode, struct posix_acl *acl, int type)
  	if (type == ACL_TYPE_ACCESS) {
  		umode_t mode = inode->i_mode;
  
@@ -202,9 +215,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  	}
  
  	if (acl) {
+diff --git a/fs/hfsplus/posix_acl.c b/fs/hfsplus/posix_acl.c
+index ab7ea2506b4d..9b92058a1240 100644
 --- a/fs/hfsplus/posix_acl.c
 +++ b/fs/hfsplus/posix_acl.c
-@@ -65,8 +65,8 @@ int hfsplus_set_posix_acl(struct inode *
+@@ -65,8 +65,8 @@ int hfsplus_set_posix_acl(struct inode *inode, struct posix_acl *acl,
  	case ACL_TYPE_ACCESS:
  		xattr_name = XATTR_NAME_POSIX_ACL_ACCESS;
  		if (acl) {
@@ -215,9 +230,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  				return err;
  		}
  		err = 0;
+diff --git a/fs/jffs2/acl.c b/fs/jffs2/acl.c
+index bc2693d56298..2a0f2a1044c1 100644
 --- a/fs/jffs2/acl.c
 +++ b/fs/jffs2/acl.c
-@@ -233,9 +233,10 @@ int jffs2_set_acl(struct inode *inode, s
+@@ -233,9 +233,10 @@ int jffs2_set_acl(struct inode *inode, struct posix_acl *acl, int type)
  	case ACL_TYPE_ACCESS:
  		xprefix = JFFS2_XPREFIX_ACL_ACCESS;
  		if (acl) {
@@ -231,7 +248,7 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  				return rc;
  			if (inode->i_mode != mode) {
  				struct iattr attr;
-@@ -247,8 +248,6 @@ int jffs2_set_acl(struct inode *inode, s
+@@ -247,8 +248,6 @@ int jffs2_set_acl(struct inode *inode, struct posix_acl *acl, int type)
  				if (rc < 0)
  					return rc;
  			}
@@ -240,9 +257,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  		}
  		break;
  	case ACL_TYPE_DEFAULT:
+diff --git a/fs/jfs/acl.c b/fs/jfs/acl.c
+index 21fa92ba2c19..3a1e1554a4e3 100644
 --- a/fs/jfs/acl.c
 +++ b/fs/jfs/acl.c
-@@ -78,13 +78,11 @@ static int __jfs_set_acl(tid_t tid, stru
+@@ -78,13 +78,11 @@ static int __jfs_set_acl(tid_t tid, struct inode *inode, int type,
  	case ACL_TYPE_ACCESS:
  		ea_name = XATTR_NAME_POSIX_ACL_ACCESS;
  		if (acl) {
@@ -258,6 +277,8 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  		}
  		break;
  	case ACL_TYPE_DEFAULT:
+diff --git a/fs/ocfs2/acl.c b/fs/ocfs2/acl.c
+index 2162434728c0..164307b99405 100644
 --- a/fs/ocfs2/acl.c
 +++ b/fs/ocfs2/acl.c
 @@ -241,13 +241,11 @@ int ocfs2_set_acl(handle_t *handle,
@@ -278,11 +299,13 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  
  			ret = ocfs2_acl_set_mode(inode, di_bh,
  						 handle, mode);
+diff --git a/fs/orangefs/acl.c b/fs/orangefs/acl.c
+index 28f2195cd798..7a3754488312 100644
 --- a/fs/orangefs/acl.c
 +++ b/fs/orangefs/acl.c
-@@ -76,14 +76,11 @@ int orangefs_set_acl(struct inode *inode
+@@ -73,14 +73,11 @@ int orangefs_set_acl(struct inode *inode, struct posix_acl *acl, int type)
  	case ACL_TYPE_ACCESS:
- 		name = ORANGEFS_XATTR_NAME_ACL_ACCESS;
+ 		name = XATTR_NAME_POSIX_ACL_ACCESS;
  		if (acl) {
 -			umode_t mode = inode->i_mode;
 -			/*
@@ -300,7 +323,7 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  					   __func__,
  					   error);
  				return error;
-@@ -93,8 +90,6 @@ int orangefs_set_acl(struct inode *inode
+@@ -90,8 +87,6 @@ int orangefs_set_acl(struct inode *inode, struct posix_acl *acl, int type)
  				SetModeFlag(orangefs_inode);
  			inode->i_mode = mode;
  			mark_inode_dirty_sync(inode);
@@ -309,9 +332,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  		}
  		break;
  	case ACL_TYPE_DEFAULT:
+diff --git a/fs/posix_acl.c b/fs/posix_acl.c
+index 59d47ab0791a..bfc3ec388322 100644
 --- a/fs/posix_acl.c
 +++ b/fs/posix_acl.c
-@@ -626,6 +626,37 @@ no_mem:
+@@ -626,6 +626,37 @@ posix_acl_create(struct inode *dir, umode_t *mode,
  }
  EXPORT_SYMBOL_GPL(posix_acl_create);
  
@@ -349,9 +374,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  /*
   * Fix up the uids and gids in posix acl extended attributes in place.
   */
+diff --git a/fs/reiserfs/xattr_acl.c b/fs/reiserfs/xattr_acl.c
+index dbed42f755e0..27376681c640 100644
 --- a/fs/reiserfs/xattr_acl.c
 +++ b/fs/reiserfs/xattr_acl.c
-@@ -242,13 +242,9 @@ __reiserfs_set_acl(struct reiserfs_trans
+@@ -242,13 +242,9 @@ __reiserfs_set_acl(struct reiserfs_transaction_handle *th, struct inode *inode,
  	case ACL_TYPE_ACCESS:
  		name = XATTR_NAME_POSIX_ACL_ACCESS;
  		if (acl) {
@@ -367,9 +394,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  		}
  		break;
  	case ACL_TYPE_DEFAULT:
+diff --git a/fs/xfs/xfs_acl.c b/fs/xfs/xfs_acl.c
+index b6e527b8eccb..8a0dec89ca56 100644
 --- a/fs/xfs/xfs_acl.c
 +++ b/fs/xfs/xfs_acl.c
-@@ -257,16 +257,11 @@ xfs_set_acl(struct inode *inode, struct
+@@ -257,16 +257,11 @@ xfs_set_acl(struct inode *inode, struct posix_acl *acl, int type)
  		return error;
  
  	if (type == ACL_TYPE_ACCESS) {
@@ -390,9 +419,11 @@ Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
  		error = xfs_set_mode(inode, mode);
  		if (error)
  			return error;
+diff --git a/include/linux/posix_acl.h b/include/linux/posix_acl.h
+index d5d3d741f028..bf1046d0397b 100644
 --- a/include/linux/posix_acl.h
 +++ b/include/linux/posix_acl.h
-@@ -93,6 +93,7 @@ extern int set_posix_acl(struct inode *,
+@@ -93,6 +93,7 @@ extern int set_posix_acl(struct inode *, int, struct posix_acl *);
  extern int posix_acl_chmod(struct inode *, umode_t);
  extern int posix_acl_create(struct inode *, umode_t *, struct posix_acl **,
  		struct posix_acl **);
