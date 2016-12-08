@@ -1,7 +1,5 @@
 [abi]
-abiname: kali1
-ignore-changes:
- module:drivers/net/wireless/ath/*
+abiname: kali2
 
 [base]
 arches:
