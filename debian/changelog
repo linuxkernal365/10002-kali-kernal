@@ -1,3 +1,9 @@
+linux (4.8.15-1kali1) kali-dev; urgency=medium
+
+  * Import new version from debian
+
+ -- Sophie Brun <sophie@freexian.com>  Fri, 23 Dec 2016 11:08:03 +0100
+
 linux (4.8.15-1) unstable; urgency=medium
 
   * New upstream stable update:
