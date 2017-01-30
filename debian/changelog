@@ -1,10 +1,12 @@
+linux (4.9.6-3kali2) kali-dev; urgency=medium
+
+  * Update kali-wifi-injection patch for Linux 4.9.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Mon, 30 Jan 2017 20:30:58 +0100
+
 linux (4.9.6-3kali1) kali-dev; urgency=medium
 
-  [ Sophie Brun ]
   * Import new version from Debian
-
-  [ Raphaël Hertzog ]
-  * Update kali-wifi-injection patch for Linux 4.9.
 
  -- Sophie Brun <sophie@freexian.com>  Mon, 30 Jan 2017 14:27:13 +0100
 
