@@ -1,3 +1,9 @@
+linux (4.9.6-3kali1) kali-dev; urgency=medium
+
+  * Import new version from Debian
+
+ -- Sophie Brun <sophie@freexian.com>  Mon, 30 Jan 2017 14:27:13 +0100
+
 linux (4.9.6-3) unstable; urgency=medium
 
   * btree,musb,st_sensors: Ignore ABI changes (fixes FTBFS on armel,armhf)
