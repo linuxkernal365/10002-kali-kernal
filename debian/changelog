@@ -1,3 +1,9 @@
+linux (4.9.13-1kali2) kali-dev; urgency=medium
+
+  * Bump the ABI to kali3
+
+ -- Sophie Brun <sophie@freexian.com>  Tue, 07 Mar 2017 15:57:29 +0100
+
 linux (4.9.13-1kali1) kali-dev; urgency=medium
 
   * Synchronize with Debian
