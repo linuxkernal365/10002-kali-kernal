@@ -6780,6 +6780,18 @@ Build-Profiles: <!stage1>
 Kernel-Version: 4.9.0-2-sparc64
 Package-Type: udeb
 
+Package: ufs-modules-4.9.0-2-sparc64-di
+Architecture: sparc64
+Section: debian-installer
+Priority: extra
+Provides: ufs-modules
+Depends: kernel-image-4.9.0-2-sparc64-di
+Description: UFS filesystem support
+ This package contains the UFS filesystem module for the kernel.
+Build-Profiles: <!stage1>
+Kernel-Version: 4.9.0-2-sparc64
+Package-Type: udeb
+
 Package: xfs-modules-4.9.0-2-sparc64-di
 Architecture: sparc64
 Section: debian-installer
