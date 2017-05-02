@@ -78,7 +78,7 @@ tp40
 (dp41
 Vsigned-modules
 p42
-I01
+I00
 sVdebug-info
 p43
 I01
@@ -136,7 +136,7 @@ tp73
 (dp74
 Vabiname
 p75
-V2
+V3
 p76
 sVignore-changes
 p77
@@ -2247,11 +2247,11 @@ V4.9
 p1192
 sVsource
 p1193
-V4.9.18-1
+V4.9.25-1
 p1194
 sVabiname
 p1195
-V4.9.0-2
+V4.9.0-3
 p1196
 sVabiname_base
 p1197
