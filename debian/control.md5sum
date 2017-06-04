@@ -1,5 +1,5 @@
 d283c069b160f0834a069a23b9fc79a4  debian/bin/gencontrol.py
-a3699b988664abb1a99caed0a491474c  debian/changelog
+fea5ce3052a1b329f952dde5e91b5275  debian/changelog
 e492c730e8bc71cc52aa5315391e587e  debian/templates/control.main.in
 38004750aa03cea41d5d3aeafff16fcc  debian/templates/image.preinst.in
 afb508873a44a1f196c2a525fec4b415  debian/templates/image.prerm.in
@@ -20,7 +20,7 @@ f73118b69c24c8014381c1bc65fc5b86  debian/templates/control.source.in
 c6cea196527a033d3d3bed7c8bc141f4  debian/templates/control.extra.in
 fc3e8629682e63a1858b15d7f3df0ef9  debian/templates/control.docs.in
 5f1df5cd150d7663b81f5c54a604a766  debian/templates/control.headers.arch.in
-5b93c030a73e88590e106355115ce556  debian/config/defines
+6849299a9e3e03846e331f4d64ef436c  debian/config/defines
 c0f55b1ebb6d0e78559f5bb2a60268c2  debian/config/i386/defines
 6f7d102847d8168a3c71c044ea7127ac  debian/config/tilegx/defines
 6efeb6f3f8ad4ecef3fff0d012fabad0  debian/config/mips64el/defines
@@ -42,7 +42,7 @@ c8677acd57ee1da9d592d7e1ce7ac3d7  debian/config/mips64/defines
 788bca75e2379d4c6a5f937db95cf8dc  debian/config/sparc64/defines
 e893f7044a89425752b95b8c997938e9  debian/config/mipsel/defines
 2d093d5d5d6dd1e2b27d717678cb9ece  debian/config/sh4/defines
-0162bb2f03eb0a881253e9abe9df16a3  debian/config/hppa/defines
+14d323d83689564e04782bc095243a66  debian/config/hppa/defines
 92c952083bf0523c5cdffe9f2e7dd300  debian/config/powerpcspe/defines
 2776c7338272b480295da18b47b08a7d  debian/config/m68k/defines
 95afd8c730829f00f334595dd678639b  debian/config/s390x/defines
