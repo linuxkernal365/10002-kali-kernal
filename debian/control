@@ -2523,7 +2523,7 @@ Architecture: armhf
 Section: debian-installer
 Priority: standard
 Provides: nic-modules, nic-extra-modules
-Depends: kernel-image-4.9.0-3-armmp-di, nic-shared-modules-4.9.0-3-armmp-di, crc-modules-4.9.0-3-armmp-di
+Depends: kernel-image-4.9.0-3-armmp-di, nic-shared-modules-4.9.0-3-armmp-di, i2c-modules-4.9.0-3-armmp-di, crc-modules-4.9.0-3-armmp-di
 Description: NIC drivers
  This package contains Ethernet and some paravirtualised network drivers
  for the kernel.
@@ -2731,7 +2731,7 @@ Architecture: armhf
 Section: debian-installer
 Priority: extra
 Provides: fb-modules
-Depends: kernel-image-4.9.0-3-armmp-di
+Depends: kernel-image-4.9.0-3-armmp-di, i2c-modules-4.9.0-3-armmp-di
 Description: Frame buffer support
  This package contains Frame buffer drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -2743,7 +2743,7 @@ Architecture: armhf
 Section: debian-installer
 Priority: extra
 Provides: input-modules
-Depends: kernel-image-4.9.0-3-armmp-di, usb-modules-4.9.0-3-armmp-di
+Depends: kernel-image-4.9.0-3-armmp-di, usb-modules-4.9.0-3-armmp-di, i2c-modules-4.9.0-3-armmp-di
 Description: Input devices support
  This package contains input device drivers for the kernel.
 Build-Profiles: <!stage1>
@@ -2782,6 +2782,18 @@ Provides: sata-modules
 Depends: kernel-image-4.9.0-3-armmp-di, scsi-core-modules-4.9.0-3-armmp-di, ata-modules-4.9.0-3-armmp-di
 Description: SATA drivers
  This package contains SATA drivers for the kernel.
+Build-Profiles: <!stage1>
+Kernel-Version: 4.9.0-3-armmp
+Package-Type: udeb
+
+Package: i2c-modules-4.9.0-3-armmp-di
+Architecture: armhf
+Section: debian-installer
+Priority: extra
+Provides: i2c-modules
+Depends: kernel-image-4.9.0-3-armmp-di
+Description: i2c support modules
+ This package contains basic i2c support modules.
 Build-Profiles: <!stage1>
 Kernel-Version: 4.9.0-3-armmp
 Package-Type: udeb
