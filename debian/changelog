@@ -1,3 +1,9 @@
+linux (4.11.6-1kali1) kali-dev; urgency=medium
+
+  * Synchronize with Debian 
+
+ -- Sophie Brun <sophie@freexian.com>  Wed, 21 Jun 2017 15:10:26 +0200
+
 linux (4.11.6-1) unstable; urgency=medium
 
   * New upstream stable update:
