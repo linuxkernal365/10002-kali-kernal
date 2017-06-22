@@ -1,3 +1,9 @@
+linux (4.9.30-2kali1) kali-dev; urgency=medium
+
+  * Synchronize with Debian
+
+ -- Sophie Brun <sophie@freexian.com>  Thu, 22 Jun 2017 15:40:41 +0200
+
 linux (4.9.30-2) unstable; urgency=high
 
   * [x86] Enable SERIAL_8250_MID as built-in (Closes: #864368)
