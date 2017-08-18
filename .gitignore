@@ -32,7 +32,7 @@
 *.lz4
 *.lzo
 *.gcno
-*.pyc
+*.ll
 modules.builtin
 Module.symvers
 *.dwo
