@@ -1,3 +1,10 @@
+linux (4.12.6-1kali5) kali-dev; urgency=medium
+
+  * New try to fix the build, this time with the Debian patch here:
+    https://anonscm.debian.org/cgit/kernel/linux.git/commit/?h=sid&id=4895a85e769d51fd6b3aa1fcc689d9c6784582bc
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Fri, 25 Aug 2017 21:09:39 +0200
+
 linux (4.12.6-1kali4) kali-dev; urgency=medium
 
   * Use the provided asm/msr-index.h instead of the system wide copy
