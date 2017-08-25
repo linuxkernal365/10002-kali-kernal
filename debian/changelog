@@ -1,3 +1,10 @@
+linux (4.12.6-1kali4) kali-dev; urgency=medium
+
+  * Use the provided asm/msr-index.h instead of the system wide copy
+    for the build of turbostat.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Fri, 25 Aug 2017 20:55:03 +0200
+
 linux (4.12.6-1kali3) kali-dev; urgency=medium
 
   * New try, this time with proper auto-generated files.
