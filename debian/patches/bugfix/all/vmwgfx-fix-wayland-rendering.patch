@@ -1,0 +1,21 @@
+Patch working around a regression that has no proper fix yet. Provided by
+Thomas Hellstrom <thellstrom@vmware.com> with the following comment:
+
+    Please try the attached diff. It's very short and should be pretty harmless
+    except that it might slow vmwgfx graphics down a bit. Probably not noticeable.
+    I'll notify you when the proper fix is ready for upstreaming. My collegue
+    Sinclair has found the culprit but we need to check the impact on older
+    hardware versions as well.
+
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_cmdbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_cmdbuf.c
+index 77cb7c6..0138c21 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_cmdbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_cmdbuf.c
+@@ -1007,6 +1007,7 @@ void *vmw_cmdbuf_reserve(struct vmw_cmdbuf_man *man, size_t size,
+ void vmw_cmdbuf_commit(struct vmw_cmdbuf_man *man, size_t size,
+ 		       struct vmw_cmdbuf_header *header, bool flush)
+ {
++	flush = true;
+ 	if (!header) {
+ 		vmw_cmdbuf_commit_cur(man, size, flush);
+ 		return;
