@@ -1,5 +1,5 @@
 d283c069b160f0834a069a23b9fc79a4  debian/bin/gencontrol.py
-821ad44d19f79f4a53e020a8f66b6bb6  debian/changelog
+61dc88688e941ac4c321ab97f990b739  debian/changelog
 e492c730e8bc71cc52aa5315391e587e  debian/templates/control.main.in
 51797b6c275eb14e99009e78553904cc  debian/templates/lintian-overrides.perf.in
 38004750aa03cea41d5d3aeafff16fcc  debian/templates/image.preinst.in
