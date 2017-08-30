@@ -1,3 +1,9 @@
+linux (4.12.6-1kali6) kali-dev; urgency=medium
+
+  * Use VMWare provided patch to fix the Wayland rendering issue.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Wed, 30 Aug 2017 09:49:25 +0200
+
 linux (4.12.6-1kali5) kali-dev; urgency=medium
 
   * New try to fix the build, this time with the Debian patch here:
