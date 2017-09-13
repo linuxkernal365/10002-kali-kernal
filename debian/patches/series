@@ -20,7 +20,6 @@ bugfix/all/radeon-firmware-is-required-for-drm-and-kms-on-r600-onward.patch
 
 # Kali changes
 features/all/kali-wifi-injection.patch
-bugfix/all/vmwgfx-fix-wayland-rendering.patch
 
 # Patches from aufs4 repository, imported with
 # debian/patches/features/all/aufs4/gen-patch.  These are only the

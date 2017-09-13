@@ -1,6 +1,7 @@
-linux (4.12.12-2kali1) kali-dev; urgency=medium
+linux (4.12.12-2kali1) kali-experimental; urgency=medium
 
   * Synchronize with Debian
+  * Drop patch bugfix/all/vmwgfx-fix-wayland-rendering.patch merged upstream
 
  -- Sophie Brun <sophie@freexian.com>  Wed, 13 Sep 2017 11:49:30 +0200
 
