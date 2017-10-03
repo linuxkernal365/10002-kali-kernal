@@ -24,6 +24,7 @@ features/all/kali-wifi-injection.patch
 # Patches from aufs4 repository, imported with
 # debian/patches/features/all/aufs4/gen-patch.  These are only the
 # changes needed to allow aufs to be built out-of-tree.
+features/all/wireless-carl9170-Enable-sniffer-mode-promisc-flag-t.patch
 features/all/aufs4/aufs4-base.patch
 features/all/aufs4/aufs4-mmap.patch
 features/all/aufs4/aufs4-standalone.patch

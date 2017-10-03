@@ -1,3 +1,11 @@
+linux (4.12.13-1kali1) kali-dev; urgency=medium
+
+  * Synchronize with Debian
+  * Add a patch wireless-carl9170-Enable-sniffer-mode-promisc-flag-t.patch
+    (see Kali bug: 4220)
+
+ -- Sophie Brun <sophie@freexian.com>  Tue, 03 Oct 2017 07:01:02 +0200
+
 linux (4.12.13-1) unstable; urgency=medium
 
   * New upstream stable update:
