@@ -1,3 +1,9 @@
+linux (4.12.13-1kali2) kali-dev; urgency=medium
+
+  * Update auto-generated files
+
+ -- Sophie Brun <sophie@freexian.com>  Tue, 03 Oct 2017 08:58:46 +0200
+
 linux (4.12.13-1kali1) kali-dev; urgency=medium
 
   * Synchronize with Debian
