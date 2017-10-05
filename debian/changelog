@@ -1,6 +1,7 @@
 linux (4.13.4-1kali1) kali-experimental; urgency=medium
 
   * Synchronize with Debian
+  * Add a patch to fix issue 4288
 
  -- Sophie Brun <sophie@freexian.com>  Tue, 03 Oct 2017 10:15:27 +0200
 
