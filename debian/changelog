@@ -1,3 +1,9 @@
+linux (4.13.10-1kali2) kali-dev; urgency=medium
+
+  * Add a patch to fix failure to fsync lower dir (overlayfs)
+
+ -- Sophie Brun <sophie@freexian.com>  Wed, 08 Nov 2017 09:32:46 +0100
+
 linux (4.13.10-1kali1) kali-experimental; urgency=medium
 
   * Synchronize with Debian
