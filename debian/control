@@ -725,7 +725,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-alpha-generic
 Architecture: alpha
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [alpha] | linux-initramfs-tool [alpha]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [alpha]
 Suggests: linux-doc-4.13, debian-kernel-handbook, aboot [alpha], fdutils [alpha]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for Alpha
@@ -758,7 +758,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-alpha-smp
 Architecture: alpha
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [alpha] | linux-initramfs-tool [alpha]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [alpha]
 Suggests: linux-doc-4.13, debian-kernel-handbook, aboot [alpha], fdutils [alpha]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for Alpha SMP
@@ -1420,7 +1420,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-amd64
 Architecture: amd64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [amd64] | linux-initramfs-tool [amd64]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [amd64]
 Suggests: linux-doc-4.13, debian-kernel-handbook, grub-pc [amd64] | grub-efi-amd64 [amd64] | extlinux [amd64]
 Breaks: xserver-xorg-input-vmmouse (<< 1:13.0.99) [amd64], initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for 64-bit PCs
@@ -1929,7 +1929,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-arm64
 Architecture: arm64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [arm64] | linux-initramfs-tool [arm64]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [arm64]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: libmozjs185-1.0 [arm64], libmozjs-24-0 (<< 24.2.0-5.1~) [arm64], initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for 64-bit ARMv8 machines
@@ -2951,7 +2951,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-armmp
 Architecture: armhf
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [armhf] | linux-initramfs-tool [armhf]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [armhf]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for ARMv7 multiplatform compatible SoCs
@@ -2985,7 +2985,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-armmp-lpae
 Architecture: armhf
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [armhf] | linux-initramfs-tool [armhf]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [armhf]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for ARMv7 multiplatform compatible SoCs supporting LPAE
@@ -3892,7 +3892,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-parisc
 Architecture: hppa
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [hppa] | linux-initramfs-tool [hppa]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [hppa]
 Suggests: linux-doc-4.13, debian-kernel-handbook, palo [hppa]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for 32-bit PA-RISC
@@ -3925,7 +3925,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-parisc64-smp
 Architecture: hppa
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [hppa] | linux-initramfs-tool [hppa]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [hppa]
 Suggests: linux-doc-4.13, debian-kernel-handbook, palo [hppa]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for multiprocessor 64-bit PA-RISC
@@ -5207,7 +5207,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-686
 Architecture: i386
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [i386] | linux-initramfs-tool [i386]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [i386]
 Suggests: linux-doc-4.13, debian-kernel-handbook, grub-pc [i386] | extlinux [i386]
 Breaks: xserver-xorg-input-vmmouse (<< 1:13.0.99) [i386], initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for older PCs
@@ -5240,7 +5240,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-686-pae
 Architecture: i386
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [i386] | linux-initramfs-tool [i386]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [i386]
 Suggests: linux-doc-4.13, debian-kernel-handbook, grub-pc [i386] | extlinux [i386]
 Breaks: xserver-xorg-input-vmmouse (<< 1:13.0.99) [i386], initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for modern PCs
@@ -5571,7 +5571,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-m68k
 Architecture: m68k
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [m68k] | linux-initramfs-tool [m68k]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [m68k]
 Suggests: linux-doc-4.13, debian-kernel-handbook, vmelilo [m68k], fdutils [m68k]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for Motorola MC68020+ family
@@ -6634,7 +6634,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-4kc-malta
 Architecture: mips mipsel
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [mips mipsel] | linux-initramfs-tool [mips mipsel]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [mips mipsel]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for MIPS Malta
@@ -6666,7 +6666,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-5kc-malta
 Architecture: mips mips64 mips64el mipsel
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [mips mips64 mips64el mipsel] | linux-initramfs-tool [mips mips64 mips64el mipsel]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [mips mips64 mips64el mipsel]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for MIPS Malta (64-bit)
@@ -6698,7 +6698,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-octeon
 Architecture: mips mips64 mips64el mipsel
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [mips mips64 mips64el mipsel] | linux-initramfs-tool [mips mips64 mips64el mipsel]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [mips mips64 mips64el mipsel]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for Octeon
@@ -7819,7 +7819,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-loongson-3
 Architecture: mips64el mipsel
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [mips64el mipsel] | linux-initramfs-tool [mips64el mipsel]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [mips64el mipsel]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for Loongson 3A/3B
@@ -8081,7 +8081,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-mips64r6
 Architecture: mips64r6 mipsr6
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [mips64r6 mipsr6] | linux-initramfs-tool [mips64r6 mipsr6]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [mips64r6 mipsr6]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for MIPS R6 (64 bit, big endian)
@@ -8122,7 +8122,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-mips64r6el
 Architecture: mips64r6el mipsr6el
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [mips64r6el mipsr6el] | linux-initramfs-tool [mips64r6el mipsr6el]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [mips64r6el mipsr6el]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for MIPS R6 (64 bit, little endian)
@@ -8393,7 +8393,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-mips32r6
 Architecture: mipsr6
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [mipsr6] | linux-initramfs-tool [mipsr6]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [mipsr6]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for MIPS R6 (32 bit, big endian)
@@ -8434,7 +8434,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-mips32r6el
 Architecture: mipsr6el
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [mipsr6el] | linux-initramfs-tool [mipsr6el]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [mipsr6el]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for MIPS R6 (32 bit, little endian)
@@ -9523,7 +9523,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-powerpc
 Architecture: powerpc
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [powerpc] | linux-initramfs-tool [powerpc]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [powerpc]
 Suggests: linux-doc-4.13, debian-kernel-handbook, mkvmlinuz [powerpc]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for uniprocessor 32-bit PowerPC
@@ -9555,7 +9555,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-powerpc-smp
 Architecture: powerpc
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [powerpc] | linux-initramfs-tool [powerpc]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [powerpc]
 Suggests: linux-doc-4.13, debian-kernel-handbook, mkvmlinuz [powerpc]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for multiprocessor 32-bit PowerPC
@@ -9588,7 +9588,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-powerpc64
 Architecture: powerpc ppc64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [powerpc ppc64] | linux-initramfs-tool [powerpc ppc64]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [powerpc ppc64]
 Suggests: linux-doc-4.13, debian-kernel-handbook, mkvmlinuz [powerpc ppc64]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for 64-bit PowerPC
@@ -9629,7 +9629,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-powerpcspe
 Architecture: powerpcspe
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [powerpcspe] | linux-initramfs-tool [powerpcspe]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [powerpcspe]
 Suggests: linux-doc-4.13, debian-kernel-handbook, mkvmlinuz [powerpcspe]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for 32-bit PowerPC with SPE (instead of AltiVec) with SMP support
@@ -10133,7 +10133,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-powerpc64le
 Architecture: ppc64el
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [ppc64el] | linux-initramfs-tool [ppc64el]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [ppc64el]
 Suggests: linux-doc-4.13, debian-kernel-handbook, mkvmlinuz [ppc64el]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for Little-endian 64-bit PowerPC
@@ -10444,7 +10444,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-s390x
 Architecture: s390x
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [s390x] | linux-initramfs-tool [s390x]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [s390x]
 Suggests: linux-doc-4.13, debian-kernel-handbook, s390-tools [s390x]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for IBM zSeries
@@ -11225,7 +11225,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-sh7751r
 Architecture: sh4
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [sh4] | linux-initramfs-tool [sh4]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [sh4]
 Suggests: linux-doc-4.13, debian-kernel-handbook
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for sh7751r
@@ -11669,7 +11669,7 @@ Package-Type: udeb
 Package: linux-image-4.13.0-kali1-sparc64
 Architecture: sparc64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [sparc64] | linux-initramfs-tool [sparc64]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [sparc64]
 Suggests: linux-doc-4.13, debian-kernel-handbook, silo [sparc64], fdutils [sparc64]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for uniprocessor 64-bit UltraSPARC
@@ -11702,7 +11702,7 @@ Build-Profiles: <!stage1>
 Package: linux-image-4.13.0-kali1-sparc64-smp
 Architecture: sparc64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [sparc64] | linux-initramfs-tool [sparc64]
-Recommends: firmware-linux-free, ${kernel:Recommends}
+Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [sparc64]
 Suggests: linux-doc-4.13, debian-kernel-handbook, silo [sparc64], fdutils [sparc64]
 Breaks: initramfs-tools (<< 0.120+deb8u2)
 Description: Linux 4.13 for multiprocessor 64-bit UltraSPARC
