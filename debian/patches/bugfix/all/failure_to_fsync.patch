@@ -18,7 +18,7 @@ Last-Update: 2017-11-08
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/fs/overlayfs/readdir.c
 +++ b/fs/overlayfs/readdir.c
-@@ -434,10 +434,14 @@ static int ovl_dir_fsync(struct file *fi
+@@ -751,10 +751,14 @@ static int ovl_dir_fsync(struct file *fi
  	struct dentry *dentry = file->f_path.dentry;
  	struct file *realfile = od->realfile;
  
@@ -33,4 +33,4 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 +	if (!od->is_upper) {
  		struct inode *inode = file_inode(file);
  
- 		realfile = lockless_dereference(od->upperfile);
+ 		realfile = READ_ONCE(od->upperfile);

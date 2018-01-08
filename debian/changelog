@@ -1,3 +1,9 @@
+linux (4.14.12-2kali1) kali-experimental; urgency=medium
+
+  * Synchronize with Debian
+
+ -- Sophie Brun <sophie@freexian.com>  Mon, 08 Jan 2018 16:09:45 +0100
+
 linux (4.14.12-2) unstable; urgency=medium
 
   [ Ben Hutchings ]
