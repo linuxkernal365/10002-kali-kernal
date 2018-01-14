@@ -736,7 +736,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-alpha-generic
 Architecture: alpha
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-alpha-generic
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-alpha-generic, generally used for building
@@ -769,7 +769,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-alpha-smp
 Architecture: alpha
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-alpha-smp
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-alpha-smp, generally used for building out-of-tree
@@ -1434,7 +1434,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-amd64
 Architecture: amd64
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, linux-compiler-gcc-7-x86
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, linux-compiler-gcc-7-x86
 Description: Header files for Linux 4.14.0-3-amd64
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-amd64, generally used for building out-of-tree
@@ -1469,7 +1469,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-rt-amd64
 Architecture: amd64
-Depends: linux-headers-4.14.0-3-common-rt (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, linux-compiler-gcc-7-x86
+Depends: linux-headers-4.14.0-3-common-rt (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, linux-compiler-gcc-7-x86
 Description: Header files for Linux 4.14.0-3-rt-amd64
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-rt-amd64, generally used for building out-of-tree
@@ -1974,7 +1974,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-arm64
 Architecture: arm64
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-arm64
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-arm64, generally used for building out-of-tree
@@ -2479,7 +2479,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-marvell
 Architecture: armel
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, linux-compiler-gcc-7-arm
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, linux-compiler-gcc-7-arm
 Description: Header files for Linux 4.14.0-3-marvell
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-marvell, generally used for building out-of-tree
@@ -2998,7 +2998,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-armmp
 Architecture: armhf
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, linux-compiler-gcc-7-arm
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, linux-compiler-gcc-7-arm
 Description: Header files for Linux 4.14.0-3-armmp
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-armmp, generally used for building out-of-tree
@@ -3032,7 +3032,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-armmp-lpae
 Architecture: armhf
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, linux-compiler-gcc-7-arm
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, linux-compiler-gcc-7-arm
 Description: Header files for Linux 4.14.0-3-armmp-lpae
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-armmp-lpae, generally used for building out-of-tree
@@ -3938,7 +3938,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-parisc
 Architecture: hppa
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7, binutils-hppa64-linux-gnu, gcc-7-hppa64-linux-gnu
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7, binutils-hppa64-linux-gnu, gcc-7-hppa64-linux-gnu
 Description: Header files for Linux 4.14.0-3-parisc
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-parisc, generally used for building out-of-tree
@@ -3971,7 +3971,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-parisc64-smp
 Architecture: hppa
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7, binutils-hppa64-linux-gnu, gcc-7-hppa64-linux-gnu
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7, binutils-hppa64-linux-gnu, gcc-7-hppa64-linux-gnu
 Description: Header files for Linux 4.14.0-3-parisc64-smp
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-parisc64-smp, generally used for building
@@ -5253,7 +5253,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-686
 Architecture: i386
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, linux-compiler-gcc-7-x86
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, linux-compiler-gcc-7-x86
 Description: Header files for Linux 4.14.0-3-686
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-686, generally used for building out-of-tree kernel
@@ -5294,7 +5294,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-686-pae
 Architecture: i386
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, linux-compiler-gcc-7-x86
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, linux-compiler-gcc-7-x86
 Description: Header files for Linux 4.14.0-3-686-pae
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-686-pae, generally used for building out-of-tree
@@ -5334,7 +5334,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-rt-686-pae
 Architecture: i386
-Depends: linux-headers-4.14.0-3-common-rt (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, linux-compiler-gcc-7-x86
+Depends: linux-headers-4.14.0-3-common-rt (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, linux-compiler-gcc-7-x86
 Description: Header files for Linux 4.14.0-3-rt-686-pae
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-rt-686-pae, generally used for building out-of-tree
@@ -5693,7 +5693,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-m68k
 Architecture: m68k
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-m68k
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-m68k, generally used for building out-of-tree kernel
@@ -6756,7 +6756,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-4kc-malta
 Architecture: mips mipsel
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-4kc-malta
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-4kc-malta, generally used for building out-of-tree
@@ -6788,7 +6788,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-5kc-malta
 Architecture: mips mips64 mips64el mipsel
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-5kc-malta
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-5kc-malta, generally used for building out-of-tree
@@ -6820,7 +6820,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-octeon
 Architecture: mips mips64 mips64el mipsel
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-octeon
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-octeon, generally used for building out-of-tree
@@ -7942,7 +7942,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-loongson-3
 Architecture: mips64el mipsel
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-loongson-3
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-loongson-3, generally used for building out-of-tree
@@ -8203,7 +8203,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-mips64r6
 Architecture: mips64r6 mipsr6
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-mips64r6
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-mips64r6, generally used for building out-of-tree
@@ -8245,7 +8245,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-mips64r6el
 Architecture: mips64r6el mipsr6el
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-mips64r6el
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-mips64r6el, generally used for building out-of-tree
@@ -8515,7 +8515,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-mips32r6
 Architecture: mipsr6
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-mips32r6
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-mips32r6, generally used for building out-of-tree
@@ -8557,7 +8557,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-mips32r6el
 Architecture: mipsr6el
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-mips32r6el
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-mips32r6el, generally used for building out-of-tree
@@ -9645,7 +9645,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-powerpc
 Architecture: powerpc
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-powerpc
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-powerpc, generally used for building out-of-tree
@@ -9678,7 +9678,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-powerpc-smp
 Architecture: powerpc
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-powerpc-smp
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-powerpc-smp, generally used for building out-of-tree
@@ -9710,7 +9710,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-powerpc64
 Architecture: powerpc ppc64
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-powerpc64
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-powerpc64, generally used for building out-of-tree
@@ -9752,7 +9752,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-powerpcspe
 Architecture: powerpcspe
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-powerpcspe
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-powerpcspe, generally used for building out-of-tree
@@ -10255,7 +10255,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-powerpc64le
 Architecture: ppc64el
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-powerpc64le
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-powerpc64le, generally used for building out-of-tree
@@ -10566,7 +10566,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-s390x
 Architecture: s390x
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, linux-compiler-gcc-7-s390
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, linux-compiler-gcc-7-s390
 Description: Header files for Linux 4.14.0-3-s390x
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-s390x, generally used for building out-of-tree
@@ -11348,7 +11348,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-sh7751r
 Architecture: sh4
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-sh7751r
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-sh7751r, generally used for building out-of-tree
@@ -11381,7 +11381,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-sh7785lcr
 Architecture: sh4
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-sh7785lcr
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-sh7785lcr, generally used for building out-of-tree
@@ -11792,7 +11792,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-sparc64
 Architecture: sparc64
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-sparc64
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-sparc64, generally used for building out-of-tree
@@ -11825,7 +11825,7 @@ Build-Profiles: <!stage1>
 
 Package: linux-headers-4.14.0-3-sparc64-smp
 Architecture: sparc64
-Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14, ${misc:Depends}, gcc-7
+Depends: linux-headers-4.14.0-3-common (= ${source:Version}), linux-kbuild-4.14 (>= 4.14.12-2~), ${misc:Depends}, gcc-7
 Description: Header files for Linux 4.14.0-3-sparc64-smp
  This package provides the architecture-specific kernel header files for
  Linux kernel 4.14.0-3-sparc64-smp, generally used for building out-of-tree
