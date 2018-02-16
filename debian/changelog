@@ -1,3 +1,9 @@
+linux (4.14.17-1kali1) kali-experimental; urgency=medium
+
+  * Synchronize with Debian
+
+ -- Sophie Brun <sophie@freexian.com>  Fri, 16 Feb 2018 09:38:47 +0100
+
 linux (4.14.17-1) unstable; urgency=medium
 
   * New upstream stable update:
