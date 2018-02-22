@@ -230,9 +230,9 @@ static bool xennet_can_sg(struct net_device *dev)
 }
 
 
-static void rx_refill_timeout(unsigned long data)
+static void rx_refill_timeout(struct timer_list *t)
 {
-	struct netfront_queue *queue = (struct netfront_queue *)data;
+	struct netfront_queue *queue = from_timer(queue, t, rx_refill_timer);
 	napi_schedule(&queue->napi);
 }
 
@@ -1326,6 +1326,7 @@ static struct net_device *xennet_create_dev(struct xenbus_device *dev)
 
 	netif_carrier_off(netdev);
 
+	xenbus_switch_state(dev, XenbusStateInitialising);
 	return netdev;
 
  exit:
@@ -1607,8 +1608,7 @@ static int xennet_init_queue(struct netfront_queue *queue)
 	spin_lock_init(&queue->tx_lock);
 	spin_lock_init(&queue->rx_lock);
 
-	setup_timer(&queue->rx_refill_timer, rx_refill_timeout,
-		    (unsigned long)queue);
+	timer_setup(&queue->rx_refill_timer, rx_refill_timeout, 0);
 
 	snprintf(queue->name, sizeof(queue->name), "%s-q%u",
 		 queue->info->netdev->name, queue->id);
