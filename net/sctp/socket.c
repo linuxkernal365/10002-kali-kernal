@@ -79,6 +79,7 @@
 #include <net/sock.h>
 #include <net/sctp/sctp.h>
 #include <net/sctp/sm.h>
+#include <net/sctp/stream_sched.h>
 
 /* Forward declarations for internal helper functions. */
 static int sctp_writeable(struct sock *sk);
@@ -1961,6 +1962,13 @@ static int sctp_sendmsg(struct sock *sk, struct msghdr *msg, size_t msg_len)
 		goto out_free;
 	}
 
+	/* Allocate sctp_stream_out_ext if not already done */
+	if (unlikely(!asoc->stream.out[sinfo->sinfo_stream].ext)) {
+		err = sctp_stream_init_ext(&asoc->stream, sinfo->sinfo_stream);
+		if (err)
+			goto out_free;
+	}
+
 	if (sctp_wspace(asoc) < msg_len)
 		sctp_prsctp_prune(asoc, sinfo, msg_len - sctp_wspace(asoc));
 
@@ -2273,7 +2281,7 @@ static int sctp_setsockopt_events(struct sock *sk, char __user *optval,
 
 		if (asoc && sctp_outq_is_empty(&asoc->outqueue)) {
 			event = sctp_ulpevent_make_sender_dry_event(asoc,
-					GFP_ATOMIC);
+					GFP_USER | __GFP_NOWARN);
 			if (!event)
 				return -ENOMEM;
 
@@ -3136,9 +3144,9 @@ static int sctp_setsockopt_mappedv4(struct sock *sk, char __user *optval, unsign
  */
 static int sctp_setsockopt_maxseg(struct sock *sk, char __user *optval, unsigned int optlen)
 {
+	struct sctp_sock *sp = sctp_sk(sk);
 	struct sctp_assoc_value params;
 	struct sctp_association *asoc;
-	struct sctp_sock *sp = sctp_sk(sk);
 	int val;
 
 	if (optlen == sizeof(int)) {
@@ -3154,26 +3162,35 @@ static int sctp_setsockopt_maxseg(struct sock *sk, char __user *optval, unsigned
 		if (copy_from_user(&params, optval, optlen))
 			return -EFAULT;
 		val = params.assoc_value;
-	} else
+	} else {
 		return -EINVAL;
+	}
 
-	if ((val != 0) && ((val < 8) || (val > SCTP_MAX_CHUNK_LEN)))
-		return -EINVAL;
+	if (val) {
+		int min_len, max_len;
+
+		min_len = SCTP_DEFAULT_MINSEGMENT - sp->pf->af->net_header_len;
+		min_len -= sizeof(struct sctphdr) +
+			   sizeof(struct sctp_data_chunk);
+
+		max_len = SCTP_MAX_CHUNK_LEN - sizeof(struct sctp_data_chunk);
+
+		if (val < min_len || val > max_len)
+			return -EINVAL;
+	}
 
 	asoc = sctp_id2assoc(sk, params.assoc_id);
-	if (!asoc && params.assoc_id && sctp_style(sk, UDP))
-		return -EINVAL;
-
 	if (asoc) {
 		if (val == 0) {
-			val = asoc->pathmtu;
-			val -= sp->pf->af->net_header_len;
+			val = asoc->pathmtu - sp->pf->af->net_header_len;
 			val -= sizeof(struct sctphdr) +
-					sizeof(struct sctp_data_chunk);
+			       sizeof(struct sctp_data_chunk);
 		}
 		asoc->user_frag = val;
 		asoc->frag_point = sctp_frag_point(asoc, asoc->pathmtu);
 	} else {
+		if (params.assoc_id && sctp_style(sk, UDP))
+			return -EINVAL;
 		sp->user_frag = val;
 	}
 
@@ -3485,6 +3502,8 @@ static int sctp_setsockopt_hmac_ident(struct sock *sk,
 
 	if (optlen < sizeof(struct sctp_hmacalgo))
 		return -EINVAL;
+	optlen = min_t(unsigned int, optlen, sizeof(struct sctp_hmacalgo) +
+					     SCTP_AUTH_NUM_HMACS * sizeof(u16));
 
 	hmacs = memdup_user(optval, optlen);
 	if (IS_ERR(hmacs))
@@ -3523,6 +3542,11 @@ static int sctp_setsockopt_auth_key(struct sock *sk,
 
 	if (optlen <= sizeof(struct sctp_authkey))
 		return -EINVAL;
+	/* authkey->sca_keylength is u16, so optlen can't be bigger than
+	 * this.
+	 */
+	optlen = min_t(unsigned int, optlen, USHRT_MAX +
+					     sizeof(struct sctp_authkey));
 
 	authkey = memdup_user(optval, optlen);
 	if (IS_ERR(authkey))
@@ -3880,6 +3904,9 @@ static int sctp_setsockopt_reset_streams(struct sock *sk,
 
 	if (optlen < sizeof(*params))
 		return -EINVAL;
+	/* srs_number_streams is u16, so optlen can't be bigger than this. */
+	optlen = min_t(unsigned int, optlen, USHRT_MAX +
+					     sizeof(__u16) * sizeof(*params));
 
 	params = memdup_user(optval, optlen);
 	if (IS_ERR(params))
@@ -3947,6 +3974,64 @@ static int sctp_setsockopt_add_streams(struct sock *sk,
 		goto out;
 
 	retval = sctp_send_add_streams(asoc, &params);
+
+out:
+	return retval;
+}
+
+static int sctp_setsockopt_scheduler(struct sock *sk,
+				     char __user *optval,
+				     unsigned int optlen)
+{
+	struct sctp_association *asoc;
+	struct sctp_assoc_value params;
+	int retval = -EINVAL;
+
+	if (optlen < sizeof(params))
+		goto out;
+
+	optlen = sizeof(params);
+	if (copy_from_user(&params, optval, optlen)) {
+		retval = -EFAULT;
+		goto out;
+	}
+
+	if (params.assoc_value > SCTP_SS_MAX)
+		goto out;
+
+	asoc = sctp_id2assoc(sk, params.assoc_id);
+	if (!asoc)
+		goto out;
+
+	retval = sctp_sched_set_sched(asoc, params.assoc_value);
+
+out:
+	return retval;
+}
+
+static int sctp_setsockopt_scheduler_value(struct sock *sk,
+					   char __user *optval,
+					   unsigned int optlen)
+{
+	struct sctp_association *asoc;
+	struct sctp_stream_value params;
+	int retval = -EINVAL;
+
+	if (optlen < sizeof(params))
+		goto out;
+
+	optlen = sizeof(params);
+	if (copy_from_user(&params, optval, optlen)) {
+		retval = -EFAULT;
+		goto out;
+	}
+
+	asoc = sctp_id2assoc(sk, params.assoc_id);
+	if (!asoc)
+		goto out;
+
+	retval = sctp_sched_set_value(asoc, params.stream_id,
+				      params.stream_value, GFP_KERNEL);
 
 out:
 	return retval;
@@ -4132,6 +4217,12 @@ static int sctp_setsockopt(struct sock *sk, int level, int optname,
 		break;
 	case SCTP_ADD_STREAMS:
 		retval = sctp_setsockopt_add_streams(sk, optval, optlen);
+		break;
+	case SCTP_STREAM_SCHEDULER:
+		retval = sctp_setsockopt_scheduler(sk, optval, optlen);
+		break;
+	case SCTP_STREAM_SCHEDULER_VALUE:
+		retval = sctp_setsockopt_scheduler_value(sk, optval, optlen);
 		break;
 	default:
 		retval = -ENOPROTOOPT;
@@ -4938,7 +5029,7 @@ static int sctp_getsockopt_autoclose(struct sock *sk, int len, char __user *optv
 	len = sizeof(int);
 	if (put_user(len, optlen))
 		return -EFAULT;
-	if (copy_to_user(optval, &sctp_sk(sk)->autoclose, sizeof(int)))
+	if (copy_to_user(optval, &sctp_sk(sk)->autoclose, len))
 		return -EFAULT;
 	return 0;
 }
@@ -5007,7 +5098,6 @@ static int sctp_getsockopt_peeloff_common(struct sock *sk, sctp_peeloff_arg_t *p
 	*newfile = sock_alloc_file(newsock, 0, NULL);
 	if (IS_ERR(*newfile)) {
 		put_unused_fd(retval);
-		sock_release(newsock);
 		retval = PTR_ERR(*newfile);
 		*newfile = NULL;
 		return retval;
@@ -5569,6 +5659,9 @@ copy_getaddrs:
 		err = -EFAULT;
 		goto out;
 	}
+	/* XXX: We should have accounted for sizeof(struct sctp_getaddrs) too,
+	 * but we can't change it anymore.
+	 */
 	if (put_user(bytes_copied, optlen))
 		err = -EFAULT;
 out:
@@ -6005,7 +6098,7 @@ static int sctp_getsockopt_maxseg(struct sock *sk, int len,
 		params.assoc_id = 0;
 	} else if (len >= sizeof(struct sctp_assoc_value)) {
 		len = sizeof(struct sctp_assoc_value);
-		if (copy_from_user(&params, optval, sizeof(params)))
+		if (copy_from_user(&params, optval, len))
 			return -EFAULT;
 	} else
 		return -EINVAL;
@@ -6175,7 +6268,9 @@ static int sctp_getsockopt_active_key(struct sock *sk, int len,
 
 	if (len < sizeof(struct sctp_authkeyid))
 		return -EINVAL;
-	if (copy_from_user(&val, optval, sizeof(struct sctp_authkeyid)))
+
+	len = sizeof(struct sctp_authkeyid);
+	if (copy_from_user(&val, optval, len))
 		return -EFAULT;
 
 	asoc = sctp_id2assoc(sk, val.scact_assoc_id);
@@ -6187,7 +6282,6 @@ static int sctp_getsockopt_active_key(struct sock *sk, int len,
 	else
 		val.scact_keynumber = ep->active_key_id;
 
-	len = sizeof(struct sctp_authkeyid);
 	if (put_user(len, optlen))
 		return -EFAULT;
 	if (copy_to_user(optval, &val, len))
@@ -6213,7 +6307,7 @@ static int sctp_getsockopt_peer_auth_chunks(struct sock *sk, int len,
 	if (len < sizeof(struct sctp_authchunks))
 		return -EINVAL;
 
-	if (copy_from_user(&val, optval, sizeof(struct sctp_authchunks)))
+	if (copy_from_user(&val, optval, sizeof(val)))
 		return -EFAULT;
 
 	to = p->gauth_chunks;
@@ -6258,7 +6352,7 @@ static int sctp_getsockopt_local_auth_chunks(struct sock *sk, int len,
 	if (len < sizeof(struct sctp_authchunks))
 		return -EINVAL;
 
-	if (copy_from_user(&val, optval, sizeof(struct sctp_authchunks)))
+	if (copy_from_user(&val, optval, sizeof(val)))
 		return -EFAULT;
 
 	to = p->gauth_chunks;
@@ -6688,7 +6782,7 @@ static int sctp_getsockopt_pr_streamstatus(struct sock *sk, int len,
 					   char __user *optval,
 					   int __user *optlen)
 {
-	struct sctp_stream_out *streamout;
+	struct sctp_stream_out_ext *streamoute;
 	struct sctp_association *asoc;
 	struct sctp_prstatus params;
 	int retval = -EINVAL;
@@ -6711,21 +6805,29 @@ static int sctp_getsockopt_pr_streamstatus(struct sock *sk, int len,
 	if (!asoc || params.sprstat_sid >= asoc->stream.outcnt)
 		goto out;
 
-	streamout = &asoc->stream.out[params.sprstat_sid];
+	streamoute = asoc->stream.out[params.sprstat_sid].ext;
+	if (!streamoute) {
+		/* Not allocated yet, means all stats are 0 */
+		params.sprstat_abandoned_unsent = 0;
+		params.sprstat_abandoned_sent = 0;
+		retval = 0;
+		goto out;
+	}
+
 	if (policy == SCTP_PR_SCTP_NONE) {
 		params.sprstat_abandoned_unsent = 0;
 		params.sprstat_abandoned_sent = 0;
 		for (policy = 0; policy <= SCTP_PR_INDEX(MAX); policy++) {
 			params.sprstat_abandoned_unsent +=
-				streamout->abandoned_unsent[policy];
+				streamoute->abandoned_unsent[policy];
 			params.sprstat_abandoned_sent +=
-				streamout->abandoned_sent[policy];
+				streamoute->abandoned_sent[policy];
 		}
 	} else {
 		params.sprstat_abandoned_unsent =
-			streamout->abandoned_unsent[__SCTP_PR_INDEX(policy)];
+			streamoute->abandoned_unsent[__SCTP_PR_INDEX(policy)];
 		params.sprstat_abandoned_sent =
-			streamout->abandoned_sent[__SCTP_PR_INDEX(policy)];
+			streamoute->abandoned_sent[__SCTP_PR_INDEX(policy)];
 	}
 
 	if (put_user(len, optlen) || copy_to_user(optval, &params, len)) {
@@ -6816,6 +6918,85 @@ static int sctp_getsockopt_enable_strreset(struct sock *sk, int len,
 		goto out;
 
 	retval = 0;
+
+out:
+	return retval;
+}
+
+static int sctp_getsockopt_scheduler(struct sock *sk, int len,
+				     char __user *optval,
+				     int __user *optlen)
+{
+	struct sctp_assoc_value params;
+	struct sctp_association *asoc;
+	int retval = -EFAULT;
+
+	if (len < sizeof(params)) {
+		retval = -EINVAL;
+		goto out;
+	}
+
+	len = sizeof(params);
+	if (copy_from_user(&params, optval, len))
+		goto out;
+
+	asoc = sctp_id2assoc(sk, params.assoc_id);
+	if (!asoc) {
+		retval = -EINVAL;
+		goto out;
+	}
+
+	params.assoc_value = sctp_sched_get_sched(asoc);
+
+	if (put_user(len, optlen))
+		goto out;
+
+	if (copy_to_user(optval, &params, len))
+		goto out;
+
+	retval = 0;
+
+out:
+	return retval;
+}
+
+static int sctp_getsockopt_scheduler_value(struct sock *sk, int len,
+					   char __user *optval,
+					   int __user *optlen)
+{
+	struct sctp_stream_value params;
+	struct sctp_association *asoc;
+	int retval = -EFAULT;
+
+	if (len < sizeof(params)) {
+		retval = -EINVAL;
+		goto out;
+	}
+
+	len = sizeof(params);
+	if (copy_from_user(&params, optval, len))
+		goto out;
+
+	asoc = sctp_id2assoc(sk, params.assoc_id);
+	if (!asoc) {
+		retval = -EINVAL;
+		goto out;
+	}
+
+	retval = sctp_sched_get_value(asoc, params.stream_id,
+				      &params.stream_value);
+	if (retval)
+		goto out;
+
+	if (put_user(len, optlen)) {
+		retval = -EFAULT;
+		goto out;
+	}
+
+	if (copy_to_user(optval, &params, len)) {
+		retval = -EFAULT;
+		goto out;
+	}
 
 out:
 	return retval;
@@ -7001,6 +7182,14 @@ static int sctp_getsockopt(struct sock *sk, int level, int optname,
 		break;
 	case SCTP_ENABLE_STREAM_RESET:
 		retval = sctp_getsockopt_enable_strreset(sk, len, optval,
+							 optlen);
+		break;
+	case SCTP_STREAM_SCHEDULER:
+		retval = sctp_getsockopt_scheduler(sk, len, optval,
+						   optlen);
+		break;
+	case SCTP_STREAM_SCHEDULER_VALUE:
+		retval = sctp_getsockopt_scheduler_value(sk, len, optval,
 							 optlen);
 		break;
 	default:
