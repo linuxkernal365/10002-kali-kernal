@@ -383,7 +383,7 @@ static inline int ip6_forward_finish(struct net *net, struct sock *sk,
 	return dst_output(net, sk, skb);
 }
 
-static unsigned int ip6_dst_mtu_forward(const struct dst_entry *dst)
+unsigned int ip6_dst_mtu_forward(const struct dst_entry *dst)
 {
 	unsigned int mtu;
 	struct inet6_dev *idev;
@@ -403,6 +403,7 @@ static unsigned int ip6_dst_mtu_forward(const struct dst_entry *dst)
 
 	return mtu;
 }
+EXPORT_SYMBOL_GPL(ip6_dst_mtu_forward);
 
 static bool ip6_pkt_too_big(const struct sk_buff *skb, unsigned int mtu)
 {
@@ -416,7 +417,7 @@ static bool ip6_pkt_too_big(const struct sk_buff *skb, unsigned int mtu)
 	if (skb->ignore_df)
 		return false;
 
-	if (skb_is_gso(skb) && skb_gso_validate_mtu(skb, mtu))
+	if (skb_is_gso(skb) && skb_gso_validate_network_len(skb, mtu))
 		return false;
 
 	return true;
@@ -1220,7 +1221,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
 		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
 	else
 		mtu = np->pmtudisc >= IPV6_PMTUDISC_PROBE ?
-		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(rt->dst.path);
+			READ_ONCE(rt->dst.dev->mtu) : dst_mtu(xfrm_dst_path(&rt->dst));
 	if (np->frag_size < mtu) {
 		if (np->frag_size)
 			mtu = np->frag_size;
@@ -1228,7 +1229,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
 	if (mtu < IPV6_MIN_MTU)
 		return -EINVAL;
 	cork->base.fragsize = mtu;
-	if (dst_allfrag(rt->dst.path))
+	if (dst_allfrag(xfrm_dst_path(&rt->dst)))
 		cork->base.flags |= IPCORK_ALLFRAG;
 	cork->base.length = 0;
 

@@ -2907,25 +2907,33 @@ static irqreturn_t sdhci_thread_irq(int irq, void *dev_id)
  * sdhci_disable_irq_wakeups() since it will be set by
  * sdhci_enable_card_detection() or sdhci_init().
  */
-void sdhci_enable_irq_wakeups(struct sdhci_host *host)
+static bool sdhci_enable_irq_wakeups(struct sdhci_host *host)
 {
+	u8 mask = SDHCI_WAKE_ON_INSERT | SDHCI_WAKE_ON_REMOVE |
+		  SDHCI_WAKE_ON_INT;
+	u32 irq_val = 0;
+	u8 wake_val = 0;
 	u8 val;
-	u8 mask = SDHCI_WAKE_ON_INSERT | SDHCI_WAKE_ON_REMOVE
-			| SDHCI_WAKE_ON_INT;
-	u32 irq_val = SDHCI_INT_CARD_INSERT | SDHCI_INT_CARD_REMOVE |
-		      SDHCI_INT_CARD_INT;
+
+	if (!(host->quirks & SDHCI_QUIRK_BROKEN_CARD_DETECTION)) {
+		wake_val |= SDHCI_WAKE_ON_INSERT | SDHCI_WAKE_ON_REMOVE;
+		irq_val |= SDHCI_INT_CARD_INSERT | SDHCI_INT_CARD_REMOVE;
+	}
+
+	wake_val |= SDHCI_WAKE_ON_INT;
+	irq_val |= SDHCI_INT_CARD_INT;
 
 	val = sdhci_readb(host, SDHCI_WAKE_UP_CONTROL);
-	val |= mask ;
-	/* Avoid fake wake up */
-	if (host->quirks & SDHCI_QUIRK_BROKEN_CARD_DETECTION) {
-		val &= ~(SDHCI_WAKE_ON_INSERT | SDHCI_WAKE_ON_REMOVE);
-		irq_val &= ~(SDHCI_INT_CARD_INSERT | SDHCI_INT_CARD_REMOVE);
-	}
+	val &= ~mask;
+	val |= wake_val;
 	sdhci_writeb(host, val, SDHCI_WAKE_UP_CONTROL);
+
 	sdhci_writel(host, irq_val, SDHCI_INT_ENABLE);
+
+	host->irq_wake_enabled = !enable_irq_wake(host->irq);
+
+	return host->irq_wake_enabled;
 }
-EXPORT_SYMBOL_GPL(sdhci_enable_irq_wakeups);
 
 static void sdhci_disable_irq_wakeups(struct sdhci_host *host)
 {
@@ -2936,6 +2944,10 @@ static void sdhci_disable_irq_wakeups(struct sdhci_host *host)
 	val = sdhci_readb(host, SDHCI_WAKE_UP_CONTROL);
 	val &= ~mask;
 	sdhci_writeb(host, val, SDHCI_WAKE_UP_CONTROL);
+
+	disable_irq_wake(host->irq);
+
+	host->irq_wake_enabled = false;
 }
 
 int sdhci_suspend_host(struct sdhci_host *host)
@@ -2944,15 +2956,14 @@ int sdhci_suspend_host(struct sdhci_host *host)
 
 	mmc_retune_timer_stop(host->mmc);
 
-	if (!device_may_wakeup(mmc_dev(host->mmc))) {
+	if (!device_may_wakeup(mmc_dev(host->mmc)) ||
+	    !sdhci_enable_irq_wakeups(host)) {
 		host->ier = 0;
 		sdhci_writel(host, 0, SDHCI_INT_ENABLE);
 		sdhci_writel(host, 0, SDHCI_SIGNAL_ENABLE);
 		free_irq(host->irq, host);
-	} else {
-		sdhci_enable_irq_wakeups(host);
-		enable_irq_wake(host->irq);
 	}
+
 	return 0;
 }
 
@@ -2980,15 +2991,14 @@ int sdhci_resume_host(struct sdhci_host *host)
 		mmiowb();
 	}
 
-	if (!device_may_wakeup(mmc_dev(host->mmc))) {
+	if (host->irq_wake_enabled) {
+		sdhci_disable_irq_wakeups(host);
+	} else {
 		ret = request_threaded_irq(host->irq, sdhci_irq,
 					   sdhci_thread_irq, IRQF_SHARED,
 					   mmc_hostname(host->mmc), host);
 		if (ret)
 			return ret;
-	} else {
-		sdhci_disable_irq_wakeups(host);
-		disable_irq_wake(host->irq);
 	}
 
 	sdhci_enable_card_detection(host);

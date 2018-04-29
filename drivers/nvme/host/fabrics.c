@@ -650,6 +650,11 @@ static int nvmf_parse_options(struct nvmf_ctrl_options *opts,
 				ret = -EINVAL;
 				goto out;
 			}
+			if (opts->discovery_nqn) {
+				pr_debug("Ignoring nr_io_queues value for discovery controller\n");
+				break;
+			}
+
 			opts->nr_io_queues = min_t(unsigned int,
 					num_online_cpus(), token);
 			break;
@@ -739,11 +744,14 @@ static int nvmf_parse_options(struct nvmf_ctrl_options *opts,
 				ret = -ENOMEM;
 				goto out;
 			}
-			if (uuid_parse(p, &hostid)) {
+			ret = uuid_parse(p, &hostid);
+			if (ret) {
 				pr_err("Invalid hostid %s\n", p);
 				ret = -EINVAL;
+				kfree(p);
 				goto out;
 			}
+			kfree(p);
 			break;
 		case NVMF_OPT_DUP_CONNECT:
 			opts->duplicate_connect = true;

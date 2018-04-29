@@ -496,8 +496,8 @@ static inline void mlx5e_poll_ico_single_cqe(struct mlx5e_cq *cq,
 	mlx5_cqwq_pop(&cq->wq);
 
 	if (unlikely((cqe->op_own >> 4) != MLX5_CQE_REQ)) {
-		WARN_ONCE(true, "mlx5e: Bad OP in ICOSQ CQE: 0x%x\n",
-			  cqe->op_own);
+		netdev_WARN_ONCE(cq->channel->netdev,
+				 "Bad OP in ICOSQ CQE: 0x%x\n", cqe->op_own);
 		return;
 	}
 
@@ -507,9 +507,8 @@ static inline void mlx5e_poll_ico_single_cqe(struct mlx5e_cq *cq,
 	}
 
 	if (unlikely(icowi->opcode != MLX5_OPCODE_NOP))
-		WARN_ONCE(true,
-			  "mlx5e: Bad OPCODE in ICOSQ WQE info: 0x%x\n",
-			  icowi->opcode);
+		netdev_WARN_ONCE(cq->channel->netdev,
+				 "Bad OPCODE in ICOSQ WQE info: 0x%x\n", icowi->opcode);
 }
 
 static void mlx5e_poll_ico_cq(struct mlx5e_cq *cq, struct mlx5e_rq *rq)
@@ -653,7 +652,7 @@ static inline void mlx5e_handle_csum(struct net_device *netdev,
 		return;
 	}
 
-	if (is_last_ethertype_ip(skb, &network_depth)) {
+	if (likely(is_last_ethertype_ip(skb, &network_depth))) {
 		skb->ip_summed = CHECKSUM_COMPLETE;
 		skb->csum = csum_unfold((__force __sum16)cqe->check_sum);
 		if (network_depth > ETH_HLEN)
@@ -833,6 +832,7 @@ static inline int mlx5e_xdp_handle(struct mlx5e_rq *rq,
 	xdp_set_data_meta_invalid(&xdp);
 	xdp.data_end = xdp.data + *len;
 	xdp.data_hard_start = va;
+	xdp.rxq = &rq->xdp_rxq;
 
 	act = bpf_prog_run_xdp(prog, &xdp);
 	switch (act) {
