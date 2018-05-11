@@ -128,7 +128,14 @@ static void crypto4xx_hw_init(struct crypto4xx_device *dev)
 	writel(PPC4XX_INT_DESCR_CNT, dev->ce_base + CRYPTO4XX_INT_DESCR_CNT);
 	writel(PPC4XX_INT_DESCR_CNT, dev->ce_base + CRYPTO4XX_INT_DESCR_CNT);
 	writel(PPC4XX_INT_CFG, dev->ce_base + CRYPTO4XX_INT_CFG);
-	writel(PPC4XX_PD_DONE_INT, dev->ce_base + CRYPTO4XX_INT_EN);
+	if (dev->is_revb) {
+		writel(PPC4XX_INT_TIMEOUT_CNT_REVB << 10,
+		       dev->ce_base + CRYPTO4XX_INT_TIMEOUT_CNT);
+		writel(PPC4XX_PD_DONE_INT | PPC4XX_TMO_ERR_INT,
+		       dev->ce_base + CRYPTO4XX_INT_EN);
+	} else {
+		writel(PPC4XX_PD_DONE_INT, dev->ce_base + CRYPTO4XX_INT_EN);
+	}
 }
 
 int crypto4xx_alloc_sa(struct crypto4xx_ctx *ctx, u32 size)
@@ -275,13 +282,11 @@ static u32 crypto4xx_put_pd_to_pdr(struct crypto4xx_device *dev, u32 idx)
  */
 static u32 crypto4xx_build_gdr(struct crypto4xx_device *dev)
 {
-	dev->gdr = dma_alloc_coherent(dev->core_dev->device,
-				      sizeof(struct ce_gd) * PPC4XX_NUM_GD,
-				      &dev->gdr_pa, GFP_ATOMIC);
+	dev->gdr = dma_zalloc_coherent(dev->core_dev->device,
+				       sizeof(struct ce_gd) * PPC4XX_NUM_GD,
+				       &dev->gdr_pa, GFP_ATOMIC);
 	if (!dev->gdr)
 		return -ENOMEM;
-
-	memset(dev->gdr, 0, sizeof(struct ce_gd) * PPC4XX_NUM_GD);
 
 	return 0;
 }
@@ -1070,19 +1075,27 @@ static void crypto4xx_bh_tasklet_cb(unsigned long data)
 /**
  * Top Half of isr.
  */
-static irqreturn_t crypto4xx_ce_interrupt_handler(int irq, void *data)
+static inline irqreturn_t crypto4xx_interrupt_handler(int irq, void *data,
+						      u32 clr_val)
 {
 	struct device *dev = (struct device *)data;
 	struct crypto4xx_core_device *core_dev = dev_get_drvdata(dev);
 
-	if (!core_dev->dev->ce_base)
-		return 0;
-
-	writel(PPC4XX_INTERRUPT_CLR,
-	       core_dev->dev->ce_base + CRYPTO4XX_INT_CLR);
+	writel(clr_val, core_dev->dev->ce_base + CRYPTO4XX_INT_CLR);
 	tasklet_schedule(&core_dev->tasklet);
 
 	return IRQ_HANDLED;
+}
+
+static irqreturn_t crypto4xx_ce_interrupt_handler(int irq, void *data)
+{
+	return crypto4xx_interrupt_handler(irq, data, PPC4XX_INTERRUPT_CLR);
+}
+
+static irqreturn_t crypto4xx_ce_interrupt_handler_revb(int irq, void *data)
+{
+	return crypto4xx_interrupt_handler(irq, data, PPC4XX_INTERRUPT_CLR |
+		PPC4XX_TMO_ERR_INT);
 }
 
 /**
@@ -1266,6 +1279,8 @@ static int crypto4xx_probe(struct platform_device *ofdev)
 	struct resource res;
 	struct device *dev = &ofdev->dev;
 	struct crypto4xx_core_device *core_dev;
+	u32 pvr;
+	bool is_revb = true;
 
 	rc = of_address_to_resource(ofdev->dev.of_node, 0, &res);
 	if (rc)
@@ -1282,6 +1297,7 @@ static int crypto4xx_probe(struct platform_device *ofdev)
 		       mfdcri(SDR0, PPC405EX_SDR0_SRST) | PPC405EX_CE_RESET);
 		mtdcri(SDR0, PPC405EX_SDR0_SRST,
 		       mfdcri(SDR0, PPC405EX_SDR0_SRST) & ~PPC405EX_CE_RESET);
+		is_revb = false;
 	} else if (of_find_compatible_node(NULL, NULL,
 			"amcc,ppc460sx-crypto")) {
 		mtdcri(SDR0, PPC460SX_SDR0_SRST,
@@ -1304,7 +1320,22 @@ static int crypto4xx_probe(struct platform_device *ofdev)
 	if (!core_dev->dev)
 		goto err_alloc_dev;
 
+	/*
+	 * Older version of 460EX/GT have a hardware bug.
+	 * Hence they do not support H/W based security intr coalescing
+	 */
+	pvr = mfspr(SPRN_PVR);
+	if (is_revb && ((pvr >> 4) == 0x130218A)) {
+		u32 min = PVR_MIN(pvr);
+
+		if (min < 4) {
+			dev_info(dev, "RevA detected - disable interrupt coalescing\n");
+			is_revb = false;
+		}
+	}
+
 	core_dev->dev->core_dev = core_dev;
+	core_dev->dev->is_revb = is_revb;
 	core_dev->device = dev;
 	spin_lock_init(&core_dev->lock);
 	INIT_LIST_HEAD(&core_dev->dev->alg_list);
@@ -1325,19 +1356,21 @@ static int crypto4xx_probe(struct platform_device *ofdev)
 	tasklet_init(&core_dev->tasklet, crypto4xx_bh_tasklet_cb,
 		     (unsigned long) dev);
 
-	/* Register for Crypto isr, Crypto Engine IRQ */
-	core_dev->irq = irq_of_parse_and_map(ofdev->dev.of_node, 0);
-	rc = request_irq(core_dev->irq, crypto4xx_ce_interrupt_handler, 0,
-			 core_dev->dev->name, dev);
-	if (rc)
-		goto err_request_irq;
-
 	core_dev->dev->ce_base = of_iomap(ofdev->dev.of_node, 0);
 	if (!core_dev->dev->ce_base) {
 		dev_err(dev, "failed to of_iomap\n");
 		rc = -ENOMEM;
 		goto err_iomap;
 	}
+
+	/* Register for Crypto isr, Crypto Engine IRQ */
+	core_dev->irq = irq_of_parse_and_map(ofdev->dev.of_node, 0);
+	rc = request_irq(core_dev->irq, is_revb ?
+			 crypto4xx_ce_interrupt_handler_revb :
+			 crypto4xx_ce_interrupt_handler, 0,
+			 KBUILD_MODNAME, dev);
+	if (rc)
+		goto err_request_irq;
 
 	/* need to setup pdr, rdr, gdr and sdr before this */
 	crypto4xx_hw_init(core_dev->dev);
@@ -1352,11 +1385,11 @@ static int crypto4xx_probe(struct platform_device *ofdev)
 	return 0;
 
 err_start_dev:
-	iounmap(core_dev->dev->ce_base);
-err_iomap:
 	free_irq(core_dev->irq, dev);
 err_request_irq:
 	irq_dispose_mapping(core_dev->irq);
+	iounmap(core_dev->dev->ce_base);
+err_iomap:
 	tasklet_kill(&core_dev->tasklet);
 err_build_sdr:
 	crypto4xx_destroy_sdr(core_dev->dev);
@@ -1397,7 +1430,7 @@ MODULE_DEVICE_TABLE(of, crypto4xx_match);
 
 static struct platform_driver crypto4xx_driver = {
 	.driver = {
-		.name = MODULE_NAME,
+		.name = KBUILD_MODNAME,
 		.of_match_table = crypto4xx_match,
 	},
 	.probe		= crypto4xx_probe,

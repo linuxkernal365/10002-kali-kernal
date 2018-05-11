@@ -66,6 +66,7 @@ static void sas_resume_port(struct asd_sas_phy *phy)
 		rc = sas_notify_lldd_dev_found(dev);
 		if (rc) {
 			sas_unregister_dev(port, dev);
+			sas_destruct_devices(port);
 			continue;
 		}
 
@@ -192,6 +193,7 @@ static void sas_form_port(struct asd_sas_phy *phy)
 		si->dft->lldd_port_formed(phy);
 
 	sas_discover_event(phy->port, DISCE_DISCOVER_DOMAIN);
+	flush_workqueue(sas_ha->disco_q);
 }
 
 /**
@@ -219,6 +221,7 @@ void sas_deform_port(struct asd_sas_phy *phy, int gone)
 
 	if (port->num_phys == 1) {
 		sas_unregister_domain_devices(port, gone);
+		sas_destruct_devices(port);
 		sas_port_delete(port->port);
 		port->port = NULL;
 	} else {
@@ -277,6 +280,9 @@ void sas_porte_broadcast_rcvd(struct work_struct *work)
 
 	SAS_DPRINTK("broadcast received: %d\n", prim);
 	sas_discover_event(phy->port, DISCE_REVALIDATE_DOMAIN);
+
+	if (phy->port)
+		flush_workqueue(phy->port->ha->disco_q);
 }
 
 void sas_porte_link_reset_err(struct work_struct *work)
@@ -313,6 +319,7 @@ static void sas_init_port(struct asd_sas_port *port,
 	INIT_LIST_HEAD(&port->dev_list);
 	INIT_LIST_HEAD(&port->disco_list);
 	INIT_LIST_HEAD(&port->destroy_list);
+	INIT_LIST_HEAD(&port->sas_port_del_list);
 	spin_lock_init(&port->phy_list_lock);
 	INIT_LIST_HEAD(&port->phy_list);
 	port->ha = sas_ha;
