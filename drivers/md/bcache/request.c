@@ -633,8 +633,8 @@ static void request_endio(struct bio *bio)
 static void bio_complete(struct search *s)
 {
 	if (s->orig_bio) {
-		struct request_queue *q = s->orig_bio->bi_disk->queue;
-		generic_end_io_acct(q, bio_data_dir(s->orig_bio),
+		generic_end_io_acct(s->d->disk->queue,
+				    bio_data_dir(s->orig_bio),
 				    &s->d->disk->part0, s->start_time);
 
 		trace_bcache_request_end(s->d, s->orig_bio);
@@ -659,11 +659,11 @@ static void do_bio_hook(struct search *s, struct bio *orig_bio)
 static void search_free(struct closure *cl)
 {
 	struct search *s = container_of(cl, struct search, cl);
-	bio_complete(s);
 
 	if (s->iop.bio)
 		bio_put(s->iop.bio);
 
+	bio_complete(s);
 	closure_debug_destroy(cl);
 	mempool_free(s, s->d->c->search);
 }
@@ -863,7 +863,7 @@ static int cached_dev_cache_miss(struct btree *b, struct search *s,
 	cache_bio->bi_private	= &s->cl;
 
 	bch_bio_map(cache_bio, NULL);
-	if (bio_alloc_pages(cache_bio, __GFP_NOWARN|GFP_NOIO))
+	if (bch_bio_alloc_pages(cache_bio, __GFP_NOWARN|GFP_NOIO))
 		goto out_put;
 
 	if (reada)
@@ -996,6 +996,7 @@ static blk_qc_t cached_dev_make_request(struct request_queue *q,
 	struct cached_dev *dc = container_of(d, struct cached_dev, disk);
 	int rw = bio_data_dir(bio);
 
+	atomic_set(&dc->backing_idle, 0);
 	generic_start_io_acct(q, rw, bio_sectors(bio), &d->disk->part0);
 
 	bio_set_dev(bio, dc->bdev);
