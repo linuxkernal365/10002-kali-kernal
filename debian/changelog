@@ -1,3 +1,9 @@
+linux (4.16.16-2kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@freexian.com>  Mon, 25 Jun 2018 11:15:15 +0200
+
 linux (4.16.16-2) unstable; urgency=medium
 
   * [powerpc*] Ignore further ABI changes in cxl.
