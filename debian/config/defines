@@ -1,5 +1,5 @@
 [abi]
-abiname: 2
+abiname: 1
 ignore-changes:
  __cpuhp_*
  __xive_vm_h_*
@@ -43,6 +43,7 @@ ignore-changes:
  module:net/rxrpc/rxrpc
  module:sound/core/seq/**
  module:sound/firewire/snd-firewire-lib
+ module:sound/pci/hda/*
 # btree library is only selected by few drivers so not useful OOT
  btree_*
  visitor*
@@ -114,7 +115,7 @@ debug-info: true
 signed-code: false
 
 [featureset-rt_base]
-enabled: true
+enabled: false
 
 [description]
 part-long-up: This kernel is not suitable for SMP (multi-processor,
