@@ -1,3 +1,12 @@
+linux (4.17.6-1kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+  * Remove CONFIG_HARDENED_USERCOPY_FALLBACK=y (debian/config/config). Bug
+    fixed in  nvidia-graphics-drivers version: 390.67-2
+
+
+ -- Sophie Brun <sophie@freexian.com>  Fri, 13 Jul 2018 16:55:17 +0200
+
 linux (4.17.6-1) unstable; urgency=medium
 
   * New upstream stable update:
