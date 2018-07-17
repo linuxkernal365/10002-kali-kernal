@@ -1,5 +1,5 @@
 3181b80d4a7890f8efff9e624f6ae79f  debian/bin/gencontrol.py
-1a7fdcfb629e72dec4966ed3a205cacf  debian/changelog
+e9b5aa35983319ab37157e1839b0b928  debian/changelog
 4f8b71c328a0247dcc819be9d6f198d6  debian/templates/control.main.in
 8ff553ff7232b003c35bdd074913bc8a  debian/templates/control.image-unsigned.in
 38004750aa03cea41d5d3aeafff16fcc  debian/templates/image.preinst.in
@@ -14,7 +14,7 @@ a4a60fc48b3240e46bbac6a1ddcaad30  debian/templates/image.postrm.in
 54426b6625c1bbf41ff6e05eebc06f89  debian/templates/image-dbg.lintian-overrides.in
 80423c0cd458e97a1d3417f9ae778404  debian/templates/control.image.in
 2e5bb43f2fceef492df4dc5ce5d3dddc  debian/templates/control.image-dbg.in
-b5d5853203bdf9240beeb4903d5bc43a  debian/templates/control.source.in
+2dfddbfb8762b4a805a181bee105362f  debian/templates/control.source.in
 63c0d01ea032d0acfa5e069d31daa938  debian/templates/control.libc-dev.in
 46cc93799a6214c79efea8084bc9a329  debian/templates/control.headers.featureset.in
 0327750d6696dee915a532aec73a0fd6  debian/templates/image.postinst.in
@@ -22,7 +22,7 @@ f3ba1f4d688199d6be80a1987e85ad4a  debian/templates/control.headers.in
 5624089e4c363b524dccb00d28e57336  debian/templates/control.extra.in
 fdaacbdd116d9287cde1570bf53b135a  debian/templates/control.docs.in
 5f1df5cd150d7663b81f5c54a604a766  debian/templates/control.headers.arch.in
-4b1e7485778aac5af8ab422f530bd885  debian/config/defines
+c537fae81251a1e7d07d93e66d698dec  debian/config/defines
 ef94db796045bf7d721d349b75789a27  debian/config/i386/defines
 4987bf8df1bf042f19fdec4da87aa1d4  debian/config/ppc64el/defines
 6f7d102847d8168a3c71c044ea7127ac  debian/config/tilegx/defines
@@ -38,6 +38,7 @@ e411d2dfe0018a7c40b6bf7efd45cd29  debian/config/mipsn32/defines
 3b09058af262b2c63d9cfcf45f0089e4  debian/config/powerpcspe/defines
 174058e52aced932bf02606d6cb5649c  debian/config/mipsn32el/defines
 366b94d652a66b437eabcd165bcc9610  debian/config/featureset-rt/defines
+287a1b647f4113468a1cf48e0219a523  debian/config/riscv64/defines
 8d317c1872f3bd8da4feae25a7c61df3  debian/config/sparc/defines
 47cac5237bbbf40994bdbd502708e287  debian/config/s390x/defines
 019fcd858f2c1569c51675b3dcb2b15d  debian/config/ppc64/defines
