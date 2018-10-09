@@ -1,3 +1,9 @@
+linux (4.18.10-2kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@freexian.com>  Tue, 09 Oct 2018 14:47:19 +0200
+
 linux (4.18.10-2) unstable; urgency=medium
 
   [ Ben Hutchings ]
