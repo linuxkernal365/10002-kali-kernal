@@ -1,5 +1,5 @@
 3a4800a90a457f006ec4fd80eb9fed29  debian/bin/gencontrol.py
-b57a88e233b5f369436b7fd9f4605fd4  debian/changelog
+ecef3dab6d0b9a4cbfebe7039d28ec40  debian/changelog
 5bfcd7b16ddabb45230f17c278f446bb  debian/templates/control.main.in
 8ff553ff7232b003c35bdd074913bc8a  debian/templates/control.image-unsigned.in
 38004750aa03cea41d5d3aeafff16fcc  debian/templates/image.preinst.in
