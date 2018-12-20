@@ -69,6 +69,9 @@ modules.builtin
 # Disabled in Kali because we care about the content of the debian
 # directory!
 #/debian/
+# juste ignore these files in Kali
+/debian/build/
+/debian/lib/python/debian_linux/__pycache__/
 
 #
 # Snap directory (make snap-pkg)
