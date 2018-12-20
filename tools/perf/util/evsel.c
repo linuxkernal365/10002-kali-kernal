@@ -261,6 +261,17 @@ struct perf_evsel *perf_evsel__new_idx(struct perf_event_attr *attr, int idx)
 		evsel->attr.sample_period = 1;
 	}
 
+	if (perf_evsel__is_clock(evsel)) {
+		/*
+		 * The evsel->unit points to static alias->unit
+		 * so it's ok to use static string in here.
+		 */
+		static const char *unit = "msec";
+
+		evsel->unit = unit;
+		evsel->scale = 1e-6;
+	}
+
 	return evsel;
 }
 
@@ -941,7 +952,6 @@ void perf_evsel__config(struct perf_evsel *evsel, struct record_opts *opts,
 		attr->sample_freq    = 0;
 		attr->sample_period  = 0;
 		attr->write_backward = 0;
-		attr->sample_id_all  = 0;
 	}
 
 	if (opts->no_samples)
@@ -2676,7 +2686,7 @@ int perf_event__synthesize_sample(union perf_event *event, u64 type,
 
 struct format_field *perf_evsel__field(struct perf_evsel *evsel, const char *name)
 {
-	return pevent_find_field(evsel->tp_format, name);
+	return tep_find_field(evsel->tp_format, name);
 }
 
 void *perf_evsel__rawptr(struct perf_evsel *evsel, struct perf_sample *sample,
