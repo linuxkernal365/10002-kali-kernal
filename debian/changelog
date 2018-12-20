@@ -2,6 +2,8 @@ linux (4.19.9-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
   * Refresh kali-wifi-injection.patch
+  * Update the debian/config/*/defines to disable signed-code for
+    architectures in Kali
 
  -- Sophie Brun <sophie@offensive-security.com>  Thu, 20 Dec 2018 11:03:06 +0100
 
