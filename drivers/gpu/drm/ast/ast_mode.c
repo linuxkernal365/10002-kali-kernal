@@ -568,6 +568,7 @@ static int ast_crtc_do_set_base(struct drm_crtc *crtc,
 	}
 	ast_bo_unreserve(bo);
 
+	ast_set_offset_reg(crtc);
 	ast_set_start_address_crt1(crtc, (u32)gpu_addr);
 
 	return 0;
@@ -790,12 +791,12 @@ static int ast_get_modes(struct drm_connector *connector)
 	if (!flags)
 		edid = drm_get_edid(connector, &ast_connector->i2c->adapter);
 	if (edid) {
-		drm_mode_connector_update_edid_property(&ast_connector->base, edid);
+		drm_connector_update_edid_property(&ast_connector->base, edid);
 		ret = drm_add_edid_modes(connector, edid);
 		kfree(edid);
 		return ret;
 	} else
-		drm_mode_connector_update_edid_property(&ast_connector->base, NULL);
+		drm_connector_update_edid_property(&ast_connector->base, NULL);
 	return 0;
 }
 
@@ -900,7 +901,7 @@ static int ast_connector_init(struct drm_device *dev)
 	connector->polled = DRM_CONNECTOR_POLL_CONNECT;
 
 	encoder = list_first_entry(&dev->mode_config.encoder_list, struct drm_encoder, head);
-	drm_mode_connector_attach_encoder(connector, encoder);
+	drm_connector_attach_encoder(connector, encoder);
 
 	ast_connector->i2c = ast_i2c_create(dev);
 	if (!ast_connector->i2c)
@@ -1254,7 +1255,7 @@ static int ast_cursor_move(struct drm_crtc *crtc,
 	ast_set_index_reg(ast, AST_IO_CRTC_PORT, 0xc7, ((y >> 8) & 0x07));
 
 	/* dummy write to fire HWC */
-	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xCB, 0xFF, 0x00);
+	ast_show_cursor(crtc);
 
 	return 0;
 }
