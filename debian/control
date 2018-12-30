@@ -157,7 +157,7 @@ Build-Profiles: <!stage1 !pkg.linux.notools>
 Multi-Arch: same
 
 Package: libbpf4.19
-Architecture: linux-any
+Architecture: alpha amd64 arm64 arm64ilp32 armel armhf hppa i386 mips mips64 mips64el mips64r6 mips64r6el mipsel mipsn32 mipsn32el mipsn32r6 mipsn32r6el mipsr6 mipsr6el powerpc powerpcspe ppc64 ppc64el riscv64 s390 s390x sh3 sh4 sparc sparc64 x32
 Section: libs
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: eBPF helper library (shared library)
@@ -167,7 +167,7 @@ Build-Profiles: <!stage1 !pkg.linux.notools>
 Multi-Arch: same
 
 Package: libbpf-dev
-Architecture: linux-any
+Architecture: alpha amd64 arm64 arm64ilp32 armel armhf hppa i386 mips mips64 mips64el mips64r6 mips64r6el mipsel mipsn32 mipsn32el mipsn32r6 mipsn32r6el mipsr6 mipsr6el powerpc powerpcspe ppc64 ppc64el riscv64 s390 s390x sh3 sh4 sparc sparc64 x32
 Section: libdevel
 Depends: ${misc:Depends}, libbpf4.19 (= ${binary:Version})
 Description: eBPF helper library (development files)
@@ -1506,7 +1506,6 @@ Build-Profiles: <!stage1>
 
 Package: linux-image-4.19.0-1-amd64-unsigned
 Architecture: amd64
-Provides: linux-image-4.19.0-1-amd64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [amd64] | linux-initramfs-tool [amd64]
 Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [amd64]
 Suggests: linux-doc-4.19, debian-kernel-handbook, grub-pc [amd64] | grub-efi-amd64 [amd64] | extlinux [amd64]
@@ -1542,7 +1541,6 @@ Build-Profiles: <!stage1>
 
 Package: linux-image-4.19.0-1-cloud-amd64-unsigned
 Architecture: amd64
-Provides: linux-image-4.19.0-1-cloud-amd64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [amd64] | linux-initramfs-tool [amd64]
 Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [amd64]
 Suggests: linux-doc-4.19, debian-kernel-handbook, grub-pc [amd64] | grub-efi-amd64 [amd64] | extlinux [amd64]
@@ -1578,7 +1576,6 @@ Build-Profiles: <!stage1>
 
 Package: linux-image-4.19.0-1-rt-amd64-unsigned
 Architecture: amd64
-Provides: linux-image-4.19.0-1-rt-amd64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [amd64] | linux-initramfs-tool [amd64]
 Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [amd64]
 Suggests: linux-doc-4.19, debian-kernel-handbook, grub-pc [amd64] | grub-efi-amd64 [amd64] | extlinux [amd64]
@@ -2121,7 +2118,6 @@ Build-Profiles: <!stage1>
 
 Package: linux-image-4.19.0-1-arm64-unsigned
 Architecture: arm64
-Provides: linux-image-4.19.0-1-arm64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [arm64] | linux-initramfs-tool [arm64]
 Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [arm64]
 Suggests: linux-doc-4.19, debian-kernel-handbook
@@ -2156,7 +2152,6 @@ Build-Profiles: <!stage1>
 
 Package: linux-image-4.19.0-1-rt-arm64-unsigned
 Architecture: arm64
-Provides: linux-image-4.19.0-1-rt-arm64
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [arm64] | linux-initramfs-tool [arm64]
 Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [arm64]
 Suggests: linux-doc-4.19, debian-kernel-handbook
@@ -5593,7 +5588,6 @@ Build-Profiles: <!stage1>
 
 Package: linux-image-4.19.0-1-686-unsigned
 Architecture: i386
-Provides: linux-image-4.19.0-1-686
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [i386] | linux-initramfs-tool [i386]
 Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [i386]
 Suggests: linux-doc-4.19, debian-kernel-handbook, grub-pc [i386] | extlinux [i386]
@@ -5629,7 +5623,6 @@ Build-Profiles: <!stage1>
 
 Package: linux-image-4.19.0-1-686-pae-unsigned
 Architecture: i386
-Provides: linux-image-4.19.0-1-686-pae
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [i386] | linux-initramfs-tool [i386]
 Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [i386]
 Suggests: linux-doc-4.19, debian-kernel-handbook, grub-pc [i386] | extlinux [i386]
@@ -5670,7 +5663,6 @@ Build-Profiles: <!stage1>
 
 Package: linux-image-4.19.0-1-rt-686-pae-unsigned
 Architecture: i386
-Provides: linux-image-4.19.0-1-rt-686-pae
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [i386] | linux-initramfs-tool [i386]
 Recommends: firmware-linux-free, ${kernel:Recommends}, apparmor [i386]
 Suggests: linux-doc-4.19, debian-kernel-handbook, grub-pc [i386] | extlinux [i386]

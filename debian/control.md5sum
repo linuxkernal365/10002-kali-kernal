@@ -1,9 +1,9 @@
-8342d14e494da88d7ad3157d8c29fdae  debian/bin/gencontrol.py
-1abbab81e096a2d7a6c6ae531e280ab7  debian/build/version-info
+11649d9fb325779881fdc7202e73c027  debian/bin/gencontrol.py
+08f403de029bca545f4663e05575bf91  debian/build/version-info
 2e5bb43f2fceef492df4dc5ce5d3dddc  debian/templates/control.image-dbg.in
 f44752be9e36c27fe90963bd3051d33b  debian/templates/control.main.in
 38004750aa03cea41d5d3aeafff16fcc  debian/templates/image.preinst.in
-3689a391ac9427eba7930aa20b3a5b75  debian/templates/control.tools-unversioned.in
+3d6ea66d97556f7eb398e41faebf3be6  debian/templates/control.tools-unversioned.in
 afb508873a44a1f196c2a525fec4b415  debian/templates/image.prerm.in
 c1e49c6bb4a4ed45c7f637ec672a5434  debian/templates/control.tools-versioned.in
 a4a60fc48b3240e46bbac6a1ddcaad30  debian/templates/image.postrm.in
@@ -13,7 +13,7 @@ befa899554918fd2a5264e5dca3c4eef  debian/templates/tests-control.main.in
 0d7f6ea42f52d0a6013535a80111ee3e  debian/templates/headers.postinst.in
 51797b6c275eb14e99009e78553904cc  debian/templates/perf.lintian-overrides.in
 cf8d71a897d5d30274a25e7f0f31ca16  debian/templates/control.signed-template.in
-8ff553ff7232b003c35bdd074913bc8a  debian/templates/control.image-unsigned.in
+d08a43139e5d426b1fef391a24f2f8b2  debian/templates/control.image-unsigned.in
 80423c0cd458e97a1d3417f9ae778404  debian/templates/control.image.in
 814dda166c7e3ef02e6e259e805ac66a  debian/templates/tests-control.image.in
 5832edc6356ba4bfecaffe2af769aeb1  debian/templates/control.source.in
