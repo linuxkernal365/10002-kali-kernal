@@ -8,7 +8,7 @@ tp3
 (dp4
 Vabiname
 p5
-V2
+V3
 p6
 sVignore-changes
 p7
@@ -283,7 +283,7 @@ tp147
 (dp148
 Vgcc-8
 p149
-Vgcc-8 <!stage1 !cross>, gcc-8-@gnu-type-package@ <!stage1 cross>
+Vgcc-8 <!stage1 !cross !pkg.linux.nokernel>, gcc-8-@gnu-type-package@ <!stage1 cross !pkg.linux.nokernel>
 p150
 sVinitramfs-fallback
 p151
@@ -440,7 +440,7 @@ tp231
 (dp232
 Vgcc-8
 p233
-Vgcc-8 (>= 8-20180123-1~) <!stage1 !cross>, gcc-8-x86-64-linux-gnu (>= 8-20180123-1~) <!stage1 cross>
+Vgcc-8 (>= 8-20180123-1~) <!stage1 !cross !pkg.linux.nokernel>, gcc-8-x86-64-linux-gnu (>= 8-20180123-1~) <!stage1 cross !pkg.linux.nokernel>
 p234
 sVheaders%gcc-8
 p235
@@ -907,7 +907,7 @@ tp482
 (dp483
 Vgcc-8
 p484
-Vgcc-8 <!stage1 !cross>, gcc-8-hppa-linux-gnu <!stage1 cross>, binutils-hppa64-linux-gnu <!stage1>, gcc-8-hppa64-linux-gnu <!stage1>
+Vgcc-8 <!stage1 !cross !pkg.linux.nokernel>, gcc-8-hppa-linux-gnu <!stage1 cross !pkg.linux.nokernel>, binutils-hppa64-linux-gnu <!stage1 !pkg.linux.nokernel>, gcc-8-hppa64-linux-gnu <!stage1 !pkg.linux.nokernel>
 p485
 ss(g192
 g430
@@ -992,7 +992,7 @@ tp526
 (dp527
 Vgcc-8
 p528
-Vgcc-8 (>= 8-20180123-1~) <!stage1 !cross>, gcc-8-x86-64-linux-gnu (>= 8-20180123-1~) <!stage1 cross>
+Vgcc-8 (>= 8-20180123-1~) <!stage1 !cross !pkg.linux.nokernel>, gcc-8-i686-linux-gnu (>= 8-20180123-1~) <!stage1 cross !pkg.linux.nokernel>
 p529
 sVheaders%gcc-8
 p530
@@ -2868,7 +2868,7 @@ tp1528
 (dp1529
 Vsource
 p1530
-V4.19.16-1
+V4.19.20-1
 p1531
 sVupstream
 p1532
@@ -2880,6 +2880,6 @@ V4.19.0
 p1535
 sVabiname
 p1536
-V4.19.0-2
+V4.19.0-3
 p1537
 ss.
