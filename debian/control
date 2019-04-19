@@ -9,8 +9,8 @@ Build-Depends-Arch: kernel-wedge (>= 2.99~) <!stage1 !pkg.linux.nokernel>, kmod 
 Build-Depends-Indep: graphviz <!stage1 !nodoc>, python3-sphinx <!stage1 !nodoc>, python3-sphinx-rtd-theme <!stage1 !nodoc>, texlive-latex-base <!stage1 !nodoc>, texlive-latex-extra <!stage1 !nodoc>, dvipng <!stage1 !nodoc>, patchutils <!stage1 !pkg.linux.nosource>
 Homepage: https://www.kernel.org/
 Rules-Requires-Root: no
-Vcs-Browser: https://salsa.debian.org/kernel-team/linux
-Vcs-Git: https://salsa.debian.org/kernel-team/linux.git
+Vcs-Browser: https://gitlab.com/kalilinux/packages/linux
+Vcs-Git: https://gitlab.com/kalilinux/packages/linux.git
 
 Package: linux-support-4.19.0-kali4
 Architecture: all
