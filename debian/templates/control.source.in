@@ -1,7 +1,7 @@
 Section: kernel
 Priority: optional
 Maintainer: Kali Developers <devel@kali.org>
-Uploaders: Raphaël Hertzog <hertzog@debian.org>, Sophie Brun <sophie@freexian.com>
+Uploaders: Raphaël Hertzog <hertzog@debian.org>, Sophie Brun <sophie@offensive-security.com>
 Standards-Version: 4.2.0
 Build-Depends:
  debhelper (>= 10.1~), dh-exec,
@@ -33,6 +33,6 @@ Build-Depends-Arch:
  libelf-dev:native [amd64] <!stage1 !pkg.linux.nokernel>,
  libelf-dev <!stage1 !pkg.linux.notools>,
 Rules-Requires-Root: no
-Vcs-Git: https://salsa.debian.org/kernel-team/linux.git
-Vcs-Browser: https://salsa.debian.org/kernel-team/linux
+Vcs-Git: https://gitlab.com/kalilinux/packages/linux.git
+Vcs-Browser: https://gitlab.com/kalilinux/packages/linux
 Homepage: https://www.kernel.org/
