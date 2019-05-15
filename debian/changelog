@@ -1,3 +1,9 @@
+linux (4.19.37-2kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 15 May 2019 09:08:08 +0200
+
 linux (4.19.37-2) unstable; urgency=high
 
   * debian/bin: Fix Python static checker regressions (Closes: #928618)
