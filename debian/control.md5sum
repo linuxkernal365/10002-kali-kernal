@@ -1,5 +1,5 @@
 ee4a1d15d41bf60863ffc0d86d4b4891  debian/bin/gencontrol.py
-4b55a2cf28be59b1faeef63228614f11  debian/build/version-info
+9b7f50da60c05611f1dacfb0b7251053  debian/build/version-info
 74b180a87aa1f6377d9bf8a10368c657  debian/templates/control.main.in
 1cfc49a285f1f37ce6415e811e5c737f  debian/templates/control.image-unsigned.in
 38004750aa03cea41d5d3aeafff16fcc  debian/templates/image.preinst.in
@@ -70,5 +70,5 @@ d5cd6e820002011c1183909686eca2a2  debian/config/amd64/none/defines
 d3c04182d8746e4871de922a63f03f97  debian/config/arm64/none/defines
 d3c04182d8746e4871de922a63f03f97  debian/config/arm64/rt/defines
 098924b28d0dcd00aa45188f614efbf1  debian/config/riscv64/none/defines
-a645dfdc20629dcfaedca85db6f70090  debian/installer/kernel-versions
+caf06ce14687601f484a824add0648f7  debian/installer/kernel-versions
 b9102a7cfefcaba872346d9f290e36c5  debian/installer/package-list
