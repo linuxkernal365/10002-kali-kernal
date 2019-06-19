@@ -1,3 +1,9 @@
+linux (4.19.37-4kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 19 Jun 2019 09:23:02 +0200
+
 linux (4.19.37-4) unstable; urgency=high
 
   [ Ben Hutchings ]
