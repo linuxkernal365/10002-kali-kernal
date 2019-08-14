@@ -1,5 +1,5 @@
 [abi]
-abiname: kali5
+abiname: kali2
 ignore-changes:
  __cpuhp_*
  __xive_vm_h_*
