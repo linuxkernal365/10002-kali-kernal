@@ -8,7 +8,7 @@ tp3
 (dp4
 Vabiname
 p5
-V2
+V3
 p6
 sVignore-changes
 p7
@@ -2916,7 +2916,7 @@ tp1561
 (dp1562
 Vsource
 p1563
-V5.2.9-2
+V5.2.17-1
 p1564
 sVupstream
 p1565
@@ -2928,6 +2928,6 @@ V5.2.0
 p1568
 sVabiname
 p1569
-V5.2.0-2
+V5.2.0-3
 p1570
 ss.
