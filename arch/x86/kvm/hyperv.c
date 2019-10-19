@@ -645,7 +645,9 @@ static int stimer_notify_direct(struct kvm_vcpu_hv_stimer *stimer)
 		.vector = stimer->config.apic_vector
 	};
 
-	return !kvm_apic_set_irq(vcpu, &irq, NULL);
+	if (lapic_in_kernel(vcpu))
+		return !kvm_apic_set_irq(vcpu, &irq, NULL);
+	return 0;
 }
 
 static void stimer_expiration(struct kvm_vcpu_hv_stimer *stimer)
@@ -1594,7 +1596,7 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
 {
 	u64 param, ingpa, outgpa, ret = HV_STATUS_SUCCESS;
 	uint16_t code, rep_idx, rep_cnt;
-	bool fast, longmode, rep;
+	bool fast, rep;
 
 	/*
 	 * hypercall generates UD from non zero cpl and real mode
@@ -1605,9 +1607,14 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
 		return 1;
 	}
 
-	longmode = is_64_bit_mode(vcpu);
-
-	if (!longmode) {
+#ifdef CONFIG_X86_64
+	if (is_64_bit_mode(vcpu)) {
+		param = kvm_rcx_read(vcpu);
+		ingpa = kvm_rdx_read(vcpu);
+		outgpa = kvm_r8_read(vcpu);
+	} else
+#endif
+	{
 		param = ((u64)kvm_rdx_read(vcpu) << 32) |
 			(kvm_rax_read(vcpu) & 0xffffffff);
 		ingpa = ((u64)kvm_rbx_read(vcpu) << 32) |
@@ -1615,13 +1622,6 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
 		outgpa = ((u64)kvm_rdi_read(vcpu) << 32) |
 			(kvm_rsi_read(vcpu) & 0xffffffff);
 	}
-#ifdef CONFIG_X86_64
-	else {
-		param = kvm_rcx_read(vcpu);
-		ingpa = kvm_rdx_read(vcpu);
-		outgpa = kvm_r8_read(vcpu);
-	}
-#endif
 
 	code = param & 0xffff;
 	fast = !!(param & HV_HYPERCALL_FAST_BIT);
@@ -1854,7 +1854,13 @@ int kvm_vcpu_ioctl_get_hv_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid2 *cpuid,
 
 			ent->edx |= HV_FEATURE_FREQUENCY_MSRS_AVAILABLE;
 			ent->edx |= HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE;
-			ent->edx |= HV_STIMER_DIRECT_MODE_AVAILABLE;
+
+			/*
+			 * Direct Synthetic timers only make sense with in-kernel
+			 * LAPIC
+			 */
+			if (lapic_in_kernel(vcpu))
+				ent->edx |= HV_STIMER_DIRECT_MODE_AVAILABLE;
 
 			break;
 

@@ -1514,7 +1514,8 @@ static int check_kprobe_address_safe(struct kprobe *p,
 	/* Ensure it is not in reserved area nor out of text */
 	if (!kernel_text_address((unsigned long) p->addr) ||
 	    within_kprobe_blacklist((unsigned long) p->addr) ||
-	    jump_label_text_reserved(p->addr, p->addr)) {
+	    jump_label_text_reserved(p->addr, p->addr) ||
+	    find_bug((unsigned long)p->addr)) {
 		ret = -EINVAL;
 		goto out;
 	}
@@ -2276,6 +2277,7 @@ static int __init init_kprobes(void)
 		init_test_probes();
 	return err;
 }
+subsys_initcall(init_kprobes);
 
 #ifdef CONFIG_DEBUG_FS
 static void report_probe(struct seq_file *pi, struct kprobe *p,
@@ -2570,36 +2572,21 @@ static const struct file_operations fops_kp = {
 
 static int __init debugfs_kprobe_init(void)
 {
-	struct dentry *dir, *file;
+	struct dentry *dir;
 	unsigned int value = 1;
 
 	dir = debugfs_create_dir("kprobes", NULL);
-	if (!dir)
-		return -ENOMEM;
 
-	file = debugfs_create_file("list", 0400, dir, NULL,
-				&debugfs_kprobes_operations);
-	if (!file)
-		goto error;
+	debugfs_create_file("list", 0400, dir, NULL,
+			    &debugfs_kprobes_operations);
 
-	file = debugfs_create_file("enabled", 0600, dir,
-					&value, &fops_kp);
-	if (!file)
-		goto error;
+	debugfs_create_file("enabled", 0600, dir, &value, &fops_kp);
 
-	file = debugfs_create_file("blacklist", 0400, dir, NULL,
-				&debugfs_kprobe_blacklist_ops);
-	if (!file)
-		goto error;
+	debugfs_create_file("blacklist", 0400, dir, NULL,
+			    &debugfs_kprobe_blacklist_ops);
 
 	return 0;
-
-error:
-	debugfs_remove(dir);
-	return -ENOMEM;
 }
 
 late_initcall(debugfs_kprobe_init);
 #endif /* CONFIG_DEBUG_FS */
-
-module_init(init_kprobes);
