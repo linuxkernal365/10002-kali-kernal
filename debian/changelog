@@ -1,3 +1,117 @@
+linux (5.3.7-1) unstable; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.3
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.4
+    - mISDN: enforce CAP_NET_RAW for raw sockets (CVE-2019-17055)
+    - appletalk: enforce CAP_NET_RAW for raw sockets (CVE-2019-17054)
+    - ax25: enforce CAP_NET_RAW for raw sockets (CVE-2019-17052)
+    - ieee802154: enforce CAP_NET_RAW for raw sockets (CVE-2019-17053)
+    - nfc: enforce CAP_NET_RAW for raw sockets (CVE-2019-17056)
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.5
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.6
+    - nl80211: validate beacon head (CVE-2019-16746)
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.7
+
+  [ Aurelien Jarno ]
+  * [riscv64] Enable SOC_SIFIVE. Do not select CLK_SIFIVE,
+    CLK_SIFIVE_FU540_PRCI, SIFIVE_PLIC, SERIAL_SIFIVE and
+    SERIAL_SIFIVE_CONSOLE as they are selected by SOC_SIFIVE.
+  * [riscv64] Install DTBS using dtbs_install target.
+  * [riscv64] Enable SPI_SIFIVE.
+  * [riscv64] Enable SERIAL_EARLYCON_RISCV_SBI.
+  * [riscv64] Enable MMC, MMC_SPI.
+  * [riscv64] udeb: Add mmc-core-modules and mmc-modules.
+  * [riscv64] Fix memblock reservation for device tree blob.
+  * [riscv64] Clear load reservations while restoring hart contexts.
+
+  [ Ben Hutchings ]
+  * [mips*] Revert "Only define MAX_PHYSMEM_BITS on Loongson-3"
+  * KEYS: Re-enable SECONDARY_TRUSTED_KEYRING, dropped in 5.2.6-1 by
+    mis-merge (Closes: #935945)
+
+  [ John Paul Adrian Glaubitz ]
+  * [m68k] Enable CONFIG_CRYPTO_MANAGER_DISABLE_TESTS
+  * [hppa] Enable CONFIG_CRYPTO_MANAGER_DISABLE_TESTS
+  * [sh4] Enable CONFIG_CRYPTO_MANAGER_DISABLE_TESTS
+
+  [ Salvatore Bonaccorso ]
+  * RDMA/cxgb4: Do not dma memory off of the stack (CVE-2019-17075)
+  * ath6kl: fix a NULL-ptr-deref bug in ath6kl_usb_alloc_urb_from_pipe()
+    (CVE-2019-15098)
+
+  [ Romain Perier ]
+  * [armel/rpi] Enable CONFIG_BRCMFMAC_SDIO (Closes: #940530)
+
+  [ Héctor Orón Martínez ]
+  * [x86] Enable ASoC: SOF sound driver (Closes: #940726)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 20 Oct 2019 00:56:32 +0200
+
+linux (5.3.2-1~exp1) experimental; urgency=medium
+
+  * New upstream release: https://kernelnewbies.org/Linux_5.3
+    - [armhf] select the dma-noncoherent symbols for all swiotlb builds
+      (fixes FTBFS)
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.1
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.3.2
+
+  [ Ben Hutchings ]
+  * [hppa,sparc64] udeb: Delete osst from scsi-modules (fixes FTBFS)
+  * Compile with gcc-9 on all architectures
+  * Set KCFLAGS make variable instead of CFLAGS_{KERNEL,MODULE}
+  * linux-image-dbg: Delete ./ from source file names in debug info
+  * debian/rules: Make maintainerclean delete (almost) everything clean does
+  * debian/rules: Make maintainerclean delete everything gencontrol.py creates
+  * debian/.gitignore: Synchronise some patterns with clean target
+  * Add the metapackages previously built by src:linux-latest:
+    - Add template and NEWS files from linux-latest
+    - Rename added templates to be consistent with existing templates
+    - Fix some inconsistencies in metapackage templates
+    - Define pkg.linux.nometa build profile to exclude the metapackages
+    - Build the metapackages by default (Closes: #583849, #941042)
+    - Make linux-perf an arch-dependent package
+    - Require metapackage dependencies to be the same version, and link doc
+      dirs
+
+  [ Uwe Kleine-König ]
+  * [arm64] enable I2C_QCOM_GENI for Lenovo C630
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Wed, 02 Oct 2019 05:31:27 +0100
+
+linux (5.3~rc5-1~exp2) experimental; urgency=medium
+
+  * tools/perf: pmu-events: Fix reproducibility
+  * Fix FTBFS:
+    - Update "kbuild: Make the toolchain variables easily overwritable" for 5.3
+    - udeb: Make nic-wireless-modules depend on crypto-modules
+  * debian/control: Remove build profile qual for rsync, needed for
+    headers_install
+  * debian/changelog: Move older entries to changelog.old
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sun, 25 Aug 2019 16:28:41 +0100
+
+linux (5.3~rc5-1~exp1) experimental; urgency=medium
+
+  * New upstream release candidate
+
+  [ Ben Hutchings ]
+  * aufs: Update support patchset to aufs5.x-rcN 20190805
+  * [rt] Disable until it is updated for 5.3 or later
+  * [powerpcspe] Remove all support for powerpcspe, which is dead upstream
+  * linux-headers: Change per-flavour Makefile to match upstream out-of-tree
+    builds
+  * debian/bin/genorig.py: Import debian.deb822 instead of deprecated deb822
+  * [arm64] Use armhf cross-compiler for building compat vDSO
+  * Documentation: Fix broken link to CIPSO draft
+
+  [ Lubomir Rintel ]
+  * udeb: input-modules: Add OLPC AP-SP keyboard
+  * [armhf] Add camera, EC and battery drivers for OLPC XO-1.75 laptop.
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sat, 24 Aug 2019 19:07:56 +0100
+
 linux (5.2.17-1kali2) kali-dev; urgency=medium
 
   * Re-upload for Perl migration
@@ -42065,4 +42179,3 @@ linux-2.6 (2.6.12-1) unstable; urgency=low
       (Frederik Schüler)
 
  -- Andres Salomon <dilinger@debian.org>  Wed, 20 Jul 2005 17:16:04 -0400
-
