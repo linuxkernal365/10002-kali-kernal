@@ -1,5 +1,5 @@
-b2ddb2a99e38625963462e6f1beec303  debian/bin/gencontrol.py
-d8b6dc32f57e114393daf3498e43ddc1  debian/build/version-info
+fe10cdfe2211a9134d4dfa7017287340  debian/bin/gencontrol.py
+72dff0fcf7b87c5cfbc567d7875400b2  debian/build/version-info
 74b180a87aa1f6377d9bf8a10368c657  debian/templates/control.main.in
 1cfc49a285f1f37ce6415e811e5c737f  debian/templates/control.image-unsigned.in
 38004750aa03cea41d5d3aeafff16fcc  debian/templates/image.preinst.in
@@ -44,7 +44,7 @@ ffaba8ecac9f33cdf38a83b6c6b5128e  debian/config/amd64/defines
 1f1ed4a31b20a1ab483dd1357b30ed76  debian/config/mipsr6el/defines
 b1750f23dea19ed03c8382341c924b53  debian/config/mips/defines
 e0810ddd6e4add2a26c5668773b69d25  debian/config/sh4/defines
-7bd5619a34940ddc2fbab2c2db5487da  debian/config/arm64/defines
+2a6719af2f5916db821358f96cc456f0  debian/config/arm64/defines
 e411d2dfe0018a7c40b6bf7efd45cd29  debian/config/mipsn32/defines
 174058e52aced932bf02606d6cb5649c  debian/config/mipsn32el/defines
 366b94d652a66b437eabcd165bcc9610  debian/config/featureset-rt/defines
