@@ -1,3 +1,10 @@
+linux (5.3.7-1kali2) kali-experimental; urgency=medium
+
+  * Import a Debian commit to fix arm issues
+    (https://salsa.debian.org/benh/linux/commit/d06731909d9ffa86cce1bb98c8b176d07ecfe9c8)
+
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 04 Nov 2019 17:01:31 +0100
+
 linux (5.3.7-1kali1) kali-experimental; urgency=medium
 
   * Sync With Debian
