@@ -1,3 +1,9 @@
+linux (5.3.9-1kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 11 Nov 2019 17:46:17 +0100
+
 linux (5.3.9-1) unstable; urgency=medium
 
   * New version hopefully closes: #942881
