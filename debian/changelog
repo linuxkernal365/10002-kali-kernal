@@ -1,6 +1,7 @@
 linux (5.4.13-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
+  * Fix kali-wifi-injection.patch
 
  -- Sophie Brun <sophie@offensive-security.com>  Mon, 20 Jan 2020 12:32:57 +0100
 
