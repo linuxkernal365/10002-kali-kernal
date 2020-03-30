@@ -1,3 +1,145 @@
+linux (5.5.13-2) unstable; urgency=medium
+
+  * bpf: Undo incorrect __reg_bound_offset32 handling (CVE-2020-8835)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 30 Mar 2020 23:06:57 +0200
+
+linux (5.5.13-1) unstable; urgency=medium
+
+  * New upstream release: https://kernelnewbies.org/Linux_5.5
+    (Closes: #953680)
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.1
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.2
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.3
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.4
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.5
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.6
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.7
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.8
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.9
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.10
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.11
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.12
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.5.13
+
+  [ Ben Hutchings ]
+  * aufs: Update support patchset to aufs5.x-rcN 20200120; no functional
+    change
+  * net: Enable NET_SWITCHDEV; disable on armel/marvell (Closes: #949863)
+  * [armhf] net/ethernet/ti: Enable TI_CPSW_SWITCHDEV as module; enable TI_CPTS
+  * wireless: Enable regulatory.db direct loading:
+    - Drop "wireless: Disable regulatory.db direct loading"
+    - linux-image: Add Breaks: relation with old wireless-regdb versions
+    - Regenerate my wireless-regdb certificate with expected attributes
+  * [x86] Drop "Add a SysRq option to lift kernel lockdown" (Closes: #947021)
+    - This patch allowed remotely disabling lockdown using usbip
+    - Lockdown can be disabled by running "mokutil --disable-validation",
+      rebooting, and confirming the change when prompted
+  * Set PYTHON=python3 for document build (fixes FTBFS)
+  * [x86,arm64] Move linux-headers metapackages to src:linux-signed-*.
+    This should ensure that src:linux and src:linux-signed-* transition to
+    testing together.
+  * debian/bin/gencontrol_signed.py: Generate valid versions in a linux binNMU
+  * udeb: Drop zlib-modules packages, as zlib_deflate is now always built-in
+    (fixes FTBFS on several architectures)
+  * [mips*/octeon] Fix and re-enable the Octeon Ethernet driver
+  * [mips*] Fix FTBFS:
+    - Increase RELOCATION_TABLE_SIZE to 0x160000
+    - Fix exception handler memcpy()
+  * debian/config: Delete redundant arch/flavour-specific "debug-info: true"
+  * linux-source: Suggest qtbase5-dev instead of the removed libqt4-dev
+    (Closes: #953386)
+  * Add WireGuard driver and required crypto changes from 5.6-rc7 and
+    cryptodev-2.6, thanks to Jason A. Donenfeld (Closes: #953569)
+  * drivers/net: Enable WIREGUARD as module
+  * debian/control: Use my debian.org email in Uploaders field
+  * debian/certs: Rename Romain Perier's certificate to match email address
+  * security/integrity/platform_certs: Rebase db-mok-keyring patch set for
+    5.5.9
+  * [x86] Enable X86_UMIP (previously configured as X86_INTEL_UMIP)
+  * Set ABI to 1
+  * [amd64] Enable Intel GVT-g (except cloud-amd64) (Closes: #954088):
+    - vfio: Enable VFIO_MDEV, VFIO_MDEV_DEVICE as modules
+    - i915: Enable DRM_I915_GVT; enable DRM_I915_GVT_KVMGT as module
+  * drivers/net/wireless: Enable MT76x0E as module (Closes: #953683)
+  * bcmgenet: Backport ACPI support, supporting Raspberry Pi 4
+    (Closes: #950578)
+
+  [ Aurelien Jarno ]
+  * [riscv64] Enable SECCOMP.
+
+  [ Romain Perier ]
+  * [arm64] Enable BCMGENET
+  * [arm64] Fix CONFIG_INFINIBAND_HNS_HIP06 and CONFIG_INFINIBAND_HNS_HIP08
+    from tristate to boolean
+  * debian/certs: Add my own certificate for wireless-regdb
+  * debian/patches/debian/wireless-add-debian-wireless-regdb-certificates.patch:
+    Add the hexdump of my certificate to this patch, so the kernel can
+    directly load the regulatory db and trust it if have I signed it.
+
+  [ Noah Meyerhans ]
+  * [arm64] Enable KVM_ARM_HOST and KVM_ARM_PMU
+  * [arm64] Enable CONFIG_ARM64_ERRATUM_1418040
+  * [arm64/cloud-arm64] Introduce cloud build flavour
+  * [cloud] random: Enable RANDOM_TRUST_BOOTLOADER
+
+  [ Mark Pearson ]
+  * [amd64] ASoC: Enable SND_SOC_SOF_COMETLAKE_LP_SUPPORT,
+    SND_SOC_SOF_COMETLAKE_H_SUPPORT
+
+  [ Christian Barcenas ]
+  * lockdown: honor LOCK_DOWN_IN_EFI_SECURE_BOOT=n (Closes: #945604)
+
+  [ Salvatore Bonaccorso ]
+  * libcpupower: Lower back soname version to 1 and add new
+    cpufreq_{get,put}_boost_frequencies methods
+
+  [ Joel Stanley ]
+  * [armhf] Enable ASPEED AST2600 SoC family. This includes all ASPEED symbols
+    for the AST2600 and FTGMAC100, the network device used by this SoC. The
+    SoC has 5 UARTs so CONFIG_SERIAL_8250_NR_UARTS is bumped to 5 from 4
+    in order to correctly register UART5, the boot console.
+
+  [ Petr Stastny ]
+  * [x86] i2c: Enable I2C_AMD_MP2 as module (Closes: #955004)
+
+  [ Vagrant Cascadian ]
+  * [arm64] Add patch from next-20200325 to enable device-tree for
+    Pinebook Pro.
+
+ -- Ben Hutchings <benh@debian.org>  Mon, 30 Mar 2020 03:03:47 +0100
+
+linux (5.5~rc5-1~exp1) experimental; urgency=medium
+
+  * New upstream release candidate
+
+  [ Romain Perier ]
+  * [rt] Disable until it is updated for 5.5 or later
+  * [mips*] Remove obsolete patch
+    MIPS-Loongson-3-Add-Loongson-LS3A-RS780E-1-way-machi.patch
+  * Retrieve the new aufs5 patches from the upstream tree, with an update in
+    aufs5-standalone.patch (see its header).
+  * Refreshed patches:
+    - debian/dfsg/vs6624-disable.patch
+    - bugfix/all/firmware_class-log-every-success-and-failure.patch
+    - bugfix/all/
+      radeon-amdgpu-firmware-is-required-for-drm-and-kms-on-r600-onward.patch
+    - bugfix/all/disable-some-marvell-phys.patch
+    - features/all/
+      security-perf-allow-further-restriction-of-perf_event_open.patch
+    - features/x86/x86-make-x32-syscall-support-conditional.patch
+    - bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
+    - features/all/lockdown/
+      efi-add-an-efi_secure_boot-flag-to-indicate-secure-b.patch
+
+  [ Ben Hutchings ]
+  * udeb: Add f2fs-modules package
+  * linux-kbuild: Stop building pnmtologo
+  * linux-kbuild: Add new file to Makefile for kconfig
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Mon, 06 Jan 2020 04:26:45 +0000
+
 linux (5.4.19-1) unstable; urgency=medium
 
   * New upstream stable update:
