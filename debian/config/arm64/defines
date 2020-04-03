@@ -6,7 +6,6 @@ featuresets:
  rt
 
 [build]
-debug-info: true
 image-file: arch/arm64/boot/Image
 # We don't want signed modules in Kali
 signed-code: false
@@ -18,6 +17,10 @@ breaks: libmozjs185-1.0, libmozjs-24-0 (<< 24.2.0-5.1~)
 
 [arm64_description]
 hardware: 64-bit ARMv8 machines
+
+[cloud-arm64_description]
+hardware: arm64 cloud
+hardware-long: cloud platforms supporting arm64 virtual machines
 
 [arm64_image]
 
