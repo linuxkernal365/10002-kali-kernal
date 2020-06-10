@@ -1,3 +1,27 @@
+linux (5.6.14-2) unstable; urgency=medium
+
+  [ Vagrant Cascadian ]
+  * [arm64] Add pwm-sun4i to fb-modules udeb.
+
+  [ Salvatore Bonaccorso ]
+  * kernel/relay.c: handle alloc_percpu returning NULL in relay_open
+    (CVE-2019-19462)
+  * fs/binfmt_elf.c: allocate initialized memory in fill_thread_core_info()
+    (CVE-2020-10732)
+  * mm: Fix mremap not considering huge pmd devmap (CVE-2020-10757)
+
+  [ Ben Hutchings ]
+  * [x86] Add support for mitigation of Special Register Buffer Data Sampling
+    (SRBDS) (CVE-2020-0543):
+    - x86/cpu: Add 'table' argument to cpu_matches()
+    - x86/speculation: Add Special Register Buffer Data Sampling (SRBDS)
+      mitigation
+    - x86/speculation: Add SRBDS vulnerability and mitigation documentation
+    - x86/speculation: Add Ivy Bridge to affected list
+  * [x86] speculation: Do not match steppings, to avoid an ABI change
+
+ -- Ben Hutchings <benh@debian.org>  Tue, 09 Jun 2020 18:50:00 +0100
+
 linux (5.6.14-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
