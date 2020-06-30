@@ -1,3 +1,9 @@
+linux (5.7.6-1kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Tue, 30 Jun 2020 09:40:20 +0200
+
 linux (5.7.6-1) unstable; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_5.7
