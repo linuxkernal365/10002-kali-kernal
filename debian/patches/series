@@ -36,6 +36,7 @@ features/all/wireless-carl9170-Enable-sniffer-mode-promisc-flag-t.patch
 
 # Patches from aufs5 repository, imported with debian/bin/genpatch-aufs.
 # These are only the changes needed to allow aufs to be built out-of-tree.
+bugfix/all/revert-general-protection-fault-ath9k_hif_usb_rx_cb
 features/all/aufs5/aufs5-base.patch
 features/all/aufs5/aufs5-mmap.patch
 features/all/aufs5/aufs5-standalone.patch

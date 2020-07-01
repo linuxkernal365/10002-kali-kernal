@@ -1,3 +1,9 @@
+linux (5.7.6-1kali2) kali-experimental; urgency=medium
+
+  * Add patch bugfix/all/revert-general-protection-fault-ath9k_hif_usb_rx_cb
+
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 01 Jul 2020 15:07:31 +0200
+
 linux (5.7.6-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
