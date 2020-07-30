@@ -1,3 +1,11 @@
+linux (5.7.10-1kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+  * Revert : bugfix/all/revert-general-protection-fault-ath9k_hif_usb_rx_cb
+  Debian fixed the bug.
+
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 30 Jul 2020 15:24:06 +0200
+
 linux (5.7.10-1) unstable; urgency=medium
 
   * New upstream stable update:
