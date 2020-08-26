@@ -1,6 +1,10 @@
 #!/bin/sh -e
 
+<<<<<<< HEAD:debian/linux-image-5.7.0-kali2-powerpc.prerm
 version=5.7.0-kali2-powerpc
+=======
+version=5.7.0-3-mips32r6el
+>>>>>>> debian:debian/linux-image-5.7.0-3-mips32r6el.prerm
 image_path=/boot/vmlinux-$version
 
 if [ "$1" != remove ]; then

@@ -1,6 +1,10 @@
 #!/bin/sh -e
 
+<<<<<<< HEAD:debian/linux-image-5.7.0-kali2-arm64.prerm
 version=5.7.0-kali2-arm64
+=======
+version=5.7.0-3-686-pae
+>>>>>>> debian:debian/linux-image-5.7.0-3-686-pae-unsigned.prerm
 image_path=/boot/vmlinuz-$version
 
 if [ "$1" != remove ]; then

@@ -1,6 +1,10 @@
 #!/bin/sh -e
 
+<<<<<<< HEAD:debian/linux-image-5.7.0-kali2-arm64.postinst
 version=5.7.0-kali2-arm64
+=======
+version=5.7.0-3-4kc-malta
+>>>>>>> debian:debian/linux-image-5.7.0-3-4kc-malta.postinst
 image_path=/boot/vmlinuz-$version
 
 if [ "$1" != configure ]; then

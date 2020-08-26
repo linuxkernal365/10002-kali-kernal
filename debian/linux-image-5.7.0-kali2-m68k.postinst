@@ -1,6 +1,10 @@
 #!/bin/sh -e
 
+<<<<<<< HEAD:debian/linux-image-5.7.0-kali2-m68k.postinst
 version=5.7.0-kali2-m68k
+=======
+version=5.7.0-3-m68k
+>>>>>>> debian:debian/linux-image-5.7.0-3-m68k.postinst
 image_path=/boot/vmlinux-$version
 
 if [ "$1" != configure ]; then

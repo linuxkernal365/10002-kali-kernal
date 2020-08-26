@@ -1,6 +1,10 @@
 #!/bin/sh -e
 
+<<<<<<< HEAD:debian/linux-image-5.7.0-kali2-riscv64.postrm
 version=5.7.0-kali2-riscv64
+=======
+version=5.7.0-3-mips64r6
+>>>>>>> debian:debian/linux-image-5.7.0-3-mips64r6.postrm
 image_path=/boot/vmlinux-$version
 
 rm -f /lib/modules/$version/.fresh-install

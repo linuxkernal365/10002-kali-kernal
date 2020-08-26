@@ -1,6 +1,10 @@
 #!/bin/sh -e
 
+<<<<<<< HEAD:debian/linux-image-5.7.0-kali2-arm64.preinst
 version=5.7.0-kali2-arm64
+=======
+version=5.7.0-3-5kc-malta
+>>>>>>> debian:debian/linux-image-5.7.0-3-5kc-malta.preinst
 image_path=/boot/vmlinuz-$version
 
 if [ "$1" = abort-upgrade ]; then
