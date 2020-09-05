@@ -1,3 +1,129 @@
+linux (5.8.7-1) unstable; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.8.4
+    - ext4: fix potential negative array index in do_split() (CVE-2020-14314)
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.8.5
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.8.6
+    - nfsd: fix oops on mixed NFSv4/NFSv3 client access
+    - [powerpc] 32s: Disable VMAP stack which CONFIG_ADB_PMU (Closes: #963689)
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.8.7
+
+  [ Ben Hutchings ]
+  * [mips*] udeb: Drop hfs-modules (fixes FTBFS)
+  * [m68k,powerpc,ppc64] udeb: Make hfs-modules depend on cdrom-core-modules
+    (fixes FTBFS)
+  * tools/include/uapi: Fix <asm/errno.h> (probably fixes FTBFS on ia64)
+  * bpftool: Build with Debian recommended compiler options
+
+  [ Salvatore Bonaccorso ]
+  * iwlwifi: yoyo: don't print failure if debug firmware is missing
+    (Closes: #966218)
+  * debian/tests/python: pycodestyle: Increase max-line-length to 100.
+  * net/packet: fix overflow in tpacket_rcv (CVE-2020-14386)
+  * Set ABI to 1
+
+  [ Uwe Kleine-König ]
+  * [arm64] Enable a few options for Kobol's helios64
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 05 Sep 2020 16:52:44 +0200
+
+linux (5.8.3-1~exp1) experimental; urgency=medium
+
+  * New upstream release: https://kernelnewbies.org/Linux_5.8
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.8.1
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.8.2
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.8.3
+
+  [ Jeremy Stanley ]
+  * [x86] PMIC operation region support (Closes: #925965)
+    - Enable CONFIG_PMIC_OPREGION for general ACPI support of operation
+      regions with Power Management Integrated Circuits. Turn on specific
+      opregion support for:
+      + CONFIG_BYTCRC_PMIC_OPREGION (Bay Trail Crystal Cove PMIC)
+      + CONFIG_CHTCRC_PMIC_OPREGION (Cherry Trail Crystal Cove PMIC)
+      + CONFIG_XPOWER_PMIC_OPREGION (XPower AXP288 PMIC)
+      + CONFIG_BXT_WC_PMIC_OPREGION (BXT WhiskeyCove PMIC)
+      + CONFIG_CHT_WC_PMIC_OPREGION (CHT Whiskey Cove PMIC)
+      + CONFIG_CHT_DC_TI_PMIC_OPREGION (Dollar Cove TI PMIC)
+      Additionally enable CONFIG_MFD_INTEL_PMC_BXT as a module (multi-function
+      device driver for Intel Broxton Whiskey Cove PMIC), along with
+      CONFIG_INTEL_SOC_PMIC (Crystal Cove PMIC) as a dependency for it.
+  * [x86] Fix Cherry Trail power management regression (Closes: #949886)
+    - Switch CONFIG_I2C_DESIGNWARE_PLATFORM from being compiled as a module to
+      compiled into the kernel directly, since as of kernel version 5.1 this
+      state became a dependency for CONFIG_INTEL_SOC_PMIC_CHTWC which is
+      already enabled.
+    - Enable CONFIG_USB_ROLES_INTEL_XHCI and CONFIG_TYPEC_MUX_PI3USB30532 as
+      modules, which became dependencies for the already enabled
+      CONFIG_INTEL_CHT_INT33FE as of kernel version 4.17.
+
+  [ Romain Perier ]
+  * Rebased patches onto 5.8.
+
+  [ Uwe Kleine-König ]
+  * [armhf] Enable BCM2835 auxiliar mini UART support found on Raspberry Pi
+    (all models); patch by Marc Kleine-Budde. (Closes: #963619)
+  * [arm64] Enable IR_MESON and SPI_MESON_SPICC.
+
+  [ Helge Deller ]
+  * [hppa] Build linux-image-parisc-smp and linux-image-parisc64-smp
+    transition packages
+
+  [ Yves-Alexis Perez ]
+  * usb: Enable APPLE_MFI_FASTCHARGE as a module
+
+  [ Salvatore Bonaccorso ]
+  * Set ABI to trunk
+
+  [ Bastian Blank ]
+  * [x86] hyperv-daemons:
+    - Rename services to remove "hyperv-daemons." prefix
+    - Use debhelper for services.
+    - Make systemd service bind to device.
+    - Start kvp daemon way earlier in boot.
+    - Specify some service restrictions.
+  * udeb: Reverse order of cdrom-core and isofs/udf.
+  * Fix build of documentation.
+  * [amd64] Enable GVE. (closes: #964812)
+  * Compile with gcc-10 on all architectures.
+  * [cloud] Enable TARGET_CORE. (closes: #952108)
+  * [cloud] Disable DLM, GFS2_FS, OCFS2_FS.
+  * Move System.map into debug package and replace with pointer.
+
+  [ Ben Hutchings ]
+  * [x86] hyperv-daemons: Complete renaming of init scripts
+  * [x86] hyperv-daemons: Correct old names in Conflicts field of unit files
+  * [hppa] Use standard metadata for transitional packages
+  * bpftool: Fix version string in recursive builds
+  * Revert "linux-libc-dev: Re-add "Provides: linux-kernel-headers""
+    (Closes: #959462)
+  * mm: Enable INIT_ON_ALLOC_DEFAULT_ON. This can be reverted using the
+    kernel parameter: init_on_alloc=0
+  * libtraceevent1: Add new APIs to symbols file
+
+  [ Christian Barcenas ]
+  * bpftool: add packaging for tools/bpf/bpftool (Closes: #896165)
+    - Thank you to Noah Meyerhans for the first iteration of packaging.
+
+  [ Thomas W ]
+  * [x86] Enable CONFIG_XIAOMI_WMI
+
+  [ Matthew Gabeler-Lee ]
+  * [x86] Re-enable APU2 LED control (Closes: 949448)
+
+  [ Joel Stanley ]
+  * [armhf] Enable NET_NCSI
+
+  [ Walter Lozano ]
+  * [armhf] Enable NVMEM_IMX_OCOTP (Closes: #968253)
+
+  [ Philipp Kern ]
+  * [s390x] Add virtio_net to nic-modules.
+
+ -- Ben Hutchings <benh@debian.org>  Mon, 24 Aug 2020 01:23:22 +0100
+
 linux (5.7.17-1) unstable; urgency=medium
 
   * New upstream stable update:
