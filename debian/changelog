@@ -1,3 +1,87 @@
+linux (5.9.1-1) unstable; urgency=medium
+
+  * New upstream release: https://kernelnewbies.org/Linux_5.9
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.9.1
+    - Bluetooth: A2MP: Fix not initializing all members (CVE-2020-12352)
+    - Bluetooth: L2CAP: Fix calling sk_filter on non-socket based channel
+      (CVE-2020-12351)
+    - Bluetooth: MGMT: Fix not checking if BT_HS is enabled
+    - media: usbtv: Fix refcounting mixup
+    - USB: serial: option: add Cellient MPL200 card
+    - USB: serial: option: Add Telit FT980-KS composition
+    - [x86] staging: comedi: check validity of wMaxPacketSize of usb endpoints
+      found
+    - USB: serial: pl2303: add device-id for HP GC device
+    - USB: serial: ftdi_sio: add support for FreeCalypso JTAG+UART adapters
+    - vt_ioctl: make VT_RESIZEX behave like VT_RESIZE
+    - reiserfs: Initialize inode keys properly
+    - reiserfs: Fix oops during mount
+    - Revert "drm/amdgpu: Fix NULL dereference in dpm sysfs handlers"
+    - [x86] crypto: qat - check cipher length for aead AES-CBC-HMAC-SHA
+
+  [ Romain Perier ]
+  * [rt] Update to 5.9-rc8-rt12
+
+  [ Uwe Kleine-König ]
+  * [armhf,arm64] Enable CONFIG_VIDEO_SUNXI_CEDRUS (Closes: #972123)
+
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 5.9-rt16
+  * [x86]  ACPI / extlog: Check for RDMSR failure (Closes: #971058)
+  * Set ABI to 1
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 17 Oct 2020 15:14:43 +0200
+
+linux (5.9~rc8-1~exp1) experimental; urgency=medium
+
+  * New upstream release candidate
+
+  [ Ben Hutchings ]
+  * linux-doc: Correct index filename in package description
+  * [amd64/cloud-amd64] Generalise the description of supported platforms
+
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 5.9-rc8-rt11
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 05 Oct 2020 23:17:12 +0200
+
+linux (5.9~rc6-1~exp1) experimental; urgency=medium
+
+  * New upstream release candidate:
+
+  [ Ben Hutchings ]
+  * linux-signed-*: Set Uploaders and Standards-Version to match linux
+  * [rt] Update to 5.9-rc5-rt7 and re-enable
+
+  [ Uwe Kleine-König ]
+  * [arm64,generic] Enable configs used on SMARC-sAL28 board and its carriers.
+    Patch by Michael Walle.
+
+  [ Gianfranco Costamagna ]
+  * Provide virtualbox-guest-modules now that the module is inside the kernel
+    itself.
+
+  [ Salvatore Bonaccorso ]
+  * Set ABI to trunk
+  * drivers/net/wireless: Enable RTW88_8821CE (Closes: #917941)
+
+ -- Ben Hutchings <benh@debian.org>  Mon, 21 Sep 2020 03:23:41 +0100
+
+linux (5.9~rc4-1~exp1) experimental; urgency=medium
+
+  * New upstream release candidate
+
+  [ Ben Hutchings ]
+  * Un-export symbols no longer needed by the Android ashmem and binder drivers
+  * aufs: Disable support patchset until it is updated for Linux 5.9
+  * Makefile: Do not check for libelf when building OOT module
+  * udeb: Move any compression modules to kernel-image; drop compress-modules
+  * libtraceevent1: Update symbols list for functions added in 5.9
+  * drm/virtio: Revert "drm/virtio: Call the right shmem helpers"
+
+ -- Ben Hutchings <benh@debian.org>  Fri, 11 Sep 2020 04:20:59 +0100
+
 linux (5.8.14-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
