@@ -1,3 +1,9 @@
+linux (5.9.1-1kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 27 Oct 2020 10:13:39 +0100
+
 linux (5.9.1-1) unstable; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_5.9
