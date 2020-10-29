@@ -1,3 +1,9 @@
+linux (5.9.1-1kali2) kali-experimental; urgency=medium
+
+  * Add missing character in kali-wifi-injection.patch (fix FTBFS)
+
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 29 Oct 2020 12:03:14 +0100
+
 linux (5.9.1-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian

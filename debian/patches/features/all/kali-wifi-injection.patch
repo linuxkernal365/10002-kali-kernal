@@ -39,7 +39,7 @@
  	}
  
  	ieee80211_set_qos_hdr(sdata, skb);
-+	Don't overwrite QoS header in monitor mode
++	// Don't overwrite QoS header in monitor mode
 +	if (likely(info->control.vif->type != NL80211_IFTYPE_MONITOR)) {
 +	    ieee80211_set_qos_hdr(sdata, skb);
 +	}
