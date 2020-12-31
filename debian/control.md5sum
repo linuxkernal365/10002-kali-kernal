@@ -1,5 +1,5 @@
-146236262d655af80ee1e3f5dddc7389  debian/bin/gencontrol.py
-331c31506001014313b167dc4a01b79d  debian/build/version-info
+a46eb172db472ccbe5364b1de7eeb2a0  debian/bin/gencontrol.py
+86cc215b5f92f70b7907c69720b77699  debian/build/version-info
 fe4456d48e3218fb8980c8577d03a7ae  debian/templates/control.config.in
 9509e39d8e60906ebd5ee4a8b0355d25  debian/templates/control.docs.in
 358db3af53a223fe60ae89c7a481609f  debian/templates/control.docs.meta.in
@@ -38,12 +38,12 @@ afb508873a44a1f196c2a525fec4b415  debian/templates/image.prerm.in
 381bc892fd36ef7ea5327f649b99cb98  debian/templates/sourcebin.meta.maintscript.in
 814dda166c7e3ef02e6e259e805ac66a  debian/templates/tests-control.image.in
 33d71bfd398d2f9b3bc5c0193b67d17e  debian/templates/tests-control.main.in
-b06570aa799ff38c5dd90e6c2fb56f38  debian/config/defines
+8dea9e5fdddf23ca6b33e427afed0d47  debian/config/defines
 59a811890d2e7129bec940075850f11f  debian/config/alpha/defines
 026ce5cdad7814c28f4fd87589786719  debian/config/amd64/defines
 44bff3917069a99eeb20ceff24609dda  debian/config/arm64/defines
 3e673c1434c6132c73c0cfb4bfe38763  debian/config/arm64ilp32/defines
-bed8c0c1c4b59bf6159cb2111ca134fa  debian/config/armel/defines
+18c882259e45d65ad257534da6cd18e6  debian/config/armel/defines
 27ed61864d13f791e07f6ad8e688de2a  debian/config/armhf/defines
 366b94d652a66b437eabcd165bcc9610  debian/config/featureset-rt/defines
 855af7b688adb78c7d236e15bbf6bf38  debian/config/hppa/defines
