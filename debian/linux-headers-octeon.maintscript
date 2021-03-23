@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-dir_to_symlink /usr/share/doc/linux-headers-octeon linux-headers-5.10.0-kali4-octeon 5.7~rc5-1~exp1 linux-headers-octeon
-=======
-dir_to_symlink /usr/share/doc/linux-headers-octeon linux-headers-5.10.0-5-octeon 5.7~rc5-1~exp1 linux-headers-octeon
->>>>>>> debian
+dir_to_symlink /usr/share/doc/linux-headers-octeon linux-headers-5.10.0-kali5-octeon 5.7~rc5-1~exp1 linux-headers-octeon
