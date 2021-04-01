@@ -1,3 +1,9 @@
+linux (5.10.26-1kali2) kali-experimental; urgency=medium
+
+  * Bump ABI to kali6. We have enabled 3 config options for rpi4 32bit.
+
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 01 Apr 2021 15:26:43 +0200
+
 linux (5.10.26-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
