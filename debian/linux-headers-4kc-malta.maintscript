@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-dir_to_symlink /usr/share/doc/linux-headers-4kc-malta linux-headers-5.10.0-kali6-4kc-malta 5.7~rc5-1~exp1 linux-headers-4kc-malta
-=======
-dir_to_symlink /usr/share/doc/linux-headers-4kc-malta linux-headers-5.10.0-6-4kc-malta 5.7~rc5-1~exp1 linux-headers-4kc-malta
->>>>>>> debian
+dir_to_symlink /usr/share/doc/linux-headers-4kc-malta linux-headers-5.10.0-kali7-4kc-malta 5.7~rc5-1~exp1 linux-headers-4kc-malta

@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-dir_to_symlink /usr/share/doc/linux-image-mckinley-dbg linux-image-5.10.0-kali6-mckinley-dbg 5.7~rc5-1~exp1 linux-image-mckinley-dbg
-=======
-dir_to_symlink /usr/share/doc/linux-image-mckinley-dbg linux-image-5.10.0-6-mckinley-dbg 5.7~rc5-1~exp1 linux-image-mckinley-dbg
->>>>>>> debian
+dir_to_symlink /usr/share/doc/linux-image-mckinley-dbg linux-image-5.10.0-kali7-mckinley-dbg 5.7~rc5-1~exp1 linux-image-mckinley-dbg

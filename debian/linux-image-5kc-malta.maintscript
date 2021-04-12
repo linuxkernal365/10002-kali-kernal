@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-dir_to_symlink /usr/share/doc/linux-image-5kc-malta linux-image-5.10.0-kali6-5kc-malta 5.7~rc5-1~exp1 linux-image-5kc-malta
-=======
-dir_to_symlink /usr/share/doc/linux-image-5kc-malta linux-image-5.10.0-6-5kc-malta 5.7~rc5-1~exp1 linux-image-5kc-malta
->>>>>>> debian
+dir_to_symlink /usr/share/doc/linux-image-5kc-malta linux-image-5.10.0-kali7-5kc-malta 5.7~rc5-1~exp1 linux-image-5kc-malta
