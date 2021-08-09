@@ -1,3 +1,9 @@
+linux (5.10.46-4kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 09 Aug 2021 15:48:39 +0200
+
 linux (5.10.46-4) unstable; urgency=medium
 
   * bpf: Introduce BPF nospec instruction for mitigating Spectre v4
