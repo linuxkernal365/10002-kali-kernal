@@ -1,3 +1,9 @@
+linux (5.14.6-2kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 20 Sep 2021 13:38:14 +0200
+
 linux (5.14.6-2) unstable; urgency=medium
 
   * io_uring: ensure symmetry in handling iter types in loop_rw_iter()
