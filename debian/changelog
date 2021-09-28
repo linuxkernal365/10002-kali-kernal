@@ -1,3 +1,9 @@
+linux (5.14.6-2kali2) kali-experimental; urgency=medium
+
+  * Enable DRM_VMWGFX on arm64
+
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 28 Sep 2021 09:41:27 +0200
+
 linux (5.14.6-2kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
