@@ -5786,7 +5786,7 @@ Architecture: ia64
 Section: debian-installer
 Priority: standard
 Provides: cdrom-core-modules
-Depends: kernel-image-5.14.0-1-itanium-di, scsi-core-modules-5.14.0-1-itanium-di, ide-modules-5.14.0-1-itanium-di
+Depends: kernel-image-5.14.0-1-itanium-di, scsi-core-modules-5.14.0-1-itanium-di
 Description: CDROM support
  This package contains core CDROM support for the kernel.
 Build-Profiles: <!stage1 !pkg.linux.nokernel>
@@ -6204,30 +6204,6 @@ Build-Profiles: <!stage1 !pkg.linux.nokernel>
 Kernel-Version: 5.14.0-1-itanium
 Package-Type: udeb
 
-Package: ide-core-modules-5.14.0-1-itanium-di
-Architecture: ia64
-Section: debian-installer
-Priority: standard
-Provides: ide-core-modules
-Depends: kernel-image-5.14.0-1-itanium-di
-Description: IDE support
- This package contains core IDE support for the kernel.
-Build-Profiles: <!stage1 !pkg.linux.nokernel>
-Kernel-Version: 5.14.0-1-itanium
-Package-Type: udeb
-
-Package: ide-modules-5.14.0-1-itanium-di
-Architecture: ia64
-Section: debian-installer
-Priority: standard
-Provides: ide-modules
-Depends: kernel-image-5.14.0-1-itanium-di, ide-core-modules-5.14.0-1-itanium-di
-Description: IDE drivers
- This package contains IDE drivers for the kernel.
-Build-Profiles: <!stage1 !pkg.linux.nokernel>
-Kernel-Version: 5.14.0-1-itanium
-Package-Type: udeb
-
 Package: linux-image-5.14.0-1-itanium
 Architecture: ia64
 Depends: kmod, linux-base (>= 4.3~), linux-bootwrapper-5.14.0-1 [powerpc ppc64], ${misc:Depends}, initramfs-tools (>= 0.120+deb8u2) [ia64] | linux-initramfs-tool [ia64]
@@ -6415,7 +6391,7 @@ Architecture: m68k
 Section: debian-installer
 Priority: standard
 Provides: cdrom-core-modules
-Depends: kernel-image-5.14.0-1-m68k-di, scsi-core-modules-5.14.0-1-m68k-di, ide-modules-5.14.0-1-m68k-di
+Depends: kernel-image-5.14.0-1-m68k-di, scsi-core-modules-5.14.0-1-m68k-di
 Description: CDROM support
  This package contains core CDROM support for the kernel.
 Build-Profiles: <!stage1 !pkg.linux.nokernel>
@@ -6625,30 +6601,6 @@ Depends: kernel-image-5.14.0-1-m68k-di
 Description: Network Block Device modules
  This package contains the modules required for support of the Network
  Block Device
-Build-Profiles: <!stage1 !pkg.linux.nokernel>
-Kernel-Version: 5.14.0-1-m68k
-Package-Type: udeb
-
-Package: ide-core-modules-5.14.0-1-m68k-di
-Architecture: m68k
-Section: debian-installer
-Priority: standard
-Provides: ide-core-modules
-Depends: kernel-image-5.14.0-1-m68k-di
-Description: IDE support
- This package contains core IDE support for the kernel.
-Build-Profiles: <!stage1 !pkg.linux.nokernel>
-Kernel-Version: 5.14.0-1-m68k
-Package-Type: udeb
-
-Package: ide-modules-5.14.0-1-m68k-di
-Architecture: m68k
-Section: debian-installer
-Priority: standard
-Provides: ide-modules
-Depends: kernel-image-5.14.0-1-m68k-di, ide-core-modules-5.14.0-1-m68k-di
-Description: IDE drivers
- This package contains IDE drivers for the kernel.
 Build-Profiles: <!stage1 !pkg.linux.nokernel>
 Kernel-Version: 5.14.0-1-m68k
 Package-Type: udeb
