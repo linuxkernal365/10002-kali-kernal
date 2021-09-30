@@ -1,3 +1,19 @@
+linux (5.14.6-3) unstable; urgency=medium
+
+  [ Salvatore Bonaccorso ]
+  * ethtool: Fix rxnfc copy to user buffer overflow (Closes: #995109)
+  * debian/bin/gencontrol.py: Fix under-indented line triggering pycodestyle
+    problem.
+  * [armhf] dts: sun7i: A20-olinuxino-lime2: Fix ethernet phy-mode
+
+  [ John Paul Adrian Glaubitz ]
+  * [ia64] Set CONFIG_CRYPTO_ZSTD=y to force CONFIG_ZSTD_COMPRESS=y
+  * [ia64] Drop udebs for legacy IDE support, removed upstream
+  * [m68k] Drop udebs for legacy IDE support, removed upstream
+  * [sh4] Set CONFIG_CC_OPTIMIZE_FOR_SIZE=y to reduce image size
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 28 Sep 2021 06:29:40 +0200
+
 linux (5.14.6-2kali2) kali-experimental; urgency=medium
 
   * Enable DRM_VMWGFX on arm64
