@@ -1,3 +1,9 @@
+linux (5.14.9-2kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 04 Oct 2021 10:50:22 +0200
+
 linux (5.14.9-2) unstable; urgency=medium
 
   * [amd64] Unset AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT.
