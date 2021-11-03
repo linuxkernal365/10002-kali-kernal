@@ -89,7 +89,11 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
 bugfix/all/HID-apple-Add-missing-scan-code-event-for-keys-handl.patch
-bugfix/all/mm-secretmem-Fix-NULL-page-mapping-dereference-in-pa.patch
+bugfix/all/media-ir-kbd-i2c-improve-responsiveness-of-hauppauge.patch
+bugfix/all/media-ite-cir-IR-receiver-stop-working-after-receive.patch
+bugfix/all/scsi-core-Put-LLD-module-refcnt-after-SCSI-device-is.patch
+bugfix/all/sfc-Fix-reading-non-legacy-supported-link-modes.patch
+bugfix/all/vrf-Revert-Reset-skb-conntrack-connection.patch
 
 # Miscellaneous features
 
@@ -109,6 +113,7 @@ features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signatu
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
+bugfix/all/media-firewire-firedtv-avc-fix-a-buffer-overflow-in-.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
