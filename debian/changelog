@@ -21618,13 +21618,13 @@ linux (4.18.20-2kali2) kali-experimental; urgency=medium
 
   * Enable CONFIG_ATH10K_USB (see 5125)
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 30 Nov 2018 09:21:49 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 30 Nov 2018 09:21:49 +0100
 
 linux (4.18.20-2kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 26 Nov 2018 11:09:28 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 26 Nov 2018 11:09:28 +0100
 
 linux (4.18.20-2) unstable; urgency=medium
 
@@ -21636,7 +21636,7 @@ linux (4.18.20-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 23 Nov 2018 15:48:49 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 23 Nov 2018 15:48:49 +0100
 
 linux (4.18.20-1) unstable; urgency=medium
 
@@ -22889,7 +22889,7 @@ linux (4.18.10-2kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 09 Oct 2018 14:47:19 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 09 Oct 2018 14:47:19 +0200
 
 linux (4.18.10-2) unstable; urgency=medium
 
@@ -22912,7 +22912,7 @@ linux (4.18.10-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 05 Oct 2018 11:29:52 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 05 Oct 2018 11:29:52 +0200
 
 linux (4.18.10-1) unstable; urgency=medium
 
@@ -23305,7 +23305,7 @@ linux (4.18.8-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 20 Sep 2018 09:31:04 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 20 Sep 2018 09:31:04 +0200
 
 linux (4.18.8-1) unstable; urgency=medium
 
@@ -23675,7 +23675,7 @@ linux (4.18.6-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 10 Sep 2018 14:11:44 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 10 Sep 2018 14:11:44 +0200
 
 linux (4.18.6-1) unstable; urgency=medium
 
@@ -24067,7 +24067,7 @@ linux (4.17.17-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 21 Aug 2018 10:33:06 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 21 Aug 2018 10:33:06 +0200
 
 linux (4.17.17-1) unstable; urgency=medium
 
@@ -24818,7 +24818,7 @@ linux (4.17.8-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 24 Jul 2018 14:39:38 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 24 Jul 2018 14:39:38 +0200
 
 linux (4.17.8-1) unstable; urgency=medium
 
@@ -24912,7 +24912,7 @@ linux (4.17.6-2kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 17 Jul 2018 14:40:22 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 17 Jul 2018 14:40:22 +0200
 
 linux (4.17.6-2) unstable; urgency=medium
 
@@ -24945,7 +24945,7 @@ linux (4.17.6-1kali1) kali-experimental; urgency=medium
     fixed in  nvidia-graphics-drivers version: 390.67-2
 
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 13 Jul 2018 16:55:17 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 13 Jul 2018 16:55:17 +0200
 
 linux (4.17.6-1) unstable; urgency=medium
 
@@ -25602,13 +25602,13 @@ linux (4.16.16-2kali2) kali-experimental; urgency=medium
 
   * debian/config/config: add CONFIG_HARDENED_USERCOPY_FALLBACK=y (fixes 4834)
 
- -- Sophie Brun <sophie@freexian.com>  Wed, 04 Jul 2018 10:56:59 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 04 Jul 2018 10:56:59 +0200
 
 linux (4.16.16-2kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 25 Jun 2018 11:15:15 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 25 Jun 2018 11:15:15 +0200
 
 linux (4.16.16-2) unstable; urgency=medium
 
@@ -25621,7 +25621,7 @@ linux (4.16.16-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 22 Jun 2018 10:09:34 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 22 Jun 2018 10:09:34 +0200
 
 linux (4.16.16-1) unstable; urgency=medium
 
@@ -26076,7 +26076,7 @@ linux (4.16.12-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 28 May 2018 15:24:36 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 28 May 2018 15:24:36 +0200
 
 linux (4.16.12-1) unstable; urgency=medium
 
@@ -26734,7 +26734,7 @@ linux (4.16.5-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 11 May 2018 10:07:20 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 11 May 2018 10:07:20 +0200
 
 linux (4.16.5-1) unstable; urgency=medium
 
@@ -26924,7 +26924,7 @@ linux (4.15.17-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Wed, 25 Apr 2018 15:31:49 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 25 Apr 2018 15:31:49 +0200
 
 linux (4.15.17-1) unstable; urgency=medium
 
@@ -27462,7 +27462,7 @@ linux (4.15.11-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Wed, 21 Mar 2018 10:09:22 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 21 Mar 2018 10:09:22 +0100
 
 linux (4.15.11-1) unstable; urgency=medium
 
@@ -28146,7 +28146,7 @@ linux (4.15.4-1kali1) kali-experimental; urgency=medium
   * Sync with Debian
   * Drop patch bugfix/all/failure_to_fsync.patch, merged upstream
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 23 Feb 2018 09:10:20 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 23 Feb 2018 09:10:20 +0100
 
 linux (4.15.4-1) unstable; urgency=medium
 
@@ -28527,7 +28527,7 @@ linux (4.14.17-1kali1) kali-experimental; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 16 Feb 2018 09:38:47 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 16 Feb 2018 09:38:47 +0100
 
 linux (4.14.17-1) unstable; urgency=medium
 
@@ -28979,7 +28979,7 @@ linux (4.14.13-1kali1) kali-experimental; urgency=medium
   * Synchronize with Debian
   * Drop libelf-dev dependency on -headers package (fixed in Debian)
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 25 Jan 2018 15:15:08 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 25 Jan 2018 15:15:08 +0100
 
 linux (4.14.13-1) unstable; urgency=medium
 
@@ -29052,7 +29052,7 @@ linux (4.14.12-2kali1) kali-experimental; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 08 Jan 2018 16:09:45 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 08 Jan 2018 16:09:45 +0100
 
 linux (4.14.12-2) unstable; urgency=medium
 
@@ -29139,7 +29139,7 @@ linux (4.14.7-1kali1) kali-experimental; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 02 Jan 2018 18:02:44 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 02 Jan 2018 18:02:44 +0100
 
 linux (4.14.7-1) unstable; urgency=medium
 
@@ -29701,7 +29701,7 @@ linux (4.14.2-1kali1) kali-dev; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 04 Dec 2017 16:18:51 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 04 Dec 2017 16:18:51 +0100
 
 linux (4.14.2-1) unstable; urgency=medium
 
@@ -29839,7 +29839,7 @@ linux (4.13.13-1kali1) kali-experimental; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 17 Nov 2017 14:41:56 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 17 Nov 2017 14:41:56 +0100
 
 linux (4.13.13-1) unstable; urgency=medium
 
@@ -29992,14 +29992,14 @@ linux (4.13.10-1kali2) kali-dev; urgency=medium
 
   * Add a patch to fix failure to fsync lower dir (overlayfs)
 
- -- Sophie Brun <sophie@freexian.com>  Wed, 08 Nov 2017 09:32:46 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 08 Nov 2017 09:32:46 +0100
 
 linux (4.13.10-1kali1) kali-experimental; urgency=medium
 
   * Synchronize with Debian
   * Drop the bugfix/all/drop-division-by-zero.patch (merged upstream)
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 03 Nov 2017 15:12:39 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 03 Nov 2017 15:12:39 +0100
 
 linux (4.13.10-1) unstable; urgency=medium
 
@@ -30422,7 +30422,7 @@ linux (4.13.4-2kali1) kali-dev; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 16 Oct 2017 15:34:31 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 16 Oct 2017 15:34:31 +0200
 
 linux (4.13.4-2) unstable; urgency=medium
 
@@ -30451,7 +30451,7 @@ linux (4.13.4-1kali1) kali-experimental; urgency=medium
   * Synchronize with Debian
   * Add a patch to fix issue 4288
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 03 Oct 2017 10:15:27 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 03 Oct 2017 10:15:27 +0200
 
 linux (4.13.4-1) unstable; urgency=medium
 
@@ -30570,7 +30570,7 @@ linux (4.12.13-1kali2) kali-dev; urgency=medium
 
   * Update auto-generated files
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 03 Oct 2017 08:58:46 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 03 Oct 2017 08:58:46 +0200
 
 linux (4.12.13-1kali1) kali-dev; urgency=medium
 
@@ -30578,7 +30578,7 @@ linux (4.12.13-1kali1) kali-dev; urgency=medium
   * Add a patch wireless-carl9170-Enable-sniffer-mode-promisc-flag-t.patch
     (see Kali bug: 4220)
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 03 Oct 2017 07:01:02 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 03 Oct 2017 07:01:02 +0200
 
 linux (4.12.13-1) unstable; urgency=medium
 
@@ -30630,7 +30630,7 @@ linux (4.12.12-2kali1) kali-experimental; urgency=medium
   * Synchronize with Debian
   * Drop patch bugfix/all/vmwgfx-fix-wayland-rendering.patch merged upstream
 
- -- Sophie Brun <sophie@freexian.com>  Wed, 13 Sep 2017 11:49:30 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 13 Sep 2017 11:49:30 +0200
 
 linux (4.12.12-2) unstable; urgency=medium
 
@@ -30957,7 +30957,7 @@ linux (4.12.6-1kali1) kali-dev; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 18 Aug 2017 11:17:20 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 18 Aug 2017 11:17:20 +0200
 
 linux (4.12.6-1) unstable; urgency=medium
 
@@ -31339,7 +31339,7 @@ linux (4.11.6-1kali1) kali-dev; urgency=medium
   * Drop patch bugfix/all/allocate-physically-contiguous-params.patch (merged
     upstream)
 
- -- Sophie Brun <sophie@freexian.com>  Wed, 21 Jun 2017 15:10:26 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 21 Jun 2017 15:10:26 +0200
 
 linux (4.11.6-1) unstable; urgency=medium
 
@@ -31516,7 +31516,7 @@ linux (4.9.30-1kali1) kali-dev; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 06 Jun 2017 14:24:37 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 06 Jun 2017 14:24:37 +0200
 
 linux (4.9.30-1) unstable; urgency=medium
 
@@ -31980,7 +31980,7 @@ linux (4.9.25-1kali1) kali-dev; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 04 May 2017 16:10:26 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 04 May 2017 16:10:26 +0200
 
 linux (4.9.25-1) unstable; urgency=medium
 
@@ -32405,7 +32405,7 @@ linux (4.9.18-1kali1) kali-dev; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 04 Apr 2017 11:13:04 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 04 Apr 2017 11:13:04 +0200
 
 linux (4.9.18-1) unstable; urgency=medium
 
@@ -32568,7 +32568,7 @@ linux (4.9.16-1kali1) kali-dev; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 24 Mar 2017 09:39:39 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 24 Mar 2017 09:39:39 +0100
 
 linux (4.9.16-1) unstable; urgency=medium
 
@@ -32834,19 +32834,19 @@ linux (4.9.13-1kali3) kali-experimental; urgency=medium
   * Add a patch that allows for PCI pass though on Microsoft azure (see Kali bug
     3915)
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 13 Mar 2017 13:47:59 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 13 Mar 2017 13:47:59 +0100
 
 linux (4.9.13-1kali2) kali-dev; urgency=medium
 
   * Bump the ABI to kali3
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 07 Mar 2017 15:57:29 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 07 Mar 2017 15:57:29 +0100
 
 linux (4.9.13-1kali1) kali-dev; urgency=medium
 
   * Synchronize with Debian
 
- -- Sophie Brun <sophie@freexian.com>  Wed, 01 Mar 2017 09:56:22 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 01 Mar 2017 09:56:22 +0100
 
 linux (4.9.13-1) unstable; urgency=medium
 
@@ -32957,7 +32957,7 @@ linux (4.9.10-1kali1) kali-dev; urgency=medium
 
   * Import new version from Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 20 Feb 2017 13:44:35 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 20 Feb 2017 13:44:35 +0100
 
 linux (4.9.10-1) unstable; urgency=medium
 
@@ -33243,7 +33243,7 @@ linux (4.9.6-3kali1) kali-dev; urgency=medium
 
   * Import new version from Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 30 Jan 2017 14:27:13 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 30 Jan 2017 14:27:13 +0100
 
 linux (4.9.6-3) unstable; urgency=medium
 
@@ -33747,7 +33747,7 @@ linux (4.9.2-2kali1) kali-dev; urgency=medium
 
   * Import new version from Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 30 Jan 2017 12:15:06 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 30 Jan 2017 12:15:06 +0100
 
 linux (4.9.2-2) unstable; urgency=medium
 
@@ -33950,7 +33950,7 @@ linux (4.8.15-1kali1) kali-dev; urgency=medium
 
   * Import new version from debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 23 Dec 2016 11:08:03 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 23 Dec 2016 11:08:03 +0100
 
 linux (4.8.15-1) unstable; urgency=medium
 
@@ -34135,7 +34135,7 @@ linux (4.8.11-1kali1) kali-dev; urgency=medium
 
   * Import new version from Debian
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 08 Dec 2016 09:33:19 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 08 Dec 2016 09:33:19 +0100
 
 linux (4.8.11-1) unstable; urgency=medium
 
@@ -34390,7 +34390,7 @@ linux (4.8.7-1kali1) kali-dev; urgency=medium
 
   * Import new version from Debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 28 Nov 2016 15:20:05 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 28 Nov 2016 15:20:05 +0100
 
 linux (4.8.7-1) unstable; urgency=medium
 
@@ -34643,7 +34643,7 @@ linux (4.8.5-1kali1) kali-experimental; urgency=medium
 
   * Import new version from Debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 04 Nov 2016 14:49:48 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 04 Nov 2016 14:49:48 +0100
 
 linux (4.8.5-1) unstable; urgency=medium
 
@@ -34776,7 +34776,7 @@ linux (4.7.8-1kali1) kali-dev; urgency=medium
   * Import new version from Debian
   * In debian/config/ architecture /defines, keep "signed-modules: false"
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 24 Oct 2016 16:59:37 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 24 Oct 2016 16:59:37 +0200
 
 linux (4.7.8-1) unstable; urgency=high
 
@@ -34948,7 +34948,7 @@ linux (4.7.6-1kali1) kali-dev; urgency=medium
   * Import new version from Debian
   * In debian/config/ architecture /defines, keep "signed-modules: false"
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 17 Oct 2016 15:54:33 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 17 Oct 2016 15:54:33 +0200
 
 linux (4.7.6-1) unstable; urgency=medium
 
@@ -35034,21 +35034,21 @@ linux (4.7.5-1kali3) kali-experimental; urgency=medium
   * Revert "Drop '-unsigned' suffix to packages". Change config for
     each architecture instead: signed-modules disabled
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 29 Sep 2016 12:00:41 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 29 Sep 2016 12:00:41 +0200
 
 linux (4.7.5-1kali2) kali-experimental; urgency=medium
 
   * Drop '-unsigned' suffix to packages (revert commit
     72f58e83eaacb07b7dc5d077890f2be7d548300b in git Debian)
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 27 Sep 2016 09:21:16 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 27 Sep 2016 09:21:16 +0200
 
 linux (4.7.5-1kali1) kali-experimental; urgency=medium
 
   * Import new version from Debian
   * Drop debian/patches/bugfix/all/drm-vmwgfx-Fix-corner-case-screen-target-management.patch
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 26 Sep 2016 15:49:31 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 26 Sep 2016 15:49:31 +0200
 
 linux (4.7.5-1) unstable; urgency=medium
 
@@ -35573,7 +35573,7 @@ linux (4.6.4-1kali1) kali-dev; urgency=medium
 
   * Import new version from debian
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 21 Jul 2016 10:07:03 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 21 Jul 2016 10:07:03 +0200
 
 linux (4.6.4-1) unstable; urgency=medium
 
@@ -35627,7 +35627,7 @@ linux (4.6.3-1kali1) kali-dev; urgency=medium
 
   * Import new version from debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 12 Jul 2016 17:37:44 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 12 Jul 2016 17:37:44 +0200
 
 linux (4.6.3-1) unstable; urgency=medium
 
@@ -35711,13 +35711,13 @@ linux (4.6.2-2kali2) kali-dev; urgency=medium
 
   * Add bugfix/all/drm-vmwgfx-Fix-corner-case-screen-target-management.patch
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 28 Jun 2016 15:21:28 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 28 Jun 2016 15:21:28 +0200
 
 linux (4.6.2-2kali1) kali-dev; urgency=medium
 
   * Import new version from debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 28 Jun 2016 12:12:03 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 28 Jun 2016 12:12:03 +0200
 
 linux (4.6.2-2) unstable; urgency=medium
 
@@ -35757,7 +35757,7 @@ linux (4.6.2-1kali1) kali-dev; urgency=medium
 
   * Import new version from debian
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 17 Jun 2016 14:47:38 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 17 Jun 2016 14:47:38 +0200
 
 linux (4.6.2-1) unstable; urgency=medium
 
@@ -36036,7 +36036,7 @@ linux (4.5.5-1kali1) kali-dev; urgency=medium
   * Change maintainer field to point to devel@kali.org (on request of Ben
     Hutchings).
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 06 Jun 2016 15:09:46 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 06 Jun 2016 15:09:46 +0200
 
 linux (4.5.5-1) unstable; urgency=medium
 
@@ -36292,7 +36292,7 @@ linux (4.5.3-2kali1) kali-dev; urgency=medium
 
   * Import new version from debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 09 May 2016 15:00:25 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 09 May 2016 15:00:25 +0200
 
 linux (4.5.3-2) unstable; urgency=medium
 
@@ -36504,7 +36504,7 @@ linux (4.5.2-1kali1) kali-dev; urgency=medium
   * Import new version from debian
   * Refresh patches
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 03 May 2016 10:05:27 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 03 May 2016 10:05:27 +0200
 
 linux (4.5.2-1) unstable; urgency=medium
 
@@ -37070,7 +37070,7 @@ linux (4.4.6-1kali1) kali-dev; urgency=medium
   * Drop bugfix/x86/x86-efi-dont-free-reserved-regions.patch: it's in Debian
     bugfix/x86/x86-efi-fix-boot-crash-by-always-mapping-boot-servic.patch
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 18 Mar 2016 10:17:36 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 18 Mar 2016 10:17:36 +0100
 
 linux (4.4.6-1) unstable; urgency=medium
 
@@ -37216,13 +37216,13 @@ linux (4.4.4-2kali2) kali-dev; urgency=medium
 
   * Add a patch x86-efi-dont-free-reserved-regions.patch
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 11 Mar 2016 09:59:34 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 11 Mar 2016 09:59:34 +0100
 
 linux (4.4.4-2kali1) kali-dev; urgency=medium
 
   * Import new version from Debian
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 10 Mar 2016 09:14:23 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 10 Mar 2016 09:14:23 +0100
 
 linux (4.4.4-2) unstable; urgency=medium
 
@@ -37239,7 +37239,7 @@ linux (4.4.4-1kali1) kali-dev; urgency=medium
   * Import new version from Debian
   * Refresh aufs4 patches
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 08 Mar 2016 11:18:21 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 08 Mar 2016 11:18:21 +0100
 
 linux (4.4.4-1) unstable; urgency=medium
 
@@ -37728,7 +37728,7 @@ linux (4.4.2-3kali1) kali-dev; urgency=medium
   * Import new version from Debian
   * debian/config/defines: disable featureset-rt_base
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 23 Feb 2016 17:45:54 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 23 Feb 2016 17:45:54 +0100
 
 linux (4.4.2-3) unstable; urgency=medium
 
@@ -37773,7 +37773,7 @@ linux (4.4.2-1kali1) kali-dev; urgency=medium
   * Refresh debian/patches/features/all/kali-wifi-injection.patch
   * Drop debian/patches/bugfix/all/vmwgfx-fixes-*.patch (included upstream)
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 18 Feb 2016 14:42:00 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 18 Feb 2016 14:42:00 +0100
 
 linux (4.4.2-1) unstable; urgency=medium
 
@@ -38044,7 +38044,7 @@ linux (4.3.5-1kali1) kali-dev; urgency=medium
   * Drop bugfix/all/rt2x00-fix-monitor-mode.patch (included
     in debian now)
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 11 Feb 2016 14:58:36 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 11 Feb 2016 14:58:36 +0100
 
 linux (4.3.5-1) unstable; urgency=medium
 
@@ -38218,7 +38218,7 @@ linux (4.3.3-7kali1) kali-dev; urgency=medium
     in kali/section. It's now included in the debian release.
   * Refresh aufs4 patches
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 21 Jan 2016 09:52:34 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 21 Jan 2016 09:52:34 +0100
 
 linux (4.3.3-7) unstable; urgency=medium
 
@@ -38722,7 +38722,7 @@ linux (4.2.5-1kali1) kali-dev; urgency=medium
   * Refresh kali-wifi-injection.patch
   * Update aufs4 patches for kernel 4.2
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 03 Nov 2015 11:07:05 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 03 Nov 2015 11:07:05 +0100
 
 linux (4.2.5-1) unstable; urgency=medium
 
@@ -39377,7 +39377,7 @@ linux (4.1.6-1kali2) kali-dev; urgency=medium
   * debian/rules: add a check for missing files debian/linux-*
   * Add missing files debian/linux-*
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 14 Sep 2015 16:08:02 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 14 Sep 2015 16:08:02 +0200
 
 linux (4.1.6-1kali1) kali-dev; urgency=medium
 
@@ -39385,7 +39385,7 @@ linux (4.1.6-1kali1) kali-dev; urgency=medium
   * Refresh aufs4 patches
   * Refresh kali-wifi-injection.patch
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 08 Sep 2015 10:04:55 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 08 Sep 2015 10:04:55 +0200
 
 linux (4.1.6-1) unstable; urgency=medium
 
@@ -40124,7 +40124,7 @@ linux (4.0.4-1+kali1) kali-dev; urgency=medium
   * udeb: Remove i2o modules (fixes FTBFS on amd64)
   * [armhf] Add stmmac-platform module to nic-modules udeb. (Closes: #786716)
 
- -- Sophie Brun <sophie@freexian.com>  Fri, 29 May 2015 11:57:46 +0200
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 29 May 2015 11:57:46 +0200
 
 linux (4.0.4-1) unstable; urgency=medium
 
@@ -40533,7 +40533,7 @@ linux (3.18.6-1+kali1) kali-dev; urgency=medium
 
   * Import new version from debian
 
- -- Sophie Brun <sophie@freexian.com>  Tue, 24 Feb 2015 14:19:00 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 24 Feb 2015 14:19:00 +0100
 
 linux (3.18.6-1~exp1) experimental; urgency=medium
 
@@ -40588,7 +40588,7 @@ linux (3.18.3-1~kali1) kali; urgency=medium
 
   * Import new version from debian
 
- -- Sophie Brun <sophie@freexian.com>  Mon, 19 Jan 2015 15:11:01 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 19 Jan 2015 15:11:01 +0100
 
 linux (3.18.3-1~exp1) experimental; urgency=medium
 
@@ -41796,13 +41796,13 @@ linux (3.16.7-2kali2) kali-dev; urgency=medium
 
   * Use compiler gcc-4.8
 
- -- Sophie Brun <sophie@freexian.com>  Thu, 04 Dec 2014 15:25:28 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 04 Dec 2014 15:25:28 +0100
 
 linux (3.16.7-2kali1) kali-dev; urgency=medium
 
   * Import new debian version
 
- -- Sophie Brun <sophie@freexian.com>  Wed, 03 Dec 2014 16:19:10 +0100
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 03 Dec 2014 16:19:10 +0100
 
 linux (3.16.7-2) unstable; urgency=medium
 
