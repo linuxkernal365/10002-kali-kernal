@@ -10,10 +10,10 @@ VERSION_SOURCE := $(patsubst %+b$(VERSION_BINNMU),%,$(VERSION))
 include debian/rules.defs
 
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-  DEBIAN_KERNEL_JOBS := $(subst parallel=,,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+	DEBIAN_KERNEL_JOBS := $(subst parallel=,,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 endif
 ifdef DEBIAN_KERNEL_JOBS
-  MAKEFLAGS += -j$(DEBIAN_KERNEL_JOBS)
+	MAKEFLAGS += -j$(DEBIAN_KERNEL_JOBS)
 endif
 
 .NOTPARALLEL:
