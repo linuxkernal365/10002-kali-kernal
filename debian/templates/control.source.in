@@ -2,6 +2,7 @@ Section: kernel
 Priority: optional
 Maintainer: Kali Developers <devel@kali.org>
 Uploaders: Raphaël Hertzog <hertzog@debian.org>, Sophie Brun <sophie@offensive-security.com>
+XSBC-Original-Maintainer: Debian Kernel Team <debian-kernel@lists.debian.org>
 Standards-Version: 4.2.0
 Build-Depends:
  debhelper-compat (= 12), dh-exec,
