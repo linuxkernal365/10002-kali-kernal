@@ -4170,11 +4170,11 @@ static int ice_register_netdev(struct ice_pf *pf)
 	set_bit(ICE_VSI_NETDEV_REGISTERED, vsi->state);
 	netif_carrier_off(vsi->netdev);
 	netif_tx_stop_all_queues(vsi->netdev);
-	err = ice_devlink_create_port(vsi);
+	err = ice_devlink_create_pf_port(pf);
 	if (err)
 		goto err_devlink_create;
 
-	devlink_port_type_eth_set(&vsi->devlink_port, vsi->netdev);
+	devlink_port_type_eth_set(&pf->devlink_port, vsi->netdev);
 
 	return 0;
 err_devlink_create:
@@ -4599,9 +4599,6 @@ static void ice_remove(struct pci_dev *pdev)
 {
 	struct ice_pf *pf = pci_get_drvdata(pdev);
 	int i;
-
-	if (!pf)
-		return;
 
 	for (i = 0; i < ICE_MAX_RESET_WAIT; i++) {
 		if (!ice_is_reset_in_progress(pf->state))
@@ -6581,12 +6578,12 @@ event_after:
 }
 
 /**
- * ice_do_ioctl - Access the hwtstamp interface
+ * ice_eth_ioctl - Access the hwtstamp interface
  * @netdev: network interface device structure
  * @ifr: interface request data
  * @cmd: ioctl command
  */
-static int ice_do_ioctl(struct net_device *netdev, struct ifreq *ifr, int cmd)
+static int ice_eth_ioctl(struct net_device *netdev, struct ifreq *ifr, int cmd)
 {
 	struct ice_netdev_priv *np = netdev_priv(netdev);
 	struct ice_pf *pf = np->vsi->back;
@@ -7252,7 +7249,7 @@ static const struct net_device_ops ice_netdev_ops = {
 	.ndo_change_mtu = ice_change_mtu,
 	.ndo_get_stats64 = ice_get_stats64,
 	.ndo_set_tx_maxrate = ice_set_tx_maxrate,
-	.ndo_do_ioctl = ice_do_ioctl,
+	.ndo_eth_ioctl = ice_eth_ioctl,
 	.ndo_set_vf_spoofchk = ice_set_vf_spoofchk,
 	.ndo_set_vf_mac = ice_set_vf_mac,
 	.ndo_get_vf_config = ice_get_vf_cfg,
