@@ -1,3 +1,9 @@
+linux (5.15.5-2kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 21 Dec 2021 16:40:45 +0100
+
 linux (5.15.5-2) unstable; urgency=medium
 
   * atlantic: Fix OOB read and write in hw_atl_utils_fw_rpc_wait
