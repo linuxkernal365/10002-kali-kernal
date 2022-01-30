@@ -1,5 +1,5 @@
 5bf28310efb1b21eb5e9a4b23a6100e2  debian/bin/gencontrol.py
-be09094c2018f64fcc04b4c19aef2354  debian/build/version-info
+b378e041c59c0f60df20366423362cea  debian/build/version-info
 fe4456d48e3218fb8980c8577d03a7ae  debian/templates/control.config.in
 9509e39d8e60906ebd5ee4a8b0355d25  debian/templates/control.docs.in
 358db3af53a223fe60ae89c7a481609f  debian/templates/control.docs.meta.in
@@ -15,7 +15,7 @@ d048c1b6a4d834060d0ce8b502aee906  debian/templates/control.image-unsigned.in
 36387f47e6bacd1e6995a9d41b292e88  debian/templates/control.libc-dev.in
 74b180a87aa1f6377d9bf8a10368c657  debian/templates/control.main.in
 77509b4624f98f87a0b4b1370813935b  debian/templates/control.signed-template.in
-ff1d878f06d61bef0a786c2156cc4e3e  debian/templates/control.source.in
+8b51e485dc27a85bd53ceab029db303c  debian/templates/control.source.in
 9831ce1b8f9e8792b9a85d8761bdc385  debian/templates/control.sourcebin.in
 4124ed9de89fd889d6cf997ee8da76f0  debian/templates/control.sourcebin.meta.in
 692fab5899a4b3e3b3565a51028ddf3b  debian/templates/control.tools-unversioned.in
