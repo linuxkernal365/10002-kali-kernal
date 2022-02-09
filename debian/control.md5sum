@@ -1,5 +1,5 @@
 d50bd3f7e1a2609731a80ecae67e7d54  debian/bin/gencontrol.py
-bee96d8687031e555a374a9e57212701  debian/build/version-info
+3372d9ddd5a65bbf8a45ea292c8b0a25  debian/build/version-info
 fe4456d48e3218fb8980c8577d03a7ae  debian/templates/control.config.in
 ab78b844f046a0bc3e400103ea13307a  debian/templates/control.docs.in
 d8e697382a909e27145b6f20b1770ad6  debian/templates/control.docs.meta.in
@@ -34,8 +34,8 @@ a4a60fc48b3240e46bbac6a1ddcaad30  debian/templates/image.postrm.in
 afb508873a44a1f196c2a525fec4b415  debian/templates/image.prerm.in
 7b5c01e745a20c29eb91e6e281d2c15c  debian/templates/perf.lintian-overrides.in
 f3d6de11709cb832d829d43d520fd3de  debian/templates/perf.postinst.in
-c8b4fd21bbe1dbd39e7a5d0a16d2cad9  debian/templates/perf.postrm.in
-31216c7623b4548573a7bad9a7ffef9a  debian/templates/perf.preinst.in
+86f2fbaa304be4427c08502ed360284b  debian/templates/perf.postrm.in
+3a2423e3b52a25d9542b791bbaf0970b  debian/templates/perf.preinst.in
 f3d6de11709cb832d829d43d520fd3de  debian/templates/perf.prerm.in
 381bc892fd36ef7ea5327f649b99cb98  debian/templates/sourcebin.meta.maintscript.in
 814dda166c7e3ef02e6e259e805ac66a  debian/templates/tests-control.image.in
