@@ -1,3 +1,10 @@
+linux (5.16.7-2) unstable; urgency=medium
+
+  * linux-perf: Protect invocation of dpkg-divert to run only on relevant
+    actions in maintscripts. Thanks to Guillem Jover (Closes: #1005141)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 09 Feb 2022 09:35:55 +0100
+
 linux (5.16.7-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
