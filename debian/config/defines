@@ -1,5 +1,5 @@
 [abi]
-abiname: kali1
+abiname: kali2
 ignore-changes:
  __cpuhp_*
  __udp_gso_segment

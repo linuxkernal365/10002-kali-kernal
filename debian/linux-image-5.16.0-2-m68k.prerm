@@ -1,0 +1,21 @@
+#!/bin/sh -e
+
+<<<<<<<< HEAD:debian/linux-image-5.16.0-kali1-m68k.prerm
+version=5.16.0-kali1-m68k
+========
+version=5.16.0-2-m68k
+>>>>>>>> debian:debian/linux-image-5.16.0-2-m68k.prerm
+image_path=/boot/vmlinux-$version
+
+if [ "$1" != remove ]; then
+    exit 0
+fi
+
+linux-check-removal $version
+
+if [ -d /etc/kernel/prerm.d ]; then
+    DEB_MAINT_PARAMS="$*" run-parts --report --exit-on-error --arg=$version \
+	      --arg=$image_path /etc/kernel/prerm.d
+fi
+
+exit 0
