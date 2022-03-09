@@ -1,3 +1,9 @@
+linux (5.16.12-1kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian
+
+ -- Sophie Brun <sophie@offensive-security.com>  Wed, 09 Mar 2022 13:56:35 +0100
+
 linux (5.16.12-1) unstable; urgency=high
 
   * New upstream stable update:
