@@ -131,4 +131,9 @@ bugfix/all/tools-include-uapi-fix-errno.h.patch
 bugfix/all/libapi-define-_fortify_source-as-2-not-empty.patch
 bugfix/all/tools-perf-fix-missing-ldflags-for-some-programs.patch
 
+# Temporary fix (https://bugs.kali.org/view.php?id=7637)
+Reverse-commit-8979720ac64c70af1395ce78e5c6ffb546b43e0d.patch
+Reverse-commit-912961e188dcd4ca3d7188b9badd96a90469adfb.patch
+Reverse-commit-e38b3c0d245b87835138296fd9b57d2a56721461.patch
+
 # ABI maintenance
