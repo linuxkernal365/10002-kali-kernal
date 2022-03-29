@@ -1,5 +1,5 @@
 d50bd3f7e1a2609731a80ecae67e7d54  debian/bin/gencontrol.py
-5ee1e3968afb137a07ecb15c476b4c30  debian/build/version-info
+3b80410debdb4053b923fc2872a2e645  debian/build/version-info
 fe4456d48e3218fb8980c8577d03a7ae  debian/templates/control.config.in
 ab78b844f046a0bc3e400103ea13307a  debian/templates/control.docs.in
 d8e697382a909e27145b6f20b1770ad6  debian/templates/control.docs.meta.in
@@ -40,7 +40,7 @@ f3d6de11709cb832d829d43d520fd3de  debian/templates/perf.prerm.in
 381bc892fd36ef7ea5327f649b99cb98  debian/templates/sourcebin.meta.maintscript.in
 814dda166c7e3ef02e6e259e805ac66a  debian/templates/tests-control.image.in
 33d71bfd398d2f9b3bc5c0193b67d17e  debian/templates/tests-control.main.in
-ed21e5ef0c2011edd6ff7125af6311e3  debian/config/defines
+940521445826662766efad11ac7272e3  debian/config/defines
 59a811890d2e7129bec940075850f11f  debian/config/alpha/defines
 abc8aae322568c9a72a47c6d9a30b9d3  debian/config/amd64/defines
 1b9a112188583232fb65540571f21c6a  debian/config/arm64/defines
