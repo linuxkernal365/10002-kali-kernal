@@ -1,3 +1,13 @@
+linux (5.17.3-1kali1) kali-experimental; urgency=medium
+
+  * Sync with Debian:
+    - keep specific patches (kali-wifi-injection.patch,
+    wireless-carl9170-Enable-sniffer-mode-promisc-flag-t.patch and
+    remove-ports-restrictions.patch)
+    - keep temporary fixes for 7637 (reverted commits)
+
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 21 Apr 2022 15:15:28 +0200
+
 linux (5.17.3-1) unstable; urgency=medium
 
   * New upstream stable update:
