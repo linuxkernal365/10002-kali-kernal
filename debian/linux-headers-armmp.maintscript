@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 dir_to_symlink /usr/share/doc/linux-headers-armmp linux-headers-5.17.0-kali1-armmp 5.7~rc5-1~exp1 linux-headers-armmp
+=======
+dir_to_symlink /usr/share/doc/linux-headers-armmp linux-headers-5.17.0-2-armmp 5.7~rc5-1~exp1 linux-headers-armmp
+>>>>>>> debian
