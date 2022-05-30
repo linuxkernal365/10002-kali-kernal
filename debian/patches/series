@@ -90,6 +90,7 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
+bugfix/all/sign-file-Convert-API-usage-to-support-OpenSSL-v3.patch
 
 # Miscellaneous features
 
@@ -109,6 +110,7 @@ features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signatu
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
+bugfix/x86/KVM-x86-mmu-fix-NULL-pointer-dereference-on-guest-IN.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
