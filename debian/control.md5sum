@@ -1,5 +1,5 @@
-e17fe78eb61a7685e8e93615352ace4e  debian/bin/gencontrol.py
-b6d3dc1c422f30c8e48a54928fe85f9c  debian/build/version-info
+ac71185852cbf1f452610550db912f0e  debian/bin/gencontrol.py
+7b765e611eff9a7ee26aa99cf53af99d  debian/build/version-info
 fe4456d48e3218fb8980c8577d03a7ae  debian/templates/control.config.in
 ab78b844f046a0bc3e400103ea13307a  debian/templates/control.docs.in
 d8e697382a909e27145b6f20b1770ad6  debian/templates/control.docs.meta.in
@@ -32,15 +32,10 @@ dce8417680d5472087c898ae874931f1  debian/templates/image-dbg.meta.lintian-overri
 a4a60fc48b3240e46bbac6a1ddcaad30  debian/templates/image.postrm.in
 38004750aa03cea41d5d3aeafff16fcc  debian/templates/image.preinst.in
 afb508873a44a1f196c2a525fec4b415  debian/templates/image.prerm.in
-7b5c01e745a20c29eb91e6e281d2c15c  debian/templates/perf.lintian-overrides.in
-f3d6de11709cb832d829d43d520fd3de  debian/templates/perf.postinst.in
-86f2fbaa304be4427c08502ed360284b  debian/templates/perf.postrm.in
-3a2423e3b52a25d9542b791bbaf0970b  debian/templates/perf.preinst.in
-f3d6de11709cb832d829d43d520fd3de  debian/templates/perf.prerm.in
 381bc892fd36ef7ea5327f649b99cb98  debian/templates/sourcebin.meta.maintscript.in
 814dda166c7e3ef02e6e259e805ac66a  debian/templates/tests-control.image.in
 33d71bfd398d2f9b3bc5c0193b67d17e  debian/templates/tests-control.main.in
-16cff75ac31ba39f93f4d835bd067ba4  debian/config/defines
+57f5f62fc21b886f9e9c3b4bf42bb0f5  debian/config/defines
 59a811890d2e7129bec940075850f11f  debian/config/alpha/defines
 abc8aae322568c9a72a47c6d9a30b9d3  debian/config/amd64/defines
 1b9a112188583232fb65540571f21c6a  debian/config/arm64/defines
@@ -85,4 +80,4 @@ b4a45606f37c0d82a63779aa862528d9  debian/config/armhf/none/defines
 7146ff53fc4f9fbb49948225d8589b69  debian/config/i386/rt/defines
 1f2f888a9e94dfb519bb1eab12408d34  debian/config/riscv64/none/defines
 9ee7d439378fec0a34c2930f3e6478c5  debian/installer/kernel-versions
-d14cc62c79bd8825c4cfc1466b780883  debian/installer/package-list
+7c77acf4334e916478e6597995c619dd  debian/installer/package-list
