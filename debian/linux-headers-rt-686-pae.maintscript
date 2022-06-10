@@ -1,1 +1,1 @@
-dir_to_symlink /usr/share/doc/linux-headers-rt-686-pae linux-headers-5.17.0-kali3-rt-686-pae 5.7~rc5-1~exp1 linux-headers-rt-686-pae
+dir_to_symlink /usr/share/doc/linux-headers-rt-686-pae linux-headers-5.18.0-kali1-rt-686-pae 5.7~rc5-1~exp1 linux-headers-rt-686-pae
