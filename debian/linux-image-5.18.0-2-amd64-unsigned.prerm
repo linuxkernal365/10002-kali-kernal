@@ -1,0 +1,21 @@
+#!/bin/sh -e
+
+<<<<<<<< HEAD:debian/linux-image-5.18.0-kali1-rpi.prerm
+version=5.18.0-kali1-rpi
+========
+version=5.18.0-2-amd64
+>>>>>>>> debian:debian/linux-image-5.18.0-2-amd64-unsigned.prerm
+image_path=/boot/vmlinuz-$version
+
+if [ "$1" != remove ]; then
+    exit 0
+fi
+
+linux-check-removal $version
+
+if [ -d /etc/kernel/prerm.d ]; then
+    DEB_MAINT_PARAMS="$*" run-parts --report --exit-on-error --arg=$version \
+	      --arg=$image_path /etc/kernel/prerm.d
+fi
+
+exit 0
