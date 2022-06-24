@@ -1,3 +1,10 @@
+linux (5.18.5-1kali2) kali-experimental; urgency=medium
+
+  * Apply again 3 patches to fix issues with hypervisor
+  * Bump ABI 
+
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 24 Jun 2022 09:56:02 +0200
+
 linux (5.18.5-1kali1) kali-experimental; urgency=medium
 
   * Sync with Debian
