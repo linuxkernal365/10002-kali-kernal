@@ -1,3 +1,9 @@
+linux (5.18.5-1kali3) kali-experimental; urgency=medium
+
+  * Fix build for arm64
+
+ -- Sophie Brun <sophie@offensive-security.com>  Fri, 24 Jun 2022 12:12:37 +0200
+
 linux (5.18.5-1kali2) kali-experimental; urgency=medium
 
   * Apply again 3 patches to fix issues with hypervisor
