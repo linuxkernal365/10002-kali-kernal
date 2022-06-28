@@ -1,3 +1,10 @@
+linux (5.18.5-1kali4) kali-experimental; urgency=medium
+
+  * Set CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE=y on amd64 and arm64
+  * Set CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE=n on ppc64(el) and s390x
+
+ -- Sophie Brun <sophie@offensive-security.com>  Tue, 28 Jun 2022 18:19:14 +0200
+
 linux (5.18.5-1kali3) kali-experimental; urgency=medium
 
   * Fix build for arm64
