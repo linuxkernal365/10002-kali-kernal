@@ -133,4 +133,3 @@ Reverse-commit-912961e188dcd4ca3d7188b9badd96a90469adfb.patch
 Reverse-commit-e38b3c0d245b87835138296fd9b57d2a56721461.patch
 
 # ABI maintenance
-Fix-arm64-build.patch
