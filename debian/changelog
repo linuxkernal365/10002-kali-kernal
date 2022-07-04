@@ -1,3 +1,10 @@
+linux (5.18.5-1kali5) kali-experimental; urgency=medium
+
+  * Remove the patches to fix issues with hypervisor (it creates more issues)
+  * Bump ABI
+
+ -- Sophie Brun <sophie@offensive-security.com>  Mon, 04 Jul 2022 11:40:14 +0200
+
 linux (5.18.5-1kali4) kali-experimental; urgency=medium
 
   * Set CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE=y on amd64 and arm64
