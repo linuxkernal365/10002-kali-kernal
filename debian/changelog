@@ -1,3 +1,9 @@
+linux (5.18.5-1kali6) kali-experimental; urgency=medium
+
+  * Add and enable DWAV USB touch screen 
+
+ -- Sophie Brun <sophie@offensive-security.com>  Thu, 07 Jul 2022 14:58:16 +0200
+
 linux (5.18.5-1kali5) kali-experimental; urgency=medium
 
   * Remove the patches to fix issues with hypervisor (it creates more issues)
